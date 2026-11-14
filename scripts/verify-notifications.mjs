@@ -54,6 +54,7 @@ async function session(live = false) {
   return current;
 }
 async function capture(id) {
+  await page.mouse.move(1813, 867);
   await page.screenshot({
     path: path.join(output, id + ".png"),
     fullPage: true,
