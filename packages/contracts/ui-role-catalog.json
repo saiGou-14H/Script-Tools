@@ -37,7 +37,7 @@
     "01-产品需求与功能设计.md#roles",
     "01-产品需求与功能设计.md#navigation",
     "02-系统架构与详细设计.md#role-access",
-    "03-接口协议与脚本开发规范.md#role-ui-api"
+    "03-接口协议.md#role-ui-api"
   ],
   "roles": [
     {

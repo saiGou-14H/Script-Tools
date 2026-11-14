@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-14T23:09:26.778Z",
+  "checks": [
+    "unauthenticated listing rejected",
+    "CSRF and publisher qualification enforced",
+    "upload and concurrent idempotent replay create one draft",
+    "source bytes round-trip and private encryption",
+    "Default action schemas override version schemas, boolean false is retained, and the version digest covers action schemas",
+    "another publisher cannot read private source",
+    "draft edit revision and replay precedence",
+    "path escape and missing entry rejected",
+    "source and HTTP body budgets enforced",
+    "partial failure rolls source and draft back atomically",
+    "normal UI package upload, validation, reload and durable save",
+    "Boolean action schemas retain false rejection and preserve null, false, zero, arrays and strings through live JSON previews",
+    "JSON Schema 2020-12 forms retain zero, nullable roots use validated JSON input, and unsupported dialects return a recoverable validation response",
+    "PostgreSQL source encryption, replay, revision and read projections pass in a fully rolled-back transaction"
+  ],
+  "screenshots": [
+    "uploaded-draft",
+    "uploaded-version"
+  ],
+  "browser_errors": [],
+  "scope": "Isolated PGlite and normal upload/editor UI; synthetic accounts and text source",
+  "postgresql": {
+    "server_version": "18.7",
+    "transaction": "rolled_back",
+    "synthetic_script_removed": true
+  },
+  "result": "PASS"
+}

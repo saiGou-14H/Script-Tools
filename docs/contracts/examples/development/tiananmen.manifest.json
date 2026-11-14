@@ -1,0 +1,489 @@
+{
+  "schema_version": "2.0",
+  "script_id": "tiananmen-booking",
+  "version": "1.0.0",
+  "language": "python",
+  "entrypoint": "platform_entry.py",
+  "integration_mode": "hooks",
+  "hook_protocol_version": "2.0",
+  "default_action": "book",
+  "actions": {
+    "preview_booking": {
+      "title": "预览预约方案",
+      "handler": "preview_booking",
+      "side_effects": "read_only",
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "candidate_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "person_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "ticket_fee_minor": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "currency": {
+            "const": "CNY"
+          }
+        },
+        "required": [
+          "candidate_count",
+          "person_count",
+          "ticket_fee_minor",
+          "currency"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "book": {
+      "title": "提交本人预约",
+      "handler": "book",
+      "side_effects": "external_write",
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "booking_state": {
+            "enum": [
+              "NOT_SUBMITTED",
+              "SUBMITTED",
+              "ORDER_FOUND",
+              "NO_AVAILABILITY",
+              "UNKNOWN"
+            ]
+          },
+          "upstream_task_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "upstream_order_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "upstream_order_status": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 128
+          },
+          "ticket_fee_minor": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "currency": {
+            "const": "CNY"
+          },
+          "payment_action_required": {
+            "type": "boolean"
+          },
+          "payment_url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          }
+        },
+        "required": [
+          "booking_state",
+          "upstream_task_id",
+          "upstream_order_id",
+          "upstream_order_status",
+          "ticket_fee_minor",
+          "currency",
+          "payment_action_required",
+          "payment_url"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "booking_state": {
+                  "const": "SUBMITTED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "upstream_task_id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "booking_state": {
+                  "const": "ORDER_FOUND"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "upstream_order_id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "payment_action_required": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "booking_state": {
+                  "const": "ORDER_FOUND"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "resume_actions": [
+        "query_order"
+      ]
+    },
+    "query_order": {
+      "title": "查询已登记预约",
+      "handler": "query_order",
+      "side_effects": "read_only",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "upstream_task_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "upstream_order_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "anyOf": [
+          {
+            "required": [
+              "upstream_task_id"
+            ]
+          },
+          {
+            "required": [
+              "upstream_order_id"
+            ]
+          }
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "booking_state": {
+            "enum": [
+              "NOT_SUBMITTED",
+              "SUBMITTED",
+              "ORDER_FOUND",
+              "NO_AVAILABILITY",
+              "UNKNOWN"
+            ]
+          },
+          "upstream_task_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "upstream_order_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "upstream_order_status": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 128
+          },
+          "ticket_fee_minor": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "currency": {
+            "const": "CNY"
+          },
+          "payment_action_required": {
+            "type": "boolean"
+          },
+          "payment_url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          }
+        },
+        "required": [
+          "booking_state",
+          "upstream_task_id",
+          "upstream_order_id",
+          "upstream_order_status",
+          "ticket_fee_minor",
+          "currency",
+          "payment_action_required",
+          "payment_url"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "booking_state": {
+                  "const": "SUBMITTED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "upstream_task_id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "booking_state": {
+                  "const": "ORDER_FOUND"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "upstream_order_id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "payment_action_required": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "booking_state": {
+                  "const": "ORDER_FOUND"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "resume_actions": [
+        "query_order"
+      ]
+    }
+  },
+  "hooks": {},
+  "dependencies_lock": "requirements.lock",
+  "credential_requirements": [
+    {
+      "name": "tiananmen_session",
+      "kind": "tiananmen_session",
+      "required": true
+    }
+  ],
+  "network_requirements": {
+    "mode": "HTTP",
+    "domains": [
+      "wap.tiananmenchenglou.com"
+    ],
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  "supported_execution_modes": [
+    "docker"
+  ],
+  "input_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "dates": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "date"
+        },
+        "minItems": 1,
+        "maxItems": 14,
+        "uniqueItems": true
+      },
+      "slots": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+        },
+        "maxItems": 24,
+        "uniqueItems": true
+      },
+      "person_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "minItems": 1,
+        "maxItems": 20,
+        "uniqueItems": true
+      },
+      "contact": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "phone": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          }
+        },
+        "required": [
+          "name",
+          "phone"
+        ],
+        "additionalProperties": false
+      },
+      "age_reference": {
+        "enum": [
+          "visit",
+          "now"
+        ]
+      },
+      "ticket_overrides": {
+        "type": "object",
+        "maxProperties": 20,
+        "additionalProperties": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "age_overrides": {
+        "type": "object",
+        "maxProperties": 20,
+        "additionalProperties": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 120
+        }
+      },
+      "student_person_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "maxItems": 20,
+        "uniqueItems": true
+      },
+      "max_ticket_fee_minor": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 1000000
+      },
+      "currency": {
+        "const": "CNY"
+      }
+    },
+    "required": [
+      "dates",
+      "slots",
+      "person_ids",
+      "contact",
+      "age_reference",
+      "max_ticket_fee_minor",
+      "currency"
+    ],
+    "additionalProperties": false
+  },
+  "events": {
+    "booking_progress": {
+      "data_schema": {
+        "type": "object",
+        "properties": {
+          "stage": {
+            "enum": [
+              "preparing",
+              "polling",
+              "submitted",
+              "querying",
+              "pending"
+            ]
+          },
+          "attempt_count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "stage",
+          "attempt_count"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "extensions": []
+}

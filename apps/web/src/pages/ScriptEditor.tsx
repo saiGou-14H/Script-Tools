@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { Alert, Button, Input, Select, Tabs, Tree, App } from "antd";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Alert, Button, Input, Select, Tabs, Tree, App, Spin } from "antd";
 import {
   CheckOutlined,
   FileOutlined,
@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom";
 import { initialScriptFiles, usePublisherPreview } from "../publisher-preview";
 import Ajv2020 from "ajv/dist/2020";
 import manifestSchema from "../generated/manifest-schema.json";
+import { initialEditorFile } from "../lib/script-editor";
 
 const validateManifest = new Ajv2020({
   allErrors: true,
@@ -30,17 +31,44 @@ interface EditableManifest {
 
 export function ScriptEditorPage() {
   const { id = "demo" } = useParams();
-  const { scripts, drafts, saveDraft } = usePublisherPreview();
+  return <ScriptEditor key={id} id={id} />;
+}
+
+function ScriptEditor({ id }: { id: string }) {
+  const { scripts, drafts, saveDraft, loadDraft, loading } =
+    usePublisherPreview();
   const script = scripts.find(
     (item) => item.id === (id === "demo" ? "table" : id),
   );
   const initialFiles = script
-    ? drafts[script.id] || initialScriptFiles(script)
+    ? drafts[script.id] || (script.versionId ? {} : initialScriptFiles(script))
     : {};
   const [files, setFiles] = useState(initialFiles);
-  const [selected, setSelected] = useState(
-    Object.keys(initialFiles)[0] || "main.py",
-  );
+  const [selected, setSelected] = useState(initialEditorFile(initialFiles));
+  const [sourceRetry, setSourceRetry] = useState(0);
+  const [loadingSource, setLoadingSource] = useState(false);
+  const [saving, setSaving] = useState(false);
+  useEffect(() => {
+    if (!script) return;
+    let active = true;
+    setLoadingSource(true);
+    loadDraft(script.id)
+      .then((source) => {
+        if (!active) return;
+        setFiles(source);
+        setSelected(initialEditorFile(source));
+      })
+      .catch((failure) => {
+        if (active) setError(failure.message);
+      })
+      .finally(() => {
+        if (active) setLoadingSource(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [script?.id, script?.versionId, sourceRetry]);
+  const lineNumbers = useRef<HTMLDivElement>(null);
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState("");
   const manifest = useMemo<EditableManifest>(() => {
@@ -52,7 +80,21 @@ export function ScriptEditorPage() {
     }
   }, [files["manifest.json"]]);
   const { message, modal } = App.useApp();
+  if (loading || loadingSource) return <Spin />;
   if (!script) return <Empty description="脚本不存在或已失效" />;
+  if (script.versionId && Object.keys(files).length === 0)
+    return (
+      <Alert
+        type="error"
+        showIcon
+        message={error || "源码尚未加载"}
+        action={
+          <Button onClick={() => setSourceRetry((value) => value + 1)}>
+            重试
+          </Button>
+        }
+      />
+    );
   function validate() {
     try {
       const parsed = JSON.parse(files["manifest.json"]);
@@ -74,11 +116,18 @@ export function ScriptEditorPage() {
     }
   }
   function updateManifest(patch: Partial<EditableManifest>) {
-    setFiles((previous) => ({
-      ...previous,
-      "manifest.json": JSON.stringify({ ...manifest, ...patch }, null, 2),
-    }));
-    setValidated(false);
+    try {
+      const current = JSON.parse(files["manifest.json"] || "{}");
+      if (!current || typeof current !== "object" || Array.isArray(current))
+        throw new Error("清单必须是JSON对象，请先修正清单内容");
+      setFiles((previous) => ({
+        ...previous,
+        "manifest.json": JSON.stringify({ ...current, ...patch }, null, 2),
+      }));
+      setValidated(false);
+    } catch {
+      void message.error("清单JSON无效，请先在manifest.json中修正内容");
+    }
   }
   const actionNames =
     manifest.actions && typeof manifest.actions === "object"
@@ -100,9 +149,19 @@ export function ScriptEditorPage() {
         </h2>
         <div>
           <Button
-            onClick={() => {
-              saveDraft(script.id, files);
-              void message.success("草稿预览已保存");
+            loading={saving}
+            onClick={async () => {
+              setSaving(true);
+              try {
+                await saveDraft(script.id, files);
+                void message.success(
+                  script.versionId ? "草稿已保存" : "草稿预览已保存",
+                );
+              } catch (failure) {
+                void message.error((failure as Error).message);
+              } finally {
+                setSaving(false);
+              }
             }}
           >
             保存草稿
@@ -130,6 +189,7 @@ export function ScriptEditorPage() {
           extra={
             <Button
               size="small"
+              aria-label="新建文件"
               icon={<PlusOutlined />}
               onClick={() =>
                 modal.confirm({
@@ -140,16 +200,23 @@ export function ScriptEditorPage() {
                       placeholder="文件名，例如 utils.py"
                     />
                   ),
-                  onOk: () => {
+                  onOk: (close) => {
                     const name = (
                       document.getElementById(
                         "new-script-file",
                       ) as HTMLInputElement
                     )?.value.trim();
-                    if (!name || /[\\/]/.test(name))
-                      return Promise.reject(new Error("请输入有效的文件名"));
+                    if (!name || /[\\/]/.test(name)) {
+                      void message.error("请输入有效的文件名");
+                      return;
+                    }
+                    if (Object.hasOwn(files, name)) {
+                      void message.error("文件已存在，请使用其他文件名");
+                      return;
+                    }
                     setFiles((previous) => ({ ...previous, [name]: "" }));
                     setSelected(name);
+                    close();
                   },
                 })
               }
@@ -157,6 +224,7 @@ export function ScriptEditorPage() {
           }
         >
           <Tree
+            blockNode
             showIcon
             selectedKeys={[selected]}
             defaultExpandAll
@@ -183,9 +251,9 @@ export function ScriptEditorPage() {
             activeKey={selected}
             items={[{ key: selected, label: selected }]}
           />
-          <div className="code-editor">
-            <div className="line-numbers">
-              {files[selected].split("\n").map((_, index) => (
+          <div className="code-editor" key={selected}>
+            <div className="line-numbers" ref={lineNumbers} aria-hidden="true">
+              {(files[selected] || "").split("\n").map((_, index) => (
                 <div key={index}>{index + 1}</div>
               ))}
             </div>
@@ -199,6 +267,11 @@ export function ScriptEditorPage() {
                 }));
                 setValidated(false);
               }}
+              onScroll={(event) => {
+                if (lineNumbers.current)
+                  lineNumbers.current.scrollTop = event.currentTarget.scrollTop;
+              }}
+              wrap="off"
               spellCheck={false}
             />
           </div>
@@ -208,7 +281,7 @@ export function ScriptEditorPage() {
             <label>入口文件 ⓘ</label>
             <Select
               aria-label="入口文件"
-              value={manifest.entrypoint}
+              value={manifest.entrypoint || ""}
               options={Object.keys(files)
                 .filter((name) => /\.(py|[cm]?js)$/.test(name))
                 .map((value) => ({ value }))}
@@ -219,7 +292,7 @@ export function ScriptEditorPage() {
             <label>运行环境</label>
             <Select
               aria-label="运行环境"
-              value={manifest.language}
+              value={manifest.language || ""}
               onChange={(language) => updateManifest({ language })}
               options={[
                 { value: "python", label: "Python" },
@@ -231,7 +304,7 @@ export function ScriptEditorPage() {
             <label>动作类型</label>
             <Select
               aria-label="动作类型"
-              value={manifest.default_action}
+              value={manifest.default_action || ""}
               onChange={(default_action) => updateManifest({ default_action })}
               options={actionNames.map((value) => ({ value }))}
             />
@@ -246,7 +319,7 @@ export function ScriptEditorPage() {
               编辑
             </Button>
           </h3>
-          <pre>
+          <pre role="region" aria-label="输入Schema预览" tabIndex={0}>
             {JSON.stringify(
               action?.input_schema ?? manifest.input_schema ?? {},
               null,
@@ -263,7 +336,9 @@ export function ScriptEditorPage() {
               编辑
             </Button>
           </h3>
-          <pre>{JSON.stringify(action?.output_schema ?? {}, null, 2)}</pre>
+          <pre role="region" aria-label="输出Schema预览" tabIndex={0}>
+            {JSON.stringify(action?.output_schema ?? {}, null, 2)}
+          </pre>
           <h3>网络权限 ⓘ</h3>
           <div className="network-scope">
             <SafetyOutlined />{" "}
@@ -276,12 +351,16 @@ export function ScriptEditorPage() {
       {error && (
         <Alert type="error" title="清单校验失败" description={error} showIcon />
       )}
-      {validated && (
+      {!error && (
         <Alert
           className="editor-validation"
-          type="success"
-          title="清单校验成功"
-          description="已通过manifest 2.0结构校验，入口与依赖锁文件存在。代码构建和测试继续由后端验证。"
+          type={validated ? "success" : "info"}
+          title={validated ? "清单校验成功" : "草稿待校验"}
+          description={
+            validated
+              ? "已通过manifest 2.0结构校验，入口与依赖锁文件存在。代码构建和测试继续由后端验证。"
+              : "保存编辑内容后可校验清单结构、入口与依赖锁文件。"
+          }
           showIcon
         />
       )}

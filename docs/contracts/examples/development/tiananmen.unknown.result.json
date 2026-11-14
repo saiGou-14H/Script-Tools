@@ -1,0 +1,27 @@
+{
+  "protocol_version": "2.0",
+  "run_id": "run_synthetic_booking",
+  "attempt_id": "attempt_synthetic_booking",
+  "invocation_id": "inv_synthetic_booking",
+  "action": "book",
+  "outcome": "ACTION_REQUIRED",
+  "summary": "提交效果未知，需要核对外部预约记录",
+  "data": {
+    "booking_state": "UNKNOWN",
+    "upstream_task_id": null,
+    "upstream_order_id": null,
+    "upstream_order_status": null,
+    "ticket_fee_minor": null,
+    "currency": "CNY",
+    "payment_action_required": false,
+    "payment_url": null
+  },
+  "action_required": {
+    "reason": "MANUAL_RESOLUTION",
+    "instructions": "通过官方记录核对本次预约，保留重复提交阻塞",
+    "expires_at": "2026-11-17T01:15:00Z",
+    "resume_action": null
+  },
+  "error": null,
+  "outputs": []
+}

@@ -1,0 +1,28 @@
+{
+  "protocol_version": "2.0",
+  "run_id": "run_synthetic_booking",
+  "attempt_id": "attempt_synthetic_query",
+  "invocation_id": "inv_synthetic_query",
+  "script_version_id": "sv_synthetic_booking",
+  "action": "query_order",
+  "context": {},
+  "input": {
+    "upstream_task_id": "synthetic-task-1"
+  },
+  "runtime": {
+    "requested_execution_mode": "docker",
+    "actual_execution_mode": "docker",
+    "deadline": "2026-11-17T01:03:00Z",
+    "output_deadline": "2026-11-17T01:03:30Z",
+    "run_mode": "finite",
+    "lease_expires_at": "2026-11-17T01:00:30Z",
+    "output_series_id": "series_synthetic_booking"
+  },
+  "credential_bindings": [
+    {
+      "requirement": "tiananmen_session",
+      "credential_version_id": "cv_synthetic_session"
+    }
+  ],
+  "output_path": "/work/results/inv_synthetic_query.json"
+}

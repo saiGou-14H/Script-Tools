@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-14T23:10:02.542Z",
+  "checks": [
+    "Editor entry selection honors an existing declared entrypoint and safely retains malformed or missing manifests",
+    "Script panels and the validated status fit the reference viewport while complete publisher schemas remain keyboard-scrollable",
+    "New file creation preserves duplicate names and source content, and line numbers follow long-source scrolling and reset per file",
+    "Configuration edits preserve malformed JSON and unrelated manifest fields, and script route changes reset file and validation state",
+    "Version tabs retain URL state, copies contain a full digest, RJSF and scheduling validate inputs, and different versions retain their own evidence and form state",
+    "Product fields retain contract length limits and publisher-defined parameters, with counters contained inside their textareas",
+    "Editor, version and product pages keep their forms, source panels and workspace controls within 390px",
+    "Live editor and version routes expose unavailable metadata without substituting prototype source, build or test results"
+  ],
+  "screenshots": [
+    "PUBLISHER-S03",
+    "PUBLISHER-S04",
+    "PUBLISHER-S08",
+    "PUBLISHER-S03-mobile",
+    "PUBLISHER-S04-mobile",
+    "PUBLISHER-S08-mobile",
+    "PUBLISHER-S03-live-mobile",
+    "PUBLISHER-S04-live-mobile",
+    "PUBLISHER-S08-live-mobile"
+  ],
+  "layouts": {
+    "S03": {
+      "height": 525,
+      "bottom": 837.8125,
+      "viewport": 867
+    },
+    "S04": {
+      "bottom": 840.546875,
+      "viewport": 867
+    },
+    "S03-mobile": {
+      "width": 390,
+      "main_width": 390,
+      "main_scroll": 390,
+      "region_width": 366,
+      "region_scroll": 366,
+      "brand_right": 155.953125,
+      "workspace_left": 236,
+      "workspace_right": 338
+    },
+    "S04-mobile": {
+      "width": 390,
+      "main_width": 390,
+      "main_scroll": 390,
+      "region_width": 366,
+      "region_scroll": 366,
+      "brand_right": 155.953125,
+      "workspace_left": 236,
+      "workspace_right": 338
+    },
+    "S08-mobile": {
+      "width": 390,
+      "main_width": 390,
+      "main_scroll": 390,
+      "region_width": 366,
+      "region_scroll": 366,
+      "brand_right": 155.953125,
+      "workspace_left": 236,
+      "workspace_right": 338
+    }
+  },
+  "errors": [],
+  "visual_acceptance": "pending",
+  "data_source": "isolated development seed",
+  "result": "PASS"
+}

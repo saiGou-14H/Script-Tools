@@ -1,4 +1,4 @@
-"""Check the eight-document layout, links, contracts and migration; no network."""
+"""Check the nine-document layout, links, contracts and migration; no network."""
 import hashlib
 import json
 import re
@@ -20,10 +20,13 @@ delivery_targets = {
 }
 delivery_targets.add((root.parent/'output/verification/public-travel-pages/asset-provenance.json').resolve())
 delivery_targets.update((root.parent/'output/verification/role-layouts'/name).resolve() for name in ('index.html','report.json'))
+delivery_targets.update((root.parent/'output/verification'/name).resolve() for name in ('publisher-editor-pages/report.json','script-upload/report.json'))
+delivery_targets.add((root.parent/'output/verification/schema-input-pages/report.json').resolve())
 expected_files = {
     'README.md', '01-产品需求与功能设计.md', '02-系统架构与详细设计.md',
-    '03-接口协议与脚本开发规范.md', '04-部署运维与监控手册.md',
+    '03-接口协议.md', '04-部署运维与监控手册.md',
     '05-测试验收与验证记录.md', '06-详细开发设计.md', '07-完整系统数据库设计.md',
+    '08-脚本开发规范.md',
 }
 expected_counts = {'REQ':61,'AC':52,'AL':29,'OBS':22,'E2E':26,'INV':16,'FLOW':13,'TX':10,'OUT':8,'LONG':6,'ADP':10}
 owner = {'REQ':'01-', 'INV':'02-', 'FLOW':'02-', 'TX':'02-', 'AL':'04-'}
@@ -110,16 +113,20 @@ for path in json_files:
     try: json.loads(path.read_text(encoding='utf-8'))
     except ValueError as exc: issues.append(f'{path.name}: invalid JSON: {exc}')
 
-protocol = texts.get('03-接口协议与脚本开发规范.md','')
+protocol = texts.get('08-脚本开发规范.md','')
 blocks = [json.loads(b) for b in re.findall(r'```json\s*\n(.*?)\n```',protocol,re.S)]
 for suffix, predicate in (
-    ('manifest',lambda d:'schema_version' in d and 'actions' in d),
-    ('invocation',lambda d:'input' in d and 'invocation_id' in d),
-    ('result',lambda d:'outcome' in d),
+    ('manifest',lambda d:d.get('script_id') == 'http-report-demo'),
+    ('invocation',lambda d:'input' in d and d.get('invocation_id') == 'inv_demo_001'),
+    ('result',lambda d:'outcome' in d and d.get('invocation_id') == 'inv_demo_001'),
 ):
     inline = [d for d in blocks if predicate(d)]
     sample = json.loads((root/'contracts/examples'/f'report.{suffix}.json').read_text(encoding='utf-8'))
     if inline != [sample]:issues.append(f'protocol and report.{suffix}.json differ')
+
+for target in re.findall(r'\]\(([^)]+)\)', protocol):
+    if not target.startswith('#') and not re.match(r'https?://', target):
+        issues.append(f'developer handout depends on another file: {target}')
 
 ledger_path = root/'checks/document-migration.json'
 ledger = json.loads(ledger_path.read_text(encoding='utf-8'))

@@ -408,7 +408,7 @@ function ProductEditor({ id }: { id: string }) {
               <Input.TextArea rows={3} maxLength={10000} showCount />
             </Form.Item>
             <Form.Item label="输入参数预览" required>
-              <div className="product-input-preview">
+              <div className="product-input-preview" role="region" aria-label="发布参数预览" tabIndex={0}>
                 {fields.map((field) => (
                   <div key={field.name}>
                     <b>{field.title}</b>

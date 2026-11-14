@@ -1,10 +1,24 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import type { RJSFSchema } from "@rjsf/utils";
-import { captureProductRelease, type ProductReleasePreview } from "./lib/publisher-product-preview";
+import {
+  captureProductRelease,
+  type ProductReleasePreview,
+} from "./lib/publisher-product-preview";
 import { useWorkspace } from "./context";
+import { api } from "./api";
 
 export interface PublisherScript {
   id: string;
+  versionId?: string;
+  revision?: string;
+  sourceDigest?: string;
   title: string;
   purpose: string;
   version: string;
@@ -12,7 +26,7 @@ export interface PublisherScript {
   contentStatus: "READY" | "SEALED" | "DRAFT";
   buildStatus: "SUCCEEDED" | "FAILED" | "NOT_BUILT";
   deployed: boolean;
-  inputSchema: RJSFSchema;
+  inputSchema: RJSFSchema | boolean;
 }
 
 export interface PublisherProduct {
@@ -231,14 +245,45 @@ export function initialScriptFiles(
   };
 }
 
+interface SavedScript {
+  id: string;
+  name: string;
+  description: string;
+  version_id: string;
+  version: string;
+  revision: string;
+  content_status: PublisherScript["contentStatus"];
+  source_digest: string;
+  input_schema: RJSFSchema | boolean;
+}
+
+function fromSavedScript(saved: SavedScript): PublisherScript {
+  return {
+    id: saved.id,
+    versionId: saved.version_id,
+    revision: saved.revision,
+    sourceDigest: saved.source_digest,
+    title: saved.name,
+    purpose: saved.description || "自定义脚本",
+    version: saved.version,
+    contentStatus: saved.content_status,
+    buildStatus: "NOT_BUILT",
+    deployed: false,
+    inputSchema: saved.input_schema,
+  };
+}
+
 interface PublisherPreviewValue {
   scripts: PublisherScript[];
   drafts: Record<string, Record<string, string>>;
   createScript: (
     title: string,
     files?: Record<string, string>,
-  ) => PublisherScript;
-  saveDraft: (id: string, files: Record<string, string>) => void;
+  ) => Promise<PublisherScript>;
+  saveDraft: (id: string, files: Record<string, string>) => Promise<void>;
+  loadDraft: (id: string) => Promise<Record<string, string>>;
+  loading: boolean;
+  loadError: string;
   products: PublisherProduct[];
   saveProduct: (product: PublisherProduct, publishPreview?: boolean) => void;
   productDrafts: Record<string, PublisherProduct>;
@@ -292,6 +337,99 @@ export function PublisherPreviewProvider({
     payoutMask: bootstrap.data_mode === "prototype" ? "********1234" : "",
     payoutVerified: bootstrap.data_mode === "prototype",
   });
+  const pendingKeys = useRef(new Map<string, string>());
+  function commandKey(scope: string, body: unknown) {
+    const identity = scope + JSON.stringify(body);
+    if (!pendingKeys.current.has(identity))
+      pendingKeys.current.set(identity, crypto.randomUUID());
+    return { identity, key: pendingKeys.current.get(identity)! };
+  }
+  const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState("");
+  const ownerId = bootstrap.user?.id;
+  const isPublisher = bootstrap.user?.roles.includes("PUBLISHER");
+  useEffect(() => {
+    let active = true;
+    pendingKeys.current.clear();
+    setDrafts({});
+    setRecords(bootstrap.data_mode === "prototype" ? scripts : []);
+    setLoadError("");
+    if (!ownerId || !isPublisher) return;
+    setLoading(true);
+    api<SavedScript[]>("/me/scripts")
+      .then((saved) => {
+        if (active)
+          setRecords((previous) => {
+            const ids = new Set(saved.map((item) => item.id));
+            const loaded = saved.map((item) => {
+              const existing = previous.find((record) => record.id === item.id);
+              return existing?.revision &&
+                BigInt(existing.revision) > BigInt(item.revision)
+                ? existing
+                : fromSavedScript(item);
+            });
+            return [...loaded, ...previous.filter((item) => !ids.has(item.id))];
+          });
+      })
+      .catch((error) => {
+        if (active) setLoadError(error.message);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [ownerId, isPublisher, bootstrap.data_mode]);
+
+  async function loadDraft(id: string) {
+    if (drafts[id]) return drafts[id];
+    const script = records.find((item) => item.id === id);
+    if (!script) throw new Error("脚本不存在");
+    if (!script.versionId) return initialScriptFiles(script);
+    const source = await api<{
+      files: Record<string, string>;
+      revision: string;
+    }>(`/script-versions/${script.versionId}/source`);
+    setDrafts((previous) => ({ ...previous, [id]: source.files }));
+    setRecords((previous) =>
+      previous.map((item) =>
+        item.id === id ? { ...item, revision: source.revision } : item,
+      ),
+    );
+    return source.files;
+  }
+
+  async function saveDraft(id: string, files: Record<string, string>) {
+    const script = records.find((item) => item.id === id);
+    if (!script) throw new Error("脚本不存在");
+    if (script.versionId) {
+      const body = { files };
+      const pending = commandKey(
+        `save.${script.versionId}.${script.revision}.`,
+        body,
+      );
+      const saved = await api<SavedScript>(
+        `/script-versions/${script.versionId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Idempotency-Key": pending.key,
+            "If-Match": `"${script.revision}"`,
+          },
+          body: JSON.stringify(body),
+        },
+      );
+      pendingKeys.current.delete(pending.identity);
+      setRecords((previous) =>
+        previous.map((item) =>
+          item.id === id ? fromSavedScript(saved) : item,
+        ),
+      );
+    } else requirePreview();
+    setDrafts((previous) => ({ ...previous, [id]: { ...files } }));
+  }
+
   function requirePreview() {
     if (bootstrap.data_mode !== "prototype")
       throw new Error("对应业务接口尚未接入");
@@ -310,9 +448,17 @@ export function PublisherPreviewProvider({
         ? candidates.find((item) => item.id === selected.pricePlanId)
         : candidates[0];
       if (!plan) throw new Error("绑定的价格方案不存在");
-      if (script.contentStatus !== "READY" || !product.deploymentReady || !profile.payoutVerified)
+      if (
+        script.contentStatus !== "READY" ||
+        !product.deploymentReady ||
+        !profile.payoutVerified
+      )
         throw new Error("请先完成发布检查清单");
-      if (selected && (selected.scriptId !== script.id || selected.scriptVersion !== script.version))
+      if (
+        selected &&
+        (selected.scriptId !== script.id ||
+          selected.scriptVersion !== script.version)
+      )
         throw new Error("绑定版本已变化，请重新核对");
       if (product.refundRule !== plan.refundRule)
         throw new Error("退款选项须与固定价格方案一致");
@@ -331,7 +477,10 @@ export function PublisherPreviewProvider({
       if (!existing)
         return [
           ...previous,
-          { ...structuredClone(updated), status: publishPreview ? "ACTIVE" : "DRAFT" },
+          {
+            ...structuredClone(updated),
+            status: publishPreview ? "ACTIVE" : "DRAFT",
+          },
         ];
       return publishPreview || existing.status === "DRAFT"
         ? previous.map((item) =>
@@ -366,62 +515,66 @@ export function PublisherPreviewProvider({
           ],
     );
   }
-  function createScript(title: string, files?: Record<string, string>) {
-    if (bootstrap.data_mode !== "prototype")
-      throw new Error("脚本上传接口尚未接入");
-    const script: PublisherScript = {
-      id: `preview-${crypto.randomUUID()}`,
+  async function createScript(title: string, files?: Record<string, string>) {
+    const draft: PublisherScript = {
+      id: `script-${crypto.randomUUID()}`,
       title,
       purpose: "自定义脚本",
-      version: "v0.1",
+      version: "0.1.0",
       contentStatus: "DRAFT",
       buildStatus: "NOT_BUILT",
       deployed: false,
       inputSchema: { type: "object" },
     };
-    setRecords((previous) => [...previous, script]);
-    if (files) {
-      const entrypoint = Object.keys(files)[0];
-      const initial = initialScriptFiles(script);
-      delete initial["main.py"];
-      const manifest = JSON.parse(initial["manifest.json"]);
-      manifest.entrypoint = entrypoint;
-      const isNode = /\.[cm]?js$/i.test(entrypoint);
-      manifest.language = isNode ? "nodejs" : "python";
-      if (isNode) {
-        delete initial["requirements.txt"];
-        const nodePackage = {
-          name: script.id,
-          version: "0.1.0",
-          private: true,
-          type: /\.mjs$/i.test(entrypoint) ? "module" : "commonjs",
-        };
-        initial["package.json"] = JSON.stringify(nodePackage, null, 2);
-        initial["package-lock.json"] = JSON.stringify(
-          {
-            name: nodePackage.name,
-            version: nodePackage.version,
-            lockfileVersion: 3,
-            requires: true,
-            packages: {
-              "": { name: nodePackage.name, version: nodePackage.version },
+    let source = files;
+    if (!source || !Object.hasOwn(source, "manifest.json")) {
+      const initial = initialScriptFiles(draft);
+      if (source) {
+        const entrypoint = Object.keys(source)[0];
+        const manifest = JSON.parse(initial["manifest.json"]);
+        delete initial["main.py"];
+        manifest.entrypoint = entrypoint;
+        if (/\.[cm]?js$/i.test(entrypoint)) {
+          manifest.language = "nodejs";
+          manifest.dependencies_lock = "package-lock.json";
+          delete initial["requirements.txt"];
+          const nodePackage = {
+            name: draft.id,
+            version: "0.1.0",
+            private: true,
+            type: /\.mjs$/i.test(entrypoint) ? "module" : "commonjs",
+          };
+          initial["package.json"] = JSON.stringify(nodePackage, null, 2);
+          initial["package-lock.json"] = JSON.stringify(
+            {
+              name: draft.id,
+              version: "0.1.0",
+              lockfileVersion: 3,
+              requires: true,
+              packages: { "": { name: draft.id, version: "0.1.0" } },
             },
-          },
-          null,
-          2,
-        );
-        manifest.dependencies_lock = "package-lock.json";
+            null,
+            2,
+          );
+        }
+        initial["manifest.json"] = JSON.stringify(manifest, null, 2);
       }
-      setDrafts((previous) => ({
-        ...previous,
-        [script.id]: {
-          ...files,
-          ...initial,
-          "manifest.json":
-            files["manifest.json"] || JSON.stringify(manifest, null, 2),
-        },
-      }));
+      source = { ...initial, ...source };
     }
+    const body = { name: title, description: draft.purpose, files: source };
+    const pending = commandKey("create.", body);
+    const saved = await api<SavedScript>("/scripts", {
+      method: "POST",
+      headers: { "Idempotency-Key": pending.key },
+      body: JSON.stringify(body),
+    });
+    pendingKeys.current.delete(pending.identity);
+    const script = fromSavedScript(saved);
+    setRecords((previous) => [
+      script,
+      ...previous.filter((item) => item.id !== script.id),
+    ]);
+    setDrafts((previous) => ({ ...previous, [script.id]: source }));
     return script;
   }
   return (
@@ -430,8 +583,10 @@ export function PublisherPreviewProvider({
         scripts: records,
         drafts,
         createScript,
-        saveDraft: (id, files) =>
-          setDrafts((previous) => ({ ...previous, [id]: { ...files } })),
+        saveDraft,
+        loadDraft,
+        loading,
+        loadError,
         products: productRecords,
         saveProduct,
         productDrafts,

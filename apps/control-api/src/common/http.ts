@@ -51,8 +51,15 @@ export class HttpErrorFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const request = host.switchToHttp().getRequest<AppRequest>();
     const response = host.switchToHttp().getResponse<Response>();
+    const parserType = (exception as { type?: string } | null)?.type;
     const status =
-      exception instanceof HttpException ? exception.getStatus() : 500;
+      exception instanceof HttpException
+        ? exception.getStatus()
+        : parserType === "entity.too.large"
+          ? 413
+          : parserType === "entity.parse.failed"
+            ? 400
+            : 500;
     const detail =
       exception instanceof HttpException ? exception.getResponse() : {};
     const body =
@@ -67,9 +74,24 @@ export class HttpErrorFilter implements ExceptionFilter {
     if (status === 500) console.error(exception);
     response.status(status).json({
       error: {
-        code: body.code || (status === 404 ? "NOT_FOUND" : "INTERNAL_ERROR"),
+        code:
+          body.code ||
+          (status === 413
+            ? "REQUEST_TOO_LARGE"
+            : status === 400
+              ? "INVALID_REQUEST"
+              : status === 404
+                ? "NOT_FOUND"
+                : "INTERNAL_ERROR"),
         message:
-          body.message || (status === 500 ? "服务暂时不可用" : String(detail)),
+          body.message ||
+          (status === 413
+            ? "请求正文超过允许大小"
+            : status === 400
+              ? "请求JSON格式无效"
+              : status === 500
+                ? "服务暂时不可用"
+                : String(detail)),
         field_errors: body.field_errors || [],
         retry_after_seconds: body.retry_after_seconds,
       },

@@ -27,7 +27,7 @@ export interface Service {
   output_schema?: import("@rjsf/utils").RJSFSchema | boolean;
   availability?: { can_purchase: boolean; reason: string | null };
   price_plan_id: string;
-  input_schema: import("@rjsf/utils").RJSFSchema;
+  input_schema: import("@rjsf/utils").RJSFSchema | boolean;
   input_schema_digest: string;
   input_ui_schema?: import("@rjsf/utils").UiSchema;
   delivery_policy: {

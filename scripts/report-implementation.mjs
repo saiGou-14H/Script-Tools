@@ -66,6 +66,9 @@ const browserReports = [
   "output/verification/help-pages/report.json",
   "output/verification/public-travel-pages/report.json",
   "output/verification/role-layouts/report.json",
+  "output/verification/publisher-editor-pages/report.json",
+  "output/verification/script-upload/report.json",
+  "output/verification/schema-input-pages/report.json",
 ];
 const screenshots = new Set();
 const browserResults = [];
@@ -136,8 +139,9 @@ const report = {
   implementation_notes: [
     "All catalog page definitions have initial components. Individual fidelity acceptance and complete interaction coverage remain in progress.",
     "Prototype financial, task and output records are local visual fixtures. Live payments, execution, notifications and artifact storage are pending.",
-    "Service catalog and session authentication use the local database. RJSF validation is verified for the example schema only.",
+    "Service catalog and session authentication use the local database. Publisher self-use, checkout and purchased-service configuration share Schema validation. Draft 2020-12, explicit draft-07, boolean schemas, JSON values and form/JSON mode changes have synthetic regression coverage. Live service execution remains pending.",
     "All 75 role-page deliverables still require individual fidelity acceptance.",
+    "The current worktree's publisher source upload and split development documentation are integrated. Synthetic source packages pass owner-scoped API encryption, idempotency, revision and rollback checks and production-built upload, edit, save, reload and live version metadata entry points. Editor schemas retain complete publisher definitions in bounded scroll regions, duplicate files preserve content, and manifest edits preserve unrelated fields. Version form state follows the selected script and URL tabs. Real runners, builds and self-use scheduling remain pending.",
     "All 75 role routes are captured from a production-built UI and isolated development seed at each reference image's dimensions. The comparison viewer provides side-by-side images and opacity overlays. Publisher and administrator dashboards include reference metric changes, coherent chart end values, capacity progress, URL-restored filters and scoped mobile layout checks. Live business dashboards retain empty integration states. Individual final visual acceptance remains pending.",
     "The public home and authentication page have been realigned with their reference regions. The user confirmed email/password authentication from the detailed design on 2026-11-14.",
     "Registration, email verification and password reset are integrated with PostgreSQL in development preview mode. Verification delivery currently uses explicit development tokens.",

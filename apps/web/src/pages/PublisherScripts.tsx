@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import {
   App,
+  Alert,
   Button,
   Checkbox,
   DatePicker,
@@ -13,6 +14,8 @@ import {
   Table,
   Tabs,
   Upload,
+  Typography,
+  Spin,
 } from "antd";
 import {
   CheckCircleFilled,
@@ -20,9 +23,7 @@ import {
   InfoCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import SchemaForm from "@rjsf/antd";
-import CoreForm from "@rjsf/core";
-import validator from "@rjsf/validator-ajv8";
+import { SchemaInput, type SchemaInputHandle } from "../components/SchemaInput";
 import dayjs from "dayjs";
 import {
   Link,
@@ -32,9 +33,10 @@ import {
 } from "react-router-dom";
 import { usePublisherPreview } from "../publisher-preview";
 import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
+import { useWorkspace } from "../context";
 
 export function ScriptsPage() {
-  const { scripts, createScript } = usePublisherPreview();
+  const { scripts, createScript, loading, loadError } = usePublisherPreview();
   const [creating, setCreating] = useState(false);
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -47,14 +49,25 @@ export function ScriptsPage() {
           accept=".py,.js,.mjs,.cjs,.json"
           showUploadList={false}
           beforeUpload={async (file) => {
-            if (file.size > 10 * 1024 * 1024) {
-              void message.error("单文件预览上限为10MB");
+            if (file.size > 2 * 1024 * 1024) {
+              void message.error("上传文件上限为2MiB，包内源码合计上限为1MiB");
               return false;
             }
             try {
-              const script = createScript(file.name.replace(/\.[^.]+$/, ""), {
-                [file.name]: await file.text(),
-              });
+              const text = await file.text();
+              let title = file.name.replace(/\.[^.]+$/, "");
+              let files = { [file.name]: text };
+              if (file.name.endsWith(".script.json")) {
+                const bundle = JSON.parse(text);
+                if (
+                  bundle.format !== "script-tools/source-package@1" ||
+                  !bundle.files
+                )
+                  throw new Error("脚本包格式无效");
+                title = bundle.name;
+                files = bundle.files;
+              }
+              const script = await createScript(title, files);
               navigate(`/publisher/scripts/${script.id}/edit`);
             } catch (error) {
               void message.error((error as Error).message);
@@ -78,8 +91,10 @@ export function ScriptsPage() {
           新建脚本
         </Button>
       </div>
+      {loadError && <Alert type="error" showIcon message={loadError} />}
       <Panel className="publisher-scripts-list">
         <Table
+          loading={loading}
           rowKey="id"
           dataSource={scripts}
           pagination={false}
@@ -168,11 +183,15 @@ export function ScriptsPage() {
         <Form
           form={form}
           layout="vertical"
-          onFinish={(values) => {
-            const script = createScript(values.title.trim());
-            form.resetFields();
-            setCreating(false);
-            navigate(`/publisher/scripts/${script.id}/edit`);
+          onFinish={async (values) => {
+            try {
+              const script = await createScript(values.title.trim());
+              form.resetFields();
+              setCreating(false);
+              navigate(`/publisher/scripts/${script.id}/edit`);
+            } catch (error) {
+              void message.error((error as Error).message);
+            }
           }}
         >
           <Form.Item
@@ -182,22 +201,37 @@ export function ScriptsPage() {
           >
             <Input placeholder="输入自定义用途的脚本名称" />
           </Form.Item>
-          <Notice>前端预览保存草稿，构建与发布需连接对应后端服务。</Notice>
+          <Notice>草稿源码加密保存，构建与发布按各自状态推进。</Notice>
         </Form>
       </Modal>
     </div>
   );
 }
 
+const tableVersionPreview = {
+  version: "v1.2",
+  sourceDigest:
+    "a9f4c2e7b1d8f4a67e3d5f0a1c9b7e426d2f3a8c1e9b4a70384ea5c26d7b1f90",
+  inputRows: 1200,
+  resultRows: 86,
+};
+const versionTabs = ["version", "test", "self", "impact"];
+
 export function VersionTestsPage() {
   const { id = "demo" } = useParams();
-  const [params] = useSearchParams();
-  const { scripts } = usePublisherPreview();
+  return <VersionTests key={id} id={id} />;
+}
+
+function VersionTests({ id }: { id: string }) {
+  const { bootstrap } = useWorkspace();
+  const [params, setParams] = useSearchParams();
+  const { scripts, loading } = usePublisherPreview();
   const script = scripts.find(
     (item) => item.id === (id === "demo" ? "table" : id),
   );
-  const [tab, setTab] = useState(params.get("tab") || "self");
-  const [input, setInput] = useState<Record<string, unknown>>(
+  const requestedTab = params.get("tab") || "self";
+  const tab = versionTabs.includes(requestedTab) ? requestedTab : "self";
+  const [input, setInput] = useState<unknown>(
     id === "demo" || id === "table"
       ? { source_file: "sample.csv", deduplicate_by: "邮箱" }
       : {},
@@ -207,12 +241,26 @@ export function VersionTestsPage() {
   const [cron, setCron] = useState("0 9 * * *");
   const [authorized, setAuthorized] = useState(true);
   const [preview, setPreview] = useState(false);
-  const form = useRef<CoreForm>(null);
+  const form = useRef<SchemaInputHandle>(null);
   const { message, modal } = App.useApp();
+  if (loading) return <Spin />;
   if (!script) return <Empty description="脚本版本不存在或已失效" />;
   const ready = script.buildStatus === "SUCCEEDED";
+  const inputSchema = script.inputSchema;
+  const recordedVersion =
+    bootstrap.data_mode === "prototype" &&
+    script.id === "table" &&
+    script.version === tableVersionPreview.version
+      ? tableVersionPreview
+      : undefined;
+  const sourceDigest = script.sourceDigest;
+  const digest =
+    typeof sourceDigest === "string" && /^[a-f0-9]{64}$/i.test(sourceDigest)
+      ? sourceDigest
+      : recordedVersion?.sourceDigest;
   function validateConfiguration() {
     if (!form.current?.validateForm()) return false;
+    setInput(form.current.getValue());
     if (schedule === "once" && (!onceAt || onceAt.valueOf() <= Date.now())) {
       void message.error("请选择未来的执行时间");
       return false;
@@ -225,7 +273,14 @@ export function VersionTestsPage() {
   }
   return (
     <div className="version-tests-page">
-      <PageHeading title="版本与测试" />
+      <PageHeading
+        title="版本与测试"
+        extra={
+          <Status tone="gray">
+            {bootstrap.data_mode === "prototype" ? "本地示例" : "版本元数据"}
+          </Status>
+        }
+      />
       <div className="version-banner">
         <TileIcon name="code" />
         <div>
@@ -243,14 +298,31 @@ export function VersionTestsPage() {
             </Status>
           </h2>
           <p>
-            摘要（sha256）　a9f4c2e7b1d8****e3d5f0a1c9b7e****6d2f3a8c1e9b4****
+            摘要（sha256）　
+            {digest ? (
+              <Typography.Text
+                copyable={{
+                  text: digest,
+                  tooltips: ["复制完整摘要", "已复制"],
+                }}
+              >
+                {digest.slice(0, 12)}****{digest.slice(16, 28)}****
+                {digest.slice(32, 45)}****
+              </Typography.Text>
+            ) : (
+              "摘要待载入"
+            )}
           </p>
         </div>
       </div>
       <Tabs
         className="version-tabs"
         activeKey={tab}
-        onChange={setTab}
+        onChange={(value) => {
+          const next = new URLSearchParams(params);
+          next.set("tab", value);
+          setParams(next);
+        }}
         items={[
           { key: "version", label: "版本" },
           { key: "test", label: "测试" },
@@ -261,7 +333,7 @@ export function VersionTestsPage() {
       {tab === "self" ? (
         <div className="version-self-columns">
           <Panel title="本人自用配置">
-            <Form.Item label="本人版本">
+            <Form.Item label="本人版本" colon={false}>
               <Select
                 value={script.version}
                 options={[
@@ -273,13 +345,12 @@ export function VersionTestsPage() {
                 disabled
               />
             </Form.Item>
-            <SchemaForm
+            <SchemaInput
               ref={form}
-              schema={script.inputSchema}
+              schema={inputSchema}
               formData={input}
-              validator={validator}
               uiSchema={{ "ui:submitButtonOptions": { norender: true } }}
-              onChange={(event) => setInput(event.formData || {})}
+              onChange={setInput}
               showErrorList={false}
               formContext={{
                 labelCol: { flex: "125px" },
@@ -325,6 +396,7 @@ export function VersionTestsPage() {
             </div>
             <div className="self-configuration-actions">
               <Button
+                disabled={inputSchema === false}
                 onClick={() => {
                   if (validateConfiguration()) setPreview(true);
                 }}
@@ -333,7 +405,7 @@ export function VersionTestsPage() {
               </Button>
               <Button
                 type="primary"
-                disabled={!authorized || !ready}
+                disabled={!authorized || !ready || inputSchema === false}
                 onClick={() => {
                   if (validateConfiguration())
                     void message.info("自用调度接口尚未接通，未创建Run");
@@ -347,17 +419,26 @@ export function VersionTestsPage() {
             </div>
           </Panel>
           <aside>
-            <Panel title={ready ? "最近测试通过" : "最近测试状态"}>
-              {ready ? (
+            <Panel
+              title={ready && recordedVersion ? "最近测试通过" : "最近测试状态"}
+            >
+              {ready && recordedVersion ? (
                 <div className="version-test-success">
                   <CheckCircleFilled />
                   <div>
                     <h2>测试通过</h2>
-                    <p>输入数据　1200行　|　去重结果　86条</p>
+                    <p>
+                      输入数据　{recordedVersion.inputRows}行　|　去重结果　
+                      {recordedVersion.resultRows}条
+                    </p>
                   </div>
                 </div>
               ) : (
-                <Notice>当前构建尚未就绪，完成构建后才能运行测试。</Notice>
+                <Notice>
+                  {ready
+                    ? "当前版本尚无已通过的测试记录。"
+                    : "当前构建尚未就绪，完成构建后才能运行测试。"}
+                </Notice>
               )}
               <Button
                 type="primary"
@@ -378,7 +459,9 @@ export function VersionTestsPage() {
               }
             >
               <Notice>
-                当前有1个自用任务，使用本人授权的版本运行，数据仅本人可见。
+                {recordedVersion
+                  ? "当前有1个自用任务示例，使用本人授权的版本运行，数据仅本人可见。"
+                  : "当前版本自用任务元数据待接入。"}
               </Notice>
               <div className="version-management-actions">
                 <Link to={`/publisher/deployments?script=${script.id}`}>
@@ -389,6 +472,7 @@ export function VersionTestsPage() {
                 </Link>
                 <Button
                   danger
+                  disabled={!recordedVersion}
                   onClick={() =>
                     modal.confirm({
                       title: "停用版本影响预览",
@@ -399,7 +483,9 @@ export function VersionTestsPage() {
                     })
                   }
                 >
-                  停用（影响2个未使用权益）
+                  {recordedVersion
+                    ? "停用（影响2个未使用权益）"
+                    : "停用（影响待查询）"}
                 </Button>
               </div>
             </Panel>

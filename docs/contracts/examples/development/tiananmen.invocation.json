@@ -1,0 +1,44 @@
+{
+  "protocol_version": "2.0",
+  "run_id": "run_synthetic_booking",
+  "attempt_id": "attempt_synthetic_booking",
+  "invocation_id": "inv_synthetic_booking",
+  "script_version_id": "sv_synthetic_booking",
+  "action": "book",
+  "context": {},
+  "input": {
+    "dates": [
+      "2026-11-17"
+    ],
+    "slots": [
+      "08:30",
+      "10:30"
+    ],
+    "person_ids": [
+      "synthetic-person-1"
+    ],
+    "contact": {
+      "name": "合成联系人",
+      "phone": "synthetic-phone"
+    },
+    "age_reference": "visit",
+    "max_ticket_fee_minor": 0,
+    "currency": "CNY"
+  },
+  "runtime": {
+    "requested_execution_mode": "docker",
+    "actual_execution_mode": "docker",
+    "deadline": "2026-11-17T01:03:00Z",
+    "output_deadline": "2026-11-17T01:03:30Z",
+    "run_mode": "finite",
+    "lease_expires_at": "2026-11-17T01:00:30Z",
+    "output_series_id": "series_synthetic_booking"
+  },
+  "credential_bindings": [
+    {
+      "requirement": "tiananmen_session",
+      "credential_version_id": "cv_synthetic_session"
+    }
+  ],
+  "output_path": "/work/results/inv_synthetic_booking.json"
+}

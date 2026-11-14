@@ -1,3 +1,4 @@
+import type { RJSFSchema } from "@rjsf/utils";
 import { useEffect, useRef, useState } from "react";
 import {
   Alert,
@@ -26,9 +27,8 @@ import { useWorkspace } from "../context";
 import { PageHeading, Panel, Status, TileIcon } from "../components/ui";
 import { useServices, currency } from "./Market";
 import { PurchaseSteps } from "./Orders";
-import SchemaForm from "@rjsf/antd";
-import CoreForm from "@rjsf/core";
-import validator from "@rjsf/validator-ajv8";
+import { validatorForSchema } from "../lib/schema-validator";
+import { SchemaInput, type SchemaInputHandle } from "../components/SchemaInput";
 import {
   serviceAvailable,
   serviceDate,
@@ -57,8 +57,8 @@ export function CheckoutPage() {
   const { createOrder } = usePrototype();
   const { message } = App.useApp();
   const requestKey = useRef(crypto.randomUUID());
-  const form = useRef<CoreForm>(null);
-  const [input, setInput] = useState<Record<string, unknown>>({});
+  const form = useRef<SchemaInputHandle>(null);
+  const [input, setInput] = useState<unknown>({});
   const navigate = useNavigate();
   useEffect(() => {
     setInput({});
@@ -93,15 +93,21 @@ export function CheckoutPage() {
     serviceAvailable(service) && travel?.attraction?.open !== false;
   const tableExample =
     bootstrap.data_mode === "prototype" &&
-    service.input_schema_digest === "schema-table";
+    service.input_schema_digest === "schema-table" &&
+    typeof service.input_schema === "object";
   const exampleErrors = tableExample
-    ? validator.validateFormData(tableExampleInput, service.input_schema).errors
+    ? validatorForSchema(service.input_schema).validateFormData(
+        tableExampleInput,
+        service.input_schema as RJSFSchema,
+      ).errors
     : [];
   const hasTableExample = tableExample && exampleErrors.length === 0;
   function submit() {
     if (!service || !accepted || !available) return;
     if (!hasTableExample && !form.current?.validateForm()) return;
-    const submittedInput = hasTableExample ? tableExampleInput : input;
+    const submittedInput = hasTableExample
+      ? tableExampleInput
+      : form.current?.getValue();
     try {
       const order = createOrder(service, requestKey.current, submittedInput);
       navigate(`/checkout/${order.id}/pay`);
@@ -189,7 +195,7 @@ export function CheckoutPage() {
                   showIcon
                 />
               )}
-              <SchemaForm
+              <SchemaInput
                 ref={form}
                 schema={service.input_schema}
                 uiSchema={{
@@ -197,9 +203,8 @@ export function CheckoutPage() {
                   "ui:submitButtonOptions": { norender: true },
                 }}
                 widgets={{ SourceUpload: SourceUploadWidget }}
-                validator={validator}
                 formData={input}
-                onChange={(event) => setInput(event.formData || {})}
+                onChange={setInput}
                 showErrorList={false}
                 onError={() => undefined}
               />

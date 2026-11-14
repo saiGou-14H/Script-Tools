@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Script Tools runtime 1.0 draft",
+  "type": "object",
+  "properties": {
+    "runtime_protocol_version": {
+      "const": "1.0"
+    },
+    "runtime_profile_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]{0,127}$"
+    },
+    "platform": {
+      "type": "object",
+      "properties": {
+        "os": {
+          "const": "linux"
+        },
+        "architecture": {
+          "enum": [
+            "amd64",
+            "arm64"
+          ]
+        }
+      },
+      "required": [
+        "os",
+        "architecture"
+      ],
+      "additionalProperties": false
+    },
+    "build": {
+      "type": "object",
+      "properties": {
+        "commands": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 64,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "pattern": "^[^\\u0000-\\u001f]*$"
+            }
+          }
+        }
+      },
+      "required": [
+        "commands"
+      ],
+      "additionalProperties": false
+    },
+    "launch": {
+      "type": "object",
+      "properties": {
+        "argv": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "pattern": "^[^\\u0000-\\u001f]*$"
+          }
+        },
+        "protocol": {
+          "enum": [
+            "invocation-files/1.0",
+            "hook-bridge/1.0"
+          ]
+        }
+      },
+      "required": [
+        "argv",
+        "protocol"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "runtime_protocol_version",
+    "runtime_profile_id",
+    "platform",
+    "launch"
+  ],
+  "additionalProperties": false
+}

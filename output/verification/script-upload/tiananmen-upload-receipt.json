@@ -1,0 +1,20 @@
+{
+  "uploaded_at": "2026-11-14T10:32:48.068Z",
+  "account": "publisher@example.invalid",
+  "script_id": "25b86938-4d65-47cb-8ac9-22f8161d8891",
+  "version_id": "673dc82e-d005-48ee-9a7b-28017fc69883",
+  "version": "1.0.0",
+  "state": "DRAFT",
+  "file_count": 8,
+  "source_digest": "6e43e221362bbbfc522c76a1dc1e0c19f065f6b190e539a1b21b2ce48f369a66",
+  "url": "http://127.0.0.1:5174/publisher/scripts/25b86938-4d65-47cb-8ac9-22f8161d8891/edit",
+  "verified": [
+    "normal UI upload",
+    "manifest validation",
+    "page reload",
+    "API source byte equality"
+  ],
+  "execution": "Runner and bridge integration pending",
+  "updated_at": "2026-11-14T10:36:47.083Z",
+  "revision": "2"
+}

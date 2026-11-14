@@ -1,0 +1,49 @@
+{
+  "schema_version": "2.1",
+  "script_id": "language-neutral-demo",
+  "version": "1.0.0",
+  "language": "go",
+  "entrypoint": "bin/main",
+  "integration_mode": "legacy",
+  "default_action": "hello",
+  "actions": {
+    "hello": {
+      "side_effects": "read_only",
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "hooks": {},
+  "dependencies_lock": "go.mod",
+  "credential_requirements": [],
+  "network_requirements": {
+    "mode": "HTTP",
+    "domains": [],
+    "methods": [
+      "GET"
+    ]
+  },
+  "supported_execution_modes": [
+    "docker"
+  ],
+  "input_schema": {
+    "type": "object",
+    "maxProperties": 0
+  },
+  "events": {},
+  "extensions": [],
+  "runtime_spec": {
+    "path": "go.runtime.json",
+    "sha256": "ecfe896146736a2cbe6cf9edf13298ed0fe4f5e420c1903e81180effac6bda39"
+  }
+}

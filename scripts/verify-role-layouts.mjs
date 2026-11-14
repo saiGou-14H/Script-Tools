@@ -305,6 +305,7 @@ try {
   await mkdir(output, { recursive: true });
   report.build_sha256 = sha256(await readFile("apps/web/dist/index.html"));
   report.source_sha256 = {};
+  report.source_hash_normalization = "LF";
   for (const file of [
     "apps/web/src/pages/PublisherHome.tsx",
     "apps/web/src/pages/AdminHome.tsx",
@@ -312,8 +313,22 @@ try {
     "apps/web/src/components/ui.tsx",
     "apps/web/src/styles/dashboards.css",
     "apps/web/src/main.tsx",
+    "apps/web/src/pages/ScriptEditor.tsx",
+    "apps/web/src/pages/PublisherScripts.tsx",
+    "apps/web/src/pages/PublisherProducts.tsx",
+    "apps/web/src/publisher-preview.tsx",
+    "apps/web/src/styles/publisher-editors.css",
+    "apps/web/src/lib/script-editor.ts",
+    "apps/web/src/lib/schema-validator.ts",
+    "apps/web/src/components/SchemaInput.tsx",
+    "apps/web/src/styles/schema-input.css",
+    "apps/web/src/styles/consumer.css",
+    "apps/web/src/pages/Checkout.tsx",
+    "apps/web/src/pages/ConfigureService.tsx",
   ]) {
-    report.source_sha256[file] = sha256(await readFile(file));
+    report.source_sha256[file] = sha256(
+      (await readFile(file, "utf8")).replaceAll("\r\n", "\n"),
+    );
   }
   app = await NestFactory.create(AppModule, { logger: false });
   app.use(cookieParser());

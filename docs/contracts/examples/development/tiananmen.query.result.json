@@ -1,0 +1,22 @@
+{
+  "protocol_version": "2.0",
+  "run_id": "run_synthetic_booking",
+  "attempt_id": "attempt_synthetic_query",
+  "invocation_id": "inv_synthetic_query",
+  "action": "query_order",
+  "outcome": "COMPLETED",
+  "summary": "查询取得上游订单记录",
+  "data": {
+    "booking_state": "ORDER_FOUND",
+    "upstream_task_id": "synthetic-task-1",
+    "upstream_order_id": "synthetic-order-1",
+    "upstream_order_status": "synthetic-status",
+    "ticket_fee_minor": 0,
+    "currency": "CNY",
+    "payment_action_required": false,
+    "payment_url": null
+  },
+  "action_required": null,
+  "error": null,
+  "outputs": []
+}

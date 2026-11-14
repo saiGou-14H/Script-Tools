@@ -1,0 +1,27 @@
+{
+  "runtime_protocol_version": "1.0",
+  "runtime_profile_id": "go-linux-amd64-demo-v1",
+  "platform": {
+    "os": "linux",
+    "architecture": "amd64"
+  },
+  "build": {
+    "commands": [
+      [
+        "go",
+        "build",
+        "-mod=readonly",
+        "-trimpath",
+        "-o",
+        "bin/main",
+        "./cmd/main"
+      ]
+    ]
+  },
+  "launch": {
+    "argv": [
+      "/app/bin/main"
+    ],
+    "protocol": "invocation-files/1.0"
+  }
+}

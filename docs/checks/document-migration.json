@@ -136,8 +136,8 @@
           "title": "F03：脚本中心",
           "target": "01-产品需求与功能设计.md#scripts",
           "secondary_targets": [
-            "03-接口协议与脚本开发规范.md#manifest",
-            "03-接口协议与脚本开发规范.md#hooks"
+            "08-脚本开发规范.md#manifest",
+            "08-脚本开发规范.md#hooks"
           ],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         },
@@ -210,7 +210,7 @@
         {
           "section": 14,
           "title": "接口能力清单",
-          "target": "03-接口协议与脚本开发规范.md#core-api",
+          "target": "03-接口协议.md#core-api",
           "secondary_targets": [],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         },
@@ -260,7 +260,7 @@
           "title": "三种执行方式的配置模型",
           "target": "02-系统架构与详细设计.md#runtime",
           "secondary_targets": [
-            "03-接口协议与脚本开发规范.md#runtime-adapter"
+            "03-接口协议.md#runtime-adapter"
           ],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         },
@@ -276,7 +276,7 @@
           "title": "QEMU 后端：KVM 与 TCG",
           "target": "02-系统架构与详细设计.md#qemu",
           "secondary_targets": [
-            "03-接口协议与脚本开发规范.md#agent"
+            "03-接口协议.md#agent"
           ],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         },
@@ -290,11 +290,11 @@
         {
           "section": 9,
           "title": "脚本、构建和输入输出协议",
-          "target": "03-接口协议与脚本开发规范.md#manifest",
+          "target": "08-脚本开发规范.md#manifest",
           "secondary_targets": [
             "02-系统架构与详细设计.md#publishing",
-            "03-接口协议与脚本开发规范.md#invocation",
-            "03-接口协议与脚本开发规范.md#hooks",
+            "08-脚本开发规范.md#invocation",
+            "08-脚本开发规范.md#hooks",
             "05-测试验收与验证记录.md#script-tests"
           ],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
@@ -406,10 +406,10 @@
         {
           "section": 4,
           "title": "输入、输出、Hook 与 Schema 边界",
-          "target": "03-接口协议与脚本开发规范.md#results",
+          "target": "08-脚本开发规范.md#results",
           "secondary_targets": [
-            "03-接口协议与脚本开发规范.md#manifest",
-            "03-接口协议与脚本开发规范.md#hooks",
+            "08-脚本开发规范.md#manifest",
+            "08-脚本开发规范.md#hooks",
             "02-系统架构与详细设计.md#effects"
           ],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
@@ -438,7 +438,7 @@
         {
           "section": 8,
           "title": "接口公共契约",
-          "target": "03-接口协议与脚本开发规范.md#http",
+          "target": "03-接口协议.md#http",
           "secondary_targets": [],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         },
@@ -473,7 +473,7 @@
         {
           "section": 13,
           "title": "节点、Guest Agent 与配置契约",
-          "target": "03-接口协议与脚本开发规范.md#agent",
+          "target": "03-接口协议.md#agent",
           "secondary_targets": [
             "04-部署运维与监控手册.md#configuration"
           ],
@@ -525,7 +525,7 @@
         {
           "section": 3,
           "title": "日志分类与统一数据模型",
-          "target": "03-接口协议与脚本开发规范.md#log-model",
+          "target": "03-接口协议.md#log-model",
           "secondary_targets": [
             "04-部署运维与监控手册.md#collection"
           ],
@@ -555,7 +555,7 @@
         {
           "section": 7,
           "title": "查询、实时订阅与用户权限",
-          "target": "03-接口协议与脚本开发规范.md#log-api",
+          "target": "03-接口协议.md#log-api",
           "secondary_targets": [],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         },
@@ -590,7 +590,7 @@
         {
           "section": 12,
           "title": "接口与数据表",
-          "target": "03-接口协议与脚本开发规范.md#log-api",
+          "target": "03-接口协议.md#log-api",
           "secondary_targets": [
             "02-系统架构与详细设计.md#database"
           ],
@@ -654,14 +654,14 @@
         {
           "section": 2,
           "title": "Hook 与公共方法",
-          "target": "03-接口协议与脚本开发规范.md#outputs",
+          "target": "08-脚本开发规范.md#outputs",
           "secondary_targets": [],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         },
         {
           "section": 3,
           "title": "文件格式、展示与限额",
-          "target": "03-接口协议与脚本开发规范.md#output-formats",
+          "target": "08-脚本开发规范.md#output-formats",
           "secondary_targets": [],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         },
@@ -670,7 +670,7 @@
           "title": "阶段与状态闭环",
           "target": "02-系统架构与详细设计.md#output-states",
           "secondary_targets": [
-            "03-接口协议与脚本开发规范.md#output-contract"
+            "08-脚本开发规范.md#output-contract"
           ],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         },
@@ -684,7 +684,7 @@
         {
           "section": 6,
           "title": "API、事务与数据库",
-          "target": "03-接口协议与脚本开发规范.md#output-api",
+          "target": "03-接口协议.md#output-api",
           "secondary_targets": [
             "02-系统架构与详细设计.md#transactions",
             "02-系统架构与详细设计.md#database"
@@ -694,7 +694,7 @@
         {
           "section": 7,
           "title": "错误、取消与清理",
-          "target": "03-接口协议与脚本开发规范.md#output-errors",
+          "target": "08-脚本开发规范.md#output-errors",
           "secondary_targets": [
             "04-部署运维与监控手册.md#retention"
           ],
@@ -703,7 +703,7 @@
         {
           "section": 8,
           "title": "开发者示例",
-          "target": "03-接口协议与脚本开发规范.md#output-example",
+          "target": "08-脚本开发规范.md#output-example",
           "secondary_targets": [],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         },
@@ -724,7 +724,7 @@
         {
           "section": 11,
           "title": "兼容脚本的产物入口",
-          "target": "03-接口协议与脚本开发规范.md#legacy",
+          "target": "08-脚本开发规范.md#legacy",
           "secondary_targets": [],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         }
@@ -779,7 +779,7 @@
         {
           "section": 7,
           "title": "配置、数据与观测",
-          "target": "03-接口协议与脚本开发规范.md#continuous-config",
+          "target": "08-脚本开发规范.md#continuous-config",
           "secondary_targets": [
             "02-系统架构与详细设计.md#database",
             "04-部署运维与监控手册.md#metrics"
@@ -796,7 +796,7 @@
         {
           "section": 9,
           "title": "长期兼容脚本",
-          "target": "03-接口协议与脚本开发规范.md#legacy",
+          "target": "08-脚本开发规范.md#legacy",
           "secondary_targets": [],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         }
@@ -823,21 +823,21 @@
         {
           "section": 3,
           "title": "兼容适配契约与能力展示",
-          "target": "03-接口协议与脚本开发规范.md#legacy",
+          "target": "08-脚本开发规范.md#legacy",
           "secondary_targets": [],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         },
         {
           "section": 4,
           "title": "参数、环境与依赖边界",
-          "target": "03-接口协议与脚本开发规范.md#legacy",
+          "target": "08-脚本开发规范.md#legacy",
           "secondary_targets": [],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         },
         {
           "section": 5,
           "title": "Hook、旧通知与多次产物",
-          "target": "03-接口协议与脚本开发规范.md#legacy",
+          "target": "08-脚本开发规范.md#legacy",
           "secondary_targets": [],
           "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
         },
@@ -853,7 +853,7 @@
         {
           "section": 7,
           "title": "接口、持久化与异常闭环",
-          "target": "03-接口协议与脚本开发规范.md#import-api",
+          "target": "03-接口协议.md#import-api",
           "secondary_targets": [
             "02-系统架构与详细设计.md#imports",
             "02-系统架构与详细设计.md#database"
@@ -896,7 +896,7 @@
         {
           "section": 0,
           "title": "全文",
-          "target": "03-接口协议与脚本开发规范.md#schemas",
+          "target": "08-脚本开发规范.md#schemas",
           "secondary_targets": [],
           "treatment": "导航/协议索引/历史验证记录分别归并"
         }

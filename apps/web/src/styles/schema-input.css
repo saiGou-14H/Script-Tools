@@ -1,0 +1,13 @@
+.schema-input > .rjsf > .rjsf-field > .ant-form-item {
+  margin-bottom: 0;
+}
+.schema-input-toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+.schema-input-toolbar .ant-btn {
+  padding-inline: 0;
+}
+.schema-input-error {
+  margin: 8px 0 16px;
+}

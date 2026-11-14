@@ -1,8 +1,6 @@
 import { useRef, useState } from "react";
 import dayjs, { type Dayjs } from "dayjs";
-import Form from "@rjsf/antd";
-import CoreForm from "@rjsf/core";
-import validator from "@rjsf/validator-ajv8";
+import { SchemaInput, type SchemaInputHandle } from "../components/SchemaInput";
 import type { RJSFSchema, UiSchema } from "@rjsf/utils";
 import { Button, Modal, Radio, DatePicker, Skeleton, Alert, App } from "antd";
 import { LockOutlined } from "@ant-design/icons";
@@ -40,12 +38,12 @@ export function ConfigureServicePage() {
         item.input_schema_digest === purchase?.schemaDigest &&
         item.script_version === purchase?.scriptVersion,
     );
-  const [input, setInput] = useState<Record<string, unknown>>({});
+  const [input, setInput] = useState<unknown>({});
   const [schedule, setSchedule] = useState("manual");
   const [runAt, setRunAt] = useState<Dayjs | null>(null);
   const [scheduleError, setScheduleError] = useState("");
   const [preview, setPreview] = useState(false);
-  const form = useRef<CoreForm<Record<string, unknown>>>(null);
+  const form = useRef<SchemaInputHandle>(null);
   const { message } = App.useApp();
   if (!isPrototype)
     return (
@@ -139,18 +137,17 @@ export function ConfigureServicePage() {
             </span>
           </Panel>
           <Panel title="配置参数">
-            <Form
+            <SchemaInput
               ref={form}
-              schema={service.input_schema as RJSFSchema}
+              schema={service.input_schema}
               uiSchema={uiSchema}
               formData={input}
-              validator={validator}
               formContext={{
                 labelCol: { flex: "166px" },
                 wrapperCol: { flex: 1 },
                 colon: false,
               }}
-              onChange={(event) => setInput(event.formData || {})}
+              onChange={setInput}
               widgets={{ SourceUpload: SourceUploadWidget }}
               showErrorList={false}
             />

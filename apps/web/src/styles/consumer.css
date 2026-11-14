@@ -999,6 +999,14 @@
 .page-C07 .configure-columns .rjsf-field-object > .ant-form-item {
   margin-bottom: 0;
 }
+.page-C07 .schema-input {
+  position: relative;
+}
+.page-C07 .schema-input-toolbar {
+  position: absolute;
+  top: -58px;
+  right: 0;
+}
 .page-C07 form .ant-row > .ant-col:last-child > .rjsf-field > .ant-form-item {
   margin-bottom: 0;
 }

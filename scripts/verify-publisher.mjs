@@ -2,36 +2,18 @@ import { chromium, expect } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { preview } from "vite";
+import { startVerificationApp } from "./verification-app.mjs";
 
 const output = path.resolve("output/verification/publisher-pages");
 await mkdir(output, { recursive: true });
-const browser = await chromium.launch();
-const context = await browser.newContext({
-  viewport: { width: 1814, height: 868 },
-});
 const root = path.resolve("apps/web");
-const server = await preview({
-  root,
-  configFile: path.join(root, "vite.config.ts"),
-  preview: {
-    host: "127.0.0.1",
-    port: 0,
-    strictPort: true,
-    proxy: { "/api": { target: "http://127.0.0.1:3001" } },
-  },
-});
-const address = server.httpServer.address();
-if (!address || typeof address !== "object")
-  throw new Error("Preview address is unavailable");
-const base = `http://127.0.0.1:${address.port}`;
+let browser, context, server, application, page, base;
 const report = {
   date: new Date().toISOString(),
   checks: [],
   screenshots: [],
   errors: [],
 };
-const page = await context.newPage();
-page.on("pageerror", (error) => report.errors.push(error.message));
 async function capture(id, route, title) {
   await page.goto(base + route);
   await expect(
@@ -44,6 +26,25 @@ async function capture(id, route, title) {
   report.screenshots.push(id);
 }
 try {
+  application = await startVerificationApp("publisher-regression");
+  browser = await chromium.launch();
+  context = await browser.newContext({
+    viewport: { width: 1814, height: 868 },
+  });
+  server = await preview({
+    root,
+    configFile: path.join(root, "vite.config.ts"),
+    preview: {
+      host: "127.0.0.1",
+      port: 0,
+      strictPort: true,
+      proxy: { "/api": { target: application.url } },
+    },
+  });
+  base = "http://127.0.0.1:" + server.httpServer.address().port;
+  process.env.WEB_ORIGIN = base;
+  page = await context.newPage();
+  page.on("pageerror", (error) => report.errors.push(error.message));
   const login = await context.request.post(base + "/api/v1/auth/login", {
     data: { email: "publisher@example.invalid", password: "TravelTools2026!" },
   });
@@ -84,14 +85,10 @@ try {
     .getByText("成功", { exact: true })
     .click();
   await page.getByRole("button", { name: "查询构建记录", exact: true }).click();
-  await expect(page.locator(".build-records .ant-table-row")).toHaveCount(
-    1,
-  );
+  await expect(page.locator(".build-records .ant-table-row")).toHaveCount(1);
   await expect(page.locator(".build-detail")).toContainText("B031");
   await page.getByRole("tab", { name: "试运行记录", exact: true }).click();
-  await expect(page.locator(".build-records .ant-table-row")).toHaveCount(
-    2,
-  );
+  await expect(page.locator(".build-records .ant-table-row")).toHaveCount(2);
   report.checks.push(
     "build filters and trial-run tabs update records and the matching selected detail",
   );
@@ -151,6 +148,7 @@ try {
     .getByRole("textbox", { name: "脚本代码", exact: true })
     .fill('def run(input):\n    return {"rows": 42}\n');
   await page.getByRole("button", { name: "保存草稿", exact: true }).click();
+  await expect(page.getByText("草稿已保存", { exact: true })).toBeVisible();
   await page
     .locator(".sidebar")
     .getByRole("link", { name: "我的脚本", exact: true })
@@ -260,13 +258,15 @@ try {
   report.result = "FAIL";
   report.error = error.message;
   process.exitCode = 1;
-  await page.screenshot({
-    path: path.join(output, "failure.png"),
-    fullPage: true,
-  });
+  if (page)
+    await page.screenshot({
+      path: path.join(output, "failure.png"),
+      fullPage: true,
+    });
 } finally {
-  await browser.close();
-  await new Promise((resolve) => server.httpServer.close(resolve));
+  await browser?.close();
+  await server?.close();
+  await application?.close();
   await writeFile(
     path.join(output, "report.json"),
     JSON.stringify(report, null, 2),

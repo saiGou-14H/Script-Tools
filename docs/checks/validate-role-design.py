@@ -62,7 +62,7 @@ ck('data.diagnose' in A['ops.data_request']['guard'] and '1小时' in A['ops.dat
 ck('自提权' in A['ops.access']['guard'],'no self elevation')
 ck('202' in A['run.stop']['success'] and 'STOPPING' in A['run.stop']['success'],'async stop')
 texts={p.name:p.read_text(encoding='utf-8') for p in R.glob('*.md')}
-product=texts['01-产品需求与功能设计.md'];api=texts['03-接口协议与脚本开发规范.md'];arch=texts['02-系统架构与详细设计.md'];tests=texts['05-测试验收与验证记录.md']
+product=texts['01-产品需求与功能设计.md'];api=texts['03-接口协议.md'];arch=texts['02-系统架构与详细设计.md'];tests=texts['05-测试验收与验证记录.md']
 for r in roles:
  m=re.search(r'### 8\.\d+ '+re.escape(r['name'])+r'（'+r['id']+r'）\n(.*?)(?=### 8\.|\Z)',product,re.S)
  ck(bool(m),r['id']+': readable role table')
@@ -80,8 +80,9 @@ for n in range(1,17):ck(f'| CMR-{n:02} |' in product,f'CMR-{n:02} requirement')
 for n in range(1,25):ck(f'| RUI-{n:02} |' in tests,f'RUI-{n:02} acceptance')
 for term in ['PER_USE','quantity=1','NOT_REQUIRED','最多1小时','UNKNOWN','晚到','冲正','首次有效领取']:
  ck(term in arch or term in api,term+': critical contract')
+document_versions = {'03-接口协议.md': '版本V3.1', '08-脚本开发规范.md': '规范版本1.1'}
 for name,s in texts.items():
- ck('版本：V3.0' in s,name+': document version')
+ ck(document_versions.get(name, '版本：V3.0') in s,name+': document version')
  for bad in ['REVIEWER','OPS_ADMIN','共享审核','审核通过后','按策略审批','计费在本版无执行入口','当前无收费页面','平台内置的通用支付、代收资金、退款处理','无自动校验员','人工自动校验']:
   ck(bad not in s,name+': stale phrase '+bad)
 ck('运行验收须' in tests and '尚未' in tests,'evidence limitation')

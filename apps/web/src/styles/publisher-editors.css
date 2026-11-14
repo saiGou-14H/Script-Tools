@@ -1,0 +1,408 @@
+.page-S03 {
+  --sidebar-width: 244px;
+}
+.page-S03 .main-content {
+  padding-right: 22px;
+}
+.page-S03 .breadcrumb {
+  margin-bottom: 14px;
+}
+.page-S03 .page-heading {
+  margin-bottom: 6px;
+}
+.app-shell:is(.page-S03, .page-S04, .page-S08) .nav-item {
+  font-size: 16px;
+  font-weight: 600;
+}
+.page-S03 .editor-layout {
+  grid-template-columns: minmax(0, 0.76fr) minmax(0, 1.346fr) minmax(0, 1fr);
+  height: 525px;
+  min-height: 0;
+}
+.page-S03 .editor-layout > .panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+.page-S03 .editor-layout > .panel > .panel-body {
+  min-height: 0;
+  flex: 1;
+  padding: 12px 20px;
+  overflow: auto;
+}
+.page-S03 .editor-layout .panel-heading {
+  flex-shrink: 0;
+}
+.page-S03 .editor-layout .ant-tree {
+  font-size: 17px;
+}
+.page-S03 .editor-layout .ant-tree-treenode {
+  padding: 6px 0;
+}
+.page-S03 .editor-layout > .code-panel > .panel-body {
+  overflow: hidden;
+  padding: 0;
+}
+.page-S03 .code-panel .ant-tabs {
+  flex-shrink: 0;
+}
+.page-S03 .code-panel .ant-tabs-tab {
+  font-size: 16px;
+}
+.page-S03 .code-panel .ant-tabs-tab-btn {
+  color: #172137;
+}
+.page-S03 .code-editor {
+  min-height: 0;
+}
+.page-S03 .line-numbers {
+  overflow: hidden;
+  font-size: 16px;
+  padding-top: 16px;
+}
+.page-S03 .code-editor .ant-input {
+  min-height: 0;
+  height: 100%;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  font-size: 17px;
+}
+.page-S03 .editor-config-row {
+  margin-bottom: 10px;
+}
+.page-S03 .editor-config-row label {
+  font-size: 16px;
+}
+.page-S03 .editor-layout h3 {
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 22px;
+}
+.page-S03 .editor-layout pre {
+  min-height: 0;
+  margin: 4px 0;
+  padding: 6px 12px;
+  line-height: 18px;
+  font-size: 12px;
+  overflow: auto;
+  white-space: pre;
+}
+.page-S03 .editor-layout pre[aria-label="输入Schema预览"] {
+  height: 40px;
+}
+.page-S03 .editor-layout pre[aria-label="输出Schema预览"] {
+  height: 128px;
+}
+.page-S03 .network-scope {
+  min-height: 30px;
+  padding: 4px 12px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+.page-S03 .editor-validation {
+  min-height: 72px;
+  padding: 14px 26px;
+}
+.page-S03 .editor-validation .ant-alert-section {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.page-S03 .editor-validation .ant-alert-description {
+  margin-top: 0;
+  font-size: 16px;
+  line-height: 26px;
+}
+.page-S03 .editor-validation .ant-alert-title {
+  font-size: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.page-S03 .editor-validation .ant-alert-icon {
+  font-size: 32px;
+}
+.page-S04 .breadcrumb {
+  margin-bottom: 16px;
+}
+.page-S04 .page-heading {
+  margin-bottom: 12px;
+}
+.page-S04 .version-banner {
+  margin-top: 16px;
+  padding-top: 17px;
+  padding-bottom: 17px;
+}
+.page-S04 .version-banner .tile-icon {
+  background: #e0e9fc;
+}
+.page-S04 .version-banner .ant-typography {
+  font-size: 16px;
+  color: #52617c;
+}
+.page-S04 .version-banner .ant-typography-copy {
+  margin-left: 12px;
+}
+.page-S04 .version-banner p {
+  overflow-wrap: anywhere;
+}
+.page-S04 .version-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
+  font-weight: 600;
+}
+.page-S04 .version-self-columns > .panel > .panel-body {
+  margin-top: 6px;
+}
+.page-S04 .version-self-columns .ant-input-affix-wrapper {
+  min-height: 41px;
+  height: 41px;
+}
+.page-S04 .version-self-columns .ant-input-affix-wrapper > input.ant-input {
+  min-height: 0;
+  height: auto;
+  font-size: 17px;
+}
+.page-S04 .version-self-columns .ant-select-disabled .ant-select-content {
+  color: #263042;
+}
+.page-S04 .self-schedule {
+  margin-top: 14px;
+}
+.page-S04 .self-configuration-actions {
+  margin-top: 22px;
+}
+.page-S04 .version-self-columns > .panel,
+.page-S04 .version-self-columns > aside > .panel:last-child {
+  margin-bottom: 0;
+}
+.page-S04 .self-configuration-actions .ant-btn-default,
+.page-S04 .version-management-actions .ant-btn-default:not(.ant-btn-dangerous) {
+  color: #1555ff;
+  border-color: #1555ff;
+}
+.page-S08
+  .product-editor-columns
+  .ant-form-item-label
+  > label.ant-form-item-required::before {
+  order: 2;
+  margin-inline-start: 4px;
+  margin-inline-end: 0;
+}
+.page-S08 .product-editor-columns .ant-form-item-label > label {
+  font-weight: 500;
+}
+.page-S08 .product-editor-columns .ant-input-textarea-show-count {
+  position: relative;
+}
+.page-S08
+  .product-editor-columns
+  .ant-input-textarea-show-count
+  .ant-input-suffix {
+  position: absolute;
+  right: 12px;
+  bottom: 8px;
+}
+.page-S08
+  .product-editor-columns
+  .ant-input-textarea-show-count
+  .ant-input-data-count {
+  position: static;
+  inset: auto;
+  transform: none;
+}
+.page-S08 .product-editor-columns .ant-input-textarea-show-count textarea {
+  min-height: 106px;
+  padding-bottom: 26px;
+}
+.page-S08 .product-input-preview {
+  max-height: 184px;
+  overflow: auto;
+}
+.page-S08 .product-input-preview b {
+  overflow-wrap: anywhere;
+}
+.page-S08 .product-binding-summary > div:first-child .tile-icon {
+  color: #1555ff;
+}
+.app-shell:is(.page-S03, .page-S04, .page-S08)
+  :is(pre[role="region"], .product-input-preview):focus-visible {
+  outline: 2px solid #1555ff;
+  outline-offset: -2px;
+}
+@media (max-width: 1000px) {
+  .page-S03 .editor-layout {
+    height: auto;
+    grid-template-columns: minmax(150px, 0.5fr) minmax(0, 1fr);
+  }
+  .page-S03 .editor-layout > .panel:first-child,
+  .page-S03 .editor-layout > .code-panel {
+    height: 440px;
+  }
+  .page-S03 .editor-layout > .panel:last-child {
+    grid-column: 1 / -1;
+  }
+  .page-S04 .self-configuration-actions,
+  .page-S04 .version-management-actions {
+    flex-wrap: wrap;
+  }
+  .page-S04 .self-configuration-actions > span {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+@media (max-width: 700px) {
+  .app-shell:is(.page-S03, .page-S04, .page-S08) {
+    --sidebar-width: 0px;
+  }
+  .app-shell:is(.page-S03, .page-S04, .page-S08) .topbar {
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .app-shell:is(.page-S03, .page-S04, .page-S08) .brand {
+    min-width: 0;
+    flex: 1;
+    gap: 8px;
+  }
+  .app-shell:is(.page-S03, .page-S04, .page-S08) .brand strong {
+    font-size: 18px;
+  }
+  .app-shell:is(.page-S03, .page-S04, .page-S08) .topbar-actions {
+    flex-shrink: 0;
+    gap: 6px;
+  }
+  .app-shell:is(.page-S03, .page-S04, .page-S08) .workspace-button {
+    padding: 0 8px;
+    gap: 6px;
+    font-size: 0;
+  }
+  .app-shell:is(.page-S03, .page-S04, .page-S08) .workspace-button b {
+    font-size: 12px;
+  }
+  .app-shell:is(.page-S03, .page-S04, .page-S08) .main-content {
+    padding: 80px 12px 20px;
+  }
+  .page-S03 .editor-title {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .page-S03 .editor-title h2 {
+    font-size: 18px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .page-S03 .editor-title > div {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .page-S03 .editor-title .ant-btn {
+    padding-inline: 16px;
+  }
+  .page-S03 .editor-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page-S03 .editor-layout > .panel:first-child {
+    height: 235px;
+  }
+  .page-S03 .editor-layout > .code-panel {
+    grid-column: auto;
+  }
+  .page-S03 .editor-validation .ant-alert-section {
+    display: block;
+  }
+  .page-S03 .editor-validation .ant-alert-description {
+    font-size: 14px;
+    line-height: 22px;
+  }
+  .page-S03 .editor-validation {
+    padding-inline: 16px;
+  }
+  .page-S04 .version-banner {
+    padding: 16px;
+    gap: 12px;
+  }
+  .page-S04 .version-banner > div:last-child {
+    min-width: 0;
+  }
+  .page-S04 .version-banner h2 {
+    font-size: 20px;
+  }
+  .page-S04 .version-banner .tile-icon {
+    display: none;
+  }
+  .page-S04 .version-banner p,
+  .page-S04 .version-banner .ant-typography {
+    font-size: 12px;
+  }
+  .page-S04 .version-banner .status {
+    font-size: 12px;
+    padding: 2px 6px;
+  }
+  .page-S04 .version-self-columns > .panel > .panel-body {
+    margin-inline: 16px;
+  }
+  .page-S04 .version-self-columns .panel-heading,
+  .page-S04 .version-self-columns aside .panel-body {
+    padding-inline: 16px;
+  }
+  .page-S04 .version-self-columns .ant-form-item-label,
+  .page-S04 .version-self-columns .ant-form-item-control {
+    flex: 0 0 100% !important;
+  }
+  .page-S04 .version-self-columns .ant-form-item-row {
+    flex-wrap: wrap;
+  }
+  .page-S04 .self-schedule,
+  .page-S04 .self-authorization {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .page-S04 .self-schedule .ant-radio-wrapper {
+    font-size: 14px;
+    margin-inline-end: 8px;
+  }
+  .page-S04 .self-configuration-actions {
+    margin-top: 24px;
+  }
+  .page-S04 .version-test-success {
+    padding: 12px;
+    gap: 10px;
+  }
+  .page-S04 .version-test-success p {
+    font-size: 13px;
+  }
+  .page-S04 .version-self-columns .panel-heading h2 + a {
+    font-size: 11px;
+    white-space: normal;
+  }
+  .page-S08 .product-editor-columns .ant-form-item-row {
+    flex-wrap: wrap;
+  }
+  .page-S08 .product-editor-columns .ant-form-item-label,
+  .page-S08 .product-editor-columns .ant-form-item-control {
+    flex: 0 0 100% !important;
+  }
+  .page-S08 .product-editor-columns > .panel:first-child > .panel-body {
+    padding: 18px 16px;
+  }
+  .page-S08 .product-binding-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page-S08 .product-input-preview > div {
+    grid-template-columns: 40% minmax(0, 1fr);
+  }
+  .page-S08 .product-input-preview b,
+  .page-S08 .product-input-preview span {
+    padding-inline: 10px;
+  }
+  .page-S08 .publish-checks > .panel-body > div:first-child > div {
+    gap: 12px;
+    padding-block: 12px;
+  }
+  .page-S08 .publish-checks p {
+    font-size: 13px;
+  }
+  .page-S08 .publish-editor-actions {
+    margin-top: 24px;
+  }
+}

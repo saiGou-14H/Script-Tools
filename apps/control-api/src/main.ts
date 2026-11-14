@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import { NestFactory } from "@nestjs/core";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
@@ -7,7 +8,8 @@ import { AppModule } from "./app.module";
 import { EnvelopeInterceptor, HttpErrorFilter } from "./common/http";
 
 async function main() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.useBodyParser("json", { limit: "2mb" });
   app.use(helmet());
   app.use(cookieParser());
   app.useGlobalInterceptors(new EnvelopeInterceptor());

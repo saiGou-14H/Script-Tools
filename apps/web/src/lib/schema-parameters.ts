@@ -1,7 +1,7 @@
 import type { RJSFSchema } from "@rjsf/utils";
 
 export function parameterExamples(
-  schema: RJSFSchema | undefined,
+  schema: RJSFSchema | boolean | undefined,
   order: string[] = [],
   tableExample = false,
 ) {
@@ -22,9 +22,8 @@ export function parameterExamples(
       property?.default ??
       property?.const ??
       property?.enum?.[0];
-    const fallback = tableExample && name === "source_file"
-      ? "客户数据.csv"
-      : "由使用者填写";
+    const fallback =
+      tableExample && name === "source_file" ? "客户数据.csv" : "由使用者填写";
     return {
       name,
       title: property?.title || name,

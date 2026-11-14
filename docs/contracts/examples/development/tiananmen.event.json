@@ -1,0 +1,13 @@
+{
+  "protocol_version": "2.0",
+  "run_id": "run_synthetic_booking",
+  "attempt_id": "attempt_synthetic_booking",
+  "invocation_id": "inv_synthetic_booking",
+  "script_version_id": "sv_synthetic_booking",
+  "event_name": "booking_progress",
+  "event_key": "submitted.synthetic-task-1",
+  "data": {
+    "stage": "submitted",
+    "attempt_count": 1
+  }
+}

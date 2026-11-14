@@ -1,0 +1,27 @@
+{
+  "protocol_version": "2.0",
+  "run_id": "run_synthetic_booking",
+  "attempt_id": "attempt_synthetic_booking",
+  "invocation_id": "inv_synthetic_booking",
+  "action": "book",
+  "outcome": "ACTION_REQUIRED",
+  "summary": "提交已受理，等待原任务的预约结果",
+  "data": {
+    "booking_state": "SUBMITTED",
+    "upstream_task_id": "synthetic-task-1",
+    "upstream_order_id": null,
+    "upstream_order_status": null,
+    "ticket_fee_minor": null,
+    "currency": "CNY",
+    "payment_action_required": false,
+    "payment_url": null
+  },
+  "action_required": {
+    "reason": "MANUAL_RESOLUTION",
+    "instructions": "查询原taskId并核对预约结果",
+    "expires_at": "2026-11-17T01:15:00Z",
+    "resume_action": "query_order"
+  },
+  "error": null,
+  "outputs": []
+}

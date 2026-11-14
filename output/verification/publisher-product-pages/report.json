@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T14:44:41.270Z",
+  "date": "2026-11-14T23:10:36.932Z",
   "checks": [
     "all four reference regions and sidebar help fit 1814 by 868",
     "product status selection survives reload and preserves unrelated URL parameters",
@@ -44,7 +44,7 @@
         "x": 258,
         "y": 172.8125,
         "width": 1536,
-        "bottom": 850.8125
+        "bottom": 855.65625
       },
       "help": {
         "x": 10,

@@ -4,7 +4,7 @@ import type { PublisherPricePlan, PublisherScript } from "../publisher-preview";
 export interface ProductReleasePreview {
   scriptId: string;
   scriptVersion: string;
-  inputSchema: RJSFSchema;
+  inputSchema: RJSFSchema | boolean;
   pricePlanId: string;
   pricePlanVersion: number;
   amountMinor: string;
