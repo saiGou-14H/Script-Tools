@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Alert,
   App,
   Button,
   Checkbox,
+  Empty,
   Form,
   InputNumber,
   Modal,
@@ -13,6 +14,7 @@ import {
   Typography,
 } from "antd";
 import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { Link, useSearchParams } from "react-router-dom";
 import { useWorkspace } from "../context";
 import { Notice, PageHeading, Panel, Status } from "../components/ui";
 
@@ -58,17 +60,25 @@ const trialFixtures = [
 
 export function BuildsPage() {
   const { bootstrap } = useWorkspace();
-  const [tab, setTab] = useState("build");
-  const [filters, setFilters] = useState({
-    script: "",
-    version: "",
-    status: "",
-  });
-  const [applied, setApplied] = useState(filters);
-  const [selected, setSelected] = useState("B032");
+  const [params, setParams] = useSearchParams();
+  const tab = params.get("tab") === "trial" ? "trial" : "build";
+  const prototype = bootstrap.data_mode === "prototype";
+  const applied = {
+    script: params.get("script") || "",
+    version: params.get("version") || "",
+    status: params.get("status") || "",
+  };
+  const [filters, setFilters] = useState(applied);
+  useEffect(() => {
+    setFilters({
+      script: params.get("script") || "",
+      version: params.get("version") || "",
+      status: params.get("status") || "",
+    });
+  }, [params]);
   const { message, modal } = App.useApp();
   const all =
-    bootstrap.data_mode === "prototype"
+    prototype
       ? tab === "build"
         ? buildFixtures
         : trialFixtures
@@ -79,7 +89,25 @@ export function BuildsPage() {
       (!applied.version || item.version === applied.version) &&
       (!applied.status || item.status === applied.status),
   );
-  const item = rows.find((row) => row.id === selected) || rows[0];
+  const requested = params.get("record");
+  const defaultId = tab === "build" ? "B032" : "TEST081";
+  const item = requested
+    ? rows.find((row) => row.id === requested)
+    : rows.find((row) => row.id === defaultId) || rows[0];
+  function selectRecord(id: string) {
+    const next = new URLSearchParams(params);
+    next.set("record", id);
+    setParams(next);
+  }
+  function query() {
+    const next = new URLSearchParams(params);
+    next.delete("record");
+    for (const [key, value] of Object.entries(filters)) {
+      if (value) next.set(key, value);
+      else next.delete(key);
+    }
+    setParams(next);
+  }
   function label(status: string) {
     return status === "SUCCEEDED"
       ? "✓ 成功"
@@ -89,14 +117,26 @@ export function BuildsPage() {
   }
   return (
     <div className="publisher-builds-page">
-      <PageHeading title="构建与测试记录" />
+      <PageHeading
+        title="构建与测试记录"
+        extra={
+          <Status tone="gray">
+            {prototype ? "本地示例" : "构建服务待接入"}
+          </Status>
+        }
+      />
+      {!prototype && (
+        <Notice>构建、测试证据与开发配额服务待接入，当前记录暂不可用。</Notice>
+      )}
       <Panel>
         <Tabs
           activeKey={tab}
           onChange={(value) => {
-            setTab(value);
-            setFilters({ script: "", version: "", status: "" });
-            setApplied({ script: "", version: "", status: "" });
+            const next = new URLSearchParams(params);
+            for (const key of ["script", "version", "status", "record", "tab"])
+              next.delete(key);
+            if (value === "trial") next.set("tab", "trial");
+            setParams(next);
           }}
           items={[
             { key: "build", label: "构建记录" },
@@ -108,6 +148,7 @@ export function BuildsPage() {
           <Select
             aria-label="构建脚本"
             value={filters.script}
+            disabled={!prototype}
             onChange={(script) =>
               setFilters((previous) => ({ ...previous, script }))
             }
@@ -123,6 +164,7 @@ export function BuildsPage() {
           <Select
             aria-label="构建版本"
             value={filters.version}
+            disabled={!prototype}
             onChange={(version) =>
               setFilters((previous) => ({ ...previous, version }))
             }
@@ -138,6 +180,7 @@ export function BuildsPage() {
           <Select
             aria-label="构建状态"
             value={filters.status}
+            disabled={!prototype}
             onChange={(status) =>
               setFilters((previous) => ({ ...previous, status }))
             }
@@ -151,7 +194,8 @@ export function BuildsPage() {
           <Button
             type="primary"
             aria-label="查询构建记录"
-            onClick={() => setApplied(filters)}
+            disabled={!prototype}
+            onClick={query}
           >
             查询
           </Button>
@@ -162,6 +206,7 @@ export function BuildsPage() {
               rowKey="id"
               dataSource={rows}
               pagination={false}
+              scroll={{ x: 850 }}
               rowClassName={(row) =>
                 row.id === item?.id ? "selected-build" : ""
               }
@@ -169,6 +214,16 @@ export function BuildsPage() {
                 {
                   title: tab === "build" ? "构建编号" : "试运行编号",
                   dataIndex: "id",
+                  render: (value) => (
+                    <Button
+                      className="build-record-id"
+                      type="link"
+                      aria-label={`查看${value}`}
+                      onClick={() => selectRecord(value)}
+                    >
+                      {value}
+                    </Button>
+                  ),
                 },
                 { title: "脚本名称", dataIndex: "script" },
                 { title: "版本", dataIndex: "version" },
@@ -201,7 +256,7 @@ export function BuildsPage() {
                           modal.confirm({
                             title: "取消排队作业",
                             content:
-                              "取消作业接口尚未接入，当前作业将保留排队状态。",
+                              `${row.id} 的取消作业接口待接入，可在详情查看排队状态。`,
                             okText: "了解",
                             cancelText: "返回",
                           })
@@ -210,7 +265,7 @@ export function BuildsPage() {
                         取消
                       </Button>
                     ) : (
-                      <Button type="link" onClick={() => setSelected(row.id)}>
+                      <Button type="link" onClick={() => selectRecord(row.id)}>
                         查看详情
                       </Button>
                     ),
@@ -250,7 +305,7 @@ export function BuildsPage() {
                     <h3>错误信息（已脱敏）</h3>
                     <Alert
                       type="error"
-                      showIcon
+                        showIcon
                       title="构建过程异常，依赖锁缺失，请检查依赖配置。"
                     />
                     <h3>修复建议</h3>
@@ -263,10 +318,10 @@ export function BuildsPage() {
                     </Notice>
                     <Button
                       type="primary"
-                      icon={<ReloadOutlined />}
+                        icon={<ReloadOutlined aria-hidden />}
                       onClick={() =>
                         void message.info(
-                          "构建服务尚未接通，未创建新的构建作业",
+                          `${item.id} 的构建服务待接入`,
                         )
                       }
                     >
@@ -295,7 +350,15 @@ export function BuildsPage() {
                 )}
               </>
             ) : (
-              <p className="muted">请选择记录查看详情。</p>
+              <Empty
+                description={
+                  !prototype
+                    ? "构建详情待接入"
+                    : requested
+                      ? `记录 ${requested} 不存在或不在当前筛选范围内`
+                      : "当前筛选无记录"
+                }
+              />
             )}
           </section>
         </div>
@@ -310,7 +373,7 @@ const deploymentFixtures = [
     script: "表格清洗",
     version: "v1.2",
     category: "数据清洗",
-    digest: "sha256:8f3e9a2d...",
+    digest: "sha256:8f3e9a2d67bd4b76c8a841085df181f1ce8d7a0b48f762f443ed6919cfaf2c31",
     mode: "Docker",
     status: "READY",
     service: "表格清洗",
@@ -320,7 +383,7 @@ const deploymentFixtures = [
     script: "文件处理",
     version: "v0.4",
     category: "文件处理",
-    digest: "sha256:4b7c1d50...",
+    digest: "sha256:4b7c1d50174e9db83c08abccf19bfd8e7a4c0db0192f9f507faf2129f634e6ac",
     mode: "Docker",
     status: "FAILED",
     service: "未关联",
@@ -330,7 +393,7 @@ const deploymentFixtures = [
     script: "景点预约",
     version: "v1.0",
     category: "景点预约适配",
-    digest: "sha256:9d2e5f7a...",
+    digest: "sha256:9d2e5f7a2768d2d8cdf87a2aa2cb13df876bb4886ad3ad2846012d1b0aa90dc7",
     mode: "KVM",
     status: "READY",
     service: "免费景点预约",
@@ -339,34 +402,82 @@ const deploymentFixtures = [
 
 export function DeploymentsPage() {
   const { bootstrap } = useWorkspace();
-  const [selected, setSelected] = useState("table");
+  const [params, setParams] = useSearchParams();
+  const selected = params.get("deployment") || "table";
+  const prototype = bootstrap.data_mode === "prototype";
   const [creating, setCreating] = useState(false);
+  const [configuration, setConfiguration] = useState<Record<string, unknown> | null>(
+    null,
+  );
   const [form] = Form.useForm();
   const mode = Form.useWatch("mode", form);
   const { modal, message } = App.useApp();
-  const rows = bootstrap.data_mode === "prototype" ? deploymentFixtures : [];
+  const rows = prototype ? deploymentFixtures : [];
   const item = rows.find((row) => row.id === selected);
-  function stop(name: string) {
+  function selectDeployment(id: string) {
+    const next = new URLSearchParams(params);
+    next.set("deployment", id);
+    setParams(next);
+  }
+  function stop(deployment: (typeof deploymentFixtures)[number]) {
     modal.confirm({
       title: "停用部署影响预览",
-      content: `${name}停用将停止新售卖，并对未使用权益发起履约或补偿。影响预览与作业接口尚未接通，原部署状态保持不变。`,
+      content: `${deployment.script} ${deployment.version} 停用将停止新售卖，并处理存量权益的履约或补偿。影响预览与停用作业接口待接入，受影响订单及权益数量待计算。`,
       okText: "了解影响",
       cancelText: "返回",
     });
+  }
+  function previewConfiguration(values: {
+    version: string;
+    mode: string;
+    cpu: number;
+    memory: number;
+    allowTcg?: boolean;
+  }) {
+    const version = rows.find(
+      (row) => row.id === values.version && row.status === "READY",
+    );
+    if (!version) {
+      void message.error("请选择已就绪的固定版本");
+      return;
+    }
+    setConfiguration({
+      script: version.script,
+      version: version.version,
+      artifact_digest: version.digest,
+      execution_mode: values.mode,
+      cpu: values.cpu,
+      memory_mb: values.memory,
+      allow_tcg: values.mode === "qemu_tcg" && values.allowTcg === true,
+    });
+    void message.info("部署接口尚未接通，配置已通过前端校验");
   }
   return (
     <div className="publisher-deployments-page">
       <PageHeading
         title="部署管理"
         description="管理脚本的运行部署，配置运行环境与资源，支持启停与重试。"
+        extra={
+          <Status tone="gray">
+            {prototype ? "本地示例" : "部署服务待接入"}
+          </Status>
+        }
       />
+      {!prototype && (
+        <Notice>部署、资源模板与配额服务待接入，当前可用性和用量暂不可用。</Notice>
+      )}
       <div className="deployments-columns">
         <Panel className="deployments-list">
           <Button
             type="primary"
             aria-label="创建部署"
-            icon={<PlusOutlined />}
-            onClick={() => setCreating(true)}
+            icon={<PlusOutlined aria-hidden />}
+            disabled={!prototype}
+            onClick={() => {
+              form.resetFields();
+              setConfiguration(null);
+              setCreating(true);
+            }}
           >
             创建部署
           </Button>
@@ -374,14 +485,21 @@ export function DeploymentsPage() {
             rowKey="id"
             pagination={false}
             dataSource={rows}
+            scroll={{ x: 1030 }}
+            rowClassName={(row) =>
+              row.id === selected ? "selected-deployment" : ""
+            }
             columns={[
               {
                 title: "脚本版本",
                 render: (_, row) => (
                   <>
-                    <b>
-                      {row.script} {row.version}
-                    </b>
+                    <Link
+                      className="dark-link"
+                      to={`/publisher/versions/${row.id}`}
+                    >
+                      <b>{row.script} {row.version}</b>
+                    </Link>
                     <small>
                       <Status>{row.category}</Status>
                     </small>
@@ -392,7 +510,15 @@ export function DeploymentsPage() {
                 title: "镜像摘要",
                 dataIndex: "digest",
                 render: (value) => (
-                  <Typography.Text copyable>{value}</Typography.Text>
+                  <Typography.Text
+                    title={value}
+                    copyable={{
+                      text: value,
+                      tooltips: ["复制完整示例摘要", "已复制"],
+                    }}
+                  >
+                    {value.slice(0, 15)}...
+                  </Typography.Text>
                 ),
               },
               {
@@ -413,19 +539,26 @@ export function DeploymentsPage() {
               {
                 title: "服务",
                 dataIndex: "service",
-                render: (value) => <Status>{value}</Status>,
+                render: (value, row) =>
+                  row.id === "files" ? (
+                    <Status>{value}</Status>
+                  ) : (
+                    <Link to={`/publisher/services/${row.id}/edit`}>
+                      <Status>{value}</Status>
+                    </Link>
+                  ),
               },
               {
                 title: "操作",
                 render: (_, row) => (
                   <div className="text-actions">
-                    <Button type="link" onClick={() => setSelected(row.id)}>
+                    <Button type="link" onClick={() => selectDeployment(row.id)}>
                       详情
                     </Button>
                     <Button
                       type="link"
                       disabled={row.status !== "READY"}
-                      onClick={() => stop(row.script)}
+                      onClick={() => stop(row)}
                     >
                       停用
                     </Button>
@@ -433,7 +566,9 @@ export function DeploymentsPage() {
                       type="link"
                       disabled={row.status !== "FAILED"}
                       onClick={() =>
-                        void message.info("部署执行器尚未接通，未创建重试作业")
+                        void message.info(
+                          `${row.script} ${row.version} 的部署重试接口待接入`,
+                        )
                       }
                     >
                       重试
@@ -465,17 +600,21 @@ export function DeploymentsPage() {
                 <dd>{item.service}</dd>
               </dl>
             ) : (
-              <p>暂无部署</p>
+              <Empty
+                description={
+                  prototype
+                    ? `部署 ${selected} 不存在或已失效`
+                    : "部署详情待接入"
+                }
+              />
             )}
           </Panel>
           <Panel title="资源限额">
             <dl>
               <dt>单次部署上限</dt>
-              <dd>4 CPU　8 GB</dd>
+              <dd>{prototype ? "4 CPU　8 GB" : "待载入"}</dd>
               <dt>当前已用</dt>
-              <dd>
-                {rows.length} CPU　{rows.length * 0.5} GB
-              </dd>
+              <dd>{prototype ? "3 CPU　1.5 GB" : "待载入"}</dd>
             </dl>
           </Panel>
           <Panel title="日志">
@@ -484,20 +623,22 @@ export function DeploymentsPage() {
                 ? "[INFO] 启动运行环境...\n[INFO] 加载脚本依赖完成\n[INFO] 服务已就绪，开始提供请求"
                 : item
                   ? "[ERROR] 固定制品依赖检查未通过\n[INFO] 部署等待修复"
-                  : "暂无日志"}
+                  : "部署日志待载入"}
             </pre>
             <div className="row-actions">
               <Button
                 disabled={item?.status !== "FAILED"}
                 onClick={() =>
-                  void message.info("部署执行器尚未接通，未创建重试作业")
+                  void message.info(
+                    `${item?.script} ${item?.version} 的部署重试接口待接入`,
+                  )
                 }
               >
                 重试
               </Button>
               <Button
                 disabled={item?.status !== "READY"}
-                onClick={() => item && stop(item.script)}
+                onClick={() => item && stop(item)}
               >
                 停用
               </Button>
@@ -529,9 +670,8 @@ export function DeploymentsPage() {
             cpu: 1,
             memory: 512,
           }}
-          onFinish={() =>
-            void message.info("部署接口尚未接通，配置已通过前端校验")
-          }
+          onFinish={previewConfiguration}
+          onValuesChange={() => setConfiguration(null)}
         >
           <Form.Item
             name="version"
@@ -539,7 +679,8 @@ export function DeploymentsPage() {
             rules={[{ required: true }]}
           >
             <Select
-              options={deploymentFixtures
+              aria-label="固定版本"
+              options={rows
                 .filter((row) => row.status === "READY")
                 .map((row) => ({
                   value: row.id,
@@ -560,6 +701,7 @@ export function DeploymentsPage() {
           {mode === "qemu_tcg" && (
             <Form.Item
               name="allowTcg"
+              preserve={false}
               valuePropName="checked"
               rules={[
                 {
@@ -573,16 +715,47 @@ export function DeploymentsPage() {
               <Checkbox>显式允许TCG执行</Checkbox>
             </Form.Item>
           )}
-          <Form.Item name="cpu" label="CPU核数" rules={[{ required: true }]}>
-            <InputNumber min={1} max={4} />
+          <Form.Item
+            name="cpu"
+            label="CPU核数"
+            rules={[
+              { required: true },
+              { type: "number", min: 1, max: 4, message: "CPU核数须在1至4之间" },
+            ]}
+          >
+            <InputNumber aria-label="CPU核数" min={1} max={4} />
           </Form.Item>
           <Form.Item
             name="memory"
             label="内存（MB）"
-            rules={[{ required: true }]}
+            rules={[
+              { required: true },
+              {
+                type: "number",
+                min: 128,
+                max: 8192,
+                message: "内存须在128至8192 MB之间",
+              },
+            ]}
           >
-            <InputNumber min={128} max={8192} step={128} />
+            <InputNumber
+              aria-label="内存（MB）"
+              min={128}
+              max={8192}
+              step={128}
+            />
           </Form.Item>
+          {configuration && (
+            <div className="deployment-configuration-preview">
+              <Alert
+                type="info"
+                showIcon
+                title="部署配置预览"
+                description="资源模板、实际配额及部署作业由部署服务接入后校验。"
+              />
+              <pre>{JSON.stringify(configuration, null, 2)}</pre>
+            </div>
+          )}
         </Form>
       </Modal>
     </div>

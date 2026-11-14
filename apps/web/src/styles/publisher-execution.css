@@ -1,0 +1,194 @@
+.app-shell:is(.page-S05, .page-S06) .main-content {
+  padding-bottom: 20px;
+}
+.app-shell:is(.page-S05, .page-S06) .global-search {
+  left: 38%;
+  width: 31.2%;
+}
+.app-shell:is(.page-S05, .page-S06) .sidebar {
+  padding-top: 10px;
+}
+.app-shell:is(.page-S05, .page-S06) .nav-item {
+  height: 36px;
+}
+.app-shell:is(.page-S05, .page-S06) .nav-group {
+  margin-bottom: 10px;
+}
+.page-S05 .build-filters {
+  gap: 20px;
+  margin-bottom: 26px;
+}
+.publisher-builds-page > .panel {
+  margin-bottom: 0;
+}
+.page-S06 .deployments-columns aside .panel:last-child {
+  margin-bottom: 0;
+}
+.page-S06 .deployments-columns aside .panel:nth-child(2) .panel-body {
+  padding-top: 8px;
+  padding-bottom: 11px;
+}
+.page-S06 .deployments-columns aside .panel:nth-child(2) dl {
+  line-height: 1.4;
+}
+.page-S06 .deployments-columns aside .panel:last-child .panel-body {
+  padding-bottom: 10px;
+}
+.page-S06 .deployment-log {
+  min-height: 105px;
+}
+.page-S05 .build-filters .ant-select {
+  width: 190px;
+}
+.page-S05 .build-filters .ant-select:nth-of-type(2) {
+  width: 225px;
+}
+.page-S05 .build-filters .ant-select:nth-of-type(3) {
+  width: 166px;
+  margin-right: 10px;
+}
+.page-S05 .build-filters .ant-btn {
+  width: 94px;
+}
+.page-S05 .build-records .ant-table-thead > tr > th {
+  font-weight: 600;
+}
+.page-S05 .build-records .ant-table-row > td {
+  padding-block: 13px;
+}
+.page-S05 .build-records .build-record-id {
+  color: #101526;
+  height: auto;
+  line-height: inherit;
+}
+.page-S05 .build-detail .ant-alert {
+  min-height: 52px;
+  padding: 12px 16px;
+}
+.page-S05 .build-detail .ant-alert-title {
+  font-size: 15px;
+}
+.page-S05 .build-detail .ant-alert-icon {
+  font-size: 18px;
+}
+.page-S05 .build-detail .notice {
+  padding: 10px 18px;
+  gap: 12px;
+}
+.page-S05 .build-detail p > .status:last-child {
+  margin-left: 0;
+}
+.page-S05 .build-detail > .ant-empty {
+  margin-top: 100px;
+}
+.page-S06 .page-heading {
+  margin-bottom: 18px;
+}
+.page-S06 .deployments-list .panel-body {
+  padding-bottom: 20px;
+}
+.page-S06 .deployments-list .ant-table-thead > tr > th {
+  padding-block: 12px;
+  font-weight: 600;
+}
+.page-S06 .deployments-list .ant-table-row > td {
+  padding-block: 12px;
+}
+.page-S06 .deployments-list .ant-typography {
+  white-space: nowrap;
+  color: #101526;
+}
+.page-S06 .deployments-list .ant-typography-copy {
+  margin-left: 10px;
+  color: #566482;
+  font-size: 16px;
+}
+.page-S06 .deployments-list .status {
+  padding: 3px 10px;
+}
+.page-S06 .deployments-list .text-actions {
+  gap: 4px;
+}
+.page-S06 .deployments-list .ant-btn-link {
+  padding-inline: 5px;
+}
+.page-S06 .deployments-columns aside .panel-heading {
+  min-height: 46px;
+}
+.page-S06 .deployments-columns aside .panel-heading h2 {
+  width: 100%;
+  border-bottom: 1px solid #e5eaf4;
+  padding-bottom: 8px;
+}
+.page-S06 .deployments-columns aside dl {
+  grid-template-columns: 102px minmax(0, 1fr);
+  line-height: 1.55;
+  row-gap: 8px;
+}
+.page-S06 .deployments-columns aside dd {
+  overflow-wrap: anywhere;
+}
+.page-S06 .deployments-columns aside dd .status {
+  padding: 3px 10px;
+}
+.page-S06 .deployments-columns aside .row-actions {
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.page-S06 .deployments-columns aside .row-actions .ant-btn {
+  height: 39px;
+}
+.page-S06 .deployments-columns aside .ant-alert {
+  padding: 8px 10px;
+}
+.page-S06 .deployments-columns aside .ant-alert-icon {
+  font-size: 18px;
+  margin-top: 3px;
+  margin-inline-end: 8px;
+}
+.page-S06 .deployments-columns aside .ant-alert-title {
+  font-size: 13px;
+  line-height: 18px;
+}
+.page-S06 .deployments-columns aside .ant-alert-description {
+  padding-left: 0;
+}
+.deployment-configuration-preview pre {
+  max-height: 220px;
+  overflow: auto;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f4f6fb;
+}
+@media (max-width: 1400px) {
+  .page-S05 .build-filters .ant-select {
+    margin-right: 0;
+  }
+}
+@media (max-width: 700px) {
+  .app-shell:is(.page-S05, .page-S06) .main-content {
+    padding: 80px 12px 20px;
+  }
+  .page-S05 .build-filters .ant-select,
+  .page-S05 .build-filters .ant-select:nth-of-type(2),
+  .page-S05 .build-filters .ant-select:nth-of-type(3) {
+    width: calc(100% - 65px);
+  }
+  .page-S05 .build-filters > b {
+    min-width: 40px;
+  }
+  .page-S05 .build-records,
+  .page-S05 .build-detail {
+    min-width: 0;
+    min-height: 240px;
+  }
+  .page-S05 .build-detail {
+    padding-inline: 14px;
+  }
+  .page-S05 .build-detail p > span:last-child:not(.status) {
+    margin-left: 12px;
+  }
+  .page-S06 .deployments-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

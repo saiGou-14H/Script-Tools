@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-14T13:22:45.403Z",
+  "checks": [
+    "build and deployment reference regions and sidebar help fit 1814 by 868",
+    "applied build filters and selection survive reload while unavailable or filtered selections retain their own identity",
+    "trial records have their own URL selection and queued detail, and cancellation exposes its pending integration state",
+    "failed build diagnostics and retry feedback reference the selected build and retain the recorded result",
+    "deployment selection persists with state-specific diagnostics and actions, and an unknown deployment remains unavailable",
+    "deployment copy returns the complete local example digest, related links use its own version and service, and stop impact stays pending calculation",
+    "deployment configuration previews its selected ready version, complete digest and resource values, and editing clears stale validation evidence",
+    "Docker, KVM and TCG remain separate execution modes and TCG requires explicit consent after switching away and back",
+    "live build and deployment views expose pending integration with unavailable details and unknown resource quotas",
+    "both routes fit 390px with internally scrollable tables and preview actions issue no business mutations or browser exceptions"
+  ],
+  "screenshots": [
+    "PUBLISHER-S05",
+    "PUBLISHER-S06"
+  ],
+  "errors": [],
+  "layouts": {
+    "PUBLISHER-S05": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 281,
+        "y": 332.65625,
+        "width": 1494,
+        "height": 493.640625,
+        "bottom": 826.296875
+      },
+      "help": {
+        "x": 10,
+        "y": 803.53125,
+        "width": 221,
+        "height": 36,
+        "bottom": 839.53125
+      }
+    },
+    "PUBLISHER-S06": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 244,
+        "y": 199.3125,
+        "width": 1556,
+        "height": 646.390625,
+        "bottom": 845.703125
+      },
+      "help": {
+        "x": 10,
+        "y": 802.53125,
+        "width": 207,
+        "height": 36,
+        "bottom": 838.53125
+      }
+    }
+  },
+  "final_visual_acceptance": "pending",
+  "result": "PASS"
+}
