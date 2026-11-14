@@ -177,9 +177,7 @@ try {
     page.getByText("退款渠道尚未接通，当前进度保持不变"),
   ).toBeVisible();
   await menu("退款与售后");
-  await expect(page.locator(".refunds-list .ant-table-tbody tr")).toHaveCount(
-    3,
-  );
+  await expect(page.locator(".refunds-list .ant-table-row")).toHaveCount(3);
   await page.getByRole("button", { name: "提交退款", exact: true }).click();
   await page.getByRole("button", { name: "记录申请", exact: true }).click();
   expect(new URL(page.url()).pathname).toBe(refundPath);

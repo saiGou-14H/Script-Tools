@@ -1,20 +1,24 @@
-import { useState } from "react";
 import { App, Button, Empty, Form, Input, Select, Steps, Table } from "antd";
 import { CalendarOutlined, DownloadOutlined } from "@ant-design/icons";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { useWorkspace } from "../context";
 import { usePrototype, type PreviewRefund } from "../prototype";
 import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
+import { formatMinorUnits } from "../lib/money";
 
 const billFixtures = [
   {
     id: "booking",
     title: "景点预约",
     category: "预约",
-    amount: 8,
+    amountMinor: "800",
     channel: "示例渠道A",
     receipt: "WX****3921",
-    refund: "已退款",
     orderId: "TT202611130027",
     date: "2026-11-13",
   },
@@ -22,10 +26,9 @@ const billFixtures = [
     id: "table",
     title: "表格清洗",
     category: "数据处理",
-    amount: 6,
+    amountMinor: "600",
     channel: "示例渠道B",
     receipt: "ALI****7845",
-    refund: "无退款",
     orderId: "TT202611130018",
     date: "2026-11-13",
   },
@@ -33,10 +36,9 @@ const billFixtures = [
     id: "file",
     title: "文件处理",
     category: "文件工具",
-    amount: 3,
+    amountMinor: "300",
     channel: "示例渠道B",
     receipt: "WX****6607",
-    refund: "无退款",
     orderId: "TT202611130025",
     date: "2026-11-12",
   },
@@ -44,13 +46,55 @@ const billFixtures = [
 
 export function BillsPage() {
   const { bootstrap } = useWorkspace();
-  const [range, setRange] = useState("all");
-  const [selected, setSelected] = useState("booking");
-  const all = bootstrap.data_mode === "prototype" ? billFixtures : [];
-  const rows = all.filter(
-    (item) => range === "all" || item.date === "2026-11-13",
-  );
-  const item = rows.find((row) => row.id === selected) || rows[0];
+  const { refunds } = usePrototype();
+  const [search, setSearch] = useSearchParams();
+  const range = search.get("date") || "all";
+  const selected = search.get("order_id");
+  const isPrototype = bootstrap.data_mode === "prototype";
+  const all = isPrototype
+    ? billFixtures.map((bill) => ({
+        ...bill,
+        refund: refunds.find((refund) => refund.orderId === bill.orderId),
+      }))
+    : [];
+  const rows = all.filter((item) => range === "all" || item.date === range);
+  const item = selected
+    ? rows.find((row) => row.orderId === selected)
+    : rows[0];
+  const summary = [
+    {
+      icon: "payment",
+      label: "总实付",
+      amount: rows.reduce((sum, row) => sum + BigInt(row.amountMinor), 0n),
+      color: "blue",
+    },
+    {
+      icon: "refund",
+      label: "已退款",
+      amount: rows.reduce(
+        (sum, row) =>
+          sum +
+          (row.refund?.status === "SUCCEEDED"
+            ? BigInt(row.refund.amountMinor)
+            : 0n),
+        0n,
+      ),
+      color: "green",
+    },
+    {
+      icon: "clock",
+      label: "退款处理中",
+      amount: rows.reduce(
+        (sum, row) =>
+          sum +
+          (row.refund?.status === "PROCESSING"
+            ? BigInt(row.refund.amountMinor)
+            : 0n),
+        0n,
+      ),
+      color: "orange",
+    },
+  ];
 
   function exportBills() {
     const lines = [
@@ -65,11 +109,11 @@ export function BillsPage() {
       ],
       ...rows.map((row) => [
         row.title,
-        row.amount,
+        formatMinorUnits(row.amountMinor),
         row.channel,
         row.receipt,
         "已支付",
-        row.refund,
+        row.refund ? refundStatus(row.refund) : "无退款",
         row.date,
       ]),
     ];
@@ -89,30 +133,22 @@ export function BillsPage() {
       <PageHeading
         title="支付与账单"
         description="查看服务支付、退款及账单明细。"
+        extra={
+          <Status tone="gray">
+            {isPrototype ? "本地示例" : "账单服务待接入"}
+          </Status>
+        }
       />
+      {!isPrototype && (
+        <Notice>账单服务待接入，实付与退款汇总暂不可用。</Notice>
+      )}
       <div className="bill-summary">
-        {[
-          [
-            "payment",
-            "总实付",
-            all.reduce((sum, row) => sum + row.amount, 0),
-            "blue",
-          ],
-          [
-            "refund",
-            "已退款",
-            all
-              .filter((row) => row.refund === "已退款")
-              .reduce((sum, row) => sum + row.amount, 0),
-            "green",
-          ],
-          ["clock", "退款处理中", 0, "orange"],
-        ].map(([icon, label, amount, color]) => (
+        {summary.map(({ icon, label, amount, color }) => (
           <Panel key={label}>
-            <TileIcon name={String(icon)} color={String(color)} />
+            <TileIcon name={icon} color={color} />
             <div>
               <h3>{label}</h3>
-              <strong>{amount}</strong> 元
+              <strong>{isPrototype ? formatMinorUnits(amount) : "—"}</strong> 元
             </div>
           </Panel>
         ))}
@@ -120,15 +156,17 @@ export function BillsPage() {
       <div className="bills-columns">
         <Panel className="bill-list">
           <div className="bill-filter">
-            <span>时间筛选</span>
+            <span>时间筛选：</span>
             <Select
               aria-label="账单时间筛选"
               value={range}
-              onChange={setRange}
-              suffixIcon={<CalendarOutlined />}
+              onChange={(date) => setSearch(date === "all" ? {} : { date })}
+              prefix={<CalendarOutlined />}
+              disabled={!isPrototype}
               options={[
                 { value: "all", label: "全部时间" },
-                { value: "today", label: "2026-11-13" },
+                { value: "2026-11-13", label: "2026-11-13" },
+                { value: "2026-11-12", label: "2026-11-12" },
               ]}
             />
             <Button
@@ -145,9 +183,11 @@ export function BillsPage() {
             pagination={false}
             dataSource={rows}
             rowClassName={(row) => (row.id === item?.id ? "selected-bill" : "")}
+            scroll={{ x: 960 }}
             columns={[
               {
                 title: "服务名称",
+                width: 204,
                 render: (_, row) => (
                   <b>
                     {row.title}{" "}
@@ -159,17 +199,30 @@ export function BillsPage() {
               },
               {
                 title: "实付金额",
-                dataIndex: "amount",
-                render: (value) => <b>{value}元</b>,
+                dataIndex: "amountMinor",
+                width: 124,
+                render: (value: string) => <b>{formatMinorUnits(value)} 元</b>,
               },
-              { title: "支付渠道", dataIndex: "channel" },
-              { title: "交易回执（掩码）", dataIndex: "receipt" },
-              { title: "支付状态", render: () => "已支付" },
-              { title: "退款状态", dataIndex: "refund" },
+              { title: "支付渠道", dataIndex: "channel", width: 124 },
+              { title: "交易回执（掩码）", dataIndex: "receipt", width: 200 },
+              { title: "支付状态", render: () => "已支付", width: 120 },
+              {
+                title: "退款状态",
+                render: (_, row) =>
+                  row.refund ? refundStatus(row.refund) : "无退款",
+                width: 130,
+              },
               {
                 title: "",
                 render: (_, row) => (
-                  <Button type="link" onClick={() => setSelected(row.id)}>
+                  <Button
+                    type="link"
+                    onClick={() => {
+                      const next = new URLSearchParams(search);
+                      next.set("order_id", row.orderId);
+                      setSearch(next);
+                    }}
+                  >
                     详情
                   </Button>
                 ),
@@ -190,7 +243,7 @@ export function BillsPage() {
                 <dd>{item.orderId}</dd>
                 <dt>实付金额</dt>
                 <dd>
-                  <strong>{item.amount}</strong> 元
+                  <strong>{formatMinorUnits(item.amountMinor)}</strong> 元
                 </dd>
                 <dt>支付渠道</dt>
                 <dd>{item.channel}</dd>
@@ -201,20 +254,39 @@ export function BillsPage() {
               <h2>费用明细</h2>
               <div className="bill-fees">
                 <p>
-                  服务费 <b>{item.amount}元</b>
+                  服务费 <b>{formatMinorUnits(item.amountMinor)} 元</b>
                 </p>
                 {item.id === "booking" && (
                   <p>
-                    门票 <b>0元</b>
+                    门票 <b>0.00 元</b>
                   </p>
                 )}
                 <p>
-                  退服务费 <b>{item.refund === "已退款" ? item.amount : 0}元</b>
+                  退服务费{" "}
+                  <b>
+                    {formatMinorUnits(
+                      item.refund?.status === "SUCCEEDED"
+                        ? item.refund.amountMinor
+                        : "0",
+                    )}{" "}
+                    元
+                  </b>
                 </p>
+                {item.refund && (
+                  <Link to={`/me/refunds/${item.refund.id}`}>
+                    {refundStatus(item.refund)} · 查看退款
+                  </Link>
+                )}
               </div>
             </>
           ) : (
-            <Empty description="暂无交易明细" />
+            <Empty
+              description={
+                selected
+                  ? "该订单的账单尚未载入或不在所选日期范围内"
+                  : "暂无交易明细"
+              }
+            />
           )}
         </Panel>
       </div>
@@ -236,7 +308,12 @@ export function RefundsPage() {
   const navigate = useNavigate();
   const { modal, message } = App.useApp();
   const [form] = Form.useForm();
-  function submit(values: { orderId: string; reason: string }) {
+  const isPrototype = bootstrap.data_mode === "prototype";
+  function submit(values: {
+    orderId: string;
+    reason: string;
+    description?: string;
+  }) {
     modal.confirm({
       title: "确认退款申请",
       content:
@@ -245,7 +322,11 @@ export function RefundsPage() {
       cancelText: "返回修改",
       onOk() {
         try {
-          const refund = requestRefund(values.orderId, values.reason);
+          const refund = requestRefund(
+            values.orderId,
+            values.reason,
+            values.description,
+          );
           navigate(`/me/refunds/${refund.id}`);
         } catch (error) {
           void message.error((error as Error).message);
@@ -258,13 +339,22 @@ export function RefundsPage() {
       <PageHeading
         title="退款与售后"
         description="查看订单的退款进度，提交退款申请并了解可退款规则。"
+        extra={
+          <Status tone="gray">
+            {isPrototype ? "本地示例" : "退款服务待接入"}
+          </Status>
+        }
       />
+      {!isPrototype && (
+        <Notice>退款服务待接入，订单规则与可退金额暂不可用。</Notice>
+      )}
       <div className="refunds-columns">
         <Panel className="refunds-list">
           <Table
             rowKey="id"
             dataSource={refunds}
             pagination={false}
+            scroll={{ x: 960 }}
             columns={[
               { title: "订单", dataIndex: "orderId" },
               {
@@ -276,7 +366,7 @@ export function RefundsPage() {
               {
                 title: "申请金额",
                 dataIndex: "amountMinor",
-                render: (value) => `¥ ${(Number(value) / 100).toFixed(2)}`,
+                render: (value: string) => `¥ ${formatMinorUnits(value)}`,
               },
               {
                 title: "状态",
@@ -302,7 +392,13 @@ export function RefundsPage() {
           <Form
             form={form}
             layout="vertical"
-            initialValues={{ orderId: "TT202611130028", reason: "目标未达" }}
+            requiredMark={false}
+            disabled={!isPrototype}
+            initialValues={
+              isPrototype
+                ? { orderId: "TT202611130028", reason: "目标未达" }
+                : {}
+            }
             onFinish={submit}
           >
             <Form.Item
@@ -323,15 +419,17 @@ export function RefundsPage() {
                 }
               />
             </Form.Item>
-            <Notice>
-              <div>
-                <b>成交规则</b>
-                <p>目标未达成全退服务费，以原订单约定的目标为准。</p>
-                <b>
-                  可退金额　<span className="price">¥8.00</span>
-                </b>
-              </div>
-            </Notice>
+            {isPrototype && (
+              <Notice>
+                <div>
+                  <b>成交规则</b>
+                  <p>目标未达成全退服务费，以原订单约定的目标为准。</p>
+                  <b>
+                    可退金额　<span className="price">¥8.00</span>
+                  </b>
+                </div>
+              </Notice>
+            )}
             <Form.Item
               name="reason"
               label="退款原因"
@@ -384,7 +482,10 @@ export function RefundDetailPage() {
     refund.status === "SUCCEEDED" ? 5 : refund.status === "PROCESSING" ? 3 : 0;
   return (
     <div className="refund-detail-page">
-      <PageHeading title="退款详情" />
+      <PageHeading
+        title="退款详情"
+        extra={<Status tone="gray">本地示例</Status>}
+      />
       <div className="refund-detail-banner">
         <TileIcon name="refund" color="gradient" />
         <div>
@@ -392,7 +493,7 @@ export function RefundDetailPage() {
             {refund.id.startsWith("PREVIEW") ? "退款申请预览" : refund.id}{" "}
             {refund.service}
           </h2>
-          <strong>¥{(Number(refund.amountMinor) / 100).toFixed(2)}</strong>
+          <strong>¥{formatMinorUnits(refund.amountMinor)}</strong>
         </div>
         <div>
           <p>退款状态</p>
@@ -413,31 +514,51 @@ export function RefundDetailPage() {
             "退款请求已发送",
             "等待渠道确认",
             "退款到账",
-          ].map((title) => ({ title }))}
+          ].map((title, index) => ({
+            title,
+            icon: (
+              <span
+                aria-hidden
+                className={`refund-step-marker ${index < current ? "is-finished" : index === current ? "is-current" : ""}`}
+              >
+                {index < current ? "✓" : ""}
+              </span>
+            ),
+          }))}
         />
         <div className="refund-facts">
           <div>
             <TileIcon name="file" />
             <b>退款规则</b>
-            <span>已固定规则　目标未达全退</span>
+            <span>
+              {refund.ruleSnapshot
+                ? `已固定规则　${refund.ruleSnapshot}`
+                : "原订单退款规则待载入"}
+            </span>
           </div>
           <div>
             <TileIcon name="flag" />
             <b>执行结果</b>
-            <span>
-              {refund.reason === "未使用"
-                ? "服务未使用"
-                : "执行已结束 / 目标未达成"}
-            </span>
+            <span>{refund.executionResult || "执行结果待载入"}</span>
           </div>
           <div>
             <TileIcon name="link" />
             <b>关联原订单</b>
             <span>
-              {refund.orderId} {refund.service}
+              <Link
+                to={`/me/bills?order_id=${encodeURIComponent(refund.orderId)}`}
+              >
+                {refund.orderId} {refund.service}
+              </Link>
             </span>
           </div>
         </div>
+        {refund.description && (
+          <div className="refund-description">
+            <b>补充说明</b>
+            <p>{refund.description}</p>
+          </div>
+        )}
         <div className="refund-facts refund-delivery-facts">
           <div>
             <TileIcon name="payment" />

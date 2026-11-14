@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { useWorkspace } from "./context";
 import type { Service } from "./types";
 import { serviceAvailable, serviceDate } from "./lib/service-display";
@@ -50,6 +56,9 @@ export interface PreviewRefund {
   amountMinor: string;
   status: "REQUESTED" | "PROCESSING" | "SUCCEEDED";
   createdAt: string;
+  description?: string;
+  ruleSnapshot?: string;
+  executionResult?: string;
 }
 
 function credentialBindings(taskIds: string[]) {
@@ -103,6 +112,8 @@ const refundFixtures: PreviewRefund[] = [
     amountMinor: "800",
     status: "PROCESSING",
     createdAt: "2026-11-13 14:20",
+    ruleSnapshot: "目标未达全退",
+    executionResult: "执行已结束 / 目标未达成",
   },
   {
     id: "REF017",
@@ -112,6 +123,8 @@ const refundFixtures: PreviewRefund[] = [
     amountMinor: "300",
     status: "SUCCEEDED",
     createdAt: "2026-11-13 13:10",
+    ruleSnapshot: "未使用服务费全退",
+    executionResult: "服务未使用",
   },
 ];
 
@@ -171,7 +184,11 @@ interface PrototypeContextValue {
   travelers: TravelerRow[];
   setTravelers: React.Dispatch<React.SetStateAction<TravelerRow[]>>;
   refunds: PreviewRefund[];
-  requestRefund: (orderId: string, reason: string) => PreviewRefund;
+  requestRefund: (
+    orderId: string,
+    reason: string,
+    description?: string,
+  ) => PreviewRefund;
 }
 
 const PrototypeContext = createContext<PrototypeContextValue | null>(null);
@@ -202,13 +219,19 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
     isPrototype ? travelerFixtures : [],
   );
   const [refunds, setRefunds] = useState(isPrototype ? refundFixtures : []);
+  const refundsRef = useRef(refunds);
 
-  function requestRefund(orderId: string, reason: string) {
+  function requestRefund(orderId: string, reason: string, description = "") {
     if (!isPrototype) throw new Error("退款接口尚未配置");
-    const existing = refunds.find((item) => item.orderId === orderId);
+    const existing = refundsRef.current.find(
+      (item) => item.orderId === orderId,
+    );
     if (existing) return existing;
     if (orderId !== "TT202611130028")
       throw new Error("订单可退金额需要重新核对");
+    if (!["目标未达", "未使用", "其他"].includes(reason))
+      throw new Error("请选择有效的退款原因");
+    if (description.trim().length > 200) throw new Error("补充说明最多200字");
     const refund: PreviewRefund = {
       id: `PREVIEW-REF-${crypto.randomUUID()}`,
       orderId,
@@ -217,12 +240,12 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
       amountMinor: "800",
       status: "REQUESTED",
       createdAt: new Date().toLocaleString("sv-SE"),
+      description: description.trim(),
+      ruleSnapshot: "目标未达全退",
+      executionResult: "执行已结束 / 目标未达成",
     };
-    setRefunds((previous) =>
-      previous.some((item) => item.orderId === orderId)
-        ? previous
-        : [refund, ...previous],
-    );
+    refundsRef.current = [refund, ...refundsRef.current];
+    setRefunds(refundsRef.current);
     return refund;
   }
   function createOrder(service: Service, requestKey: string, input?: unknown) {

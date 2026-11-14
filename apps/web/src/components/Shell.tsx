@@ -58,6 +58,23 @@ const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
       C19: "refund",
       C22: "ticket",
     },
+    C18: {
+      C06: "box",
+      C13: "clock",
+      C16: "message",
+      C19: "money",
+      C22: "ticket",
+    },
+    C19: { C06: "layers", C12: "folder", C19: "shield", C22: "ticket" },
+    C20: { C06: "layers", C12: "box", C19: "refund", C22: "ticket" },
+    C22: {
+      C06: "box",
+      C12: "chart",
+      C13: "file",
+      C15: "user",
+      C19: "money",
+      C22: "ticket",
+    },
   };
 
 export function Shell({ pageId }: { pageId: PageId }) {
@@ -192,6 +209,8 @@ export function Shell({ pageId }: { pageId: PageId }) {
       P07: "首页",
       C17: "我的首页",
       C14: "我的首页",
+      C18: "我的首页",
+      C19: "我的首页",
       S01: "首页",
       S05: "发布者工作台",
       S06: "发布者工作台",
@@ -415,12 +434,20 @@ export function Shell({ pageId }: { pageId: PageId }) {
                   <span>›</span>
                 </>
               ) : ancestors.length > 0 ? (
-                ancestors.map((id) => (
-                  <span className="breadcrumb-link" key={id}>
-                    <Link to={pagePath(id)}>{pages[id].title}</Link>
-                    <span>›</span>
-                  </span>
-                ))
+                <>
+                  {pageId === "C20" && (
+                    <>
+                      <Link to="/me/home">我的首页</Link>
+                      <span>›</span>
+                    </>
+                  )}
+                  {ancestors.map((id) => (
+                    <span className="breadcrumb-link" key={id}>
+                      <Link to={pagePath(id)}>{pages[id].title}</Link>
+                      <span>›</span>
+                    </span>
+                  ))}
+                </>
               ) : (
                 <>
                   <Link

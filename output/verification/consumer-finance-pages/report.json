@@ -1,0 +1,135 @@
+{
+  "date": "2026-11-14T11:23:54.553Z",
+  "checks": [
+    "minor-unit formatting preserves BIGINT boundaries and cent precision",
+    "four finance and booking routes fit the reference viewport with visible help navigation",
+    "billing summaries, masked CSV and settled refunds share decimal-string monetary values and refund state",
+    "bill selection survives reload, date filters reconcile totals and unknown order IDs keep an unavailable detail",
+    "refund detail links to its matching bill, keeps channel progress and reads the stored rule and execution snapshot",
+    "refund confirmation preserves escaped supplementary text and the original outcome and deduplicates repeated applications",
+    "pending booking retains its verification state and the verified voucher includes the correct masked code and service order",
+    "live mode shows unavailable finance totals, disables local actions and keeps ticket amounts and refund rules unknown",
+    "all four routes keep tables internally scrollable at 390px and preview actions issue no business mutations"
+  ],
+  "screenshots": [
+    "USER-C18",
+    "USER-C19",
+    "USER-C20",
+    "USER-C22"
+  ],
+  "errors": [],
+  "layouts": {
+    "USER-C18": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 266,
+        "y": 344.65625,
+        "width": 1021.9375,
+        "height": 482,
+        "bottom": 826.65625
+      },
+      "detail": {
+        "x": 1305.9375,
+        "y": 344.65625,
+        "width": 482.0625,
+        "height": 482,
+        "bottom": 826.65625
+      },
+      "editor": null,
+      "help": {
+        "x": 10,
+        "y": 835.953125,
+        "width": 212,
+        "height": 31,
+        "bottom": 866.953125
+      }
+    },
+    "USER-C19": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 269,
+        "y": 213.515625,
+        "width": 1021.75,
+        "height": 197.140625,
+        "bottom": 410.65625
+      },
+      "detail": {
+        "x": 1314.75,
+        "y": 213.515625,
+        "width": 475.234375,
+        "height": 605.671875,
+        "bottom": 819.1875
+      },
+      "editor": {
+        "x": 1338.75,
+        "y": 615.1875,
+        "width": 427.234375,
+        "height": 114,
+        "bottom": 729.1875
+      },
+      "help": {
+        "x": 10,
+        "y": 835.953125,
+        "width": 224,
+        "height": 31,
+        "bottom": 866.953125
+      }
+    },
+    "USER-C20": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 265,
+        "y": 320.125,
+        "width": 1523,
+        "height": 521.5,
+        "bottom": 841.625
+      },
+      "detail": {
+        "x": 265,
+        "y": 320.125,
+        "width": 1523,
+        "height": 521.5,
+        "bottom": 841.625
+      },
+      "editor": null,
+      "help": {
+        "x": 10,
+        "y": 835.953125,
+        "width": 211,
+        "height": 31,
+        "bottom": 866.953125
+      }
+    },
+    "USER-C22": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 243,
+        "y": 295.921875,
+        "width": 1555,
+        "height": 213.265625,
+        "bottom": 509.1875
+      },
+      "detail": {
+        "x": 243,
+        "y": 295.921875,
+        "width": 1555,
+        "height": 213.265625,
+        "bottom": 509.1875
+      },
+      "editor": null,
+      "help": {
+        "x": 10,
+        "y": 835.953125,
+        "width": 202,
+        "height": 31,
+        "bottom": 866.953125
+      }
+    }
+  },
+  "final_visual_acceptance": "pending",
+  "result": "PASS"
+}

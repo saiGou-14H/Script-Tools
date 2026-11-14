@@ -42,6 +42,7 @@ const browserReports = [
   "output/verification/account-pages/report.json",
   "output/verification/notification-pages/report.json",
   "output/verification/personal-data-pages/report.json",
+  "output/verification/consumer-finance-pages/report.json",
 ];
 const screenshots = new Set();
 const browserResults = [];
@@ -113,6 +114,7 @@ const report = {
     "Account settings now have distinct consumer, publisher and administrator layouts. Identity, nickname edits and session management use owner-scoped APIs, generic encrypted command receipts and revision checks. Security revisions use decimal strings. Account closure, email changes and subscription disconnection remain pending.",
     "The message center and notification settings have been realigned with their reference regions, including the fixed footer and unobscured Webhook card. Message category and unread filters persist in the URL, and preview read state drives the list, total and header badge together. Preview links use their existing output, order, refund and pending-verification records. Notification services, channel binding and subscription persistence remain pending. Live mode exposes that integration state and disables local-only saves.",
     "Credential and traveler pages have been realigned with their reference regions and Ctrl K search. Preview credential rotation preserves existing task-version bindings, and binding links open their corresponding tasks. Short values stay masked. Traveler edits retain document types and advance the preview version, and deleting the edited record resets its form. Live credential storage, validation, traveler versions and authorization snapshots remain pending.",
+    "Billing, refund and booking pages have been realigned with their reference regions. Billing summaries and CSV use decimal-string minor units and share refund records with the refund pages, resolving the conflicting reference fixtures to 3.00 refunded and 8.00 processing. Refund details link to the matching bill, preserve supplementary text, and read stored rule and execution snapshots. Repeated preview submissions reuse the same request. Pending bookings retain verification state and have no usable voucher. Live billing, refunds and official booking verification remain pending.",
   ],
   items,
 };
