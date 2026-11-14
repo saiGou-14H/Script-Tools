@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T09:50:57.272Z",
+  "date": "2026-11-14T17:02:59.984Z",
   "checks": [
     "all three administrator travel pages render within the reference viewport",
     "city and free-attraction drafts update counts while unverified channels keep new attractions closed",
@@ -7,7 +7,7 @@
     "rule updates deduplicate one draft version, bind verification evidence to historical versions and preserve unresolved records",
     "booking reconciliation requires an existing read-only binding, preserves UNKNOWN and free ticket facts, and links to the exact service order",
     "unknown booking IDs remain unavailable and travel workflows complete without browser runtime exceptions",
-    "live travel views show empty or unavailable data while preserving the configured workspace guard"
+    "live travel views query stored directory metadata and expose pending booking integration while preserving the configured workspace guard"
   ],
   "screenshots": [
     "ADMIN-O04",

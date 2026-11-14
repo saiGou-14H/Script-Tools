@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { useAdminPreview } from "./admin-preview";
 import { useWorkspace } from "./context";
 
@@ -45,7 +51,7 @@ const TravelPreviewContext = createContext<{
   cities: TravelCityPreview[];
   attractions: AttractionPreview[];
   channels: TravelChannelPreview[];
-  saveCity: (city: TravelCityPreview) => void;
+  saveCity: (city: TravelCityPreview, requestKey: string) => void;
   saveAttraction: (attraction: AttractionPreview, requestKey: string) => void;
   disableChannel: (id: string, reason: string, requestKey: string) => void;
   saveChannelRule: (
@@ -187,6 +193,7 @@ export function AdminTravelPreviewProvider({
         ]
       : [],
   );
+  const handledRequests = useRef(new Set<string>());
   function requireManagement() {
     if (!enabled) throw new Error("景点渠道管理接口尚未接入");
     if (!bootstrap.user?.capabilities.includes("catalog.manage"))
@@ -198,14 +205,15 @@ export function AdminTravelPreviewProvider({
       attraction.enabled &&
       Boolean(
         attraction.service &&
-        channel?.enabled &&
-        channel.status === "VERIFIED" &&
-        cities.find((item) => item.id === attraction.cityId)?.enabled,
+          channel?.enabled &&
+          channel.status === "VERIFIED" &&
+          cities.find((item) => item.id === attraction.cityId)?.enabled,
       )
     );
   }
-  function saveCity(city: TravelCityPreview) {
+  function saveCity(city: TravelCityPreview, requestKey: string) {
     requireManagement();
+    if (handledRequests.current.has(requestKey)) return;
     if (!city.name.trim()) throw new Error("请填写城市名称");
     try {
       new Intl.DateTimeFormat("zh-CN", { timeZone: city.timezone });
@@ -218,6 +226,7 @@ export function AdminTravelPreviewProvider({
       )
     )
       throw new Error("城市名称已存在");
+    handledRequests.current.add(requestKey);
     setCities((previous) =>
       previous.some((item) => item.id === city.id)
         ? previous.map((item) =>
@@ -225,27 +234,35 @@ export function AdminTravelPreviewProvider({
           )
         : [...previous, { ...city, name: city.name.trim() }],
     );
-    recordNote(city.id, "维护城市配置预览", crypto.randomUUID());
+    recordNote(city.id, "维护城市配置预览", requestKey);
   }
   function saveAttraction(attraction: AttractionPreview, requestKey: string) {
     requireManagement();
+    if (handledRequests.current.has(requestKey)) return;
     if (
       !attraction.name.trim() ||
       !cities.some((item) => item.id === attraction.cityId)
     )
       throw new Error("请填写景点名称并选择有效城市");
-    const url = new URL(attraction.officialUrl);
+    let url: URL;
+    try {
+      url = new URL(attraction.officialUrl);
+    } catch {
+      throw new Error("请填写有效规则来源网址");
+    }
     if (!["https:", "http:"].includes(url.protocol))
       throw new Error("请填写有效规则来源网址");
     const channel = channels.find((item) => item.id === attraction.channelId);
     if (
       attraction.enabled &&
-      (!channel?.enabled ||
+      (!cities.find((city) => city.id === attraction.cityId)?.enabled ||
+        !channel?.enabled ||
         channel.status !== "VERIFIED" ||
         !attraction.service ||
         !attraction.ruleSource.trim())
     )
-      throw new Error("开放需要已验证渠道、规则来源及关联服务");
+      throw new Error("开放需要有效城市、已验证渠道、规则来源及关联服务");
+    handledRequests.current.add(requestKey);
     setAttractions((previous) =>
       previous.some((item) => item.requestKey === requestKey)
         ? previous
@@ -259,7 +276,11 @@ export function AdminTravelPreviewProvider({
   }
   function disableChannel(id: string, reason: string, requestKey: string) {
     requireManagement();
+    if (handledRequests.current.has(requestKey)) return;
+    if (!channels.some((channel) => channel.id === id))
+      throw new Error("渠道不存在或已失效");
     if (!reason.trim()) throw new Error("请填写停用理由");
+    handledRequests.current.add(requestKey);
     setChannels((previous) =>
       previous.map((item) =>
         item.id === id ? { ...item, enabled: false } : item,
@@ -275,8 +296,12 @@ export function AdminTravelPreviewProvider({
     requestKey: string,
   ) {
     requireManagement();
+    if (handledRequests.current.has(requestKey)) return;
+    if (!channels.some((channel) => channel.id === id))
+      throw new Error("渠道不存在或已失效");
     if (!source.trim() || !snapshot.trim() || !reason.trim())
       throw new Error("请补全规则来源、快照与处理理由");
+    handledRequests.current.add(requestKey);
     setChannels((previous) =>
       previous.map((item) => {
         if (item.id !== id || item.requestKey === requestKey) return item;

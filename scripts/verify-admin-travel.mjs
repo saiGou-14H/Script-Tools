@@ -1,7 +1,22 @@
 import { chromium, expect } from "@playwright/test";
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-const base = "http://127.0.0.1:5174";
+import { preview } from "vite";
+const webRoot = path.resolve("apps/web");
+const server = await preview({
+  root: webRoot,
+  configFile: path.join(webRoot, "vite.config.ts"),
+  preview: {
+    host: "127.0.0.1",
+    port: 0,
+    strictPort: true,
+    proxy: { "/api": { target: "http://127.0.0.1:3001" } },
+  },
+});
+const address = server.httpServer.address();
+if (!address || typeof address !== "object")
+  throw new Error("Preview address is unavailable");
+const base = `http://127.0.0.1:${address.port}`;
 const output = path.resolve("output/verification/admin-travel");
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch();
@@ -57,6 +72,7 @@ try {
     expect(new Set(fieldIds).size, `${id} form identifiers`).toBe(
       fieldIds.length,
     );
+    await page.mouse.move(0, 0);
     await page.screenshot({
       path: path.join(output, `ADMIN-${id}.png`),
       fullPage: true,
@@ -81,7 +97,7 @@ try {
     .getByRole("dialog")
     .getByLabel("城市名称", { exact: true })
     .fill("上海");
-  await page.getByRole("button", { name: "保存目录预览", exact: true }).click();
+  await page.getByRole("button", { name: "保存目录预览", exact: true }).dblclick();
   await expect(
     page.getByRole("heading", { name: "景点列表（上海）", exact: true }),
   ).toBeVisible();
@@ -123,7 +139,9 @@ try {
     .fill("渠道维护暂停新提交");
   await page.getByRole("button", { name: "确认操作预览", exact: true }).click();
   await expect(channel).toContainText("新提交停用");
-  await expect(page.locator(".channel-unresolved tbody tr")).toHaveCount(3);
+  await expect(page.locator(".channel-unresolved .ant-table-row")).toHaveCount(
+    3,
+  );
   await menu("城市与景点");
   await expect(page.locator(".admin-city-list")).toContainText("上海");
   const history = page
@@ -159,7 +177,9 @@ try {
   await expect(page.getByRole("dialog")).toContainText("历史版本 v1.4.2");
   await expect(page.getByRole("dialog")).toContainText("验证截图（3张）");
   await page.getByRole("button", { name: "关闭验证记录", exact: true }).click();
-  await expect(page.locator(".channel-unresolved tbody tr")).toHaveCount(3);
+  await expect(page.locator(".channel-unresolved .ant-table-row")).toHaveCount(
+    3,
+  );
   report.checks.push(
     "rule updates deduplicate one draft version, bind verification evidence to historical versions and preserve unresolved records",
   );
@@ -235,7 +255,7 @@ try {
   }
   await live.close();
   report.checks.push(
-    "live travel views show empty or unavailable data while preserving the configured workspace guard",
+    "live travel views query stored directory metadata and expose pending booking integration while preserving the configured workspace guard",
   );
   report.result = "PASS";
 } catch (error) {
@@ -248,6 +268,7 @@ try {
   });
 } finally {
   await browser.close();
+  await server.close();
   if (report.result === "PASS")
     await rm(path.join(output, "failure.png"), { force: true });
   await writeFile(

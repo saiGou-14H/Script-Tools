@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T16:40:36.497Z",
+  "date": "2026-11-14T17:03:11.778Z",
   "checks": [
     "anonymous, consumer and limited administrator HTTP requests enforce independent user.manage and catalog.manage capabilities",
     "masked account projections retain exact string revisions, current-account identity and last effective access-manager protection while ignoring expired grants",

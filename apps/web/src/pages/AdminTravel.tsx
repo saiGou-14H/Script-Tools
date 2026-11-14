@@ -1,4 +1,4 @@
-import { useRef, useState, type Key } from "react";
+import { useEffect, useRef, useState, type Key } from "react";
 import {
   App,
   Button,
@@ -21,8 +21,20 @@ import {
   type TravelChannelPreview,
 } from "../admin-travel-preview";
 import { useAdminPreview } from "../admin-preview";
+import {
+  AdminAttractionMetadataPage,
+  AdminChannelMetadataPage,
+} from "./AdminTravelMetadata";
 
 export function AdminAttractionsPage() {
+  const { enabled } = useAdminTravel();
+  return enabled ? (
+    <AdminAttractionsPreviewPage />
+  ) : (
+    <AdminAttractionMetadataPage />
+  );
+}
+function AdminAttractionsPreviewPage() {
   const {
     enabled,
     cities,
@@ -32,7 +44,13 @@ export function AdminAttractionsPage() {
     saveAttraction,
     isSaleable,
   } = useAdminTravel();
-  const [cityId, setCityId] = useState("hangzhou");
+  const [params, setParams] = useSearchParams();
+  const cityId = params.get("city") || "hangzhou";
+  function setCityId(id: string) {
+    const next = new URLSearchParams(params);
+    next.set("city", id);
+    setParams(next);
+  }
   const [selectedId, setSelectedId] = useState<string>();
   const [editor, setEditor] = useState<"new" | "edit">();
   const [tab, setTab] = useState("attraction");
@@ -40,12 +58,19 @@ export function AdminAttractionsPage() {
   const [attractionForm] = Form.useForm();
   const [cityForm] = Form.useForm();
   const draftId = useRef(crypto.randomUUID());
+  const editingAttraction = useRef<AttractionPreview | undefined>(undefined);
+  const editingCityId = useRef(cityId);
+  const handled = useRef(false);
   const requestKey = useRef(crypto.randomUUID());
   const { message } = App.useApp();
   const city = cities.find((item) => item.id === cityId);
   const rows = attractions.filter((item) => item.cityId === cityId);
-  const selected = attractions.find((item) => item.id === selectedId);
+  const selected = rows.find((item) => item.id === selectedId);
   function open(mode: "new" | "edit") {
+    if (!city) return;
+    handled.current = false;
+    editingAttraction.current = selected;
+    editingCityId.current = cityId;
     draftId.current = crypto.randomUUID();
     requestKey.current = crypto.randomUUID();
     attractionForm.resetFields();
@@ -71,6 +96,7 @@ export function AdminAttractionsPage() {
           <p>以下均为界面示例，实际开放以真实渠道验证为准。</p>
         </span>
       </div>
+      {!city && <Notice>所选城市不存在或已失效。</Notice>}
       <div className="admin-attraction-columns">
         <Panel title="城市" className="admin-city-list">
           {cities.map((item) => (
@@ -98,12 +124,12 @@ export function AdminAttractionsPage() {
             <div className="row-actions">
               <Button
                 type="primary"
-                disabled={!enabled}
+                disabled={!enabled || !city}
                 onClick={() => open("new")}
               >
                 新增景点
               </Button>
-              <Button disabled={!enabled} onClick={() => open("edit")}>
+              <Button disabled={!enabled || !city} onClick={() => open("edit")}>
                 编辑
               </Button>
             </div>
@@ -113,6 +139,7 @@ export function AdminAttractionsPage() {
             rowKey="id"
             dataSource={rows}
             pagination={false}
+            scroll={{ x: 1120 }}
             rowClassName={(row) =>
               row.id === selectedId ? "selected-row" : ""
             }
@@ -120,6 +147,7 @@ export function AdminAttractionsPage() {
             columns={[
               {
                 title: "景点",
+                width: 230,
                 dataIndex: "name",
                 render: (value, row) => (
                   <Button type="text" onClick={() => setSelectedId(row.id)}>
@@ -127,11 +155,16 @@ export function AdminAttractionsPage() {
                   </Button>
                 ),
               },
-              { title: "票种", render: () => <Status>参观预约</Status> },
-              { title: "票款", render: () => "0元" },
-              { title: "规则来源", dataIndex: "ruleSource" },
+              {
+                title: "票种",
+                width: 158,
+                render: () => <Status>参观预约</Status>,
+              },
+              { title: "票款", width: 122, render: () => "0元" },
+              { title: "规则来源", width: 320, dataIndex: "ruleSource" },
               {
                 title: "关联服务",
+                width: 225,
                 render: (_, row) =>
                   row.service ? (
                     <Link to="/admin/services">{row.service}</Link>
@@ -178,17 +211,19 @@ export function AdminAttractionsPage() {
                     requestKey.current = crypto.randomUUID();
                   }}
                   onFinish={(values) => {
+                    if (!editor || handled.current) return;
                     try {
                       saveAttraction(
                         {
                           ...values,
                           id:
-                            editor === "edit" && selected
-                              ? selected.id
+                            editor === "edit" && editingAttraction.current
+                              ? editingAttraction.current.id
                               : draftId.current,
                         },
                         requestKey.current,
                       );
+                      handled.current = true;
                       setEditor(undefined);
                       void message.success("景点配置预览已保存");
                     } catch (error) {
@@ -268,12 +303,22 @@ export function AdminAttractionsPage() {
                   name="admintravel-2"
                   form={cityForm}
                   layout="vertical"
+                  onValuesChange={() => {
+                    requestKey.current = crypto.randomUUID();
+                  }}
                   onFinish={(values) => {
+                    if (!editor || handled.current) return;
                     try {
-                      saveCity({
-                        ...values,
-                        id: creatingCity ? draftId.current : cityId,
-                      });
+                      saveCity(
+                        {
+                          ...values,
+                          id: creatingCity
+                            ? draftId.current
+                            : editingCityId.current,
+                        },
+                        requestKey.current,
+                      );
+                      handled.current = true;
                       if (creatingCity) setCityId(draftId.current);
                       setEditor(undefined);
                       void message.success("城市配置预览已保存");
@@ -348,19 +393,52 @@ const channelTones = {
   DEGRADED: "orange",
 } as const;
 export function AdminChannelsPage() {
+  const { enabled } = useAdminTravel();
+  return enabled ? <AdminChannelsPreviewPage /> : <AdminChannelMetadataPage />;
+}
+function AdminChannelsPreviewPage() {
   const { enabled, channels, disableChannel, saveChannelRule } =
     useAdminTravel();
   const [selectedIds, setSelectedIds] = useState<Key[]>([]);
-  const [filters, setFilters] = useState<{ name?: string; status?: string }>(
-    {},
-  );
-  const [unresolvedFilters, setUnresolvedFilters] = useState<{
-    id?: string;
-    channelId?: string;
-  }>({});
+  const [params, setParams] = useSearchParams();
+  const filters = {
+    name: params.get("q") || "",
+    status: params.get("status") || undefined,
+  };
+  const unresolvedFilters = {
+    id: params.get("booking") || "",
+    channelId: params.get("channel") || undefined,
+  };
+  function setFilters(values: { name?: string; status?: string }) {
+    const next = new URLSearchParams(params);
+    if (values.name?.trim()) next.set("q", values.name.trim());
+    else next.delete("q");
+    if (values.status) next.set("status", values.status);
+    else next.delete("status");
+    setParams(next);
+    setSelectedIds([]);
+  }
+  function setUnresolvedFilters(values: { id?: string; channelId?: string }) {
+    const next = new URLSearchParams(params);
+    if (values.id?.trim()) next.set("booking", values.id.trim());
+    else next.delete("booking");
+    if (values.channelId) next.set("channel", values.channelId);
+    else next.delete("channel");
+    setParams(next);
+  }
   const [form] = Form.useForm();
   const [unresolvedForm] = Form.useForm();
   const [ruleForm] = Form.useForm();
+  useEffect(() => {
+    form.setFieldsValue({
+      name: params.get("q") || "",
+      status: params.get("status") || undefined,
+    });
+    unresolvedForm.setFieldsValue({
+      id: params.get("booking") || "",
+      channelId: params.get("channel") || undefined,
+    });
+  }, [form, unresolvedForm, params]);
   const [evidence, setEvidence] = useState<TravelChannelPreview>();
   const [editing, setEditing] = useState<TravelChannelPreview>();
   const [disabling, setDisabling] = useState<TravelChannelPreview>();
@@ -380,8 +458,12 @@ export function AdminChannelsPage() {
       )
     : [];
   function selected() {
-    const row = channels.find((item) => item.id === selectedIds[0]);
-    if (!row || selectedIds.length !== 1) {
+    const row = rows.find((item) => item.id === selectedIds[0]);
+    if (
+      !row ||
+      selectedIds.filter((id) => rows.some((item) => item.id === id)).length !==
+        1
+    ) {
       void message.info("请先选择一个渠道");
       return;
     }
@@ -407,6 +489,7 @@ export function AdminChannelsPage() {
           name="admintravel-3"
           form={form}
           layout="inline"
+          colon={false}
           onFinish={setFilters}
         >
           <Form.Item label="渠道名称" name="name">
@@ -473,25 +556,32 @@ export function AdminChannelsPage() {
           rowKey="id"
           dataSource={rows}
           pagination={false}
+          scroll={{ x: 1320 }}
           rowSelection={{
-            selectedRowKeys: selectedIds,
+            columnWidth: 52,
+            selectedRowKeys: selectedIds.filter((id) =>
+              rows.some((item) => item.id === id),
+            ),
             onChange: setSelectedIds,
           }}
           columns={[
             {
               title: "渠道",
+              width: 218,
               dataIndex: "name",
               render: (value) => <b>{value}</b>,
             },
             {
               title: "版本",
+              width: 206,
               dataIndex: "version",
               render: (value) => <Status>{value}</Status>,
             },
-            { title: "适配器", dataIndex: "adapter" },
-            { title: "验证时间", dataIndex: "verifiedAt" },
+            { title: "适配器", width: 288, dataIndex: "adapter" },
+            { title: "验证时间", width: 235, dataIndex: "verifiedAt" },
             {
               title: "证据",
+              width: 299,
               render: (_, row) => (
                 <Button type="link" onClick={() => setEvidence(row)}>
                   {row.evidence}
@@ -520,6 +610,7 @@ export function AdminChannelsPage() {
           name="admintravel-4"
           form={unresolvedForm}
           layout="inline"
+          colon={false}
           onFinish={setUnresolvedFilters}
         >
           <Form.Item label="预约编号" name="id">
@@ -563,10 +654,15 @@ export function AdminChannelsPage() {
           rowKey="id"
           dataSource={unresolved}
           pagination={false}
+          scroll={{ x: 1060 }}
           columns={[
-            { title: "预约编号", dataIndex: "id" },
-            { title: "渠道", render: (_, row) => `渠道${row.channelId}` },
-            { title: "景点", dataIndex: "attraction" },
+            { title: "预约编号", width: 382, dataIndex: "id" },
+            {
+              title: "渠道",
+              width: 344,
+              render: (_, row) => `渠道${row.channelId}`,
+            },
+            { title: "景点", width: 402, dataIndex: "attraction" },
             { title: "状态", render: () => <Status>● 待处理</Status> },
           ]}
         />
@@ -622,15 +718,21 @@ export function AdminChannelsPage() {
           }}
           onFinish={(values) => {
             if (!editing) return;
-            saveChannelRule(
-              editing.id,
-              values.source,
-              values.snapshot,
-              values.reason,
-              requestKey.current,
-            );
-            setEditing(undefined);
-            void message.success("渠道规则草稿预览已保存");
+            try {
+              saveChannelRule(
+                editing.id,
+                values.source,
+                values.snapshot,
+                values.reason,
+                requestKey.current,
+              );
+              setEditing(undefined);
+              void message.success("渠道规则草稿预览已保存");
+            } catch (error) {
+              void message.error(
+                error instanceof Error ? error.message : "保存失败",
+              );
+            }
           }}
         >
           <Form.Item

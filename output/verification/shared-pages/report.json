@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T16:41:52.737Z",
+  "date": "2026-11-14T17:04:01.625Z",
   "checks": [
     "public home retains the reference columns, recommendations, categories, workflow and purchase guidance within the reference viewport",
     "home categories filter the market, repeated global searches refresh the current route, and publishing opens the publisher sign-in entry",

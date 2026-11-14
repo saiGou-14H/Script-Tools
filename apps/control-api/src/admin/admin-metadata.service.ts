@@ -10,6 +10,29 @@ import {
 const userStates = ["UNVERIFIED", "ACTIVE", "FROZEN", "CLOSING", "CLOSED"];
 const serviceStates = ["DRAFT", "ACTIVE", "PAUSED", "RETIRED", "BLOCKED"];
 const versionStates = ["DRAFT", "SEALED", "READY", "RETIRED", "REVOKED"];
+const channelStates = [
+  "UNVERIFIED",
+  "MONITOR_ONLY",
+  "BOOKING_SUPPORTED",
+  "DEGRADED",
+  "DISABLED",
+];
+const literalPattern = (value: string) =>
+  `%${value.replace(/[\\%_]/g, "\\$&")}%`;
+const evidencePresent = (alias: string) =>
+  `COALESCE(${alias}.evidence NOT IN ('null'::jsonb,'{}'::jsonb,'[]'::jsonb),false)`;
+function referenceId(value: unknown, name: string) {
+  if (value === undefined) return null;
+  if (typeof value !== "string" || !uuidPattern.test(value))
+    invalidQuery(`${name}应为UUID`);
+  return value.toLowerCase();
+}
+function enabledFilter(value: unknown) {
+  if (value === undefined) return null;
+  if (value !== "true" && value !== "false")
+    invalidQuery("enabled应为true或false");
+  return value === "true";
+}
 const cursorProjection = (alias: string) =>
   `to_char(${alias}.created_at AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS cursor_created_at`;
 const accountMask = (alias: string) => `'u****'||right(${alias}.id::text,4)`;
@@ -80,7 +103,7 @@ export class AdminMetadataService {
       options,
     ]);
     const cursor = await this.pagination.decode(scope, query.cursor);
-    const pattern = `%${options.q.replace(/[\\%_]/g, "\\$&")}%`;
+    const pattern = literalPattern(options.q);
     const result = await this.database.query(
       `
       WITH access_managers AS MATERIALIZED (
@@ -178,17 +201,19 @@ export class AdminMetadataService {
     const options = this.options(
       query,
       view === "services" ? serviceStates : versionStates,
-      ["view"],
+      ["view", "attraction_id"],
     );
+    const attractionId = referenceId(query.attraction_id, "attraction_id");
     const scope = JSON.stringify([
       actor.id,
       actor.security_revision,
       "admin-catalog",
       view,
       options,
+      attractionId,
     ]);
     const cursor = await this.pagination.decode(scope, query.cursor);
-    const pattern = `%${options.q.replace(/[\\%_]/g, "\\$&")}%`;
+    const pattern = literalPattern(options.q);
     const result = await this.database.query(
       view === "services"
         ? `
@@ -207,7 +232,11 @@ export class AdminMetadataService {
       WHERE ($1::text IS NULL OR s.status=$1) AND (
         s.title ILIKE $2 ESCAPE '\\' OR s.id::text ILIKE $2 ESCAPE '\\'
         OR p.public_name ILIKE $2 ESCAPE '\\' OR (${accountMask("u")}) ILIKE $2 ESCAPE '\\'
-      ) AND ($3::uuid IS NULL OR (s.created_at,s.id)<($4::timestamptz,$3::uuid))
+      ) AND ($6::uuid IS NULL OR EXISTS(
+        SELECT 1 FROM travel.attraction_service_links l
+        JOIN travel.channels lc ON lc.id=l.channel_id AND lc.attraction_id=l.attraction_id
+        WHERE l.attraction_id=$6::uuid AND l.service_id=s.id AND l.owner_user_id=s.owner_user_id
+      )) AND ($3::uuid IS NULL OR (s.created_at,s.id)<($4::timestamptz,$3::uuid))
       ORDER BY s.created_at DESC,s.id DESC LIMIT $5`
         : `
       SELECT sv.id,'script_version' AS kind,sc.name AS title,sv.owner_user_id,
@@ -224,7 +253,12 @@ export class AdminMetadataService {
         sc.name ILIKE $2 ESCAPE '\\' OR sv.version ILIKE $2 ESCAPE '\\'
         OR sv.id::text ILIKE $2 ESCAPE '\\' OR p.public_name ILIKE $2 ESCAPE '\\'
         OR (${accountMask("u")}) ILIKE $2 ESCAPE '\\'
-      ) AND ($3::uuid IS NULL OR (sv.created_at,sv.id)<($4::timestamptz,$3::uuid))
+      ) AND ($6::uuid IS NULL OR EXISTS(
+        SELECT 1 FROM travel.attraction_service_links l
+        JOIN travel.channels lc ON lc.id=l.channel_id AND lc.attraction_id=l.attraction_id
+        JOIN travel.service_releases lr ON lr.service_id=l.service_id AND lr.owner_user_id=l.owner_user_id
+        WHERE l.attraction_id=$6::uuid AND lr.script_version_id=sv.id AND lr.owner_user_id=sv.owner_user_id
+      )) AND ($3::uuid IS NULL OR (sv.created_at,sv.id)<($4::timestamptz,$3::uuid))
       ORDER BY sv.created_at DESC,sv.id DESC LIMIT $5`,
       [
         options.status || null,
@@ -232,8 +266,173 @@ export class AdminMetadataService {
         cursor?.id || null,
         cursor?.created_at || null,
         options.limit + 1,
+        attractionId,
       ],
     );
     return this.pagination.page(scope, result.rows, options.limit);
+  }
+
+  async cities(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "catalog.manage");
+    const options = this.options(query, [], ["enabled"]);
+    const enabled = enabledFilter(query.enabled);
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-cities",
+      options,
+      enabled,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      SELECT c.id,c.code,c.name,c.enabled,c.revision::text,c.created_at,
+        (SELECT count(*)::text FROM travel.attractions a WHERE a.city_id=c.id) AS attraction_count,
+        ${cursorProjection("c")}
+      FROM travel.cities c WHERE ($1::boolean IS NULL OR c.enabled=$1) AND (
+        c.name ILIKE $2 ESCAPE '\\' OR c.code ILIKE $2 ESCAPE '\\' OR c.id::text ILIKE $2 ESCAPE '\\'
+      ) AND ($3::uuid IS NULL OR (c.created_at,c.id)<($4::timestamptz,$3::uuid))
+      ORDER BY c.created_at DESC,c.id DESC LIMIT $5`,
+      [
+        enabled,
+        literalPattern(options.q),
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+      ],
+    );
+    return this.pagination.page(scope, result.rows, options.limit);
+  }
+
+  async attractions(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "catalog.manage");
+    const options = this.options(query, [], ["enabled", "city_id"]);
+    const enabled = enabledFilter(query.enabled),
+      cityId = referenceId(query.city_id, "city_id");
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-attractions",
+      options,
+      enabled,
+      cityId,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      SELECT a.id,a.city_id,a.name,a.description,a.timezone,a.enabled,a.ticket_price_kind,a.revision::text,a.created_at,
+        c.name AS city_name,c.enabled AS city_enabled,
+        (SELECT count(*)::text FROM travel.channels ch WHERE ch.attraction_id=a.id) AS channel_count,
+        (SELECT count(DISTINCT r.source_url)::text FROM travel.channels ch
+          JOIN travel.channel_rule_versions r ON r.id=ch.current_rule_version_id AND r.channel_id=ch.id
+          WHERE ch.attraction_id=a.id AND length(trim(r.source_url))>0) AS rule_source_count,
+        (SELECT count(DISTINCT s.id)::text FROM travel.attraction_service_links l
+          JOIN travel.services s ON s.id=l.service_id AND s.owner_user_id=l.owner_user_id
+          JOIN travel.channels ch ON ch.id=l.channel_id AND ch.attraction_id=l.attraction_id
+          WHERE l.attraction_id=a.id) AS linked_service_count,
+        ${cursorProjection("a")}
+      FROM travel.attractions a JOIN travel.cities c ON c.id=a.city_id
+      WHERE ($1::uuid IS NULL OR a.city_id=$1) AND ($2::boolean IS NULL OR a.enabled=$2) AND (
+        a.name ILIKE $3 ESCAPE '\\' OR a.id::text ILIKE $3 ESCAPE '\\'
+      ) AND ($4::uuid IS NULL OR (a.created_at,a.id)<($5::timestamptz,$4::uuid))
+      ORDER BY a.created_at DESC,a.id DESC LIMIT $6`,
+      [
+        cityId,
+        enabled,
+        literalPattern(options.q),
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+      ],
+    );
+    return this.pagination.page(scope, result.rows, options.limit);
+  }
+
+  async channels(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "catalog.manage");
+    const options = this.options(query, channelStates, ["attraction_id"]);
+    const attractionId = referenceId(query.attraction_id, "attraction_id");
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-channels",
+      options,
+      attractionId,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      SELECT ch.id,ch.attraction_id,ch.name,ch.official_url,ch.timezone,ch.adapter_status,ch.revision::text,ch.created_at,
+        a.name AS attraction_name,a.city_id,ch.current_rule_version_id,
+        r.version AS rule_version,r.source_url,r.verified_at,${evidencePresent("r")} AS has_evidence,
+        CASE WHEN ch.current_rule_version_id IS NULL THEN 'UNBOUND'
+          WHEN r.id IS NULL THEN 'INVALID' ELSE 'BOUND' END AS rule_binding_state,
+        ${cursorProjection("ch")}
+      FROM travel.channels ch JOIN travel.attractions a ON a.id=ch.attraction_id
+      LEFT JOIN travel.channel_rule_versions r ON r.id=ch.current_rule_version_id AND r.channel_id=ch.id
+      WHERE ($1::uuid IS NULL OR ch.attraction_id=$1) AND ($2::text IS NULL OR ch.adapter_status=$2) AND (
+        ch.name ILIKE $3 ESCAPE '\\' OR ch.id::text ILIKE $3 ESCAPE '\\' OR a.name ILIKE $3 ESCAPE '\\'
+      ) AND ($4::uuid IS NULL OR (ch.created_at,ch.id)<($5::timestamptz,$4::uuid))
+      ORDER BY ch.created_at DESC,ch.id DESC LIMIT $6`,
+      [
+        attractionId,
+        options.status || null,
+        literalPattern(options.q),
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+      ],
+    );
+    return this.pagination.page(scope, result.rows, options.limit);
+  }
+
+  async channelRules(
+    actor: CurrentUser,
+    id: string,
+    query: Record<string, unknown>,
+  ) {
+    this.authorize(actor, "catalog.manage");
+    if (!uuidPattern.test(id)) invalidQuery("渠道编号无效");
+    if (Object.keys(query).some((key) => !["limit", "cursor"].includes(key)))
+      invalidQuery("规则查询仅支持limit和cursor");
+    const { limit } = this.options(query, []);
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-channel-rules",
+      id.toLowerCase(),
+      limit,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      WITH channel AS MATERIALIZED (SELECT id,current_rule_version_id FROM travel.channels WHERE id=$1::uuid),
+      page_rows AS (
+        SELECT r.id,r.channel_id,r.version,r.revision::text,r.created_at,r.source_url,r.verified_at,
+          ${evidencePresent("r")} AS has_evidence,
+          COALESCE(r.id=(SELECT current_rule_version_id FROM channel),false) AS is_current,${cursorProjection("r")}
+        FROM travel.channel_rule_versions r WHERE r.channel_id=$1::uuid
+          AND ($2::uuid IS NULL OR (r.created_at,r.id)<($3::timestamptz,$2::uuid))
+        ORDER BY r.created_at DESC,r.id DESC LIMIT $4
+      )
+      SELECT EXISTS(SELECT 1 FROM channel) AS channel_exists,
+        COALESCE((SELECT jsonb_agg(to_jsonb(p) ORDER BY p.created_at DESC,p.id DESC) FROM page_rows p),'[]'::jsonb) AS versions`,
+      [
+        id.toLowerCase(),
+        cursor?.id || null,
+        cursor?.created_at || null,
+        limit + 1,
+      ],
+    );
+    if (!result.rows[0].channel_exists)
+      throw new HttpException(
+        { code: "NOT_FOUND", message: "渠道不存在或已失效" },
+        404,
+      );
+    return this.pagination.page(
+      scope,
+      result.rows[0].versions as DatabaseRow[],
+      limit,
+    );
   }
 }

@@ -1,0 +1,70 @@
+{
+  "date": "2026-11-14T17:05:30.005Z",
+  "checks": [
+    "travel catalog and rule-version HTTP routes require an authenticated ADMIN with catalog.manage, independently of user.manage",
+    "city and attraction counts retain string precision, literal wildcard search and FREE ticket policy while duplicate links and cross-attraction channel links cannot inflate associated services",
+    "all five adapter states come from storage, current rules remain bound to their own channel and metadata history excludes raw rules, evidence payloads and account credentials",
+    "strict travel query validation rejects unknown and repeated parameters, unsupported preview states, malformed references and missing rule resources",
+    "travel and service cursors retain timestamp ties and reject changes to actor, parent city, attraction, channel history, filters and resource kind",
+    "PostgreSQL 18 executes the same city, attraction, channel, rule-history and scoped service queries with complete transaction rollback",
+    "preview attraction and city edits retain their captured target across browser Back navigation and duplicate confirmations cannot create another city or attraction",
+    "prototype city and channel search persist in the URL, unavailable cities retain their own identity and filtered-out selections cannot trigger a channel mutation",
+    "both reference layouts fit the desktop viewport and preserve full-width content with internally scrollable tables at 390 pixels",
+    "LIVE city selection resolves records beyond the first cursor page, supports uppercase UUID links and opens actual attraction, channel and scoped service metadata without enabling pending maintenance",
+    "LIVE channel queries recover from failure, preserve filters, display stored capability states and version-bound history, suppress unsafe source URLs and leave catalog business records unchanged"
+  ],
+  "screenshots": [
+    "ADMIN-O04",
+    "ADMIN-O05",
+    "ADMIN-O04-mobile",
+    "ADMIN-O05-mobile",
+    "ADMIN-O04-live",
+    "ADMIN-O05-live"
+  ],
+  "layouts": {
+    "ADMIN-O04": {
+      "width": 1814,
+      "height": 868,
+      "left": 255,
+      "contentWidth": 1544,
+      "actionsRight": 1790
+    },
+    "ADMIN-O05": {
+      "width": 1814,
+      "height": 868,
+      "left": 236,
+      "contentWidth": 1556,
+      "actionsRight": 1790
+    },
+    "ADMIN-O04-mobile": {
+      "width": 390,
+      "height": 908,
+      "left": 16,
+      "contentWidth": 358,
+      "actionsRight": 375
+    },
+    "ADMIN-O05-mobile": {
+      "width": 390,
+      "height": 1261,
+      "left": 16,
+      "contentWidth": 358,
+      "actionsRight": 375
+    },
+    "ADMIN-O04-live": {
+      "width": 1814,
+      "height": 1230,
+      "left": 255,
+      "contentWidth": 1544,
+      "actionsRight": 1790
+    },
+    "ADMIN-O05-live": {
+      "width": 1814,
+      "height": 1084,
+      "left": 236,
+      "contentWidth": 1556,
+      "actionsRight": 1790
+    }
+  },
+  "errors": [],
+  "result": "PASS"
+}
