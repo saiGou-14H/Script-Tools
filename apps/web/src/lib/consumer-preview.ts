@@ -13,6 +13,7 @@ export const previewTasks = [
   },
   {
     key: "booking",
+    orderId: "OD202611130002",
     title: "景点预约：博物馆参观预约",
     category: "景点预约",
     icon: "calendar",
@@ -84,6 +85,9 @@ export const notificationFixtures = [
 export const purchaseFixtures = [
   {
     id: "clean",
+    orderId: "OD202611130001",
+    schemaDigest: "schema-table",
+    scriptVersion: "1.2",
     title: "表格清洗",
     icon: "table",
     status: "待使用",
@@ -99,6 +103,8 @@ export const purchaseFixtures = [
   },
   {
     id: "booking",
+    orderId: "OD202611130002",
+    taskId: "booking",
     title: "免费景点预约",
     icon: "travel",
     status: "使用中",

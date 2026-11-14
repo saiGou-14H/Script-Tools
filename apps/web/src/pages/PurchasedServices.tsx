@@ -1,14 +1,14 @@
 import { Button, Dropdown, Empty } from "antd";
 import {
   CalendarOutlined,
-  MoreOutlined,
+  EllipsisOutlined,
   SettingOutlined,
   UnorderedListOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useWorkspace } from "../context";
-import { PageHeading, Status, TileIcon } from "../components/ui";
+import { Notice, PageHeading, Status, TileIcon } from "../components/ui";
 import { useServices } from "./Market";
 
 import { purchaseFixtures } from "../lib/consumer-preview";
@@ -34,12 +34,12 @@ export function PurchasedServicesPage() {
   const data = allPurchases.filter(
     (item) => tab === "全部" || item.category === tab,
   );
-  function perform(id: string) {
-    if (id === "clean") navigate("/me/services/demo/use");
-    else if (id === "booking") navigate("/me/tasks/booking");
+  function perform(item: (typeof purchaseFixtures)[number]) {
+    if (item.id === "clean") navigate(`/me/services/${item.id}/use`);
+    else if (item.taskId) navigate(`/me/tasks/${item.taskId}`);
     else {
       const service = services.find(
-        (item) => item.delivery_policy.icon === "file",
+        (item) => item.input_schema_digest === "schema-file",
       );
       navigate(service ? `/checkout?service=${service.id}` : "/market");
     }
@@ -49,9 +49,19 @@ export function PurchasedServicesPage() {
       <PageHeading
         title="已购服务"
         description="您已购买的脚本服务与相关执行权益，可在此查看使用状态、有效期限并进行配置或继续使用。"
+        extra={
+          <Status tone="gray">
+            {bootstrap.data_mode === "prototype"
+              ? "本地示例"
+              : "权益服务待接入"}
+          </Status>
+        }
       />
+      {bootstrap.data_mode !== "prototype" && (
+        <Notice>权益服务待接入，使用次数、有效期和服务状态暂不可用。</Notice>
+      )}
       <div className="purchased-banner">
-        <TileIcon name="database" color="gradient" />
+        <TileIcon name="layers" color="gradient" />
         <h2>通用脚本服务使用说明</h2>
         <span>✓ 每单只有一次完整服务，同次接续不额外收费。</span>
         <span>✓ 门票0元不等于脚本服务免费。</span>
@@ -75,7 +85,7 @@ export function PurchasedServicesPage() {
           ))}
         </div>
         <span>
-          <CalendarOutlined /> 今天 2026-11-13
+          <CalendarOutlined /> 示例日期 2026-11-13
         </span>
       </div>
       {data.length ? (
@@ -108,23 +118,29 @@ export function PurchasedServicesPage() {
                   trigger={["click"]}
                   menu={{
                     items: [
-                      { key: "order", label: "查看订单" },
+                      {
+                        key: "order",
+                        label: item.orderId ? "查看订单" : "订单资料待载入",
+                        disabled: !item.orderId,
+                      },
                       {
                         key: "refund",
                         label: "取消并申请退款",
-                        disabled: item.category === "已使用",
+                        disabled: item.category === "已使用" || !item.orderId,
                       },
                     ],
                     onClick: ({ key }) =>
                       navigate(
-                        key === "order" ? "/me/orders/demo" : "/me/refunds",
+                        key === "order"
+                          ? `/me/orders/${item.orderId}`
+                          : `/me/refunds?order_id=${item.orderId}`,
                       ),
                   }}
                 >
                   <Button
                     type="text"
                     aria-label={`${item.title}更多操作`}
-                    icon={<MoreOutlined />}
+                    icon={<EllipsisOutlined />}
                   />
                 </Dropdown>
               </div>
@@ -142,14 +158,14 @@ export function PurchasedServicesPage() {
                     type={item.id === "files" ? "default" : "primary"}
                     icon={
                       item.id === "files" ? (
-                        <ShoppingCartOutlined />
+                        <ShoppingCartOutlined aria-hidden />
                       ) : item.id === "booking" ? (
-                        <UnorderedListOutlined />
+                        <UnorderedListOutlined aria-hidden />
                       ) : (
-                        <SettingOutlined />
+                        <SettingOutlined aria-hidden />
                       )
                     }
-                    onClick={() => perform(item.id)}
+                    onClick={() => perform(item)}
                   >
                     {item.action}
                   </Button>

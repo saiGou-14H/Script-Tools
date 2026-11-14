@@ -43,6 +43,7 @@ const browserReports = [
   "output/verification/notification-pages/report.json",
   "output/verification/personal-data-pages/report.json",
   "output/verification/consumer-finance-pages/report.json",
+  "output/verification/consumer-purchase-pages/report.json",
 ];
 const screenshots = new Set();
 const browserResults = [];
@@ -115,6 +116,7 @@ const report = {
     "The message center and notification settings have been realigned with their reference regions, including the fixed footer and unobscured Webhook card. Message category and unread filters persist in the URL, and preview read state drives the list, total and header badge together. Preview links use their existing output, order, refund and pending-verification records. Notification services, channel binding and subscription persistence remain pending. Live mode exposes that integration state and disables local-only saves.",
     "Credential and traveler pages have been realigned with their reference regions and Ctrl K search. Preview credential rotation preserves existing task-version bindings, and binding links open their corresponding tasks. Short values stay masked. Traveler edits retain document types and advance the preview version, and deleting the edited record resets its form. Live credential storage, validation, traveler versions and authorization snapshots remain pending.",
     "Billing, refund and booking pages have been realigned with their reference regions. Billing summaries and CSV use decimal-string minor units and share refund records with the refund pages, resolving the conflicting reference fixtures to 3.00 refunded and 8.00 processing. Refund details link to the matching bill, preserve supplementary text, and read stored rule and execution snapshots. Repeated preview submissions reuse the same request. Pending bookings retain verification state and have no usable voucher. Live billing, refunds and official booking verification remain pending.",
+    "Order list, order detail, purchased services and configuration have been realigned with their reference regions. Order filters persist in the URL. Entitlement actions retain their own order and task references, and refund entry carries the original order while its policy is loaded. Cashier demo selects the existing unpaid order. New preview orders retain a service contract snapshot and decimal-string amounts. Configuration checks the selected entitlement and purchased version, uses publisher-required JSON Schema fields, and validates and previews the chosen execution time. Live order, entitlement, scheduling and execution services remain pending.",
   ],
   items,
 };

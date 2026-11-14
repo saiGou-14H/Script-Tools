@@ -225,9 +225,20 @@ export function RunDetailPage() {
             </dd>
             <dt>订单编号</dt>
             <dd>
-              <Link className="dark-link" to="/me/orders/demo">
-                TT202611130018
-              </Link>
+              {pending ? (
+                <span>原订单资料待载入</span>
+              ) : (
+                <Link
+                  className="dark-link"
+                  to={
+                    running
+                      ? "/me/orders/OD202611130002"
+                      : "/me/bills?order_id=TT202611130018"
+                  }
+                >
+                  {running ? "OD202611130002" : "TT202611130018"}
+                </Link>
+              )}
             </dd>
             <dt>支付状态</dt>
             <dd>

@@ -75,6 +75,30 @@ const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
       C19: "money",
       C22: "ticket",
     },
+    C04: {
+      C04: "file",
+      C06: "box",
+      C12: "chart",
+      C16: "message",
+      C19: "money",
+      C22: "ticket",
+    },
+    C05: {
+      C04: "file",
+      C06: "layers",
+      C12: "folder",
+      C13: "info",
+      C19: "refund",
+      C22: "ticket",
+    },
+    C06: {
+      C06: "lock",
+      C12: "box",
+      C13: "clock",
+      C19: "shield",
+      C22: "ticket",
+    },
+    C07: { C06: "layers", C12: "folder", C13: "clock", C22: "ticket" },
   };
 
 export function Shell({ pageId }: { pageId: PageId }) {
@@ -83,7 +107,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
   const navigate = useNavigate();
   const location = useLocation();
   const searchRef = useRef<InputRef>(null);
-  const quickSearch = ["C14", "C15"].includes(pageId);
+  const quickSearch = ["C05", "C06", "C14", "C15"].includes(pageId);
   useEffect(() => {
     if (!quickSearch) return;
     function focusSearch(event: KeyboardEvent) {
@@ -133,7 +157,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
   ];
   if (["C02", "C17", "C21"].includes(pageId))
     consumerMenu.splice(1, 5, "C04", "C06", "C22", "P02", "P04");
-  if (pageId === "C14") {
+  if (["C07", "C14"].includes(pageId)) {
     consumerMenu.splice(5, 1);
     consumerMenu.splice(consumerMenu.length - 1, 0, "C22");
   }
@@ -424,7 +448,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
             <div className="breadcrumb">
               {pageId === "P01" ? (
                 <Icon name="home" />
-              ) : ["C01", "C12", "C13", "C15"].includes(pageId) ||
+              ) : ["C01", "C06", "C12", "C13", "C15"].includes(pageId) ||
                 (pageId === "C21" && role === "USER") ? (
                 <>
                   <Link className="consumer-home-breadcrumb" to="/me/home">
@@ -435,9 +459,11 @@ export function Shell({ pageId }: { pageId: PageId }) {
                 </>
               ) : ancestors.length > 0 ? (
                 <>
-                  {pageId === "C20" && (
+                  {["C07", "C20"].includes(pageId) && (
                     <>
-                      <Link to="/me/home">我的首页</Link>
+                      <Link to="/me/home">
+                        {pageId === "C07" ? "我的服务" : "我的首页"}
+                      </Link>
                       <span>›</span>
                     </>
                   )}

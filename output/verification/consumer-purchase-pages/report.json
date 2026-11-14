@@ -1,0 +1,98 @@
+{
+  "date": "2026-11-14T12:06:56.860Z",
+  "checks": [
+    "four order and entitlement routes restore their reference regions and keep sidebar help inside 1814 by 868",
+    "order filters persist in the URL and cancellation preserves the selected order across confirmation and closed detail",
+    "purchased services open their own order, reserved booking opens its task and available entitlement opens its own configuration",
+    "purchased-page keyboard search works and missing historical order data stays unavailable while repurchase selects the file service",
+    "refund entry retains the original order and waits for its amount and policy",
+    "configuration requires publisher fields, validates the scheduled time and previews its selected time, original order and input",
+    "configuration requires the purchased version and follows publisher-required fields from JSON Schema",
+    "new preview orders preserve their purchased service contract and BIGINT amount across later catalog changes",
+    "reserved, used and unknown entitlements cannot configure and live mode keeps business records and ownership claims unavailable",
+    "all four routes fit a 390px viewport with internally scrollable tables and preview actions issue no business mutations"
+  ],
+  "screenshots": [
+    "USER-C04",
+    "USER-C05",
+    "USER-C06",
+    "USER-C07"
+  ],
+  "errors": [],
+  "layouts": {
+    "USER-C04": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 251,
+        "y": 292.1875,
+        "width": 1543,
+        "height": 413.828125,
+        "bottom": 706.015625
+      },
+      "help": {
+        "x": 10,
+        "y": 815.453125,
+        "width": 204,
+        "height": 30.5,
+        "bottom": 845.953125
+      }
+    },
+    "USER-C05": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 250,
+        "y": 680.4375,
+        "width": 1548,
+        "height": 174,
+        "bottom": 854.4375
+      },
+      "help": {
+        "x": 10,
+        "y": 809.453125,
+        "width": 201,
+        "height": 30.5,
+        "bottom": 839.953125
+      }
+    },
+    "USER-C06": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 252,
+        "y": 417.078125,
+        "width": 1542,
+        "height": 416.25,
+        "bottom": 833.328125
+      },
+      "help": {
+        "x": 10,
+        "y": 817.453125,
+        "width": 207,
+        "height": 30.5,
+        "bottom": 847.953125
+      }
+    },
+    "USER-C07": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 252,
+        "y": 286.0625,
+        "width": 1540,
+        "height": 568.703125,
+        "bottom": 854.765625
+      },
+      "help": {
+        "x": 10,
+        "y": 828.875,
+        "width": 201,
+        "height": 30.5,
+        "bottom": 859.375
+      }
+    }
+  },
+  "final_visual_acceptance": "pending",
+  "result": "PASS"
+}

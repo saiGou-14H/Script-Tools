@@ -307,8 +307,11 @@ export function RefundsPage() {
   const { refunds, requestRefund } = usePrototype();
   const navigate = useNavigate();
   const { modal, message } = App.useApp();
-  const [form] = Form.useForm();
+  const [params] = useSearchParams();
+  const requestedOrder = params.get("order_id") || params.get("order");
   const isPrototype = bootstrap.data_mode === "prototype";
+  const eligible =
+    isPrototype && (!requestedOrder || requestedOrder === "TT202611130028");
   function submit(values: {
     orderId: string;
     reason: string;
@@ -390,13 +393,16 @@ export function RefundsPage() {
         </Panel>
         <Panel title="申请退款" className="refund-application">
           <Form
-            form={form}
+            key={requestedOrder || "default"}
             layout="vertical"
             requiredMark={false}
-            disabled={!isPrototype}
+            disabled={!eligible}
             initialValues={
               isPrototype
-                ? { orderId: "TT202611130028", reason: "目标未达" }
+                ? {
+                    orderId: requestedOrder || "TT202611130028",
+                    reason: "目标未达",
+                  }
                 : {}
             }
             onFinish={submit}
@@ -408,18 +414,25 @@ export function RefundsPage() {
             >
               <Select
                 options={
-                  bootstrap.data_mode === "prototype"
+                  eligible
                     ? [
                         {
                           value: "TT202611130028",
                           label: "TT202611130028 · 景点预约 · ¥8.00",
                         },
                       ]
-                    : []
+                    : requestedOrder
+                      ? [
+                          {
+                            value: requestedOrder,
+                            label: `${requestedOrder} · 可退金额待核对`,
+                          },
+                        ]
+                      : []
                 }
               />
             </Form.Item>
-            {isPrototype && (
+            {eligible ? (
               <Notice>
                 <div>
                   <b>成交规则</b>
@@ -429,6 +442,8 @@ export function RefundsPage() {
                   </b>
                 </div>
               </Notice>
+            ) : (
+              <Notice>当前订单的成交规则、已交付量与可退金额待载入。</Notice>
             )}
             <Form.Item
               name="reason"
@@ -455,12 +470,7 @@ export function RefundsPage() {
                 showCount
               />
             </Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              block
-              disabled={bootstrap.data_mode !== "prototype"}
-            >
+            <Button type="primary" htmlType="submit" block disabled={!eligible}>
               提交退款
             </Button>
           </Form>

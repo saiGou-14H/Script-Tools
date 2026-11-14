@@ -98,11 +98,18 @@ export function TasksPage() {
               title: "服务订单",
               dataIndex: "order",
               width: "15%",
-              render: (value) => (
+              render: (value, row) => (
                 <>
-                  <Link className="dark-link" to="/me/orders/demo">
-                    {value}
-                  </Link>
+                  {row.orderId ? (
+                    <Link
+                      className="dark-link"
+                      to={`/me/orders/${row.orderId}`}
+                    >
+                      {row.orderId}
+                    </Link>
+                  ) : (
+                    <span>{value}</span>
+                  )}
                   <small>下单时间 2026-11-13</small>
                 </>
               ),
@@ -235,12 +242,10 @@ export function TaskDetailPage() {
             {
               key: "2",
               label: "服务订单",
-              children: (
-                <Link
-                  to={`/me/orders/${task.key === "booking" ? "OD202611130002" : "demo"}`}
-                >
-                  {task.order}
-                </Link>
+              children: task.orderId ? (
+                <Link to={`/me/orders/${task.orderId}`}>{task.orderId}</Link>
+              ) : (
+                <span>{task.order} · 原订单资料待载入</span>
               ),
             },
             {

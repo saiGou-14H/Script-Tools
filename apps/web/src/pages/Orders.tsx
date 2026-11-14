@@ -1,19 +1,22 @@
-import { useState } from "react";
 import { App, Button, Empty, Steps, Table, Typography } from "antd";
 import {
   CheckCircleOutlined,
-  ClockCircleOutlined,
   CopyOutlined,
   PlayCircleOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import {
   findPreviewOrder,
   usePrototype,
   type PreviewOrder,
 } from "../prototype";
 import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
+import { useWorkspace } from "../context";
+import { formatMinorUnits } from "../lib/money";
+import { serviceDuration, serviceVersion } from "../lib/service-display";
+import { previewTasks, purchaseFixtures } from "../lib/consumer-preview";
+import { Icon } from "../components/Icon";
 
 export const fulfillmentLabels: Record<PreviewOrder["fulfillment"], string> = {
   AVAILABLE: "待使用",
@@ -24,7 +27,17 @@ export const fulfillmentLabels: Record<PreviewOrder["fulfillment"], string> = {
 };
 
 export function OrdersPage() {
-  const [tab, setTab] = useState("全部");
+  const [params, setParams] = useSearchParams();
+  const tabs = {
+    all: "全部",
+    unpaid: "待支付",
+    available: "待使用",
+    running: "履约中",
+    completed: "已完成",
+    closed: "已关闭",
+  };
+  const tab = tabs[params.get("status") as keyof typeof tabs] || "全部";
+  const { bootstrap } = useWorkspace();
   const { orders, cancelUnpaidOrder } = usePrototype();
   const { modal } = App.useApp();
   const data = orders.filter(
@@ -47,9 +60,23 @@ export function OrdersPage() {
   }
   return (
     <div className="orders-page">
-      <PageHeading title="我的订单" />
+      <PageHeading
+        title="我的订单"
+        extra={
+          <Status tone="gray">
+            {bootstrap.data_mode === "prototype"
+              ? "本地示例"
+              : "订单服务待接入"}
+          </Status>
+        }
+      />
+      {bootstrap.data_mode !== "prototype" && (
+        <Notice>订单服务待接入，支付与履约状态暂不可用。</Notice>
+      )}
       <div className="orders-banner">
-        <TileIcon name="code" color="gradient" />
+        <span className="tile-icon orders-code-icon" aria-hidden>
+          &lt;/&gt;
+        </span>
         <div>
           <h2>脚本与工具的一次性服务</h2>
           <p>
@@ -63,22 +90,21 @@ export function OrdersPage() {
       </div>
       <Panel className="orders-list">
         <div className="pill-tabs">
-          {["全部", "待支付", "待使用", "履约中", "已完成", "已关闭"].map(
-            (item) => (
-              <Button
-                key={item}
-                type={tab === item ? "primary" : "default"}
-                onClick={() => setTab(item)}
-              >
-                {item}
-              </Button>
-            ),
-          )}
+          {Object.entries(tabs).map(([key, item]) => (
+            <Button
+              key={item}
+              type={tab === item ? "primary" : "default"}
+              onClick={() => setParams(key === "all" ? {} : { status: key })}
+            >
+              {item}
+            </Button>
+          ))}
         </div>
         <Table
           rowKey="id"
           pagination={false}
           dataSource={data}
+          scroll={{ x: 1400 }}
           columns={[
             {
               title: "订单编号",
@@ -86,7 +112,12 @@ export function OrdersPage() {
               width: "15%",
               render: (value, order) => (
                 <>
-                  <b>{value}</b>
+                  <Link
+                    className="dark-link order-number"
+                    to={`/me/orders/${order.id}`}
+                  >
+                    <b>{value}</b>
+                  </Link>
                   <small>{order.createdAt}</small>
                 </>
               ),
@@ -111,7 +142,7 @@ export function OrdersPage() {
             {
               title: "金额",
               dataIndex: "amountMinor",
-              render: (value) => `${Number(value) / 100} 元`,
+              render: (value: string) => `${formatMinorUnits(value)} 元`,
             },
             {
               title: "支付状态",
@@ -166,15 +197,39 @@ export function OrdersPage() {
 
 export function OrderDetailPage() {
   const { id } = useParams();
-  const { orders } = usePrototype();
+  const { orders, refunds } = usePrototype();
   const order = findPreviewOrder(orders, id);
   if (!order) return <Empty description="订单不存在或已失效" />;
   const paid = order.payment === "PAID";
+  const closed = order.fulfillment === "CLOSED";
+  const entitlement = purchaseFixtures.find(
+    (item) => item.orderId === order.id,
+  );
+  const canConfigure = paid && order.fulfillment === "AVAILABLE" && entitlement;
+  const entitlementLabel = closed
+    ? "权益已关闭"
+    : !paid
+      ? "付款后开通"
+      : order.fulfillment === "RUNNING"
+        ? "权益已占用"
+        : order.fulfillment === "COMPLETED"
+          ? "权益已使用"
+          : canConfigure
+            ? "权益可使用"
+            : "权益资料待载入";
+  const fulfillment =
+    order.fulfillment === "AVAILABLE"
+      ? "履约待开始"
+      : fulfillmentLabels[order.fulfillment];
+  const snapshot = order.serviceSnapshot;
+  const relatedRefunds = refunds.filter((item) => item.orderId === order.id);
+  const task = previewTasks.find((item) => item.key === order.taskId);
   return (
     <div className="order-detail-page">
       <PageHeading
         title="订单详情"
         description="查看订单信息、服务约定与使用配置，管理本次购买的脚本服务。"
+        extra={<Status tone="gray">本地示例</Status>}
       />
       <div className="order-detail-banner">
         <TileIcon name={order.icon} color="gradient" />
@@ -188,27 +243,29 @@ export function OrderDetailPage() {
               {order.id}
             </Typography.Text>
           </p>
-          <p>数据文件处理与清洗脚本，一次完整服务，确保输出符合约定目标。</p>
+          <p>{order.summary}</p>
         </div>
         <div>
-          <strong>¥{(Number(order.amountMinor) / 100).toFixed(2)}</strong>
+          <strong>¥{formatMinorUnits(order.amountMinor)}</strong>
           <p>
             <Status tone={paid ? "green" : "orange"}>
               {paid ? "已支付" : "待支付"}
             </Status>
-            <Status>权益{paid ? "可使用" : "待开通"}</Status>
-            <Status tone="orange">{paid ? "履约待开始" : "等待付款"}</Status>
+            <Status>{entitlementLabel}</Status>
+            <Status tone="orange">{fulfillment}</Status>
           </p>
         </div>
       </div>
       <div className="order-status-grid">
         <Panel>
-          <TileIcon name="shield" color="green" />
+          <span className="tile-icon tile-green">
+            <CheckCircleOutlined aria-hidden />
+          </span>
           <div>
             <h3>支付状态</h3>
             <p>
               {paid ? "已支付" : "待支付"} ¥
-              {(Number(order.amountMinor) / 100).toFixed(2)}
+              {formatMinorUnits(order.amountMinor)}
             </p>
           </div>
         </Panel>
@@ -216,50 +273,98 @@ export function OrderDetailPage() {
           <TileIcon name="rocket" />
           <div>
             <h3>使用权益</h3>
-            <p>{paid ? "权益可使用" : "付款后开通"}</p>
+            <p>{entitlementLabel}</p>
           </div>
         </Panel>
         <Panel>
-          <TileIcon name="history" color="orange" />
+          <TileIcon name="clock" color="orange" />
           <div>
             <h3>履约状态</h3>
-            <p>{fulfillmentLabels[order.fulfillment]}</p>
+            <p>{fulfillment}</p>
           </div>
         </Panel>
       </div>
       <div className="order-contract-grid">
         <Panel title="服务约定与合同">
           <dl className="contract-definition">
-            <dt>合同快照版本</dt>
-            <dd>v1.2</dd>
-            <dt>未达目标的退款规则</dt>
-            <dd>目标未达全退</dd>
-            <dt>单次服务最长时间</dt>
-            <dd>最长5分钟</dd>
-            <dt>购买时间</dt>
+            <dt>
+              <Icon name="file" />
+              合同快照版本
+            </dt>
+            <dd>
+              {order.contract?.version ||
+                (snapshot ? serviceVersion(snapshot) : "合同快照待载入")}
+            </dd>
+            <dt>
+              <Icon name="shield" />
+              未达目标的退款规则
+            </dt>
+            <dd>
+              {order.contract?.refundRule ||
+                snapshot?.refund_policy.summary ||
+                "退款规则待载入"}
+            </dd>
+            <dt>
+              <Icon name="clock" />
+              单次服务最长时间
+            </dt>
+            <dd>
+              {order.contract
+                ? serviceDuration(order.contract.maxServiceSeconds)
+                : snapshot
+                  ? serviceDuration(snapshot.max_service_seconds)
+                  : "执行约定待载入"}
+            </dd>
+            <dt>
+              <Icon name="calendar" />
+              购买时间
+            </dt>
             <dd>{order.createdAt}</dd>
-            <dt>有效期限</dt>
-            <dd>2026-11-20</dd>
+            <dt>
+              <Icon name="calendar" />
+              有效期限
+            </dt>
+            <dd>{order.contract?.validUntil || "以订单权益期限为准"}</dd>
           </dl>
         </Panel>
         <Panel title="订单操作">
           <div className="order-action-stack">
-            {paid ? (
-              <Link to="/me/services/demo/use">
-                <Button type="primary" block icon={<PlayCircleOutlined />}>
+            {canConfigure ? (
+              <Link to={`/me/services/${canConfigure.id}/use`}>
+                <Button
+                  type="primary"
+                  block
+                  icon={<PlayCircleOutlined aria-hidden />}
+                >
                   配置使用
                 </Button>
               </Link>
-            ) : (
+            ) : task ? (
+              <Link to={`/me/tasks/${task.key}`}>
+                <Button type="primary" block>
+                  查看任务
+                </Button>
+              </Link>
+            ) : !paid && !closed ? (
               <Link to={`/checkout/${order.id}/pay`}>
                 <Button type="primary" block>
                   去支付
                 </Button>
               </Link>
+            ) : (
+              <Link to="/me/services">
+                <Button block>查看已购服务</Button>
+              </Link>
             )}
-            <Link to={paid ? `/me/refunds?order=${order.id}` : "/me/orders"}>
-              <Button block icon={<CloseOutlined />}>
-                {paid ? "取消并退款" : "返回订单列表"}
+            <Link
+              to={
+                paid && !closed
+                  ? `/me/refunds?order_id=${order.id}`
+                  : "/me/orders"
+              }
+            >
+              <Button block icon={<CloseOutlined aria-hidden />}>
+                {paid && !closed ? "取消并退款" : "返回订单列表"}
               </Button>
             </Link>
             <Notice>
@@ -280,7 +385,9 @@ export function OrderDetailPage() {
             size="small"
             pagination={false}
             dataSource={
-              paid ? [{ id: "PAY202611130001", amount: order.amountMinor }] : []
+              order.paymentRecordId
+                ? [{ id: order.paymentRecordId, amount: order.amountMinor }]
+                : []
             }
             rowKey="id"
             columns={[
@@ -289,7 +396,7 @@ export function OrderDetailPage() {
               {
                 title: "金额",
                 dataIndex: "amount",
-                render: (value) => `¥${(Number(value) / 100).toFixed(2)}`,
+                render: (value: string) => `¥${formatMinorUnits(value)}`,
               },
               { title: "支付时间", render: () => order.createdAt },
               {
@@ -303,7 +410,8 @@ export function OrderDetailPage() {
           <Table
             size="small"
             pagination={false}
-            dataSource={[]}
+            dataSource={relatedRefunds}
+            rowKey="id"
             locale={{
               emptyText: (
                 <Empty
@@ -313,10 +421,28 @@ export function OrderDetailPage() {
               ),
             }}
             columns={[
-              { title: "记录编号" },
-              { title: "退款金额" },
-              { title: "退款时间" },
-              { title: "状态" },
+              {
+                title: "记录编号",
+                dataIndex: "id",
+                render: (value) => (
+                  <Link to={`/me/refunds/${value}`}>{value}</Link>
+                ),
+              },
+              {
+                title: "退款金额",
+                dataIndex: "amountMinor",
+                render: (value: string) => `¥${formatMinorUnits(value)}`,
+              },
+              { title: "退款时间", dataIndex: "createdAt" },
+              {
+                title: "状态",
+                render: (_, refund) =>
+                  refund.status === "SUCCEEDED"
+                    ? "已退款"
+                    : refund.status === "PROCESSING"
+                      ? "退款处理中"
+                      : "申请已记录（预览）",
+              },
             ]}
           />
         </Panel>
@@ -324,18 +450,29 @@ export function OrderDetailPage() {
           <Table
             size="small"
             pagination={false}
-            rowKey="id"
-            dataSource={paid ? [{ id: "TASK202611130001" }] : []}
+            dataSource={task ? [task] : []}
+            rowKey="key"
+            locale={{
+              emptyText: (
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description="暂无关联任务"
+                />
+              ),
+            }}
             columns={[
               {
                 title: "任务编号",
-                dataIndex: "id",
-                render: (value) => <Link to="/me/tasks/demo">{value}</Link>,
+                dataIndex: "key",
+                render: (value) => (
+                  <Link to={`/me/tasks/${value}`}>{value}</Link>
+                ),
               },
               { title: "任务类型", render: () => "脚本执行" },
               {
                 title: "状态",
-                render: () => <Status tone="gray">待开始</Status>,
+                dataIndex: "status",
+                render: (value) => <Status tone="gray">{value}</Status>,
               },
             ]}
           />

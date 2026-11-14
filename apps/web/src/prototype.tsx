@@ -24,6 +24,15 @@ export interface PreviewOrder {
   serviceId?: string;
   input?: unknown;
   schemaDigest?: string;
+  serviceSnapshot?: Service;
+  contract?: {
+    version: string;
+    refundRule: string;
+    maxServiceSeconds: string;
+    validUntil: string;
+  };
+  paymentRecordId?: string;
+  taskId?: string;
 }
 
 export interface CredentialRow {
@@ -139,6 +148,13 @@ const initialOrders: PreviewOrder[] = [
     payment: "PAID",
     fulfillment: "AVAILABLE",
     createdAt: "2026-11-13",
+    contract: {
+      version: "v1.2",
+      refundRule: "目标未达全退",
+      maxServiceSeconds: "300",
+      validUntil: "2026-11-20",
+    },
+    paymentRecordId: "PAY202611130001",
   },
   {
     id: "OD202611130002",
@@ -150,6 +166,7 @@ const initialOrders: PreviewOrder[] = [
     payment: "PAID",
     fulfillment: "RUNNING",
     createdAt: "2026-11-13",
+    taskId: "booking",
   },
   {
     id: "OD202611130003",
@@ -268,6 +285,7 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
       serviceId: service.id,
       input: structuredClone(input),
       schemaDigest: service.input_schema_digest,
+      serviceSnapshot: structuredClone(service),
     };
     setOrders((previous) =>
       previous.some((item) => item.id === id) ? previous : [order, ...previous],
@@ -322,7 +340,7 @@ export function usePrototype() {
 }
 
 export function findPreviewOrder(orders: PreviewOrder[], id?: string) {
-  if (id === "demo" && orders.length)
-    return { ...initialOrders[0], id: "TT202611130018" };
-  return orders.find((order) => order.id === id);
+  return orders.find(
+    (order) => order.id === (id === "demo" ? initialOrders[0].id : id),
+  );
 }

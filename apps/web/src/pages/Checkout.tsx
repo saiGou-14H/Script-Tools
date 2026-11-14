@@ -290,15 +290,10 @@ export function CashierPage() {
   const { orderId } = useParams();
   const { orders, cancelUnpaidOrder } = usePrototype();
   const { bootstrap } = useWorkspace();
-  const sourceOrder = findPreviewOrder(orders, orderId);
-  const order =
-    sourceOrder && orderId === "demo"
-      ? {
-          ...sourceOrder,
-          payment: "UNPAID" as const,
-          fulfillment: "WAITING_PAYMENT" as const,
-        }
-      : sourceOrder;
+  const order = findPreviewOrder(
+    orders,
+    orderId === "demo" ? "OD202611130003" : orderId,
+  );
   const [channel, setChannel] = useState("demo-a");
   const { modal, message } = App.useApp();
   const navigate = useNavigate();

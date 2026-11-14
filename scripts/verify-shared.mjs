@@ -1,6 +1,7 @@
 import { chromium, expect } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { preview } from "vite";
 
 const output = path.resolve("output/verification/shared-pages");
 await mkdir(output, { recursive: true });
@@ -11,7 +12,21 @@ const report = {
   screenshots: [],
   errors: [],
 };
-const base = "http://127.0.0.1:5174";
+const root = path.resolve("apps/web");
+const server = await preview({
+  root,
+  configFile: path.join(root, "vite.config.ts"),
+  preview: {
+    host: "127.0.0.1",
+    port: 0,
+    strictPort: true,
+    proxy: { "/api": { target: "http://127.0.0.1:3001" } },
+  },
+});
+const address = server.httpServer.address();
+if (!address || typeof address !== "object")
+  throw new Error("Preview address is unavailable");
+const base = `http://127.0.0.1:${address.port}`;
 try {
   for (const [role, email, routes] of [
     [
@@ -168,7 +183,7 @@ try {
       ]) {
         await page.goto(base + route);
         await expect(
-          page.getByText(/服务不存在|请先选择可使用的服务|任务不存在/),
+          page.getByText(/服务不存在|权益不存在|任务不存在/),
         ).toBeVisible();
       }
       await page.goto(base + "/checkout/OD202611130001/pay");
@@ -195,6 +210,7 @@ try {
   process.exitCode = 1;
 } finally {
   await browser.close();
+  await server.close();
   await writeFile(
     path.join(output, "report.json"),
     JSON.stringify(report, null, 2),
