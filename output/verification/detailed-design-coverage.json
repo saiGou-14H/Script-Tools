@@ -1,7 +1,7 @@
 {
   "date": "2026-11-14",
   "result": "PASS",
-  "checks": 1256,
+  "checks": 1257,
   "pages": 66,
   "actions": 102,
   "requirements": 61,
@@ -9,7 +9,7 @@
   "tables": 145,
   "fields": 1755,
   "documents": {
-    "06-详细开发设计.md": "a4ae1e2d7a7206e73ede4a51ca893f5b1b5a985f1edeaec70a02a9cd619939e7",
+    "06-详细开发设计.md": "4b548e35a51a12562918842bf839eeffea4a76b4e8792f0a3553aa37a17dcdfc",
     "07-完整系统数据库设计.md": "add047d1a2573fe85e8682e575ea9c7c685ab8d1577a46ef09f09a0389b1ea8e"
   },
   "limit": "Static coverage and dictionary/DDL alignment; not live implementation acceptance"

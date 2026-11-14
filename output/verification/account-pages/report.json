@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-14T09:17:34.736Z",
+  "checks": [
+    "account reads expose masked identity and fixed device hints, preserve string revisions and reject anonymous access, CSRF failures and unsupported or invalid profile fields",
+    "profile commands create legacy preferences, canonicalize locale and timezone, preserve original idempotent responses and serialize concurrent retries without losing revisions",
+    "profile, preferences, audit and outbox roll back together if receipt storage fails, and generic encrypted receipts retain the correct resource type",
+    "session lists use owner-bound signed pagination and safe metadata, and individual revocation requires ownership, CSRF, idempotency and the displayed revision",
+    "bulk revocation preserves the current session, current-session deletion accounts for its own activity touch, and replay from a later session preserves that later session's cookie",
+    "the last persistent access-manager indicator follows active grants and does not fabricate workspace privileges",
+    "PostgreSQL profile updates exercise real revision triggers and preference upserts while authentication preserves full BIGINT security revision precision in a rolled-back transaction",
+    "nickname editing persists through the real built UI and database, and conflict recovery reloads the revision while retaining the user's typed intent for explicit resubmission",
+    "identity refresh removes a revoked administrator workspace from account settings and reloads private queries under the remaining personal role",
+    "the account publisher entry reaches the existing explicit onboarding flow and cancellation preserves the original personal account",
+    "session management lists real devices, bulk logout preserves the browser's current session and explicit current logout returns to authenticated-route protection",
+    "the consumer, publisher and administrator account layouts render their distinct reference structures inside the target viewport without browser exceptions"
+  ],
+  "screenshots": [
+    "USER-C21",
+    "PUBLISHER-C21",
+    "ADMIN-C21"
+  ],
+  "errors": [],
+  "layouts": {
+    "USER-C21": {
+      "width": 1814,
+      "height": 868
+    },
+    "PUBLISHER-C21": {
+      "width": 1814,
+      "height": 868
+    },
+    "ADMIN-C21": {
+      "width": 1814,
+      "height": 868
+    }
+  },
+  "result": "PASS"
+}

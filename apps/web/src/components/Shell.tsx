@@ -57,7 +57,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
     "C21",
     "P06",
   ];
-  if (pageId === "C02")
+  if (pageId === "C02" || pageId === "C21")
     consumerMenu.splice(1, 5, "C04", "C06", "C22", "P02", "P04");
   if (["S01", "S13", "S15"].includes(pageId))
     publisherMenu.splice(
@@ -84,7 +84,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
       : role === "PUBLISHER"
         ? publisherMenu
         : role === "ADMIN" &&
-            pageId.startsWith("O") &&
+            (pageId.startsWith("O") || pageId === "C21") &&
             pageId !== "O01" &&
             pageId !== "O02" &&
             pageId !== "O14"
@@ -113,7 +113,9 @@ export function Shell({ pageId }: { pageId: PageId }) {
             ]
           : [];
   const compactAdmin =
-    role === "ADMIN" && pageId.startsWith("O") && pageId !== "O01";
+    role === "ADMIN" &&
+    (pageId.startsWith("O") || pageId === "C21") &&
+    pageId !== "O01";
   const menu = menuForRole(role).sort(
     (a, b) => order.indexOf(a.id) - order.indexOf(b.id),
   );
@@ -330,7 +332,8 @@ export function Shell({ pageId }: { pageId: PageId }) {
             <div className="breadcrumb">
               {pageId === "P01" ? (
                 <Icon name="home" />
-              ) : ["C01", "C12", "C13"].includes(pageId) ? (
+              ) : ["C01", "C12", "C13"].includes(pageId) ||
+                (pageId === "C21" && role === "USER") ? (
                 <>
                   <Link className="consumer-home-breadcrumb" to="/me/home">
                     <Icon name="home" />

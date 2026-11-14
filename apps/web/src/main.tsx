@@ -19,6 +19,7 @@ import "./styles/auth.css";
 import "./styles/retail.css";
 import "./styles/consumer-home.css";
 import "./styles/outputs.css";
+import "./styles/account.css";
 
 const client = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },

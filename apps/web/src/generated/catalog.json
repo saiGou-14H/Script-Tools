@@ -2295,7 +2295,8 @@
       ],
       "endpoints": [
         "POST /api/v1/auth/logout",
-        "DELETE /api/v1/me/sessions/{id}"
+        "DELETE /api/v1/me/sessions/{id}",
+        "DELETE /api/v1/me/sessions/others"
       ],
       "scope": "OWN",
       "guard": "仅本人会话；安全事件审计",

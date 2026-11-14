@@ -39,6 +39,7 @@ const browserReports = [
   "output/verification/consumer-overview/report.json",
   "output/verification/publisher-profile/report.json",
   "output/verification/output-pages/report.json",
+  "output/verification/account-pages/report.json",
 ];
 const screenshots = new Set();
 const browserResults = [];
@@ -107,6 +108,7 @@ const report = {
     "The consumer home and checkout are aligned with their reference regions. The live personal overview reads owner-scoped metadata in one database snapshot. Current-state counters retain old continuous runs, and committed outputs can be visible before process completion. Preview records are explicitly labeled and shared across their related pages.",
     "Publisher onboarding and profile settings use the owner-scoped API with explicit terms consent, encrypted idempotency receipts, revision checks, audit and outbox writes. An isolated API and production-built UI verify the complete onboarding route. The publisher home fits the reference viewport and labels its development examples. Live publisher business overviews and payouts remain pending.",
     "The output and pending pages have been realigned with the reference regions. Output links and toolbar actions use the selected record, and JSON/text/file previews preserve their own MIME types. Live output metadata uses owner-scoped committed-batch queries with signed pagination. Content storage, downloads, notification delivery and pending-action execution remain in progress.",
+    "Account settings now have distinct consumer, publisher and administrator layouts. Identity, nickname edits and session management use owner-scoped APIs, generic encrypted command receipts and revision checks. Security revisions use decimal strings. Account closure, email changes and subscription disconnection remain pending.",
   ],
   items,
 };

@@ -14,6 +14,8 @@ import { PublisherProfileService } from "./publisher/publisher-profile.service";
 import { PaginationService } from "./common/pagination.service";
 import { OutputQueryController } from "./outputs/output-query.controller";
 import { OutputQueryService } from "./outputs/output-query.service";
+import { AccountController } from "./account/account.controller";
+import { AccountService } from "./account/account.service";
 
 @Module({
   controllers: [
@@ -21,6 +23,7 @@ import { OutputQueryService } from "./outputs/output-query.service";
     MonitoringController,
     PublisherProfileController,
     OutputQueryController,
+    AccountController,
   ],
   providers: [
     DatabaseService,
@@ -32,6 +35,7 @@ import { OutputQueryService } from "./outputs/output-query.service";
     PublisherProfileService,
     PaginationService,
     OutputQueryService,
+    AccountService,
     { provide: APP_GUARD, useClass: AuthGuard },
   ],
 })

@@ -19,10 +19,11 @@ export type CurrentUser = {
   status: string;
   roles: string[];
   capabilities: string[];
-  security_revision: number;
+  security_revision: string;
 };
 export interface AppRequest extends Request {
   user?: CurrentUser;
+  sessionBeforeTouch?: { id: string; revision: string };
   requestId: string;
 }
 
@@ -31,19 +32,17 @@ export class EnvelopeInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler) {
     const request = context.switchToHttp().getRequest<AppRequest>();
     request.requestId ||= randomUUID();
-    return next
-      .handle()
-      .pipe(
-        map((data) =>
-          data instanceof PageResult
-            ? {
-                data: data.items,
-                next_cursor: data.nextCursor,
-                request_id: request.requestId,
-              }
-            : { data, request_id: request.requestId },
-        ),
-      );
+    return next.handle().pipe(
+      map((data) =>
+        data instanceof PageResult
+          ? {
+              data: data.items,
+              next_cursor: data.nextCursor,
+              request_id: request.requestId,
+            }
+          : { data, request_id: request.requestId },
+      ),
+    );
   }
 }
 

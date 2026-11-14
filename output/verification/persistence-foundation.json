@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T08:16:38.600Z",
+  "date": "2026-11-14T09:18:50.270Z",
   "checks": [
     "initial migration creates 145 design tables",
     "outside query waits for rollback and cannot read uncommitted data",

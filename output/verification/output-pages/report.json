@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T08:15:56.465Z",
+  "date": "2026-11-14T09:20:21.663Z",
   "checks": [
     "the output HTTP API requires a session, returns the standard paginated envelope and rejects unsupported filters and invalid resources",
     "home-style output links select the requested record, toolbar preview and download use its content, and selection survives reload",

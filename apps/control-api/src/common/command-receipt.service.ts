@@ -146,6 +146,7 @@ export class CommandReceiptService {
     digest: string,
     resource: string,
     response: CommandReceipt,
+    resourceType = "PUBLISHER_PROFILE",
   ) {
     const key = await this.encryptionKey();
     const payloadId = randomUUID();
@@ -172,7 +173,7 @@ export class CommandReceiptService {
     );
     await connection.query(
       `INSERT INTO travel.idempotency_records(id,owner_user_id,method,route,key,request_digest,response_payload_id,response_status,resource_type,resource_id,expires_at)
-      VALUES(gen_random_uuid(),$1,$2,$3,$4,$5,$6,$7,'PUBLISHER_PROFILE',$8,now()+interval '24 hours')`,
+      VALUES(gen_random_uuid(),$1,$2,$3,$4,$5,$6,$7,$9,$8,now()+interval '24 hours')`,
       [
         scope.owner,
         scope.method,
@@ -182,6 +183,7 @@ export class CommandReceiptService {
         payloadId,
         response.status,
         resource,
+        resourceType,
       ],
     );
   }

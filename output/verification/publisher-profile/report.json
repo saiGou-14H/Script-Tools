@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T08:16:40.171Z",
+  "date": "2026-11-14T09:20:22.931Z",
   "checks": [
     "profile reads and writes require a verified session, CSRF and an idempotency key, reject owner overrides and enforce current terms and field limits",
     "concurrent retries create one profile, audit event and outbox event, refresh the current session's publisher role and preserve account isolation and management capabilities",

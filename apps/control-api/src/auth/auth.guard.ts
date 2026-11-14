@@ -34,7 +34,12 @@ export class AuthGuard implements CanActivate {
         { code: "POLICY_DENIED", message: "请求来源无效" },
         403,
       );
-    request.user = await this.auth.userForSession(request.cookies?.session);
+    request.user = await this.auth.userForSession(
+      request.cookies?.session,
+      (session) => {
+        request.sessionBeforeTouch = session;
+      },
+    );
     const isPublic = this.reflector.getAllAndOverride("public", [
       context.getHandler(),
       context.getClass(),

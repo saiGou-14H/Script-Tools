@@ -18,6 +18,7 @@ import { AuthService, csrfToken } from "./auth/auth.service";
 import { Capability, Public } from "./auth/auth.guard";
 import { AppRequest } from "./common/http";
 import { AuthChallengeService } from "./auth/auth-challenge.service";
+import { AccountService } from "./account/account.service";
 
 @Controller("api/v1")
 export class AppController {
@@ -25,6 +26,7 @@ export class AppController {
     private readonly database: DatabaseService,
     private readonly auth: AuthService,
     private readonly challenges: AuthChallengeService,
+    private readonly accounts: AccountService,
   ) {}
 
   @Public()
@@ -67,9 +69,14 @@ export class AppController {
   @HttpCode(200)
   async login(
     @Body() body: Record<string, unknown>,
+    @Req() request: AppRequest,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const { token, user } = await this.auth.login(body?.email, body?.password);
+    const { token, user } = await this.auth.login(
+      body?.email,
+      body?.password,
+      request.get("user-agent"),
+    );
     response.cookie("session", token, {
       httpOnly: true,
       sameSite: "lax",
@@ -143,13 +150,13 @@ export class AppController {
     @Req() request: AppRequest,
     @Res({ passthrough: true }) response: Response,
   ) {
-    await this.auth.logout(request.cookies.session);
+    await this.accounts.logout(
+      request.user!.id,
+      request.cookies.session,
+      request.requestId,
+    );
     response.clearCookie("session", { path: "/" });
     return { revoked: true };
-  }
-
-  @Get("me") me(@Req() request: AppRequest) {
-    return request.user;
   }
 
   @Public()

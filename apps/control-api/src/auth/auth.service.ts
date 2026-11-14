@@ -19,7 +19,10 @@ export function csrfToken(session: string) {
 export class AuthService {
   constructor(private readonly database: DatabaseService) {}
 
-  async userForSession(token?: string): Promise<CurrentUser | undefined> {
+  async userForSession(
+    token?: string,
+    onSession?: (session: { id: string; revision: string }) => void,
+  ): Promise<CurrentUser | undefined> {
     if (!token) return;
     const result = await this.database.query(
       `UPDATE travel.auth_sessions s SET last_seen_at=now()
@@ -27,11 +30,15 @@ export class AuthService {
       AND s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>now()
       AND COALESCE(s.last_seen_at,s.authenticated_at)>now()-interval '30 minutes'
       AND s.security_revision=u.security_revision AND u.status='ACTIVE' AND u.verified_at IS NOT NULL
-      RETURNING u.id,u.display_name,u.status,u.security_revision`,
+      RETURNING u.id,u.display_name,u.status,u.security_revision,s.id AS session_id,s.revision::text AS session_revision`,
       [digest(token)],
     );
     if (!result.rows.length) return;
     const user = result.rows[0];
+    onSession?.({
+      id: String(user.session_id),
+      revision: (BigInt(String(user.session_revision)) - 1n).toString(),
+    });
     const publisher = await this.database.query(
       "SELECT id FROM travel.publisher_profiles WHERE owner_user_id=$1 AND enabled=true",
       [user.id],
@@ -44,7 +51,7 @@ export class AuthService {
       id: String(user.id),
       display_name: String(user.display_name),
       status: String(user.status),
-      security_revision: Number(user.security_revision),
+      security_revision: String(user.security_revision),
       roles: [
         "USER",
         ...(publisher.rows.length ? ["PUBLISHER"] : []),
@@ -56,7 +63,7 @@ export class AuthService {
     };
   }
 
-  async login(email: unknown, password: unknown) {
+  async login(email: unknown, password: unknown, userAgent?: string) {
     if (
       typeof email !== "string" ||
       typeof password !== "string" ||
@@ -90,8 +97,13 @@ export class AuthService {
           401,
         );
       await connection.query(
-        "INSERT INTO travel.auth_sessions(id,owner_user_id,token_hash,security_revision,authenticated_at,last_seen_at,expires_at) VALUES(gen_random_uuid(),$1,$2,$3,now(),now(),now()+interval '12 hours')",
-        [row.id, digest(token), row.security_revision],
+        "INSERT INTO travel.auth_sessions(id,owner_user_id,token_hash,security_revision,authenticated_at,last_seen_at,expires_at,client_summary) VALUES(gen_random_uuid(),$1,$2,$3,now(),now(),now()+interval '12 hours',$4)",
+        [
+          row.id,
+          digest(token),
+          row.security_revision,
+          deviceSummary(userAgent),
+        ],
       );
     });
     return { token, user: await this.userForSession(token) };
@@ -103,4 +115,28 @@ export class AuthService {
       [digest(token)],
     );
   }
+}
+
+function deviceSummary(userAgent?: string) {
+  if (!userAgent) return null;
+  const value = userAgent.slice(0, 8192).toLowerCase();
+  const systems = [
+    ["windows", "Windows"],
+    ["android", "Android"],
+    ["iphone", "iOS"],
+    ["ipad", "iPadOS"],
+    ["macintosh", "macOS"],
+    ["linux", "Linux"],
+  ];
+  const browsers = [
+    ["edg/", "Edge"],
+    ["opr/", "Opera"],
+    ["firefox/", "Firefox"],
+    ["chrome/", "Chrome"],
+    ["safari/", "Safari"],
+  ];
+  const system =
+    systems.find(([needle]) => value.includes(needle))?.[1] || "未登记设备";
+  const browser = browsers.find(([needle]) => value.includes(needle))?.[1];
+  return browser ? `${system} · ${browser}` : system;
 }

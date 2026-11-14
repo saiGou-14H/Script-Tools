@@ -4,7 +4,7 @@ export interface User {
   display_name: string;
   roles: Role[];
   capabilities: string[];
-  security_revision: number;
+  security_revision: string;
 }
 export interface Service {
   id: string;
@@ -43,6 +43,27 @@ export interface Bootstrap {
   csrf_token: string | null;
   data_mode: "prototype" | "live";
   demo_accounts: { email: string; name: string; role: Role }[];
+}
+
+export interface AccountSession {
+  id: string;
+  revision: string;
+  client_summary: string | null;
+  authenticated_at: string;
+  last_seen_at: string | null;
+  expires_at: string;
+  revoked_at: string | null;
+  is_current: boolean;
+}
+export interface AccountProfile extends User {
+  revision: string;
+  email_mask: string | null;
+  status: string;
+  locale: string;
+  timezone: string;
+  updated_at: string;
+  current_session: AccountSession;
+  is_last_access_manager: boolean;
 }
 
 export interface PublisherProfile {

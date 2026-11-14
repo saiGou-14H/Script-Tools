@@ -42,9 +42,13 @@ import {
   BlockOutlined,
   FolderOpenOutlined,
   TagOutlined,
+  WindowsOutlined,
+  CustomerServiceOutlined,
 } from "@ant-design/icons";
 
 const icons = {
+  windows: WindowsOutlined,
+  support: CustomerServiceOutlined,
   layers: BlockOutlined,
   folder: FolderOpenOutlined,
   ticket: TagOutlined,

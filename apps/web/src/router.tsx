@@ -467,8 +467,12 @@ export function Application() {
       setRole(preferred);
       return;
     }
-    if (location.pathname === "/me/settings/account" && role !== "GUEST")
-      return;
+    if (location.pathname === "/me/settings/account" && role !== "GUEST") {
+      if (bootstrap?.user?.roles.includes(role)) return;
+      client.removeQueries({
+        predicate: (query) => query.queryKey[0] !== "public",
+      });
+    }
     if (target !== "GUEST")
       setRole(bootstrap?.user?.roles.includes(target) ? target : "USER");
   }, [
