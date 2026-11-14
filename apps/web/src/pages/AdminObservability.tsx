@@ -1,4 +1,4 @@
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import {
   App,
   Button,
@@ -18,6 +18,8 @@ import {
 } from "../admin-operations";
 import { useAdminPreview } from "../admin-preview";
 import { useWorkspace } from "../context";
+import { useSearchParams } from "react-router-dom";
+import { AdminObservabilityLivePage } from "./AdminRuntimeDiagnostics";
 
 const logFixtures = [
   {
@@ -99,15 +101,17 @@ const serviceOptions = [
 
 function ObservationFilters({
   onSearch,
+  values,
 }: {
   onSearch: (values: { minutes: number; service?: string }) => void;
+  values: { minutes: number; service?: string };
 }) {
   const formId = useId();
   return (
     <Form
       name={`observation-${formId}`}
       layout="inline"
-      initialValues={{ minutes: 60 }}
+      initialValues={values}
       onFinish={onSearch}
     >
       <Form.Item name="minutes" label="时间范围">
@@ -141,19 +145,45 @@ export function AdminObservabilityPage() {
   const { recordNote } = useAdminPreview();
   const { bootstrap } = useWorkspace();
   const { message } = App.useApp();
-  const [logsFilter, setLogsFilter] = useState<{
-    minutes: number;
-    service?: string;
-  }>({ minutes: 60 });
-  const [alertsFilter, setAlertsFilter] = useState<{
-    minutes: number;
-    service?: string;
-  }>({ minutes: 60 });
+  const [params, setParams] = useSearchParams();
+  function filters(prefix: string) {
+    const minutes = Number(params.get(`${prefix}_minutes`) || 60);
+    return {
+      minutes: [5, 60, 1440].includes(minutes) ? minutes : 60,
+      service: params.get(`${prefix}_service`) || undefined,
+    };
+  }
+  const logsFilter = filters("log");
+  const alertsFilter = filters("alert");
+  function setFilters(
+    prefix: string,
+    values: { minutes: number; service?: string },
+  ) {
+    const next = new URLSearchParams(params);
+    next.set(`${prefix}_minutes`, String(values.minutes));
+    if (values.service) next.set(`${prefix}_service`, values.service);
+    else next.delete(`${prefix}_service`);
+    setParams(next);
+  }
   const [editing, setEditing] = useState<"silence" | "rule">();
   const [acknowledging, setAcknowledging] =
     useState<(typeof alertFixtures)[number]>();
   const [form] = Form.useForm();
   const requestKey = useRef(crypto.randomUUID());
+  const [now, setNow] = useState(Date.now);
+  useEffect(() => {
+    const nextExpiry = Math.min(
+      ...silences
+        .map((item) => Date.parse(item.expiresAt))
+        .filter((time) => time > now),
+    );
+    if (!Number.isFinite(nextExpiry)) return;
+    const timer = window.setTimeout(
+      () => setNow(Date.now()),
+      Math.min(Math.max(nextExpiry - Date.now(), 1), 2147483647),
+    );
+    return () => window.clearTimeout(timer);
+  }, [silences, now]);
   const canManage = Boolean(
     bootstrap.user?.capabilities.includes("observability.manage"),
   );
@@ -171,6 +201,7 @@ export function AdminObservabilityPage() {
           (!alertsFilter.service || item.service === alertsFilter.service),
       )
     : [];
+  if (!enabled) return <AdminObservabilityLivePage />;
   function open(kind: "silence" | "rule", id?: string) {
     form.resetFields();
     const alert =
@@ -207,10 +238,15 @@ export function AdminObservabilityPage() {
             告警
           </Button>
         </div>
-        <ObservationFilters onSearch={setLogsFilter} />
+        <ObservationFilters
+          key={JSON.stringify(logsFilter)}
+          values={logsFilter}
+          onSearch={(values) => setFilters("log", values)}
+        />
         <Table
           rowKey="id"
           dataSource={logs}
+          scroll={{ x: 1500 }}
           pagination={false}
           columns={[
             { title: "发生时间", dataIndex: "time", width: 275 },
@@ -241,7 +277,11 @@ export function AdminObservabilityPage() {
             <b>告警</b>
           </div>
           <div className="admin-alert-toolbar">
-            <ObservationFilters onSearch={setAlertsFilter} />
+            <ObservationFilters
+              key={JSON.stringify(alertsFilter)}
+              values={alertsFilter}
+              onSearch={(values) => setFilters("alert", values)}
+            />
             <div className="row-actions">
               <Button
                 disabled={!canManage || !enabled}
@@ -260,6 +300,7 @@ export function AdminObservabilityPage() {
           <Table
             rowKey="id"
             dataSource={alerts}
+            scroll={{ x: 1500 }}
             pagination={false}
             columns={[
               {
@@ -295,7 +336,7 @@ export function AdminObservabilityPage() {
                     (item) =>
                       (item.alertId === row.id ||
                         item.alertId === "ALL_CURRENT") &&
-                      new Date(item.expiresAt).getTime() > Date.now(),
+                      new Date(item.expiresAt).getTime() > now,
                   );
                   return (
                     <div className="row-actions">
@@ -342,31 +383,39 @@ export function AdminObservabilityPage() {
             requestKey.current = crypto.randomUUID();
           }}
           onFinish={(values) => {
-            if (editing === "silence")
-              saveSilence(
-                values.alertId,
-                values.minutes,
-                values.reason,
-                requestKey.current,
+            try {
+              if (editing === "silence")
+                saveSilence(
+                  values.alertId,
+                  values.minutes,
+                  values.reason,
+                  requestKey.current,
+                );
+              else
+                saveRule(
+                  {
+                    id: values.ruleId,
+                    version:
+                      (ruleDrafts.find((row) => row.id === values.ruleId)
+                        ?.version || 1) + 1,
+                    expression: values.expression,
+                    severity: values.severity,
+                    forSeconds: values.forSeconds,
+                  } satisfies AlertRulePreview,
+                  values.reason,
+                  requestKey.current,
+                );
+              setEditing(undefined);
+              void message.success(
+                editing === "silence"
+                  ? "限时静默预览已保存"
+                  : "规则草稿预览已保存，等待规则服务校验与同步",
               );
-            else
-              saveRule(
-                {
-                  id: values.ruleId,
-                  version: 2,
-                  expression: values.expression,
-                  severity: values.severity,
-                  forSeconds: values.forSeconds,
-                } satisfies AlertRulePreview,
-                values.reason,
-                requestKey.current,
+            } catch (error) {
+              void message.error(
+                error instanceof Error ? error.message : "保存失败，请重试",
               );
-            setEditing(undefined);
-            void message.success(
-              editing === "silence"
-                ? "限时静默预览已保存"
-                : "规则草稿预览已保存，等待规则服务校验与同步",
-            );
+            }
           }}
         >
           {editing === "silence" ? (
@@ -402,13 +451,16 @@ export function AdminObservabilityPage() {
             </>
           ) : (
             <>
-              <Notice>编辑生成v2草稿，启用状态等待规则服务校验与同步。</Notice>
+              <Notice>
+                保存生成下一版草稿，启用状态等待规则服务校验与同步。
+              </Notice>
               <Form.Item
                 label="规则"
                 name="ruleId"
                 rules={[{ required: true }]}
               >
                 <Select
+                  aria-label="规则"
                   options={alertFixtures.map((item) => ({
                     value: item.id,
                     label: item.title,
@@ -419,6 +471,12 @@ export function AdminObservabilityPage() {
                       expression:
                         ruleDrafts.find((row) => row.id === id)?.expression ||
                         item.expression,
+                      severity:
+                        ruleDrafts.find((row) => row.id === id)?.severity ||
+                        item.severity,
+                      forSeconds:
+                        ruleDrafts.find((row) => row.id === id)?.forSeconds ??
+                        60,
                     });
                   }}
                 />
@@ -436,6 +494,7 @@ export function AdminObservabilityPage() {
                 rules={[{ required: true }]}
               >
                 <Select
+                  aria-label="严重级别"
                   options={[{ value: "高" }, { value: "中" }, { value: "低" }]}
                 />
               </Form.Item>

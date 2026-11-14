@@ -6,14 +6,56 @@ export function AdminDiagnosisForm({
   resourceId,
   resourceLabel = "对象",
   readOnly = false,
+  fieldsBeforeReason = false,
 }: {
   resourceId?: string;
   resourceLabel?: string;
   readOnly?: boolean;
+  fieldsBeforeReason?: boolean;
 }) {
   const { bootstrap } = useWorkspace();
   const formId = useId();
   const { message } = App.useApp();
+  const reasonField = (
+    <Form.Item
+      name="reason"
+      label="理由"
+      rules={[{ required: true, whitespace: true, message: "请填写排障理由" }]}
+    >
+      <Input.TextArea
+        placeholder="请输入排障理由，说明需要定位的问题（必填）"
+        maxLength={200}
+        showCount
+        rows={3}
+      />
+    </Form.Item>
+  );
+  const scopeFields = (
+    <div className="diagnosis-field-row">
+      <Form.Item
+        name="fields"
+        label="字段范围"
+        rules={[{ required: true, message: "请选择字段范围" }]}
+      >
+        <Select
+          placeholder="请选择字段范围"
+          options={[
+            { value: "run_summary", label: "脱敏运行摘要" },
+            { value: "output_metadata", label: "产物元数据" },
+          ]}
+        />
+      </Form.Item>
+      <Form.Item
+        name="ticket"
+        label="工单编号"
+        rules={[
+          { required: true, whitespace: true, message: "请填写工单编号" },
+        ]}
+      >
+        <Input maxLength={100} />
+      </Form.Item>
+    </div>
+  );
   return (
     <Form
       name={`diagnosis-${formId}`}
@@ -35,44 +77,8 @@ export function AdminDiagnosisForm({
       >
         <Input readOnly={readOnly} placeholder="请输入对象ID，如 Run082" />
       </Form.Item>
-      <Form.Item
-        name="reason"
-        label="理由"
-        rules={[
-          { required: true, whitespace: true, message: "请填写排障理由" },
-        ]}
-      >
-        <Input.TextArea
-          placeholder="请输入排障理由，说明需要定位的问题（必填）"
-          maxLength={200}
-          showCount
-          rows={3}
-        />
-      </Form.Item>
-      <div className="diagnosis-field-row">
-        <Form.Item
-          name="fields"
-          label="字段范围"
-          rules={[{ required: true, message: "请选择字段范围" }]}
-        >
-          <Select
-            placeholder="请选择字段范围"
-            options={[
-              { value: "run_summary", label: "脱敏运行摘要" },
-              { value: "output_metadata", label: "产物元数据" },
-            ]}
-          />
-        </Form.Item>
-        <Form.Item
-          name="ticket"
-          label="工单编号"
-          rules={[
-            { required: true, whitespace: true, message: "请填写工单编号" },
-          ]}
-        >
-          <Input maxLength={100} />
-        </Form.Item>
-      </div>
+      {fieldsBeforeReason ? scopeFields : reasonField}
+      {fieldsBeforeReason ? reasonField : scopeFields}
       <Form.Item name="minutes" label="访问有效期" rules={[{ required: true }]}>
         <Select
           options={[

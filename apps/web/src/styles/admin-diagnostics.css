@@ -1,0 +1,161 @@
+.admin-runs-columns > *,
+.admin-runs-columns > div > .panel {
+  min-width: 0;
+}
+.admin-runs-page .ant-table {
+  font-size: 15px;
+}
+.admin-controlled-stop h3 {
+  line-height: 24px;
+}
+.admin-controlled-stop p {
+  line-height: 20px;
+  margin: 0;
+}
+.admin-observability-page .ant-form-item-label > label,
+.admin-observability-page .ant-select,
+.admin-observability-page .ant-table-thead > tr > th,
+.admin-observability-page .ant-table-tbody > tr > td {
+  font-size: 14px;
+}
+.admin-observability-page .ant-table .status {
+  font-size: 13px;
+}
+.admin-observability-page .ant-table .ant-btn {
+  font-size: 13px;
+}
+.admin-observability-page .ant-form-inline {
+  gap: 28px;
+}
+.admin-observability-page .ant-form-item-label {
+  padding-right: 14px;
+}
+.page-O16 .page-heading {
+  margin-bottom: 18px;
+}
+.diagnostics-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.diagnostics-filters .ant-input-search {
+  width: 290px;
+  max-width: 100%;
+}
+.diagnostics-filters .ant-select {
+  width: 160px;
+}
+.diagnostics-live .ant-table-wrapper {
+  max-width: 100%;
+}
+.diagnostics-scope {
+  margin: 12px 0;
+  color: #56647c;
+  overflow-wrap: anywhere;
+}
+.diagnostics-pending-actions {
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.diagnostics-live .ant-descriptions-item-content {
+  overflow-wrap: anywhere;
+}
+.diagnostics-live .admin-log-panel .panel-body,
+.diagnostics-live .admin-alert-panel .panel-body {
+  padding-top: 16px;
+}
+.diagnostics-live .admin-alert-toolbar {
+  flex-wrap: wrap;
+}
+.diagnostics-live .notice {
+  margin-bottom: 16px;
+}
+.diagnostics-live .ant-table-cell {
+  overflow-wrap: anywhere;
+}
+.admin-observability-page .admin-alert-panel .row-actions {
+  flex-wrap: nowrap;
+}
+@media (max-width: 760px) {
+  .app-shell.admin-workspace:is(.page-O15, .page-O16) {
+    --sidebar-width: 0px;
+  }
+  .app-shell:is(.page-O15, .page-O16) .main-content {
+    padding: calc(var(--header-height) + 20px) 16px 24px;
+  }
+  .app-shell:is(.page-O15, .page-O16) .brand {
+    min-width: 0;
+    font-size: 17px;
+  }
+  .app-shell:is(.page-O15, .page-O16) .brand strong {
+    font-size: 17px;
+  }
+  .app-shell:is(.page-O15, .page-O16) .workspace-button {
+    font-size: 0;
+    gap: 8px;
+    padding: 0 10px;
+  }
+  .app-shell:is(.page-O15, .page-O16) .workspace-button b,
+  .app-shell:is(.page-O15, .page-O16) .workspace-button .anticon {
+    font-size: 12px;
+  }
+  .admin-runs-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .admin-runs-page .panel-heading,
+  .admin-runs-page .panel-body,
+  .admin-observability-page .panel-body {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .admin-runs-table .ant-table-wrapper,
+  .admin-observability-page .ant-table-wrapper {
+    overflow-x: auto;
+  }
+  .admin-runs-table .ant-table {
+    min-width: 760px;
+  }
+  .admin-observability-page .ant-table {
+    min-width: 0;
+  }
+  .admin-external-verification .panel-body {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .admin-observability-page .ant-form-inline {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .admin-observability-page .ant-form-item,
+  .admin-observability-page .ant-select,
+  .diagnostics-filters .ant-select,
+  .diagnostics-filters .ant-input-search {
+    width: 100%;
+  }
+  .admin-observability-page .ant-form-item-row {
+    display: block;
+  }
+  .admin-alert-toolbar {
+    align-items: stretch;
+  }
+  .admin-alert-toolbar .ant-form-inline {
+    width: 100%;
+    flex: 1 0 100%;
+  }
+  .observation-tab-strip {
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+  }
+  .diagnosis-capability {
+    padding: 12px;
+    gap: 12px;
+  }
+  .diagnosis-capability > span + span {
+    padding-left: 12px;
+  }
+}

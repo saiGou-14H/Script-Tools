@@ -10,6 +10,91 @@ import { AdminMetadataService } from "./admin-metadata.service";
 export class AdminMetadataController {
   constructor(private readonly metadata: AdminMetadataService) {}
 
+  @Get("runs")
+  @Capability("runtime.manage")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({ name: "status", required: false, type: String })
+  @ApiQuery({ name: "node_id", required: false, type: String })
+  @ApiQuery({
+    name: "run_mode",
+    required: false,
+    enum: ["finite", "continuous"],
+  })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  runs(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.runs(request.user!, query);
+  }
+
+  @Get("runs/:id")
+  @Capability("runtime.manage")
+  run(
+    @Req() request: AppRequest,
+    @Param("id") id: string,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.run(request.user!, id, query);
+  }
+
+  @Get("observability/logs")
+  @Capability("runtime.observe")
+  @ApiQuery({ name: "view", required: true, enum: ["segments"] })
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({
+    name: "status",
+    required: false,
+    enum: ["COMMITTED", "MISSING", "DELETED"],
+  })
+  @ApiQuery({ name: "from", required: false, type: String })
+  @ApiQuery({ name: "to", required: false, type: String })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  platformLogs(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.platformLogSegments(
+      request.user!,
+      query,
+      request.requestId,
+    );
+  }
+
+  @Get("observability/alerts")
+  @Capability("runtime.observe")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({
+    name: "status",
+    required: false,
+    enum: ["FIRING", "ACKNOWLEDGED", "RECOVERED"],
+  })
+  @ApiQuery({
+    name: "severity",
+    required: false,
+    enum: ["INFO", "WARNING", "CRITICAL"],
+  })
+  @ApiQuery({ name: "from", required: false, type: String })
+  @ApiQuery({ name: "to", required: false, type: String })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  alerts(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.alerts(request.user!, query);
+  }
+
   @Get("users")
   @Capability("user.manage")
   @ApiQuery({ name: "q", required: false, type: String })

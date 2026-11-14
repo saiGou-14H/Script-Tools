@@ -115,7 +115,7 @@ try {
   await expect(
     admin.page.getByRole("heading", { name: "日志与告警", exact: true }),
   ).toBeVisible();
-  await expect(admin.page.locator(".admin-log-panel tbody tr")).toHaveCount(5);
+  await expect(admin.page.locator(".admin-log-panel .ant-table-row")).toHaveCount(5);
   report.checks.push(
     "production administrator chunks load the authorized observation tables",
   );

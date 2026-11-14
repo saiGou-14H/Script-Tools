@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-14T18:19:26.305Z",
+  "checks": [
+    "HTTP access separates runtime.manage run metadata from runtime.observe platform logs and alerts, and rechecks changed grants",
+    "Run reads preserve thirteen states, continuous-run precision, current lease generations, absent actual modes and independently stored cleanup states without private runtime bodies",
+    "Platform log segment metadata preserves 64-bit ranges, overlap windows, missing/deleted archives and expiry, excludes object keys and records successful reads in audit events",
+    "Alert status, recovered time, occurrence and evidence counts remain independent while receiver policies, event notes and evidence bodies stay outside metadata",
+    "Strict filters reject malformed and repeated input, detail misses stay explicit, and signed keyset cursors bind their query scope without duplicate records",
+    "PostgreSQL 18 verifies run, log and alert projections, security-revision cursor binding and audited reads inside fully rolled-back transactions",
+    "Prototype run selection and independent log/alert filters restore from URL, unknown runs remain unavailable and switching rule drafts restores every field while successive saves advance versions",
+    "Prototype silence controls expire on an idle page at their actual deadline while recovery evidence remains unchanged",
+    "LIVE run queries retry errors, restore exact details from URL and expose pending controls with unknown selections kept explicit",
+    "LIVE logs paginate and search literal source IDs with exact BIGINT values, and alert filters preserve acknowledged states and missing recovery times across reloads",
+    "Desktop and 390px LIVE routes retain full-width content and internal table scrolling while metadata reads leave runtime business records unchanged"
+  ],
+  "screenshots": [
+    "ADMIN-O15",
+    "ADMIN-O16",
+    "ADMIN-O15-prototype-mobile",
+    "ADMIN-O16-prototype-mobile",
+    "ADMIN-O15-live",
+    "ADMIN-O16-live",
+    "ADMIN-O15-mobile",
+    "ADMIN-O16-mobile"
+  ],
+  "layouts": {
+    "ADMIN-O15-mobile": {
+      "left": 16,
+      "width": 358
+    },
+    "ADMIN-O16-mobile": {
+      "left": 16,
+      "width": 358
+    }
+  },
+  "errors": [],
+  "result": "PASS"
+}

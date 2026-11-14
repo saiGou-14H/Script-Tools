@@ -191,7 +191,7 @@ try {
     .locator(".admin-log-panel")
     .getByRole("button", { name: "查询", exact: true })
     .click();
-  await expect(page.locator(".admin-log-panel tbody tr")).toHaveCount(2);
+  await expect(page.locator(".admin-log-panel .ant-table-row")).toHaveCount(2);
   const firstAlert = page
     .locator(".admin-alert-panel tbody tr")
     .filter({ hasText: "支付回调积压" });
@@ -360,7 +360,7 @@ try {
   });
   const limitedPage = await limited.newPage();
   await limitedPage.goto(base + "/admin/observability");
-  await expect(limitedPage.locator(".admin-log-panel tbody tr")).toHaveCount(5);
+  await expect(limitedPage.locator(".admin-log-panel .ant-table-row")).toHaveCount(5);
   await expect(
     limitedPage
       .locator(".admin-alert-toolbar")
@@ -389,8 +389,6 @@ try {
   const livePage = await live.newPage();
   livePage.on("pageerror", (error) => report.errors.push(error.message));
   for (const route of [
-    "/admin/runs",
-    "/admin/observability",
     "/admin/deliveries",
     "/admin/settings",
     "/admin/access",
@@ -403,6 +401,24 @@ try {
     await expect(livePage.locator(".admin-page")).not.toContainText(
       "MAIL-****7D91",
     );
+  }
+  for (const [route, endpoint, selector] of [
+    ["/admin/runs", "/admin/runs?limit=20", ".admin-runs-table"],
+    [
+      "/admin/observability",
+      "/admin/observability/logs?view=segments&limit=20",
+      ".admin-log-panel",
+    ],
+  ]) {
+    const response = await live.request.get(base + "/api/v1" + endpoint);
+    expect(response.status()).toBe(200);
+    const records = (await response.json()).data;
+    await livePage.goto(base + route);
+    if (records.length)
+      await expect(livePage.locator(selector + " .ant-table-row")).toHaveCount(
+        records.length,
+      );
+    else await expect(livePage.locator(selector + " .ant-empty")).toBeVisible();
   }
   const realNodes = await live.request.get(
     base + "/api/v1/admin/nodes?view=metadata&limit=20&q=",
@@ -439,7 +455,7 @@ try {
   await live.close();
   expect(report.errors).toEqual([]);
   report.checks.push(
-    "live-mode infrastructure reads paged node and image metadata and actual scheduling counters while pending controls and other business modules retain their integration state",
+    "live-mode infrastructure reads paged node, image, run and platform log metadata with actual scheduling counters while pending controls and other business modules retain their integration state",
   );
   report.result = "PASS";
 } catch (error) {

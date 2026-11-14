@@ -1,6 +1,8 @@
 import { HttpException, Injectable } from "@nestjs/common";
 import { DatabaseService, DatabaseRow } from "../database/database.service";
 import { CurrentUser } from "../common/http";
+import { parseQueryDate } from "../common/query-date";
+import { randomUUID } from "node:crypto";
 import {
   invalidQuery,
   PaginationService,
@@ -116,6 +118,237 @@ export class AdminMetadataService {
       status: query.status as string | undefined,
       limit: Number(size),
     };
+  }
+
+  async runs(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "runtime.manage");
+    const options = this.options(
+      query,
+      [
+        "QUEUED",
+        "PREPARING",
+        "READY",
+        "RUNNING",
+        "STOPPING",
+        "WAITING_INPUT",
+        "RECONCILING",
+        "SUCCEEDED",
+        "FAILED",
+        "TIMED_OUT",
+        "CANCELLED",
+        "EXPIRED",
+        "CLOSED_UNRESOLVED",
+      ],
+      ["node_id", "run_mode"],
+    );
+    const nodeId = referenceId(query.node_id, "node_id");
+    const mode = query.run_mode;
+    if (mode !== undefined && mode !== "finite" && mode !== "continuous")
+      invalidQuery("run_mode应为finite或continuous");
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-runs",
+      options,
+      nodeId,
+      mode,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.runRows(options.limit + 1, [
+      options.status || null,
+      literalPattern(options.q),
+      nodeId,
+      mode || null,
+      cursor?.id || null,
+      cursor?.created_at || null,
+      null,
+    ]);
+    return this.pagination.page(scope, result.rows, options.limit);
+  }
+
+  async run(actor: CurrentUser, id: string, query: Record<string, unknown>) {
+    this.authorize(actor, "runtime.manage");
+    const runId = referenceId(id, "运行编号");
+    if (Object.keys(query).length) invalidQuery("运行详情不接受查询参数");
+    const result = await this.runRows(1, [
+      null,
+      "%",
+      null,
+      null,
+      null,
+      null,
+      runId,
+    ]);
+    if (!result.rows.length)
+      throw new HttpException(
+        { code: "NOT_FOUND", message: "运行记录不存在" },
+        404,
+      );
+    const { cursor_created_at, ...item } = result.rows[0];
+    return item;
+  }
+
+  private runRows(limit: number, values: unknown[]) {
+    return this.database.query(
+      `
+      SELECT r.id,r.created_at,r.revision::text,r.task_id,r.script_version_id,r.run_mode,r.status,
+        r.effect_status,r.verification_status,r.completion_kind,r.finished_at,r.last_progress_at,
+        r.stop_requested_at,r.stop_deadline,r.deadline,r.restart_count,
+        r.current_continuation::text,${cursorProjection("r")},
+        CASE WHEN a.id IS NULL THEN NULL ELSE jsonb_build_object(
+          'id',a.id,'attempt_no',a.attempt_no,'status',a.status,'node_id',a.node_id,
+          'requested_execution_mode',a.requested_execution_mode,'actual_execution_mode',a.actual_execution_mode,
+          'started_at',a.started_at,'finished_at',a.finished_at,'exit_code',a.exit_code,
+          'lease_generation',a.lease_generation::text,
+          'lease_state',CASE WHEN l.id IS NULL THEN 'ABSENT'
+            WHEN l.attempt_id<>a.id OR l.generation<>a.lease_generation THEN 'MISMATCHED'
+            WHEN l.revoked_at IS NOT NULL THEN 'REVOKED' WHEN l.expires_at<=now() THEN 'EXPIRED'
+            WHEN a.status IN ('CREATED','PREPARING','RUNNING','STOPPING')
+              AND r.status IN ('PREPARING','READY','RUNNING','STOPPING','WAITING_INPUT','RECONCILING') THEN 'ACTIVE'
+            ELSE 'INACTIVE' END,
+          'lease_expires_at',CASE WHEN l.attempt_id=a.id AND l.generation=a.lease_generation THEN l.expires_at END,
+          'last_heartbeat_at',CASE WHEN l.attempt_id=a.id AND l.generation=a.lease_generation THEN l.last_heartbeat_at END,
+          'cleanup_status',e.cleanup_status,'environment_stopped_at',e.stopped_at
+        ) END AS latest_attempt
+      FROM travel.runs r
+      LEFT JOIN LATERAL (
+        SELECT a.* FROM travel.attempts a WHERE a.run_id=r.id AND a.owner_user_id=r.owner_user_id
+        ORDER BY a.attempt_no DESC,a.id DESC LIMIT 1
+      ) a ON true
+      LEFT JOIN travel.execution_leases l ON l.run_id=r.id AND l.owner_user_id=r.owner_user_id
+      LEFT JOIN travel.environment_leases e ON e.attempt_id=a.id AND e.owner_user_id=r.owner_user_id AND e.node_id=a.node_id
+      WHERE ($1::text IS NULL OR r.status=$1)
+        AND (r.id::text ILIKE $2 ESCAPE '\\' OR r.task_id::text ILIKE $2 ESCAPE '\\' OR r.script_version_id::text ILIKE $2 ESCAPE '\\')
+        AND ($3::uuid IS NULL OR a.node_id=$3) AND ($4::text IS NULL OR r.run_mode=$4)
+        AND ($5::uuid IS NULL OR (r.created_at,r.id)<($6::timestamptz,$5::uuid))
+        AND ($7::uuid IS NULL OR r.id=$7)
+      ORDER BY r.created_at DESC,r.id DESC LIMIT $8`,
+      [...values, limit],
+    );
+  }
+
+  private observationWindow(query: Record<string, unknown>) {
+    const from =
+      query.from === undefined
+        ? null
+        : parseQueryDate(query.from).toISOString();
+    const to =
+      query.to === undefined ? null : parseQueryDate(query.to).toISOString();
+    if (from && to && from >= to) invalidQuery("from必须早于to");
+    return { from, to };
+  }
+
+  async platformLogSegments(
+    actor: CurrentUser,
+    query: Record<string, unknown>,
+    requestId: string = randomUUID(),
+  ) {
+    this.authorize(actor, "runtime.observe");
+    const options = this.options(
+      query,
+      ["COMMITTED", "MISSING", "DELETED"],
+      ["view", "from", "to"],
+    );
+    if (query.view !== "segments")
+      invalidQuery("日志分段查询须指定view=segments");
+    const window = this.observationWindow(query);
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-platform-log-segments",
+      options,
+      window,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      SELECT s.id,s.created_at,s.revision::text,s.source_instance_id,s.sequence_start::text,s.sequence_end::text,
+        s.size_bytes::text,s.started_at,s.ended_at,s.archive_status,s.index_status,s.expires_at,
+        (s.expires_at<=now()) AS expired,${cursorProjection("s")}
+      FROM travel.platform_log_segments s
+      WHERE ($1::text IS NULL OR s.archive_status=$1)
+        AND (s.source_instance_id ILIKE $2 ESCAPE '\\' OR s.id::text ILIKE $2 ESCAPE '\\')
+        AND ($3::timestamptz IS NULL OR s.ended_at>=$3) AND ($4::timestamptz IS NULL OR s.started_at<$4)
+        AND ($5::uuid IS NULL OR (s.created_at,s.id)<($6::timestamptz,$5::uuid))
+      ORDER BY s.created_at DESC,s.id DESC LIMIT $7`,
+      [
+        options.status || null,
+        literalPattern(options.q),
+        window.from,
+        window.to,
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+      ],
+    );
+    const page = await this.pagination.page(scope, result.rows, options.limit);
+    await this.database.query(
+      `
+      INSERT INTO travel.audit_events(id,actor_user_id,action,target_type,request_id,outcome,summary)
+      VALUES(gen_random_uuid(),$1,'ops.logs.segments.read','platform_log_segments',$2,'SUCCESS',$3)`,
+      [
+        actor.id,
+        requestId,
+        JSON.stringify({
+          view: "segments",
+          returned: page.items.length,
+          from: window.from,
+          to: window.to,
+        }),
+      ],
+    );
+    return page;
+  }
+
+  async alerts(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "runtime.observe");
+    const options = this.options(
+      query,
+      ["FIRING", "ACKNOWLEDGED", "RECOVERED"],
+      ["severity", "from", "to"],
+    );
+    const severity = query.severity;
+    if (
+      severity !== undefined &&
+      !["INFO", "WARNING", "CRITICAL"].includes(severity as string)
+    )
+      invalidQuery("告警严重级别无效");
+    const window = this.observationWindow(query);
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-alerts",
+      options,
+      severity,
+      window,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      SELECT a.id,a.created_at,a.revision::text,a.rule_id,a.occurrence::text,a.status,
+        a.first_seen_at,a.last_seen_at,a.recovered_at,r.rule_key,r.version AS rule_version,r.severity,
+        (SELECT count(*)::text FROM travel.alert_events e WHERE e.instance_id=a.id) AS event_count,
+        (SELECT count(*)::text FROM travel.alert_events e WHERE e.instance_id=a.id
+          AND e.evidence NOT IN ('null'::jsonb,'{}'::jsonb,'[]'::jsonb)) AS evidence_event_count,
+        ${cursorProjection("a")}
+      FROM travel.alert_instances a JOIN travel.alert_rules r ON r.id=a.rule_id
+      WHERE ($1::text IS NULL OR a.status=$1) AND ($2::text IS NULL OR r.severity=$2)
+        AND (r.rule_key ILIKE $3 ESCAPE '\\' OR a.id::text ILIKE $3 ESCAPE '\\')
+        AND ($4::timestamptz IS NULL OR a.last_seen_at>=$4) AND ($5::timestamptz IS NULL OR a.first_seen_at<$5)
+        AND ($6::uuid IS NULL OR (a.created_at,a.id)<($7::timestamptz,$6::uuid))
+      ORDER BY a.created_at DESC,a.id DESC LIMIT $8`,
+      [
+        options.status || null,
+        severity || null,
+        literalPattern(options.q),
+        window.from,
+        window.to,
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+      ],
+    );
+    return this.pagination.page(scope, result.rows, options.limit);
   }
 
   async users(actor: CurrentUser, query: Record<string, unknown>) {

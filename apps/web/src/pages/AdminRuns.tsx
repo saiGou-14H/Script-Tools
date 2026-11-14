@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { App, Button, Empty, Modal, Table } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { AdminRunsLivePage } from "./AdminRuntimeDiagnostics";
 import { AdminDiagnosisForm } from "../components/AdminDiagnosisForm";
 import { AdminOperationDialog } from "../components/AdminOperationDialog";
 import { Notice, PageHeading, Panel, Status } from "../components/ui";
@@ -34,20 +35,22 @@ const runFixtures = [
 ];
 export function AdminRunsPage() {
   const { enabled, operations, requestOperation } = useAdminOperations();
-  const [selected, setSelected] = useState<(typeof runFixtures)[number]>();
+  const [params, setParams] = useSearchParams();
+  const selectedId = params.get("run");
+  const selected = runFixtures.find((row) => row.id === selectedId);
+  function setSelected(row?: (typeof runFixtures)[number]) {
+    const next = new URLSearchParams(params);
+    if (row) next.set("run", row.id);
+    else next.delete("run");
+    setParams(next);
+  }
   const [operation, setOperation] = useState<{
     kind: OperationKind;
     resourceId: string;
     title: string;
   }>();
   const { message } = App.useApp();
-  if (!enabled)
-    return (
-      <div className="admin-page admin-runs-page">
-        <PageHeading title="运行与排障" />
-        <Empty description="运行诊断接口尚未接入" />
-      </div>
-    );
+  if (!enabled) return <AdminRunsLivePage />;
   const rows = enabled ? runFixtures : [];
   const pendingStop = operations.find((item) => item.kind === "RUN_STOP");
   const runStatus = (row: (typeof runFixtures)[number]) =>
@@ -144,7 +147,7 @@ export function AdminRunsPage() {
           className="admin-runtime-diagnosis admin-diagnosis-form"
         >
           <p>在受控范围内开启限时会话，安全读取指定对象的数据以定位问题。</p>
-          <AdminDiagnosisForm resourceLabel="对象ID" />
+          <AdminDiagnosisForm resourceLabel="对象ID" fieldsBeforeReason />
           <div className="diagnosis-capability">
             <span>
               所需能力 <Status>data.diagnose</Status>
@@ -157,12 +160,13 @@ export function AdminRunsPage() {
       </div>
       <Modal
         title="运行诊断元数据"
-        open={Boolean(selected)}
+        open={Boolean(selectedId)}
         onCancel={() => setSelected(undefined)}
         footer={
           <Button onClick={() => setSelected(undefined)}>关闭运行详情</Button>
         }
       >
+        {!selected && <Empty description={`运行 ${selectedId} 不可用`} />}
         <h3>{selected?.id}</h3>
         <p>
           {selected?.object}　{selected?.mode}　{selected?.node}

@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { useWorkspace } from "./context";
 import { useAdminPreview } from "./admin-preview";
 
@@ -272,6 +278,8 @@ export function AdminOperationsProvider({ children }: { children: ReactNode }) {
   });
   const [silences, setSilences] = useState<SilencePreview[]>([]);
   const [ruleDrafts, setRuleDrafts] = useState<AlertRulePreview[]>([]);
+  const currentRuleDrafts = useRef(ruleDrafts);
+  const savedRuleRequests = useRef(new Set<string>());
   const [retention, setRetention] = useState({
     hotDays: 7,
     totalDays: 30,
@@ -432,17 +440,24 @@ export function AdminOperationsProvider({ children }: { children: ReactNode }) {
     requestKey: string,
   ) {
     requirePreview("observability.manage", reason);
+    if (savedRuleRequests.current.has(requestKey)) return;
+    const currentVersion =
+      currentRuleDrafts.current.find((item) => item.id === rule.id)?.version ||
+      1;
     if (
       !rule.expression.trim() ||
       !Number.isSafeInteger(rule.forSeconds) ||
-      rule.forSeconds < 0
+      rule.forSeconds < 0 ||
+      rule.version !== currentVersion + 1
     )
       throw new Error("请填写表达式和有效持续时间");
-    setRuleDrafts((previous) => [
-      ...previous.filter((item) => item.id !== rule.id),
-      { ...rule, version: 2 },
-    ]);
-    recordNote(rule.id, `规则草稿v2 · ${reason}`, requestKey);
+    currentRuleDrafts.current = [
+      ...currentRuleDrafts.current.filter((item) => item.id !== rule.id),
+      rule,
+    ];
+    savedRuleRequests.current.add(requestKey);
+    setRuleDrafts(currentRuleDrafts.current);
+    recordNote(rule.id, `规则草稿v${rule.version} · ${reason}`, requestKey);
   }
   function validateGrant(id: string, capabilities: string[]) {
     const grant = grants.find((item) => item.id === id);
