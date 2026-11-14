@@ -10,10 +10,11 @@ import {
   Skeleton,
   Steps,
   Table,
+  Tooltip,
 } from "antd";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { CheckCircleFilled } from "@ant-design/icons";
-import { Link, useParams } from "react-router-dom";
+import { CheckCircleFilled, InfoCircleOutlined } from "@ant-design/icons";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useWorkspace } from "../context";
 import { usePublisherPreview } from "../publisher-preview";
 import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
@@ -21,45 +22,72 @@ import { formatMinorUnits } from "../lib/money";
 import { api } from "../api";
 import { PublisherProfileEditor } from "../components/PublisherProfileEditor";
 import type { PublisherProfileView } from "../types";
-
-const earningsLedger = [
-  { id: "L001", income: "20000", fee: "-1800", refund: "0" },
-  { id: "L002", income: "18000", fee: "-1600", refund: "-8000" },
-  { id: "L003", income: "22000", fee: "-2000", refund: "0" },
-  { id: "L004", income: "8000", fee: "-600", refund: "0" },
-];
+import {
+  earningsLedger,
+  settlementPreview,
+} from "../lib/publisher-finance-preview";
 const compactMoney = (value: string | bigint) =>
   formatMinorUnits(value).replace(/\.00$/, "");
 
 export function EarningsPage() {
   const { bootstrap } = useWorkspace();
   const { profile } = usePublisherPreview();
-  const [requesting, setRequesting] = useState(false);
+  const [params] = useSearchParams();
+  const [payoutPreview, setPayoutPreview] = useState<{
+    amountMinor: string;
+    accountMask: string;
+    ledgerIds: string[];
+  } | null>(null);
   const { message } = App.useApp();
-  const rows = bootstrap.data_mode === "prototype" ? earningsLedger : [];
+  const prototype = bootstrap.data_mode === "prototype";
+  const rows = prototype ? earningsLedger : [];
+  const ledgerId = params.get("ledger");
+  const filtered = ledgerId ? rows.filter((row) => row.id === ledgerId) : rows;
   const gross = rows.reduce((sum, row) => sum + BigInt(row.income), 0n);
   const fees = rows.reduce((sum, row) => sum - BigInt(row.fee), 0n);
   const refunded = rows.reduce((sum, row) => sum - BigInt(row.refund), 0n);
   const net = gross - fees - refunded;
-  const available = rows.length ? "20000" : "0";
+  const pending = rows.reduce((sum, row) => sum + BigInt(row.pending), 0n);
+  const available = rows.reduce((sum, row) => sum + BigInt(row.available), 0n);
+  const reserved = rows.reduce((sum, row) => sum + BigInt(row.reserved), 0n);
+  const paid = rows.reduce((sum, row) => sum + BigInt(row.paid), 0n);
+  const frozen = rows.reduce((sum, row) => sum + BigInt(row.frozen), 0n);
   return (
     <div className="publisher-earnings-page">
       <PageHeading
         title="收益与结算"
         description="查看脚本服务的收入、费用与结算情况，支持申请打款与查看结算明细。"
+        extra={
+          <Status tone="gray">
+            {prototype ? "本地示例" : "收益服务待接入"}
+          </Status>
+        }
       />
+      {!prototype && (
+        <Notice>收益、账本和打款查询服务待接入，当前金额及结算状态暂不可用。</Notice>
+      )}
       <div className="publisher-earnings-summary">
         {[
           ["database", "总收入", gross, "blue"],
           ["refund", "退款", refunded, "red"],
-          ["box", "平台及渠道费 ⓘ", fees, "orange"],
+          ["layers", "平台及渠道费", fees, "orange"],
           ["wallet", "净收益", net, "blue"],
         ].map(([icon, title, amount, color]) => (
           <Panel key={String(title)}>
             <TileIcon name={String(icon)} color={String(color)} />
             <div>
-              <h3>{String(title)}</h3>
-              <strong>{compactMoney(amount)}</strong> 元
+              <h3>
+                {String(title)}
+                {title === "平台及渠道费" && (
+                  <Tooltip
+                    trigger={["hover", "focus"]}
+                    title="按成交费用快照汇总平台及渠道费用。"
+                  >
+                    <InfoCircleOutlined aria-label="费用口径" tabIndex={0} />
+                  </Tooltip>
+                )}
+              </h3>
+              <strong>{prototype ? compactMoney(amount) : "—"}</strong> 元
             </div>
           </Panel>
         ))}
@@ -67,17 +95,25 @@ export function EarningsPage() {
       <Panel title="净收益分布" className="earnings-distribution">
         <div>
           {[
-            ["clock", "待结算", rows.length ? "30000" : "0"],
-            ["shield", "可结算", available],
-            ["wallet", "已到账", rows.length ? "4000" : "0"],
-            ["lock", "冻结", "0"],
+            ["clock", "待结算（含预占）", pending + reserved],
+            ["check", "可结算", available],
+            ["wallet", "已到账", paid],
+            ["lock", "冻结", frozen],
           ].map(([icon, title, amount]) => (
-            <article key={title}>
-              <TileIcon name={icon} />
+            <article key={String(title)}>
+              <TileIcon name={String(icon)} />
               <span>
-                {title}
+                {String(title)}
+                {title === "待结算（含预占）" && prototype && (
+                  <Tooltip
+                    trigger={["hover", "focus"]}
+                    title={`待成熟${compactMoney(pending)}元，打款预占${compactMoney(reserved)}元。`}
+                  >
+                    <InfoCircleOutlined aria-label="待结算金额组成" tabIndex={0} />
+                  </Tooltip>
+                )}
                 <strong>
-                  {compactMoney(amount)}
+                  {prototype ? compactMoney(amount) : "—"}
                   <small> 元</small>
                 </strong>
               </span>
@@ -87,21 +123,43 @@ export function EarningsPage() {
         <div className="row-actions">
           <Button
             type="primary"
-            disabled={!profile.payoutVerified || available === "0"}
-            onClick={() => setRequesting(true)}
+            disabled={!prototype || !profile.payoutVerified || available <= 0n}
+            onClick={() => setPayoutPreview({
+              amountMinor: available.toString(),
+              accountMask: profile.payoutMask,
+              ledgerIds: rows
+                .filter((row) => BigInt(row.available) > 0n)
+                .map((row) => row.id),
+            })}
           >
             申请打款
           </Button>
-          <Link to="/publisher/settlements/SET018">
-            <Button>查看结算详情</Button>
-          </Link>
+          {prototype ? (
+            <Link to={`/publisher/settlements/${settlementPreview.id}`}>
+              <Button>查看结算详情</Button>
+            </Link>
+          ) : (
+            <Button disabled>查看结算详情</Button>
+          )}
         </div>
       </Panel>
-      <Panel title="账本列表" className="earnings-ledger">
+      <Panel
+        title="账本列表"
+        className="earnings-ledger"
+        extra={ledgerId && <Link to="/publisher/earnings">查看全部账本</Link>}
+      >
+        {ledgerId && (
+          <Notice>
+            {filtered.length
+              ? `已定位账本分组${ledgerId}，分组汇总可包含多笔交易。`
+              : `账本分组${ledgerId}不存在或当前不可用。`}
+          </Notice>
+        )}
         <Table
           rowKey="id"
           pagination={false}
-          dataSource={rows}
+          dataSource={filtered}
+          scroll={{ x: 1120 }}
           columns={[
             {
               title: "交易内容",
@@ -110,7 +168,7 @@ export function EarningsPage() {
                 <>
                   景点预约脚本 · 按次服务　
                   {row.id === "L001" && (
-                    <Link to="/publisher/pricing">
+                    <Link to="/publisher/pricing?service=booking">
                       <Status>费用配置</Status>
                     </Link>
                   )}
@@ -149,19 +207,23 @@ export function EarningsPage() {
       </Panel>
       <Modal
         title="申请收益打款"
-        open={requesting}
-        onCancel={() => setRequesting(false)}
+        open={prototype && !!payoutPreview}
+        onCancel={() => setPayoutPreview(null)}
         okText="提交申请"
         cancelText="返回"
         onOk={() => void message.info("打款接口尚未接入，当前可结算收益保留")}
       >
         <dl>
           <dt>可结算金额</dt>
-          <dd>{formatMinorUnits(available)}元</dd>
+          <dd>
+            {payoutPreview ? formatMinorUnits(payoutPreview.amountMinor) : "—"}元
+          </dd>
           <dt>收款账户</dt>
-          <dd>{profile.payoutMask}</dd>
+          <dd>{payoutPreview?.accountMask}</dd>
+          <dt>可结算账本</dt>
+          <dd>{payoutPreview?.ledgerIds.join("、")}</dd>
           <dt>币种</dt>
-          <dd>CNY</dd>
+          <dd>{settlementPreview.currency}</dd>
         </dl>
         <Notice>发起后固定本次收款资料快照，按原请求查询渠道回执。</Notice>
       </Modal>
@@ -169,20 +231,22 @@ export function EarningsPage() {
   );
 }
 
-const settlementLines = [
-  { id: "TT202611130101", income: "15000", refund: "0", fee: "1500" },
-  { id: "TT202611130102", income: "8000", refund: "1000", fee: "500" },
-];
-
 export function SettlementDetailPage() {
   const { id = "demo" } = useParams();
   const { bootstrap } = useWorkspace();
   const { message } = App.useApp();
-  if (!["demo", "SET018"].includes(id) || bootstrap.data_mode !== "prototype")
+  if (bootstrap.data_mode !== "prototype")
+    return <Empty description="结算服务待接入，批次详情暂不可用" />;
+  const batch = settlementPreview;
+  if (id !== "demo" && id !== batch.id)
     return <Empty description="结算批次不存在或已失效" />;
+  const income = batch.lines.reduce((sum, row) => sum + BigInt(row.income), 0n);
+  const refunded = batch.lines.reduce((sum, row) => sum + BigInt(row.refund), 0n);
+  const fees = batch.lines.reduce((sum, row) => sum + BigInt(row.fee), 0n);
+  const net = income - refunded - fees;
   return (
     <div className="publisher-settlement-page">
-      <PageHeading title="结算详情" />
+      <PageHeading title="结算详情" extra={<Status tone="gray">本地示例</Status>} />
       <div className="settlement-steps">
         <Steps
           current={3}
@@ -192,9 +256,9 @@ export function SettlementDetailPage() {
               status: index === 3 ? "wait" : "finish",
               icon:
                 index < 3 ? (
-                  <CheckCircleFilled />
+                  <CheckCircleFilled aria-hidden />
                 ) : (
-                  <span className="settlement-wait-icon" />
+                  <span className="settlement-wait-icon" aria-hidden />
                 ),
             }),
           )}
@@ -204,53 +268,70 @@ export function SettlementDetailPage() {
         <div className="settlement-fact-cards">
           <article>
             <span>批次</span>
-            <strong>SET018</strong>
+            <strong>{batch.id}</strong>
           </article>
           <article>
             <span>打款</span>
             <strong>
-              P0018 <Status>处理中</Status>
+              {batch.payoutId} <Status>处理中</Status>
             </strong>
             <p>待渠道回执</p>
           </article>
           <article>
             <span>金额</span>
             <strong>
-              200<small> 元</small>
+              {compactMoney(batch.amountMinor)}<small> 元</small>
             </strong>
           </article>
           <article>
             <span>收款账户</span>
-            <strong>****1234</strong>
+            <strong>{batch.accountMask}</strong>
             <p>使用发起时快照</p>
           </article>
         </div>
         <Table
           rowKey="id"
           pagination={false}
-          dataSource={settlementLines}
+          dataSource={batch.lines}
+          scroll={{ x: 1050 }}
           columns={[
-            { title: "交易编号", dataIndex: "id" },
+            {
+              title: "交易编号",
+              dataIndex: "id",
+              width: "22%",
+              render: (value, row) => (
+                <Link
+                  className="dark-link"
+                  to={`/publisher/earnings?ledger=${row.ledgerGroupId}`}
+                >
+                  {value}
+                </Link>
+              ),
+            },
             {
               title: "收入（元）",
+              width: "19.5%",
               dataIndex: "income",
               render: compactMoney,
               align: "center",
             },
             {
               title: "退款（元）",
+              width: "19.5%",
               dataIndex: "refund",
               render: compactMoney,
               align: "center",
             },
             {
               title: "费用（元）",
+              width: "19.5%",
               dataIndex: "fee",
               render: compactMoney,
               align: "center",
             },
             {
               title: "净额（元）",
+              width: "19.5%",
               render: (_, row) =>
                 compactMoney(
                   BigInt(row.income) - BigInt(row.refund) - BigInt(row.fee),
@@ -262,16 +343,16 @@ export function SettlementDetailPage() {
             <Table.Summary.Row>
               <Table.Summary.Cell index={0}>合计</Table.Summary.Cell>
               <Table.Summary.Cell index={1} align="center">
-                230
+                {compactMoney(income)}
               </Table.Summary.Cell>
               <Table.Summary.Cell index={2} align="center">
-                10
+                {compactMoney(refunded)}
               </Table.Summary.Cell>
               <Table.Summary.Cell index={3} align="center">
-                20
+                {compactMoney(fees)}
               </Table.Summary.Cell>
               <Table.Summary.Cell index={4} align="center">
-                200元
+                {compactMoney(net)}元
               </Table.Summary.Cell>
             </Table.Summary.Row>
           )}
@@ -281,7 +362,7 @@ export function SettlementDetailPage() {
           size="large"
           onClick={() =>
             void message.info(
-              "原打款请求P0018仍等待渠道回执，当前状态保持处理中",
+              `原请求${batch.payoutId}的回执查询接口待接入`,
             )
           }
         >

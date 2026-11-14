@@ -1,0 +1,166 @@
+.app-shell:is(.page-S13, .page-S14) .main-content {
+  padding-bottom: 20px;
+}
+.page-S13 .global-search {
+  left: 33.3%;
+  width: 32%;
+}
+.page-S13 .publisher-earnings-summary .panel-body {
+  min-height: 98px;
+  padding: 14px 20px;
+}
+.page-S13 .sidebar {
+  padding-top: 14px;
+}
+.page-S13 .nav-group-label {
+  padding-bottom: 4px;
+}
+.app-shell:is(.page-S13, .page-S14) .nav-item {
+  font-size: 17px;
+}
+.page-S13 .publisher-earnings-summary h3 {
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+.page-S13 .publisher-earnings-summary strong {
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.page-S13 .publisher-earnings-summary h3 .anticon {
+  margin-left: 8px;
+  color: #64728a;
+  font-size: 16px;
+}
+.page-S13 .earnings-distribution > .panel-body > div:first-child {
+  padding: 14px 22px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.page-S13 .earnings-distribution article,
+.page-S13 .earnings-distribution article > span {
+  min-width: 0;
+}
+.page-S13 .earnings-distribution article strong {
+  overflow-wrap: anywhere;
+}
+.page-S13 .earnings-distribution article > span {
+  line-height: 1.4;
+}
+.page-S13 .earnings-distribution article > span:not(.tile-icon) > .anticon {
+  margin-left: 5px;
+  font-size: 13px;
+}
+.page-S13 .earnings-distribution .tile-icon {
+  color: #1555ff;
+}
+.page-S13 .earnings-ledger {
+  margin-top: 18px;
+  margin-bottom: 0;
+}
+.page-S13 .earnings-ledger .ant-table-thead > tr > th {
+  padding: 8px 22px;
+}
+.page-S13 .earnings-ledger .ant-table-row > td {
+  padding: 9px 22px;
+}
+.page-S13 .earnings-ledger .panel-body > .notice {
+  margin-bottom: 14px;
+}
+.page-S14 .global-search {
+  left: 33%;
+  width: 34.1%;
+}
+.page-S14 .breadcrumb {
+  margin-bottom: 17px;
+}
+.page-S14 .page-heading h1 {
+  font-size: 28px;
+}
+.page-S14 .settlement-steps {
+  margin-top: 18px;
+  padding-inline: 110px;
+}
+.page-S14 .settlement-fact-cards article {
+  padding: 14px 22px;
+}
+.page-S14 .settlement-fact-cards span {
+  line-height: 1.4;
+}
+.page-S14 .settlement-fact-cards strong {
+  line-height: 1.2;
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+}
+.page-S14 .settlement-fact-cards p {
+  line-height: 1.4;
+  margin-top: 6px;
+}
+.page-S14 .settlement-fact-cards .status {
+  color: #1555ff;
+}
+.page-S14 .settlement-detail-panel {
+  margin-bottom: 0;
+}
+.page-S14 .settlement-detail-panel .ant-table-thead > tr > th {
+  padding: 14px 26px;
+}
+.page-S14 .settlement-detail-panel .ant-table-row > td {
+  padding: 12px 26px;
+}
+.page-S14 .settlement-detail-panel .ant-table-summary td {
+  padding: 10px 26px;
+}
+@media (max-width: 1400px) {
+  .page-S13 .earnings-distribution article + article {
+    padding-left: 20px;
+  }
+}
+@media (max-width: 700px) {
+  .app-shell:is(.page-S13, .page-S14) .main-content {
+    padding: 80px 12px 20px;
+  }
+  .page-S13 .publisher-earnings-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .page-S13 .publisher-earnings-summary .panel-body {
+    gap: 8px;
+    padding: 12px;
+  }
+  .page-S13 .publisher-earnings-summary .tile-icon {
+    display: none;
+  }
+  .page-S13 .publisher-earnings-summary h3 {
+    font-size: 15px;
+  }
+  .page-S13 .publisher-earnings-summary strong {
+    font-size: 25px;
+  }
+  .page-S13 .earnings-distribution > .panel-body > div:first-child {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .page-S13 .earnings-distribution article {
+    border-right: 0;
+  }
+  .page-S13 .earnings-distribution article + article {
+    padding-left: 0;
+  }
+  .page-S13 .earnings-distribution .row-actions {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .page-S14 .settlement-steps {
+    padding: 18px;
+  }
+  .page-S14 .settlement-steps .ant-steps-item-title {
+    font-size: 17px;
+  }
+  .page-S14 .settlement-fact-cards {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .page-S14 .settlement-fact-cards article {
+    min-height: 100px;
+  }
+}

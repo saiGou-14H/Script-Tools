@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-14T14:15:50.178Z",
+  "checks": [
+    "earnings and settlement reference regions and sidebar help fit 1814 by 868",
+    "ledger groups reconcile to income, fees, refund reversals and distinct pending, available, reserved and paid allocations",
+    "pending composition exposes the reserved batch and a new payout preview selects the separate available ledger scope",
+    "settlement lines open their own ledger groups, selection survives reload, and fee configuration opens the booking service",
+    "repeated receipt queries retain the original payout identity and the pending channel state",
+    "new unverified payout details disable new requests while the historical settlement retains its account snapshot",
+    "unknown ledger and settlement resources keep their identity and live earnings expose unknown monetary values and pending integration",
+    "the normal earnings and settlement entries recompute edited local evidence with exact signed-64-bit monetary values and a matching payout snapshot",
+    "both financial routes fit 390px with internally scrollable ledger and settlement tables",
+    "financial preview actions issue no business mutations and complete without browser exceptions"
+  ],
+  "screenshots": [
+    "PUBLISHER-S13",
+    "PUBLISHER-S14"
+  ],
+  "errors": [],
+  "layouts": {
+    "PUBLISHER-S13": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 270,
+        "y": 536.578125,
+        "width": 1516,
+        "height": 311.515625,
+        "bottom": 848.09375
+      },
+      "help": {
+        "x": 10,
+        "y": 810.375,
+        "width": 221,
+        "height": 37,
+        "bottom": 847.375
+      }
+    },
+    "PUBLISHER-S14": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 280,
+        "y": 298.609375,
+        "width": 1508,
+        "height": 529.265625,
+        "bottom": 827.875
+      },
+      "help": {
+        "x": 10,
+        "y": 817.53125,
+        "width": 233,
+        "height": 37,
+        "bottom": 854.53125
+      }
+    }
+  },
+  "final_visual_acceptance": "pending",
+  "result": "PASS"
+}

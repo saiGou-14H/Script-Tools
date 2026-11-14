@@ -245,7 +245,7 @@ try {
   await page.getByRole("button", { name: "查看结算详情", exact: true }).click();
   await page.getByRole("button", { name: "查询原请求", exact: true }).click();
   await expect(
-    page.getByText("原打款请求P0018仍等待渠道回执，当前状态保持处理中"),
+    page.getByText("原请求P0018的回执查询接口待接入"),
   ).toBeVisible();
   report.checks.push(
     "earnings and settlement totals reconcile and payout requests preserve pending channel state",
