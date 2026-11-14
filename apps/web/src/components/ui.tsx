@@ -33,7 +33,7 @@ export function PageHeading({
   extra,
 }: {
   title: string;
-  description?: string;
+  description?: ReactNode;
   extra?: ReactNode;
 }) {
   return (

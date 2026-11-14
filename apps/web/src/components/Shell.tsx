@@ -23,6 +23,16 @@ import { usePrototype } from "../prototype";
 
 const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
   {
+    S01: {
+      S01: "home", S02: "code", S05: "layers", S06: "cube",
+      S07: "order", S09: "ticket", S10: "file", S11: "chart",
+      S12: "audit", S13: "database", C21: "user",
+    },
+    O01: {
+      O03: "cube", O05: "layers", O06: "file", O08: "payment",
+      O10: "reconciliation", O12: "settings", O13: "layers",
+      O14: "server", O15: "audit", O17: "upload", O20: "database", C21: "user",
+    },
     P04: {
       C04: "file",
       C06: "layers",
@@ -287,6 +297,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
   const location = useLocation();
   const searchRef = useRef<InputRef>(null);
   const quickSearch = (pageId === "P04" && role === "USER") || [
+    "S01",
     "C05",
     "C06",
     "C08",
@@ -374,7 +385,6 @@ export function Shell({ pageId }: { pageId: PageId }) {
         ? publisherMenu
         : role === "ADMIN" &&
             (pageId.startsWith("O") || pageId === "C21" || pageId === "P06") &&
-            pageId !== "O01" &&
             pageId !== "O02" &&
             pageId !== "O14"
           ? [
@@ -505,6 +515,8 @@ export function Shell({ pageId }: { pageId: PageId }) {
           placeholder={
             pageId === "P06"
               ? "搜索功能、文档或常见问题"
+              : pageId === "S01"
+                ? "搜索脚本、服务或订单"
               : role === "ADMIN"
                 ? "搜索订单、用户、服务或预约编号"
                 : quickSearch

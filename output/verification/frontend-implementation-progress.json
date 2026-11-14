@@ -1,6 +1,6 @@
 {
   "project_name": "Script Tools",
-  "updated_at": "2026-11-14T20:46:14.101Z",
+  "updated_at": "2026-11-14T21:24:30.723Z",
   "goal_status": "active",
   "target": {
     "page_definitions": 66,
@@ -76,6 +76,14 @@
   ],
   "pending_page_definitions": [],
   "visual_acceptance_count": 0,
+  "role_layout_audit": {
+    "report": "output/verification/role-layouts/report.json",
+    "comparison": "output/verification/role-layouts/index.html",
+    "result": "PASS",
+    "captured_role_pages": 75,
+    "data_source": "isolated development seed",
+    "visual_acceptance": "pending"
+  },
   "browser_reports": [
     "output/verification/frontend-foundation/report.json",
     "output/verification/consumer-pages/report.json",
@@ -111,7 +119,8 @@
     "output/verification/admin-delivery-settings/report.json",
     "output/verification/admin-governance-pages/report.json",
     "output/verification/help-pages/report.json",
-    "output/verification/public-travel-pages/report.json"
+    "output/verification/public-travel-pages/report.json",
+    "output/verification/role-layouts/report.json"
   ],
   "browser_results": [
     {
@@ -288,6 +297,11 @@
       "report": "output/verification/public-travel-pages/report.json",
       "result": "PASS",
       "checks": 7
+    },
+    {
+      "report": "output/verification/role-layouts/report.json",
+      "result": "PASS",
+      "checks": 84
     }
   ],
   "local_preview": "http://127.0.0.1:5174/",
@@ -305,6 +319,7 @@
     "Prototype financial, task and output records are local visual fixtures. Live payments, execution, notifications and artifact storage are pending.",
     "Service catalog and session authentication use the local database. RJSF validation is verified for the example schema only.",
     "All 75 role-page deliverables still require individual fidelity acceptance.",
+    "All 75 role routes are captured from a production-built UI and isolated development seed at each reference image's dimensions. The comparison viewer provides side-by-side images and opacity overlays. Publisher and administrator dashboards include reference metric changes, coherent chart end values, capacity progress, URL-restored filters and scoped mobile layout checks. Live business dashboards retain empty integration states. Individual final visual acceptance remains pending.",
     "The public home and authentication page have been realigned with their reference regions. The user confirmed email/password authentication from the detailed design on 2026-11-14.",
     "Registration, email verification and password reset are integrated with PostgreSQL in development preview mode. Verification delivery currently uses explicit development tokens.",
     "The market, general service detail and travel service detail now use separate guest and consumer layouts. Catalog facts and parameter examples come from the published service contract. The consumer eight-card layout uses a browser-only fixture because the development database currently contains four services.",
@@ -340,6 +355,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/01-游客/P01-平台首页.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/GUEST-P01.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -349,6 +369,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/01-游客/P02-脚本市场.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/GUEST-P02.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -358,6 +383,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/01-游客/P03-脚本服务详情.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/GUEST-P03.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -367,6 +397,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/01-游客/P04-城市与景点.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/GUEST-P04.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -376,6 +411,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/01-游客/P05-景点代抢服务详情.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/GUEST-P05.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -385,6 +425,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/01-游客/P06-使用帮助.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/GUEST-P06.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -394,6 +439,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/01-游客/P07-登录与注册.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/GUEST-P07.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -403,6 +453,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C01-我的首页.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C01.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -412,6 +467,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/P02-脚本市场.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-P02.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -421,6 +481,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/P03-脚本服务详情.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-P03.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -430,6 +495,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/P04-城市与景点.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-P04.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -439,6 +509,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/P05-景点代抢服务详情.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-P05.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -448,6 +523,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C02-确认订单.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C02.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -457,6 +537,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C03-收银台.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C03.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -466,6 +551,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C04-我的订单.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C04.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -475,6 +565,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C05-订单详情.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C05.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -484,6 +579,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C06-已购服务.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C06.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -493,6 +593,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C07-配置与使用服务.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C07.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -502,6 +607,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C08-我的任务.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C08.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -511,6 +621,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C09-任务详情.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C09.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -520,6 +635,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C10-运行记录.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C10.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -529,6 +649,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C11-运行详情.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C11.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -538,6 +663,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C12-结果与产物.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C12.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -547,6 +677,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C13-待处理事项.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C13.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -556,6 +691,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C14-凭据管理.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C14.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -565,6 +705,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C15-出行人资料.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C15.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -574,6 +719,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C16-消息中心.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C16.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -583,6 +733,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C17-通知设置.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C17.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -592,6 +747,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C18-支付与账单.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C18.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -601,6 +761,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C19-退款与售后.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C19.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -610,6 +775,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C20-退款详情.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C20.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -619,6 +789,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C21-账户设置.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C21.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -628,6 +803,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C22-预约凭证与票款.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-C22.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -637,6 +817,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/P06-使用帮助.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/USER-P06.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -646,6 +831,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S01-发布者工作台.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S01.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -655,6 +845,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S02-我的脚本.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S02.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -664,6 +859,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S03-脚本编辑.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S03.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -673,6 +873,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S04-版本与测试.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S04.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -682,6 +887,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S05-构建与测试记录.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S05.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -691,6 +901,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S06-部署管理.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S06.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -700,6 +915,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S07-服务商品.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S07.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -709,6 +929,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S08-编辑与上架服务.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S08.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -718,6 +943,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S09-价格方案.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S09.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -727,6 +957,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S10-销售订单.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S10.png",
+      "reference_viewport": {
+        "width": 1812,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -736,6 +971,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S11-使用统计.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S11.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -745,6 +985,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S12-故障诊断.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S12.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -754,6 +999,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S13-收益与结算.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S13.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -763,6 +1013,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S14-结算详情.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S14.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -772,6 +1027,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S15-发布者设置.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S15.png",
+      "reference_viewport": {
+        "width": 1812,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -781,6 +1041,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S16-来源与同步.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-S16.png",
+      "reference_viewport": {
+        "width": 1812,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -790,6 +1055,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/C21-账户设置.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-C21.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -799,6 +1069,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/P06-使用帮助.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/PUBLISHER-P06.png",
+      "reference_viewport": {
+        "width": 1812,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -808,6 +1083,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O01-运营总览.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O01.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -817,6 +1097,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O02-用户与发布者.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O02.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -826,6 +1111,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O03-服务与脚本.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O03.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -835,6 +1125,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O04-城市与景点.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O04.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -844,6 +1139,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O05-渠道与适配.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O05.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -853,6 +1153,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O06-服务订单.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O06.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -862,6 +1167,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O07-服务订单详情.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O07.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -871,6 +1181,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O08-支付与退款.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O08.png",
+      "reference_viewport": {
+        "width": 1812,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -880,6 +1195,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O09-退款异常处理.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O09.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -889,6 +1209,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O10-对账中心.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O10.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -898,6 +1223,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O11-发布者结算.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O11.png",
+      "reference_viewport": {
+        "width": 1812,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -907,6 +1237,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O12-费用与结算规则.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O12.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -916,6 +1251,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O13-调度与容量.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O13.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -925,6 +1265,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O14-节点与镜像.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O14.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -934,6 +1279,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O15-运行与排障.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O15.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -943,6 +1293,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O16-日志与告警.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O16.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -952,6 +1307,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O17-通知投递.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O17.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -961,6 +1321,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O18-平台设置.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O18.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -970,6 +1335,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O19-权限与操作审计.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O19.png",
+      "reference_viewport": {
+        "width": 1815,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -979,6 +1349,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O20-备份与清理.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O20.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -988,6 +1363,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O21-异常预约.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-O21.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -997,6 +1377,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/C21-账户设置.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-C21.png",
+      "reference_viewport": {
+        "width": 1813,
+        "height": 868
+      },
       "visual_acceptance": "pending"
     },
     {
@@ -1006,6 +1391,11 @@
       "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/P06-使用帮助.png",
       "component_present": true,
       "screenshot_present": true,
+      "current_capture": "output/verification/role-layouts/ADMIN-P06.png",
+      "reference_viewport": {
+        "width": 1814,
+        "height": 867
+      },
       "visual_acceptance": "pending"
     }
   ]

@@ -1,13 +1,14 @@
-import { useState } from "react";
 import { Button, Empty, Input, Table, Tabs } from "antd";
 import {
   PlusOutlined,
   SearchOutlined,
   CloudUploadOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useWorkspace } from "../context";
 import { More, PageHeading, Panel, Status, TileIcon } from "../components/ui";
+
+const serviceTabs = ["全部服务", "在售", "待上架", "已下架"];
 
 const services = [
   {
@@ -20,7 +21,7 @@ const services = [
     price: "3.00",
     quantity: 86,
     income: "258.00",
-    icon: "calendar",
+    icon: "reconciliation",
   },
   {
     id: "flight",
@@ -56,7 +57,7 @@ const services = [
     price: "4.00",
     quantity: 24,
     income: "96.00",
-    icon: "warning",
+    icon: "info",
   },
   {
     id: "trip",
@@ -76,7 +77,7 @@ const services = [
     script: "general_query.py",
     runtime: "运行正常",
     sales: "已下架",
-    refund: "无结果全额退款",
+    refund: "无结果不退款",
     price: "3.00",
     quantity: 15,
     income: "45.00",
@@ -86,14 +87,22 @@ const services = [
 
 export function PublisherHomePage() {
   const { bootstrap } = useWorkspace();
-  const [tab, setTab] = useState("全部服务");
-  const [query, setQuery] = useState("");
+  const [search, setSearch] = useSearchParams();
+  const requestedTab = search.get("status") || "全部服务";
+  const tab = serviceTabs.includes(requestedTab) ? requestedTab : "全部服务";
+  const query = search.get("q") || "";
+  function updateFilter(key: string, value: string) {
+    const next = new URLSearchParams(search);
+    if (value && value !== "全部服务") next.set(key, value);
+    else next.delete(key);
+    setSearch(next, { replace: key === "q" });
+  }
   const prototype = bootstrap.data_mode === "prototype";
   const data = prototype
     ? services.filter(
         (service) =>
           (tab === "全部服务" || tab === service.sales) &&
-          service.name.includes(query),
+          service.name.includes(query.trim()),
       )
     : [];
   return (
@@ -123,22 +132,27 @@ export function PublisherHomePage() {
                 创建服务
               </Button>
             </Link>
-            <div className="hero-document">
-              <span>&lt;/&gt;</span>
+            <div className="publisher-hero-art" aria-hidden="true">
+              <div className="publisher-hero-screen">&lt;/&gt;</div>
+              <div className="publisher-hero-keyboard" />
+              <CloudUploadOutlined />
             </div>
           </div>
           <div className="publisher-stats">
             {[
-              ["database", "在售服务", "4", "blue"],
-              ["order", "今日成交", "12", "purple"],
-              ["wallet", "待结算", "¥68.00", "orange"],
-              ["warning", "部署异常", "1", "red"],
-            ].map(([icon, title, value, color]) => (
+              ["layers", "在售服务", "4", "blue", "↑ 1"],
+              ["cart", "今日成交", "12", "purple", "↑ +3"],
+              ["database", "待结算", "¥68.00", "orange", ""],
+              ["warning", "部署异常", "1", "red", ""],
+            ].map(([icon, title, value, color, change]) => (
               <div key={title}>
                 <TileIcon name={icon} color={color} />
                 <span>
                   <small>{title}</small>
-                  <strong>{prototype ? value : "—"}</strong>
+                  <strong className={color === "red" ? "negative" : undefined}>
+                    {prototype ? value : "—"}
+                    {prototype && change && <em>{change}</em>}
+                  </strong>
                 </span>
               </div>
             ))}
@@ -159,20 +173,23 @@ export function PublisherHomePage() {
                   "/publisher/builds",
                 ],
                 [
-                  "container",
+                  "cube",
                   "部署运行",
                   "一键部署到平台运行环境",
                   "/publisher/deployments",
                 ],
                 [
-                  "market",
+                  "order",
                   "本人上架",
                   "设置价格与无结果退款政策并上架",
                   "/publisher/services",
                 ],
               ].map(([icon, title, description, to], index) => (
                 <Link key={title} to={to}>
-                  <TileIcon name={icon} />
+                  <TileIcon
+                    name={icon}
+                    color={index === 3 ? "green" : "blue"}
+                  />
                   <div>
                     <b>
                       {index + 1}. {title}
@@ -188,8 +205,8 @@ export function PublisherHomePage() {
             <div className="publisher-service-controls">
               <Tabs
                 activeKey={tab}
-                onChange={setTab}
-                items={["全部服务", "在售", "待上架", "已下架"].map((item) => ({
+                onChange={(value) => updateFilter("status", value)}
+                items={serviceTabs.map((item) => ({
                   key: item,
                   label: prototype
                     ? `${item}(${services.filter((service) => item === "全部服务" || item === service.sales).length})`
@@ -199,8 +216,9 @@ export function PublisherHomePage() {
               <Input
                 prefix={<SearchOutlined />}
                 placeholder="搜索服务名称"
+                aria-label="搜索工作台服务"
                 value={query}
-                onChange={(event) => setQuery(event.target.value)}
+                onChange={(event) => updateFilter("q", event.target.value)}
               />
               <Link to="/publisher/services/new/edit">
                 <Button
@@ -222,6 +240,7 @@ export function PublisherHomePage() {
                   : undefined
               }
               pagination={false}
+              scroll={{ x: 1080 }}
               columns={[
                 {
                   title: "服务名称",
@@ -248,6 +267,7 @@ export function PublisherHomePage() {
                             : "orange"
                       }
                     >
+                      <i className="dashboard-status-dot" aria-hidden="true" />
                       {value}
                     </Status>
                   ),
@@ -375,15 +395,16 @@ export function PublisherHomePage() {
               </div>
             </div>
             {[
-              ["chart", "近期收入趋势（近7天）", "¥136.00"],
-              ["calendar", "今日收入", "¥48.00"],
-              ["calendar", "昨日收入", "¥48.00"],
-              ["chart", "近7日收入", "¥136.00"],
-            ].map(([icon, name, value]) => (
+              ["chart", "近期收入趋势（近7天）", "¥136.00", "+18%"],
+              ["calendar", "今日收入", "¥48.00", ""],
+              ["calendar", "昨日收入", "¥48.00", ""],
+              ["chart", "近7日收入", "¥136.00", ""],
+            ].map(([icon, name, value, change]) => (
               <div className="publisher-income-row" key={name}>
                 <TileIcon name={icon} />
                 <span>{name}</span>
                 <b>{prototype ? value : "—"}</b>
+                {prototype && change && <em>↑ {change}</em>}
               </div>
             ))}
           </Panel>

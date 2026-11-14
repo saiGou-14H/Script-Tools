@@ -35,6 +35,7 @@ import "./styles/admin-delivery-settings.css";
 import "./styles/admin-governance.css";
 import "./styles/help.css";
 import "./styles/attractions.css";
+import "./styles/dashboards.css";
 
 const client = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },

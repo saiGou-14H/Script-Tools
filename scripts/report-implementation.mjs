@@ -14,6 +14,12 @@ const manifest = JSON.parse(
     "utf8",
   ),
 );
+const layoutAudit = JSON.parse(
+  await readFile(
+    path.join(root, "output/verification/role-layouts/report.json"),
+    "utf8",
+  ),
+);
 const router = await readFile(
   path.join(root, "apps/web/src/router.tsx"),
   "utf8",
@@ -59,6 +65,7 @@ const browserReports = [
   "output/verification/admin-governance-pages/report.json",
   "output/verification/help-pages/report.json",
   "output/verification/public-travel-pages/report.json",
+  "output/verification/role-layouts/report.json",
 ];
 const screenshots = new Set();
 const browserResults = [];
@@ -89,6 +96,8 @@ const items = Object.values(manifest.items).map((item) => ({
   reference: `output/prototypes/2026-11-13-v5-commercial/${item.file}`,
   component_present: components.includes(item.page_id),
   screenshot_present: screenshots.has(`${item.role}-${item.page_id}`),
+  current_capture: `output/verification/role-layouts/${item.role}-${item.page_id}.png`,
+  reference_viewport: { width: item.width, height: item.height },
   visual_acceptance: "pending",
 }));
 const report = {
@@ -104,6 +113,14 @@ const report = {
     (id) => !components.includes(id),
   ),
   visual_acceptance_count: 0,
+  role_layout_audit: {
+    report: "output/verification/role-layouts/report.json",
+    comparison: "output/verification/role-layouts/index.html",
+    result: layoutAudit.result,
+    captured_role_pages: layoutAudit.items.length,
+    data_source: layoutAudit.data_source,
+    visual_acceptance: layoutAudit.visual_acceptance,
+  },
   browser_reports: browserReports,
   browser_results: browserResults,
   local_preview: "http://127.0.0.1:5174/",
@@ -121,6 +138,7 @@ const report = {
     "Prototype financial, task and output records are local visual fixtures. Live payments, execution, notifications and artifact storage are pending.",
     "Service catalog and session authentication use the local database. RJSF validation is verified for the example schema only.",
     "All 75 role-page deliverables still require individual fidelity acceptance.",
+    "All 75 role routes are captured from a production-built UI and isolated development seed at each reference image's dimensions. The comparison viewer provides side-by-side images and opacity overlays. Publisher and administrator dashboards include reference metric changes, coherent chart end values, capacity progress, URL-restored filters and scoped mobile layout checks. Live business dashboards retain empty integration states. Individual final visual acceptance remains pending.",
     "The public home and authentication page have been realigned with their reference regions. The user confirmed email/password authentication from the detailed design on 2026-11-14.",
     "Registration, email verification and password reset are integrated with PostgreSQL in development preview mode. Verification delivery currently uses explicit development tokens.",
     "The market, general service detail and travel service detail now use separate guest and consumer layouts. Catalog facts and parameter examples come from the published service contract. The consumer eight-card layout uses a browser-only fixture because the development database currently contains four services.",
