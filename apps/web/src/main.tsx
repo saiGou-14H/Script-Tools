@@ -22,6 +22,7 @@ import "./styles/outputs.css";
 import "./styles/account.css";
 import "./styles/execution.css";
 import "./styles/publisher-execution.css";
+import "./styles/publisher-quality.css";
 
 const client = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },

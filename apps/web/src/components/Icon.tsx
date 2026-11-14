@@ -48,9 +48,13 @@ import {
   MessageOutlined,
   SlidersOutlined,
   PayCircleOutlined,
+  CheckCircleOutlined,
+  AimOutlined,
 } from "@ant-design/icons";
 
 const icons = {
+  check: CheckCircleOutlined,
+  target: AimOutlined,
   mail: MailOutlined,
   message: MessageOutlined,
   sliders: SlidersOutlined,

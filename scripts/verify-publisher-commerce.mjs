@@ -1,6 +1,7 @@
 import { chromium, expect } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { createServer } from "vite";
 
 const output = path.resolve("output/verification/publisher-commerce");
 await mkdir(output, { recursive: true });
@@ -8,7 +9,23 @@ const browser = await chromium.launch();
 const context = await browser.newContext({
   viewport: { width: 1814, height: 868 },
 });
-const base = "http://127.0.0.1:5174";
+const root = path.resolve("apps/web");
+const server = await createServer({
+  root,
+  configFile: path.join(root, "vite.config.ts"),
+  cacheDir: path.resolve(".local/publisher-commerce-verification-vite"),
+  server: {
+    host: "127.0.0.1",
+    port: 0,
+    strictPort: true,
+    proxy: { "/api": { target: "http://127.0.0.1:3001" } },
+  },
+});
+await server.listen();
+const address = server.httpServer.address();
+if (!address || typeof address !== "object")
+  throw new Error("Verification address is unavailable");
+const base = `http://127.0.0.1:${address.port}`;
 const report = {
   date: new Date().toISOString(),
   checks: [],
@@ -189,7 +206,7 @@ try {
     page
       .locator(".publisher-metric-tables .ant-table")
       .first()
-      .locator("tbody tr"),
+      .locator(".ant-table-row"),
   ).toHaveCount(1);
   await expect(page.locator(".publisher-metric-charts svg")).toHaveCount(2);
   report.checks.push(
@@ -307,6 +324,7 @@ try {
   });
 } finally {
   await browser.close();
+  await server.close();
   await writeFile(
     path.join(output, "report.json"),
     JSON.stringify(report, null, 2),

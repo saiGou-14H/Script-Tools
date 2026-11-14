@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-14T13:48:03.125Z",
+  "checks": [
+    "publisher metrics and diagnostic reference regions and sidebar help fit 1814 by 868",
+    "default usage, independent delivery and goal evidence, daily trend and refund totals reconcile with the reference aggregates",
+    "all nine service-version combinations use their own daily counts, delivered and achieved facts, and stored refund amount",
+    "interactive filters persist across reload and browser history, retaining independent delivery, goal and variable refund evidence",
+    "unsupported time windows remain unavailable and an unmatched preview filter returns a coherent empty result",
+    "diagnostic build links select the matching script name, version and build, while issue selection scopes owner logs and survives reload",
+    "repair entry creates the matching editable local draft and preserves the original diagnostic version evidence",
+    "unknown external results retain verification classification, missing owner-build evidence stays unavailable, and unknown diagnostics preserve their identity",
+    "live statistics, refunds and diagnostics expose pending integration with unknown counters and unavailable owner evidence",
+    "both routes fit 390px with internal table scrolling and preview actions issue no business mutations or browser exceptions"
+  ],
+  "screenshots": [
+    "PUBLISHER-S11",
+    "PUBLISHER-S12"
+  ],
+  "errors": [],
+  "layouts": {
+    "PUBLISHER-S11": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 254,
+        "y": 630.203125,
+        "width": 1536,
+        "height": 218.28125,
+        "bottom": 848.484375
+      },
+      "help": {
+        "x": 10,
+        "y": 794.53125,
+        "width": 209,
+        "height": 36,
+        "bottom": 830.53125
+      }
+    },
+    "PUBLISHER-S12": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 262,
+        "y": 589.953125,
+        "width": 1526,
+        "height": 255.5,
+        "bottom": 845.453125
+      },
+      "help": {
+        "x": 10,
+        "y": 801.53125,
+        "width": 213,
+        "height": 36,
+        "bottom": 837.53125
+      }
+    }
+  },
+  "final_visual_acceptance": "pending",
+  "result": "PASS"
+}

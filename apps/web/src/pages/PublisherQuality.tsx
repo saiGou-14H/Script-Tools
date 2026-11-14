@@ -1,45 +1,16 @@
-import { useState } from "react";
-import { Button, Select, Table } from "antd";
+import { Button, Empty, Select, Table } from "antd";
 import { CodeOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useWorkspace } from "../context";
-import { PageHeading, Panel, Status, TileIcon } from "../components/ui";
-
-const weeklyUses = [12, 16, 18, 20, 24, 22, 16];
-const serviceNames = ["表格清洗", "文件处理", "景点预约"];
-const versions = ["v1.2", "v1.1", "v1.0"];
-const counts = [
-  [40, 16, 8],
-  [16, 16, 8],
-  [8, 8, 8],
-];
-const technical = [
-  [1, 1, 0],
-  [1, 0, 0],
-  [0, 1, 0],
-];
-const unmet = [
-  [5, 1, 2],
-  [2, 2, 2],
-  [1, 3, 1],
-];
-const metricFacts = serviceNames.flatMap((service, serviceIndex) =>
-  versions.map((version, versionIndex) => ({
-    service,
-    version,
-    uses: counts[serviceIndex][versionIndex],
-    technical: technical[serviceIndex][versionIndex],
-    unmet: unmet[serviceIndex][versionIndex],
-    refunds:
-      serviceIndex === 0 && versionIndex === 0
-        ? 2
-        : serviceIndex === 1 && versionIndex === 0
-          ? 1
-          : serviceIndex === 2 && versionIndex === 1
-            ? 2
-            : 0,
-  })),
-);
+import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
+import { formatMinorUnits } from "../lib/money";
+import {
+  diagnosticFixtures,
+  metricFacts,
+  metricServices,
+  metricVersions,
+  metricWindow,
+} from "../lib/publisher-quality-preview";
 
 function LineTrend({ values }: { values: number[] }) {
   const points = values
@@ -86,7 +57,9 @@ function LineTrend({ values }: { values: number[] }) {
             fill="white"
             stroke="#2371ff"
             strokeWidth="2"
-          />
+          >
+            <title>{`第${index + 1}天 ${value}次有效使用`}</title>
+          </circle>
           <text
             x={45 + index * 100}
             y={160 - value * 3.7}
@@ -150,6 +123,7 @@ function FailureBars({
         const x = 75 + index * (600 / Math.max(rows.length, 1));
         return (
           <g key={row.service}>
+            <title>{`${row.service}，业务目标未达${row.unmet}次，技术故障${row.technical}次`}</title>
             <rect
               x={x}
               y={174 - row.unmet * 14.8}
@@ -194,26 +168,39 @@ function FailureBars({
 
 export function PublisherMetricsPage() {
   const { bootstrap } = useWorkspace();
-  const [service, setService] = useState("");
-  const [version, setVersion] = useState("");
+  const [params, setParams] = useSearchParams();
+  const service = params.get("service") || "";
+  const version = params.get("version") || "";
+  const period = params.get("period") || "7";
+  const prototype = bootstrap.data_mode === "prototype";
+  const available = prototype && period === "7";
+  function filter(key: string, value: string) {
+    const next = new URLSearchParams(params);
+    if (value) next.set(key, value);
+    else next.delete(key);
+    setParams(next);
+  }
   const facts =
-    bootstrap.data_mode === "prototype"
+    available
       ? metricFacts.filter(
           (row) =>
             (!service || row.service === service) &&
             (!version || row.version === version),
-        )
+        ).map((row) => ({
+          ...row,
+          uses: row.dailyUses.reduce((sum, count) => sum + count, 0),
+        }))
       : [];
   const uses = facts.reduce((sum, row) => sum + row.uses, 0);
   const failures = facts.reduce((sum, row) => sum + row.technical, 0);
-  const targets =
-    uses - failures - facts.reduce((sum, row) => sum + row.unmet, 0);
-  const delivered = uses - failures;
+  const targets = facts.reduce((sum, row) => sum + row.achieved, 0);
+  const delivered = facts.reduce((sum, row) => sum + row.delivered, 0);
   const rate = (value: number, total: number) =>
     total ? `${((value / total) * 100).toFixed(1)}%` : "—";
-  const trend = weeklyUses.map((value) => Math.round((value * uses) / 128));
-  trend[6] += uses - trend.reduce((sum, value) => sum + value, 0);
-  const qualityRows = versions
+  const trend = Array.from({ length: 7 }, (_, day) =>
+    facts.reduce((sum, row) => sum + row.dailyUses[day], 0),
+  );
+  const qualityRows = metricVersions
     .filter((value) => !version || version === value)
     .map((value) => {
       const selected = facts.filter((row) => row.version === value);
@@ -222,21 +209,26 @@ export function PublisherMetricsPage() {
         (sum, row) => sum + row.technical,
         0,
       );
-      const unmetCount = selected.reduce((sum, row) => sum + row.unmet, 0);
       return {
         version: value,
         count,
-        delivered: rate(count - technicalCount, count).replace(".0%", "%"),
-        goal: rate(count - technicalCount - unmetCount, count).replace(
-          ".0%",
-          "%",
-        ),
+        delivered: rate(
+          selected.reduce((sum, row) => sum + row.delivered, 0),
+          count,
+        ).replace(".0%", "%"),
+        goal: rate(
+          selected.reduce((sum, row) => sum + row.achieved, 0),
+          count,
+        ).replace(".0%", "%"),
         technical: technicalCount,
         refunds: selected.reduce((sum, row) => sum + row.refunds, 0),
+        refundAmountMinor: selected
+          .reduce((sum, row) => sum + BigInt(row.refundAmountMinor), 0n)
+          .toString(),
       };
     })
     .filter((row) => row.count);
-  const failureRows = serviceNames
+  const failureRows = metricServices
     .filter((value) => !service || service === value)
     .map((value) => ({
       service: value,
@@ -252,44 +244,64 @@ export function PublisherMetricsPage() {
       <PageHeading
         title="使用统计"
         description="查看脚本服务的使用情况、执行结果与版本质量，评估服务表现与退款影响。"
+        extra={
+          <Status tone="gray">
+            {prototype ? "本地示例" : "统计服务待接入"}
+          </Status>
+        }
       />
+      {!prototype && (
+        <Notice>使用、交付、业务目标和退款统计服务待接入，当前数值暂不可用。</Notice>
+      )}
+      {prototype && period !== "7" && (
+        <Notice>该时间范围的统计数据暂不可用，请选择7天示例。</Notice>
+      )}
       <Panel className="publisher-metric-filters">
         <span>时间</span>
-        <Select value="7" options={[{ value: "7", label: "7天" }]} />
+        <Select
+          aria-label="统计周期"
+          title={`${metricWindow.from} 至 ${metricWindow.to}`}
+          value={period}
+          onChange={(value) => filter("period", value)}
+          disabled={!prototype}
+          options={[{ value: "7", label: "7天" }]}
+        />
         <span>服务</span>
         <Select
           aria-label="统计服务"
           value={service}
-          onChange={setService}
+          onChange={(value) => filter("service", value)}
+          disabled={!prototype}
           options={[
             { value: "", label: "全部服务" },
-            ...serviceNames.map((value) => ({ value })),
+            ...metricServices.map((value) => ({ value })),
           ]}
         />
         <span>版本</span>
         <Select
           aria-label="统计版本"
           value={version}
-          onChange={setVersion}
+          onChange={(value) => filter("version", value)}
+          disabled={!prototype}
           options={[
             { value: "", label: "全部版本" },
-            ...versions.map((value) => ({ value })),
+            ...metricVersions.map((value) => ({ value })),
           ]}
         />
       </Panel>
       <Panel className="publisher-metric-stats">
         <div>
           {[
-            ["box", "有效使用", String(uses), "次", "blue"],
+            ["layers", "有效使用", String(uses), "次", "blue"],
             [
-              "shield",
+              "check",
               "执行交付率",
               rate(delivered, uses),
               `(${delivered}/${uses})`,
               "green",
             ],
             [
-              "flag",
+              "target",
               "目标达成率",
               rate(targets, uses),
               `(${targets}/${uses})`,
@@ -301,7 +313,8 @@ export function PublisherMetricsPage() {
               <TileIcon name={icon} color={color} />
               <div>
                 <h3>{title}</h3>
-                <strong>{value}</strong> <span>{unit}</span>
+                <strong>{available ? value : "—"}</strong>{" "}
+                <span>{available ? unit : "待载入"}</span>
               </div>
             </article>
           ))}
@@ -309,7 +322,11 @@ export function PublisherMetricsPage() {
       </Panel>
       <div className="publisher-metric-charts">
         <Panel title="使用趋势">
-          <LineTrend values={trend} />
+          {available && facts.length ? (
+            <LineTrend values={trend} />
+          ) : (
+            <Empty description={available ? "当前筛选无记录" : "使用趋势待载入"} />
+          )}
         </Panel>
         <Panel
           title="失败分类（次数）"
@@ -326,7 +343,11 @@ export function PublisherMetricsPage() {
             </div>
           }
         >
-          <FailureBars rows={failureRows} />
+          {available && facts.length ? (
+            <FailureBars rows={failureRows} />
+          ) : (
+            <Empty description={available ? "当前筛选无记录" : "失败分类待载入"} />
+          )}
         </Panel>
       </div>
       <div className="publisher-metric-tables">
@@ -336,6 +357,7 @@ export function PublisherMetricsPage() {
             size="small"
             pagination={false}
             dataSource={qualityRows}
+            scroll={{ x: 650 }}
             columns={[
               {
                 title: "版本",
@@ -343,7 +365,9 @@ export function PublisherMetricsPage() {
                 render: (value) => (
                   <>
                     {value}{" "}
-                    {value === "v1.2" && <Status tone="green">当前</Status>}
+                    {value === "v1.2" && (!service || service === "表格清洗") && (
+                      <Status tone="green">当前</Status>
+                    )}
                   </>
                 ),
               },
@@ -360,12 +384,13 @@ export function PublisherMetricsPage() {
             size="small"
             pagination={false}
             dataSource={qualityRows}
+            scroll={{ x: 520 }}
             columns={[
               { title: "关联版本", dataIndex: "version" },
               { title: "退款次数", dataIndex: "refunds", align: "center" },
               {
                 title: "退款金额（元）",
-                render: (_, row) => (row.refunds * 30).toFixed(2),
+                render: (_, row) => formatMinorUnits(row.refundAmountMinor),
                 align: "center",
               },
             ]}
@@ -373,12 +398,18 @@ export function PublisherMetricsPage() {
               <Table.Summary.Row>
                 <Table.Summary.Cell index={0}>合计</Table.Summary.Cell>
                 <Table.Summary.Cell index={1} align="center">
-                  {qualityRows.reduce((sum, row) => sum + row.refunds, 0)}
+                  {available
+                    ? qualityRows.reduce((sum, row) => sum + row.refunds, 0)
+                    : "—"}
                 </Table.Summary.Cell>
                 <Table.Summary.Cell index={2} align="center">
-                  {(
-                    qualityRows.reduce((sum, row) => sum + row.refunds, 0) * 30
-                  ).toFixed(2)}
+                  {available
+                    ? formatMinorUnits(
+                        qualityRows
+                          .reduce((sum, row) => sum + BigInt(row.refundAmountMinor), 0n)
+                          .toString(),
+                      )
+                    : "—"}
                 </Table.Summary.Cell>
               </Table.Summary.Row>
             )}
@@ -389,45 +420,26 @@ export function PublisherMetricsPage() {
   );
 }
 
-const diagnostics = [
-  {
-    id: "dependency",
-    scriptId: "files",
-    label: "依赖缺失",
-    title: "文件工具依赖缺失",
-    description: "构建或运行时检测到必要的文件处理工具未安装。",
-    category: "依赖缺失",
-    count: 12,
-    tone: "red" as const,
-  },
-  {
-    id: "timeout",
-    scriptId: "table",
-    label: "执行超时",
-    title: "表格清洗超时",
-    description: "表格数据清洗处理耗时过长，触发超时限制。",
-    category: "超时",
-    count: 8,
-    tone: "orange" as const,
-  },
-  {
-    id: "verification",
-    scriptId: "booking",
-    label: "预约结果待核验",
-    title: "",
-    description: "渠道响应超时，原预约结果未知，保留原请求进行核验。",
-    category: "待核验",
-    count: 5,
-    tone: "blue" as const,
-  },
-];
-
 export function PublisherDiagnosticsPage() {
   const { bootstrap } = useWorkspace();
-  const rows = bootstrap.data_mode === "prototype" ? diagnostics : [];
+  const [params, setParams] = useSearchParams();
+  const prototype = bootstrap.data_mode === "prototype";
+  const rows = prototype ? diagnosticFixtures : [];
+  const selectedId = params.get("issue") || "dependency";
+  const selected = rows.find((row) => row.id === selectedId);
   return (
     <div className="publisher-diagnostics-page">
-      <PageHeading title="故障诊断" />
+      <PageHeading
+        title="故障诊断"
+        extra={
+          <Status tone="gray">
+            {prototype ? "本地累计示例" : "诊断服务待接入"}
+          </Status>
+        }
+      />
+      {!prototype && (
+        <Notice>本人构建日志和消费者侧分类汇总服务待接入，当前诊断记录暂不可用。</Notice>
+      )}
       <div className="publisher-diagnostic-banner">
         <h2>定位脚本问题，快速修复发布</h2>
         <p>
@@ -444,13 +456,25 @@ export function PublisherDiagnosticsPage() {
           rowKey="id"
           dataSource={rows}
           pagination={false}
+          scroll={{ x: 1450 }}
           columns={[
             {
               title: "问题",
               width: "25%",
               render: (_, row) => (
                 <>
-                  <Status tone={row.tone}>{row.label}</Status>{" "}
+                  <Button
+                    type="link"
+                    className="diagnostic-issue-select"
+                    aria-label={`查看${row.label}诊断`}
+                    onClick={() => {
+                      const next = new URLSearchParams(params);
+                      next.set("issue", row.id);
+                      setParams(next);
+                    }}
+                  >
+                    <Status tone={row.tone}>{row.label}</Status>
+                  </Button>{" "}
                   <b>{row.title}</b>
                 </>
               ),
@@ -469,16 +493,28 @@ export function PublisherDiagnosticsPage() {
               render: (_, row) => (
                 <div className="row-actions">
                   <Link to={`/publisher/scripts/${row.scriptId}/edit`}>
-                    <Button icon={<CodeOutlined />}>打开源码</Button>
+                    <Button icon={<CodeOutlined aria-hidden />}>打开源码</Button>
                   </Link>
                   <Link
                     to={`/publisher/scripts/${row.scriptId}/edit?repair=true`}
                   >
                     <Button type="primary">创建修复版本</Button>
                   </Link>
-                  <Link to={`/publisher/builds?script=${row.scriptId}`}>
-                    <Button>查看构建</Button>
-                  </Link>
+                  {row.build ? (
+                    <Link
+                      to={`/publisher/builds?${new URLSearchParams({
+                        script: row.build.script,
+                        version: row.version,
+                        record: row.build.id,
+                      })}`}
+                    >
+                      <Button>查看构建</Button>
+                    </Link>
+                  ) : (
+                    <Button disabled title="该版本构建记录待载入">
+                      查看构建
+                    </Button>
+                  )}
                 </div>
               ),
             },
@@ -487,33 +523,43 @@ export function PublisherDiagnosticsPage() {
       </Panel>
       <div className="diagnostic-bottom-grid">
         <Panel
+          className="diagnostic-owner-logs"
           title={
             <>
               <TileIcon name="file" />
               本人构建部署日志
             </>
           }
+          extra={selected && (
+            <small>{selected.scriptName} {selected.version}</small>
+          )}
         >
           <p>
             展示本人在构建与部署过程中的日志，包含构建输出、依赖安装、打包部署结果等。
           </p>
-          <pre className="diagnostic-log">
-            {rows.length ? (
-              <>
-                {
-                  "[10:14:02]　开始构建脚本：v1.2.0\n[10:14:05]　安装依赖：共6项\n[10:14:37]　"
+          {selected?.logs.length ? (
+            <pre className="diagnostic-log">
+              {selected.logs.map((log) => (
+                <span key={log.time}>
+                  [{log.time}]　
+                  {log.level === "ERROR" && <em>ERROR </em>}
+                  {log.message}
+                </span>
+              ))}
+            </pre>
+          ) : (
+            <div className="diagnostic-log diagnostic-log-empty">
+              <Empty
+                description={
+                  !prototype
+                    ? "本人构建日志待接入"
+                    : selected
+                      ? "该版本构建日志待载入"
+                      : `诊断 ${selectedId} 不存在或已失效`
                 }
-                <em>ERROR</em>
-                {" 必要依赖file-utils缺失\n[10:15:03]　"}
-                <em>ERROR</em>
-                {" 构建失败，停止打包\n[10:15:16]　"}
-                <em>ERROR</em>
-                {" 未生成可部署镜像，请修复并创建新版本。"}
-              </>
-            ) : (
-              "暂无构建部署日志"
-            )}
-          </pre>
+              />
+            </div>
+          )}
         </Panel>
         <Panel
           title={
@@ -523,7 +569,7 @@ export function PublisherDiagnosticsPage() {
             </>
           }
         >
-          <p>展示消费者使用时的脱敏错误分类与发生次数。</p>
+          <p>按本人服务的脱敏错误分类与发生次数汇总展示。</p>
           <Table
             rowKey="id"
             size="small"

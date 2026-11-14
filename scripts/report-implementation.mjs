@@ -46,6 +46,7 @@ const browserReports = [
   "output/verification/consumer-purchase-pages/report.json",
   "output/verification/execution-pages/report.json",
   "output/verification/publisher-execution-pages/report.json",
+  "output/verification/publisher-quality-pages/report.json",
 ];
 const screenshots = new Set();
 const browserResults = [];
@@ -121,6 +122,7 @@ const report = {
     "Order list, order detail, purchased services and configuration have been realigned with their reference regions. Order filters persist in the URL. Entitlement actions retain their own order and task references, and refund entry carries the original order while its policy is loaded. Cashier demo selects the existing unpaid order. New preview orders retain a service contract snapshot and decimal-string amounts. Configuration checks the selected entitlement and purchased version, uses publisher-required JSON Schema fields, and validates and previews the chosen execution time. Live order, entitlement, scheduling and execution services remain pending.",
     "Task list, task detail, run list and run detail have been realigned with their reference regions. Task scope, applied run filters and detail tabs persist in the URL. Task details expose their own configuration snapshot, run history and order references. The active booking example retains the existing two-hour paid service window and consistent task dates. Its execution, business goal, two ready output batches and notification delivery retain independent states. Output links, preview file downloads and redacted log exports use the selected run. Pause and stop actions expose pending integration. Live task scheduling, execution, termination and notification delivery remain pending.",
     "Publisher build and deployment pages have been realigned with their reference regions. Build filters, build/trial tabs and selected records persist in the URL, and unavailable selections retain their own identity. Deployment detail, diagnostics and state-specific actions use the selected deployment. Copy returns a complete local example digest while its displayed value stays abbreviated. Configuration previews use the selected ready version, execution mode and resources, clear on edit and require fresh TCG consent after switching modes. Live builds, tests, deployment jobs, runtime profiles, quotas and stop-impact calculation remain pending and show unavailable metadata.",
+    "Publisher metrics and diagnostics have been realigned with their reference regions. Service and version filters persist in the URL. Daily usage, delivered and achieved counts, technical classifications and stored decimal-string refund amounts aggregate independently while preserving the reference totals. Daily detail, refund allocation and diagnostic logs use local examples. Diagnostic selections retain their own owner-build evidence and open the matching script-name, version and build record. Missing build evidence stays unavailable, and unknown booking effects retain their verification classification. Live statistics, refunds and diagnostic queries remain pending with unknown counters.",
   ],
   items,
 };

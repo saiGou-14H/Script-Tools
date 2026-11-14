@@ -23,6 +23,23 @@ import { usePrototype } from "../prototype";
 
 const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
   {
+    S11: {
+      S01: "home",
+      S05: "shield",
+      S06: "layers",
+      S11: "chart",
+      S12: "warning",
+      S13: "database",
+      C21: "user",
+    },
+    S12: {
+      S01: "home",
+      S05: "layers",
+      S11: "chart",
+      S12: "shield",
+      S13: "database",
+      C21: "user",
+    },
     S05: {
       S01: "home",
       S05: "layers",
