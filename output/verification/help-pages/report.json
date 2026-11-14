@@ -1,0 +1,114 @@
+{
+  "date": "2026-11-14T20:04:37.845Z",
+  "checks": [
+    "The anonymous public help endpoint returns a versioned six-question/five-category catalog and explicit unconfigured support state, rejects unsupported query parameters and exposes no account fields",
+    "GUEST help retains its own reference layout and navigation, searches all categories including account security, restores filters and exact accordion state from URL, preserves help search workspace and restores the unconfigured-support dialog on desktop and 390px screens",
+    "USER help retains its own reference layout and navigation, searches all categories including account security, restores filters and exact accordion state from URL, preserves help search workspace and restores the unconfigured-support dialog on desktop and 390px screens",
+    "PUBLISHER help retains its own reference layout and navigation, searches all categories including account security, restores filters and exact accordion state from URL, preserves help search workspace and restores the unconfigured-support dialog on desktop and 390px screens",
+    "ADMIN help retains its own reference layout and navigation, searches all categories including account security, restores filters and exact accordion state from URL, preserves help search workspace and restores the unconfigured-support dialog on desktop and 390px screens",
+    "Failed public help reads show retryable errors without substituting example answers, and a LIVE bootstrap continues to use the same public catalog with explicit pending support state"
+  ],
+  "screenshots": [
+    "GUEST-P06",
+    "GUEST-P06-mobile",
+    "USER-P06",
+    "USER-P06-mobile",
+    "PUBLISHER-P06",
+    "PUBLISHER-P06-mobile",
+    "ADMIN-P06",
+    "ADMIN-P06-mobile",
+    "GUEST-P06-live"
+  ],
+  "layouts": {
+    "GUEST": {
+      "width": 1814,
+      "height": 868,
+      "columns": [
+        {
+          "left": 276,
+          "top": 333,
+          "width": 245
+        },
+        {
+          "left": 535,
+          "top": 333,
+          "width": 771.671875
+        },
+        {
+          "left": 1320.671875,
+          "top": 333,
+          "width": 469.328125
+        }
+      ],
+      "helpBottom": 421.421875
+    },
+    "USER": {
+      "width": 1814,
+      "height": 868,
+      "columns": [
+        {
+          "left": 253,
+          "top": 325,
+          "width": 270
+        },
+        {
+          "left": 535,
+          "top": 325,
+          "width": 823
+        },
+        {
+          "left": 1370,
+          "top": 325,
+          "width": 420
+        }
+      ],
+      "helpBottom": 850
+    },
+    "PUBLISHER": {
+      "width": 1814,
+      "height": 868,
+      "columns": [
+        {
+          "left": 258,
+          "top": 307,
+          "width": 238
+        },
+        {
+          "left": 510,
+          "top": 307,
+          "width": 890
+        },
+        {
+          "left": 1414,
+          "top": 307,
+          "width": 378
+        }
+      ],
+      "helpBottom": 830.375
+    },
+    "ADMIN": {
+      "width": 1814,
+      "height": 868,
+      "columns": [
+        {
+          "left": 244,
+          "top": 374,
+          "width": 268
+        },
+        {
+          "left": 528,
+          "top": 374,
+          "width": 796
+        },
+        {
+          "left": 1340,
+          "top": 374,
+          "width": 450
+        }
+      ],
+      "helpBottom": 857.90625
+    }
+  },
+  "errors": [],
+  "result": "PASS"
+}

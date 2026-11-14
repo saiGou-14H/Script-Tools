@@ -89,7 +89,7 @@ try {
         ).toBeVisible();
       else if (title)
         await expect(
-          page.getByRole("heading", { name: title, exact: true }),
+          page.getByRole("heading", { name: title, exact: true, level: 1 }),
         ).toBeVisible();
       else
         await expect(

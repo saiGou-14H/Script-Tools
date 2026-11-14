@@ -1,0 +1,729 @@
+.app-shell.page-P06 {
+  --sidebar-width: 246px;
+  --header-height: 60px;
+}
+.page-P06 .main-content {
+  padding: 80px 24px 32px 30px;
+}
+.page-P06 .breadcrumb {
+  font-size: 16px;
+  line-height: 22px;
+  margin-bottom: 13px;
+}
+.page-P06 .page-heading {
+  margin-bottom: 21px;
+}
+.page-P06 h1 {
+  font-size: 30px;
+  line-height: 42px;
+}
+.page-P06 .page-heading p {
+  font-size: 16px;
+  line-height: 27px;
+}
+.page-P06 .global-search {
+  left: 35.3%;
+  width: 29.6%;
+  font-size: 16px;
+  height: 39px;
+}
+.page-P06 .sidebar {
+  padding: 15px 8px;
+}
+.page-P06 .nav-group {
+  margin-bottom: 24px;
+}
+.page-P06 .nav-group-label {
+  padding: 9px 22px 10px;
+  font-size: 16px;
+}
+.page-P06 .nav-item {
+  height: 47px;
+  padding: 0 25px;
+  font-size: 18px;
+  gap: 20px;
+}
+.page-P06 .nav-item > .anticon {
+  font-size: 21px;
+}
+.help-banner {
+  height: 107px;
+  margin-bottom: 18px;
+  margin-top: 0;
+  gap: 22px;
+  padding: 20px 29px;
+  background: linear-gradient(110deg, #e6efff, #e1e6ff 48%, #d1ceff);
+}
+.help-banner::after {
+  width: 250px;
+  height: 300px;
+  top: -110px;
+  right: 0;
+  border-radius: 30px;
+  border: 60px solid #ffffff30;
+  transform: rotate(35deg);
+}
+.help-banner > :not(.help-search-art) {
+  position: relative;
+  z-index: 1;
+}
+.help-script-icon {
+  display: grid;
+  place-items: center;
+  width: 66px;
+  height: 53px;
+  flex-shrink: 0;
+  border-radius: 13px;
+  background: linear-gradient(130deg, #9fc2ff, #316dff);
+  color: white;
+  font:
+    700 32px/1 Consolas,
+    monospace;
+  letter-spacing: -3px;
+}
+.help-columns {
+  grid-template-columns: 245px minmax(0, 1fr) 31%;
+}
+.help-columns > *,
+.help-banner-copy {
+  min-width: 0;
+}
+.help-directory,
+.help-questions {
+  min-height: 496px;
+}
+.help-columns .panel-heading {
+  padding-top: 14px;
+}
+.help-directory .panel-heading h2,
+.help-quickstart .panel-heading h2 {
+  padding-bottom: 12px;
+}
+.help-directory .ant-btn {
+  gap: 14px;
+  padding-left: 7px;
+}
+.help-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.help-search .ant-input-affix-wrapper {
+  min-width: 0;
+  height: 44px;
+  margin-bottom: 0;
+  font-size: 16px;
+  background: #ffffffd9;
+}
+.help-search .ant-input-prefix {
+  color: #6f7d95;
+  font-size: 19px;
+  margin-right: 12px;
+}
+.page-P06 .ant-input::placeholder {
+  color: #6f7b90;
+  opacity: 1;
+}
+.help-search .ant-btn {
+  height: 44px;
+  min-width: 96px;
+  font-size: 17px;
+  font-weight: 600;
+}
+.help-questions .help-search {
+  margin-bottom: 18px;
+}
+.help-questions h2 {
+  margin: 9px 0 14px;
+}
+.help-questions .ant-collapse > .ant-collapse-item:first-child {
+  border-radius: 11px;
+}
+.help-questions .ant-collapse-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.help-questions .ant-collapse-header {
+  min-height: 46px;
+}
+.help-questions .ant-collapse > .ant-collapse-item:last-child {
+  margin-bottom: 0;
+}
+.help-questions .ant-collapse-expand-icon {
+  color: #596a89;
+  font-size: 16px;
+}
+.help-questions .ant-collapse-item-active .ant-collapse-expand-icon {
+  color: #1555ff;
+}
+.help-questions .ant-collapse-body {
+  padding: 8px 18px 18px;
+}
+.help-quickstart .panel-body > div {
+  padding-bottom: 14px;
+}
+.help-quickstart .panel-body {
+  padding-bottom: 16px;
+}
+.help-quickstart h3 {
+  line-height: 22px;
+}
+.help-quickstart p {
+  margin-top: 2px;
+}
+.help-quickstart .panel-heading {
+  padding-bottom: 10px;
+}
+.help-quickstart .panel-body > div > span {
+  width: 32px;
+  height: 32px;
+}
+.help-contact .panel-heading {
+  padding-top: 14px;
+}
+.help-contact .panel-body {
+  padding-bottom: 22px;
+}
+.help-contact .ant-btn {
+  font-weight: 600;
+}
+.role-USER.page-P06 {
+  --sidebar-width: 229px;
+  --header-height: 59px;
+}
+.role-USER.page-P06 .main-content {
+  padding: 86px 24px 40px;
+}
+.role-USER.page-P06 h1 {
+  font-size: 28px;
+  line-height: 39px;
+}
+.role-USER.page-P06 .page-heading {
+  margin-bottom: 18px;
+}
+.role-USER.page-P06 .help-banner {
+  height: 128px;
+  padding: 24px 42px;
+  gap: 28px;
+  margin-bottom: 24px;
+}
+.role-USER.page-P06 .help-banner .tile-icon {
+  width: 73px;
+  height: 70px;
+  border-radius: 15px;
+  font-size: 36px;
+}
+.role-USER.page-P06 .help-banner h2 {
+  font-size: 21px;
+}
+.role-USER.page-P06 .help-banner p {
+  font-size: 15px;
+  white-space: nowrap;
+}
+.role-USER.page-P06 .help-search {
+  margin-left: auto;
+  width: 56%;
+}
+.role-USER.page-P06 .help-columns {
+  grid-template-columns: 270px minmax(0, 1fr) 420px;
+  gap: 12px;
+}
+.role-USER.page-P06 .help-directory,
+.role-USER.page-P06 .help-questions {
+  min-height: 500px;
+}
+.role-USER.page-P06 .nav-group {
+  margin: 0 8px;
+  border-bottom: 1px solid #e8edf5;
+  padding-bottom: 6px;
+}
+.role-USER.page-P06 .nav-group-label {
+  font-size: 14px;
+  padding: 7px 0 5px;
+}
+.role-USER.page-P06 .nav-item {
+  height: 30px;
+  padding: 0 14px;
+  font-size: 15px;
+  gap: 14px;
+}
+.role-USER.page-P06 .nav-item > .anticon {
+  font-size: 19px;
+}
+.role-USER.page-P06 .sidebar,
+.role-ADMIN.page-P06 .sidebar {
+  padding-top: 12px;
+}
+.role-USER.page-P06 .help-quickstart h3 {
+  line-height: 24px;
+}
+.role-USER.page-P06 .help-quickstart p {
+  margin-top: 4px;
+}
+.role-USER.page-P06 .help-quickstart .panel-body {
+  padding-bottom: 20px;
+}
+.role-PUBLISHER.page-P06 {
+  --sidebar-width: 234px;
+  --header-height: 59px;
+}
+.role-PUBLISHER.page-P06 .main-content {
+  padding: 80px 22px 40px 24px;
+}
+.role-PUBLISHER.page-P06 .breadcrumb {
+  margin-bottom: 25px;
+}
+.role-PUBLISHER.page-P06 h1 {
+  font-size: 32px;
+  line-height: 45px;
+}
+.role-PUBLISHER.page-P06 .page-heading p {
+  font-size: 17px;
+}
+.role-PUBLISHER.page-P06 .page-heading {
+  margin-bottom: 20px;
+}
+.role-PUBLISHER.page-P06 .help-quickstart h3 {
+  line-height: 26.7px;
+}
+.role-PUBLISHER.page-P06 .help-quickstart p {
+  margin-top: 4px;
+}
+.role-PUBLISHER.page-P06 .help-quickstart .panel-body {
+  padding-bottom: 18px;
+}
+.role-PUBLISHER.page-P06 .help-page > .help-search {
+  width: calc(100% - 404px);
+  height: 55px;
+  margin: 0 8px 30px;
+  padding: 5px 6px 5px 0;
+  background: white;
+  border: 1px solid #d8e1ef;
+  border-radius: 9px;
+}
+.role-PUBLISHER.page-P06 .help-search .ant-input-affix-wrapper {
+  border: 0;
+  box-shadow: none;
+  height: 43px;
+}
+.role-PUBLISHER.page-P06 .help-search .ant-btn {
+  min-width: 123px;
+}
+.role-PUBLISHER.page-P06 .help-columns {
+  grid-template-columns: 238px minmax(0, 1fr) 378px;
+  gap: 14px;
+}
+.role-PUBLISHER.page-P06 .help-directory,
+.role-PUBLISHER.page-P06 .help-questions {
+  min-height: 506px;
+}
+.role-PUBLISHER.page-P06 .help-directory .panel-heading h2,
+.role-PUBLISHER.page-P06 .help-quickstart .panel-heading h2 {
+  border-bottom: 0;
+}
+.role-PUBLISHER.page-P06 .help-directory .ant-btn {
+  padding-left: 16px;
+  height: 46px;
+}
+.role-PUBLISHER.page-P06 .nav-group {
+  margin-bottom: 5px;
+}
+.role-PUBLISHER.page-P06 .nav-group-label {
+  padding: 6px 22px 4px;
+  font-size: 15px;
+}
+.role-PUBLISHER.page-P06 .sidebar {
+  padding-top: 13px;
+}
+.role-PUBLISHER.page-P06 .nav-item {
+  height: 38px;
+  padding: 0 25px;
+  gap: 16px;
+  font-size: 16px;
+}
+.role-PUBLISHER.page-P06 .nav-item > .anticon {
+  font-size: 19px;
+}
+.role-ADMIN.page-P06 {
+  --sidebar-width: 218px;
+  --header-height: 51px;
+}
+.role-ADMIN.page-P06 .main-content {
+  padding: 70px 24px 40px 26px;
+}
+.role-ADMIN.page-P06 .breadcrumb {
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+.role-ADMIN.page-P06 .page-heading {
+  margin-bottom: 10px;
+}
+.role-ADMIN.page-P06 .help-banner {
+  height: 169px;
+  align-items: flex-start;
+  padding: 15px 36px 22px;
+  margin-bottom: 19px;
+}
+.role-ADMIN.page-P06 .help-banner h2 {
+  color: #1555ff;
+  font-size: 30px;
+}
+.role-ADMIN.page-P06 .help-banner p {
+  margin-top: 0;
+}
+.role-ADMIN.page-P06 .help-search {
+  width: 660px;
+  max-width: 100%;
+  margin-top: 14px;
+  background: white;
+  border: 1px solid #d8e1ef;
+  border-radius: 8px;
+  padding: 2px;
+  gap: 0;
+}
+.role-ADMIN.page-P06 .help-search .ant-input-affix-wrapper {
+  border: 0;
+  box-shadow: none;
+}
+.role-ADMIN.page-P06 .help-columns {
+  grid-template-columns: 268px minmax(0, 1fr) 450px;
+  gap: 16px;
+}
+.role-ADMIN.page-P06 .help-directory,
+.role-ADMIN.page-P06 .help-questions {
+  min-height: 454px;
+}
+.role-ADMIN.page-P06 .nav-group {
+  margin-bottom: 9px;
+}
+.role-ADMIN.page-P06 .nav-group-label {
+  font-size: 12px;
+  padding: 3px 18px;
+}
+.role-ADMIN.page-P06 .nav-item {
+  height: 27px;
+  font-size: 14px;
+  padding: 0 24px;
+  gap: 15px;
+}
+.role-ADMIN.page-P06 .nav-item > .anticon {
+  font-size: 16px;
+}
+.help-search-art {
+  position: absolute;
+  width: 220px;
+  height: 132px;
+  right: 15%;
+  top: 18px;
+  z-index: 1;
+  transform: skew(-5deg);
+}
+.help-search-art i {
+  position: absolute;
+  width: 135px;
+  height: 40px;
+  top: 0;
+  right: 0;
+  border: 1px solid #ffffff60;
+  background: #aab6ff50;
+  border-radius: 9px;
+}
+.help-search-art i:nth-child(2) {
+  width: 200px;
+  height: 100px;
+  top: 20px;
+  right: 15px;
+  background: linear-gradient(135deg, #ffffffed, #e1e7ff90);
+}
+.help-search-art > span {
+  position: absolute;
+  background: #b0bfff80;
+  width: 130px;
+  height: 12px;
+  top: 40px;
+  left: 20px;
+  border-radius: 5px;
+}
+.help-search-art > span:nth-of-type(2) {
+  top: 63px;
+  width: 80px;
+}
+.help-search-art > span:nth-of-type(3) {
+  top: 86px;
+  width: 54px;
+}
+.help-search-art b {
+  position: absolute;
+  right: 8px;
+  bottom: 12px;
+  width: 55px;
+  height: 55px;
+  border: 8px solid #4e77ff;
+  border-radius: 50%;
+}
+.help-search-art b::after {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 8px;
+  background: #4e77ff;
+  transform: rotate(45deg);
+  right: -23px;
+  bottom: -13px;
+  border-radius: 8px;
+}
+.page-P06:not(.role-GUEST) .help-questions .panel-body {
+  padding: 18px 22px;
+}
+.page-P06:not(.role-GUEST) .help-questions h2 {
+  font-size: 23px;
+  margin: 0 0 19px;
+}
+.page-P06:not(.role-GUEST) .help-questions .ant-collapse-header {
+  font-size: 18px;
+  min-height: 52px;
+  padding: 10px 20px !important;
+}
+.page-P06:not(.role-GUEST) .help-questions .ant-collapse-item {
+  margin-bottom: 12px;
+}
+.page-P06:not(.role-GUEST) .help-answer {
+  padding: 12px 0;
+  font-size: 17px;
+  line-height: 1.6;
+  min-height: 50px;
+}
+.page-P06:not(.role-GUEST) .help-questions .ant-collapse-body {
+  padding: 0 20px 10px;
+  background: #f4f6fb;
+}
+.page-P06:not(.role-GUEST) .help-quickstart .panel-heading h2 {
+  border-bottom: 0;
+  font-size: 23px;
+}
+.page-P06:not(.role-GUEST) .help-quickstart .panel-body > div {
+  padding-bottom: 22px;
+}
+.page-P06:not(.role-GUEST) .help-quickstart .panel-body > div:last-child {
+  padding-bottom: 0;
+}
+.page-P06:not(.role-GUEST) .help-contact .panel-heading h2 {
+  font-size: 23px;
+}
+.role-USER.page-P06 .help-contact .panel-body,
+.role-ADMIN.page-P06 .help-contact .panel-body {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr);
+  column-gap: 18px;
+  padding-top: 12px;
+}
+.role-USER.page-P06 .help-contact .panel-body > .tile-icon,
+.role-ADMIN.page-P06 .help-contact .panel-body > .tile-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  font-size: 30px;
+  grid-row: span 2;
+}
+.role-USER.page-P06 .help-contact .ant-btn {
+  justify-self: start;
+  height: 40px;
+  min-width: 184px;
+}
+.role-PUBLISHER.page-P06 .help-contact .ant-btn {
+  width: 100%;
+}
+.role-ADMIN.page-P06 .help-contact .panel-body {
+  grid-template-columns: 52px minmax(0, 1fr) 104px;
+  column-gap: 14px;
+}
+.role-ADMIN.page-P06 .help-contact .panel-body > .tile-icon {
+  width: 50px;
+  height: 50px;
+  grid-row: auto;
+}
+.role-ADMIN.page-P06 .help-contact .ant-btn {
+  min-width: 0;
+  height: 43px;
+  align-self: start;
+}
+.role-GUEST.page-P06 .sidebar {
+  padding-top: 12px;
+}
+.role-GUEST.page-P06 .nav-group {
+  margin-bottom: 16px;
+}
+.role-GUEST.page-P06 .nav-group-label {
+  padding-bottom: 9px;
+}
+.role-GUEST.page-P06 .help-quickstart .panel-body {
+  padding-bottom: 12px;
+}
+.role-PUBLISHER.page-P06 .help-contact {
+  min-height: 198px;
+}
+.role-ADMIN.page-P06 .help-contact {
+  min-height: 171px;
+}
+.role-PUBLISHER.page-P06 .help-questions h2 {
+  margin-bottom: 22px;
+}
+.role-ADMIN.page-P06 .help-questions .ant-collapse-header {
+  min-height: 50px;
+  padding: 8px 18px !important;
+}
+.role-ADMIN.page-P06 .help-questions .ant-collapse-item {
+  margin-bottom: 8px;
+}
+.role-ADMIN.page-P06 .help-quickstart h3 {
+  line-height: 24px;
+}
+.role-ADMIN.page-P06 .help-quickstart .panel-body > div {
+  padding-bottom: 16px;
+}
+@media (max-width: 1450px) {
+  .app-shell.page-P06 .help-columns {
+    grid-template-columns: 200px minmax(0, 1fr) 300px;
+  }
+  .role-USER.page-P06 .help-banner {
+    gap: 18px;
+    padding-inline: 24px;
+  }
+  .role-USER.page-P06 .help-banner p {
+    white-space: normal;
+  }
+  .role-USER.page-P06 .help-search {
+    width: 45%;
+  }
+  .help-search-art {
+    right: 5%;
+  }
+  .role-ADMIN.page-P06 .help-contact .panel-body {
+    grid-template-columns: 50px minmax(0, 1fr);
+  }
+  .role-ADMIN.page-P06 .help-contact .ant-btn {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+@media (max-width: 1100px) {
+  .app-shell.page-P06 .help-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .app-shell.page-P06 .help-directory,
+  .app-shell.page-P06 .help-questions {
+    min-height: 0;
+  }
+  .help-directory .panel-body {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .help-directory .ant-btn {
+    width: auto;
+  }
+  .role-PUBLISHER.page-P06 .help-page > .help-search {
+    width: 100%;
+    margin-inline: 0;
+  }
+  .role-USER.page-P06 .help-banner {
+    flex-wrap: wrap;
+    height: auto;
+  }
+  .role-USER.page-P06 .help-search {
+    width: 100%;
+  }
+  .help-search-art {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .app-shell.page-P06 {
+    --sidebar-width: 0px;
+  }
+  .app-shell.page-P06 .sidebar {
+    display: none;
+  }
+  .app-shell.page-P06 .main-content {
+    padding: calc(var(--header-height) + 22px) 16px 24px;
+  }
+  .page-P06 .brand {
+    min-width: 0;
+  }
+  .page-P06 .brand strong {
+    font-size: 17px;
+  }
+  .page-P06 .workspace-button {
+    font-size: 0;
+    gap: 6px;
+    padding: 0 8px;
+  }
+  .page-P06 .workspace-button b,
+  .page-P06 .workspace-button .anticon {
+    font-size: 12px;
+  }
+  .role-GUEST.page-P06 .workspace-button {
+    display: none;
+  }
+  .page-P06 .topbar-actions {
+    gap: 6px;
+  }
+  .page-P06 .topbar {
+    padding-inline: 16px;
+  }
+  .app-shell.page-P06 .help-banner {
+    height: auto;
+    padding: 20px;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .help-banner h2 {
+    font-size: 21px;
+  }
+  .help-banner p {
+    font-size: 14px;
+  }
+  .help-banner .help-script-icon {
+    width: 48px;
+    height: 46px;
+    font-size: 26px;
+  }
+  .role-USER.page-P06 .help-banner .tile-icon {
+    width: 50px;
+    height: 50px;
+  }
+  .role-USER.page-P06 .help-banner-copy {
+    flex: 1;
+  }
+  .help-search .ant-btn {
+    min-width: 72px;
+  }
+  .help-search .ant-input-affix-wrapper {
+    font-size: 14px;
+  }
+  .role-ADMIN.page-P06 .help-search {
+    width: 100%;
+  }
+  .help-questions .panel-body {
+    padding-inline: 16px;
+  }
+  .help-questions .ant-collapse-title {
+    min-width: 0;
+  }
+  .help-questions .ant-collapse-title,
+  .help-answer {
+    overflow-wrap: anywhere;
+  }
+  .page-P06 .help-questions .ant-collapse-header {
+    padding-inline: 12px !important;
+    font-size: 16px;
+  }
+  .page-P06 .help-questions .ant-collapse-body {
+    padding-inline: 12px;
+  }
+  .page-P06 .help-answer {
+    font-size: 15px;
+    gap: 10px;
+  }
+}

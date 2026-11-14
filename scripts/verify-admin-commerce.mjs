@@ -48,7 +48,7 @@ async function capture(id, route, title) {
     width: document.documentElement.scrollWidth,
     height: document.documentElement.scrollHeight,
     helpBottom: document
-      .querySelector('.sidebar a[href="/help"]')
+      .querySelector('.sidebar a[href^="/help"]')
       ?.getBoundingClientRect().bottom,
   }));
   expect(bounds.width).toBeLessThanOrEqual(1814);

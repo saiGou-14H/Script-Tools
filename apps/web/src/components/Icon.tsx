@@ -53,9 +53,13 @@ import {
   CodeSandboxOutlined,
   DockerOutlined,
   DesktopOutlined,
+  ReadOutlined,
+  ShoppingCartOutlined,
 } from "@ant-design/icons";
 
 const icons = {
+  book: ReadOutlined,
+  cart: ShoppingCartOutlined,
   cube: CodeSandboxOutlined,
   docker: DockerOutlined,
   desktop: DesktopOutlined,

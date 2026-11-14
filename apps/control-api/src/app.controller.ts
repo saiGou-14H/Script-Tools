@@ -22,6 +22,7 @@ import { AppRequest } from "./common/http";
 import { AuthChallengeService } from "./auth/auth-challenge.service";
 import { AccountService } from "./account/account.service";
 import { AdminMetadataService } from "./admin/admin-metadata.service";
+import { publicHelp } from "./public-help";
 
 @Controller("api/v1")
 export class AppController {
@@ -32,6 +33,21 @@ export class AppController {
     private readonly accounts: AccountService,
     private readonly adminMetadata: AdminMetadataService,
   ) {}
+
+  @Public()
+  @Get("public/help")
+  help(
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    if (Object.keys(query).length)
+      throw new HttpException(
+        { code: "INVALID_QUERY", message: "帮助目录不支持查询参数" },
+        422,
+      );
+    response.setHeader("Cache-Control", "no-store");
+    return publicHelp;
+  }
 
   @Public()
   @Get("health")

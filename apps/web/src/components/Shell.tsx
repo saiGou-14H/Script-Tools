@@ -23,6 +23,27 @@ import { usePrototype } from "../prototype";
 
 const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
   {
+    P06: {
+      C06: "layers",
+      C22: "ticket",
+      C12: "chart",
+      C13: "clock",
+      C16: "message",
+      C19: "history",
+      C21: "user",
+      S01: "home",
+      S07: "cube",
+      S09: "ticket",
+      S05: "layers",
+      S13: "money",
+      O06: "file",
+      O10: "layers",
+      O12: "money",
+      O13: "server",
+      O14: "cube",
+      O15: "chart",
+      O20: "database",
+    },
     O10: {
       O01: "home", O03: "container", O04: "ticket", O05: "layers",
       O06: "file", O08: "payment", O10: "chart", O11: "team", O12: "database",
@@ -311,7 +332,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
     "C21",
     "P06",
   ];
-  if (["C02", "C17", "C21"].includes(pageId))
+  if (["C02", "C17", "C21", "P06"].includes(pageId))
     consumerMenu.splice(1, 5, "C04", "C06", "C22", "P02", "P04");
   if (["C07", "C14"].includes(pageId)) {
     consumerMenu.splice(5, 1);
@@ -342,7 +363,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
       : role === "PUBLISHER"
         ? publisherMenu
         : role === "ADMIN" &&
-            (pageId.startsWith("O") || pageId === "C21") &&
+            (pageId.startsWith("O") || pageId === "C21" || pageId === "P06") &&
             pageId !== "O01" &&
             pageId !== "O02" &&
             pageId !== "O14"
@@ -372,7 +393,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
           : [];
   const compactAdmin =
     role === "ADMIN" &&
-    (pageId.startsWith("O") || pageId === "C21") &&
+    (pageId.startsWith("O") || pageId === "C21" || pageId === "P06") &&
     pageId !== "O01";
   const menu = menuForRole(role).sort(
     (a, b) => order.indexOf(a.id) - order.indexOf(b.id),
@@ -472,15 +493,19 @@ export function Shell({ pageId }: { pageId: PageId }) {
           prefix={<SearchOutlined />}
           suffix={quickSearch ? <kbd>Ctrl K</kbd> : undefined}
           placeholder={
-            role === "ADMIN"
-              ? "搜索订单、用户、服务或预约编号"
-              : quickSearch
-                ? "搜索脚本、工具或景点"
-                : "搜索脚本、服务或订单"
+            pageId === "P06"
+              ? "搜索功能、文档或常见问题"
+              : role === "ADMIN"
+                ? "搜索订单、用户、服务或预约编号"
+                : quickSearch
+                  ? "搜索脚本、工具或景点"
+                  : "搜索脚本、服务或订单"
           }
           onPressEnter={(event) =>
             navigate(
-              `${role === "ADMIN" ? "/admin/orders" : "/market"}?q=${encodeURIComponent(event.currentTarget.value)}`,
+              pageId === "P06"
+                ? `/help?workspace=${role}&q=${encodeURIComponent(event.currentTarget.value)}`
+                : `${role === "ADMIN" ? "/admin/orders" : "/market"}?q=${encodeURIComponent(event.currentTarget.value)}`,
             )
           }
         />
@@ -493,7 +518,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
             }}
           >
             <Button className="workspace-button">
-              {role === "GUEST" && ["P01", "P07"].includes(pageId)
+              {role === "GUEST" && ["P01", "P07", "P06"].includes(pageId)
                 ? "当前工作区　"
                 : role === "GUEST"
                   ? "当前身份　"
@@ -558,7 +583,11 @@ export function Shell({ pageId }: { pageId: PageId }) {
                 <Link
                   key={page.id}
                   className={`nav-item ${active === page.id ? "selected" : ""}`}
-                  to={pagePath(page.id)}
+                  to={
+                    page.id === "P06" && role !== "GUEST"
+                      ? `/help?workspace=${role}`
+                      : pagePath(page.id)
+                  }
                 >
                   <Icon
                     name={
@@ -582,7 +611,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
         )}
         {["C01", "S01"].includes(pageId) && (
           <div className="consumer-sidebar-footer">
-            <Link to="/help">
+            <Link to={`/help?workspace=${role}`}>
               <Icon name="help" />
               帮助
             </Link>
@@ -601,6 +630,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
           pageId !== "S13" &&
           pageId !== "P03" &&
           pageId !== "P05" &&
+          !(pageId === "P06" && role === "USER") &&
           !(pageId === "P02" && role !== "GUEST") && (
             <div className="breadcrumb">
               {pageId === "P01" ? (
@@ -640,7 +670,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
                       roles.find((item) => item.id === role)!.home as PageId,
                     )}
                   >
-                    {breadcrumbRoot ||
+                    {(pageId === "P06" ? "首页" : breadcrumbRoot) ||
                       (role === "GUEST"
                         ? "平台首页"
                         : role === "USER"
