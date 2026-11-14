@@ -2,7 +2,7 @@ import { createContext, useContext, useState, type ReactNode } from "react";
 import { useWorkspace } from "./context";
 import type { Service } from "./types";
 import { serviceAvailable, serviceDate } from "./lib/service-display";
-import { notificationFixtures } from "./lib/consumer-preview";
+import { notificationFixtures, previewTasks } from "./lib/consumer-preview";
 
 export interface PreviewOrder {
   id: string;
@@ -28,6 +28,7 @@ export interface CredentialRow {
   version: number;
   verified: string;
   bindings: number;
+  bindingRefs?: { taskId: string; title: string; version: number }[];
   revoked?: boolean;
 }
 
@@ -36,6 +37,8 @@ export interface TravelerRow {
   name: string;
   phone: string;
   identity: string;
+  identityType?: string;
+  version?: number;
   isDefault: boolean;
 }
 
@@ -49,6 +52,15 @@ export interface PreviewRefund {
   createdAt: string;
 }
 
+function credentialBindings(taskIds: string[]) {
+  return previewTasks
+    .filter((task) => taskIds.includes(task.key))
+    .map((task) => ({
+      taskId: task.key,
+      title: task.title,
+      version: 1,
+    }));
+}
 const credentialFixtures: CredentialRow[] = [
   {
     id: "email",
@@ -58,6 +70,7 @@ const credentialFixtures: CredentialRow[] = [
     version: 1,
     verified: "2026-11-13",
     bindings: 2,
+    bindingRefs: credentialBindings(["clean", "data"]),
   },
   {
     id: "booking",
@@ -67,6 +80,7 @@ const credentialFixtures: CredentialRow[] = [
     version: 1,
     verified: "2026-11-13",
     bindings: 1,
+    bindingRefs: credentialBindings(["booking"]),
   },
 ];
 const travelerFixtures: TravelerRow[] = ["张", "李", "王"].map(
@@ -75,6 +89,8 @@ const travelerFixtures: TravelerRow[] = ["张", "李", "王"].map(
     name: `${name}*`,
     phone: "138****5201",
     identity: "3301************1234",
+    identityType: "身份证",
+    version: 1,
     isDefault: index === 0,
   }),
 );

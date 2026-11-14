@@ -1,3 +1,42 @@
+export const previewTasks = [
+  {
+    key: "clean",
+    title: "数据清洗：游客数据整理",
+    category: "数据 / 文件工具",
+    icon: "database",
+    order: "SO-20261113-001",
+    plan: "执行时间：2026-11-13",
+    status: "已完成",
+    progress: 100,
+    summary: "执行完成，已生成结果",
+    used: "已用 1 次",
+  },
+  {
+    key: "booking",
+    title: "景点预约：博物馆参观预约",
+    category: "景点预约",
+    icon: "calendar",
+    order: "SO-20261113-002",
+    plan: "预约日期：2026-11-15",
+    status: "本次进行中",
+    progress: 60,
+    summary: "正在执行预约流程…",
+    used: "服务窗口：10:00 - 12:00",
+  },
+  {
+    key: "data",
+    title: "公开数据整理：城市基本信息",
+    category: "数据 / 文件工具",
+    icon: "file",
+    order: "SO-20261113-003",
+    plan: "执行时间：待补充",
+    status: "等待用户补充",
+    progress: 0,
+    summary: "待补充数据后开始执行",
+    used: "",
+  },
+];
+
 export const notificationFixtures = [
   {
     id: "result",

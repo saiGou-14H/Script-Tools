@@ -2,6 +2,7 @@ import { pendingFixtures } from "../lib/consumer-preview";
 import { useState } from "react";
 import {
   App,
+  Alert,
   Button,
   Checkbox,
   Empty,
@@ -17,20 +18,15 @@ import {
   DeleteOutlined,
   EditOutlined,
   InfoCircleOutlined,
+  IdcardOutlined,
+  PhoneOutlined,
   PlusOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useWorkspace } from "../context";
 import { usePrototype, type CredentialRow } from "../prototype";
-import {
-  Notice,
-  PageHeading,
-  Panel,
-  Status,
-  TileIcon,
-  UsageBanner,
-} from "../components/ui";
+import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
 
 export function PendingActionsPage() {
   const { bootstrap } = useWorkspace();
@@ -180,10 +176,13 @@ export function PendingActionsPage() {
 
 export function CredentialsPage() {
   const { bootstrap } = useWorkspace();
-  const { credentials: rows, setCredentials: setRows } = usePrototype();
+  const prototype = bootstrap.data_mode === "prototype";
+  const { credentials, setCredentials: setRows } = usePrototype();
+  const rows = prototype ? credentials : [];
   const [editing, setEditing] = useState<CredentialRow | "new">();
   const [form] = Form.useForm();
   const { modal, message } = App.useApp();
+  const navigate = useNavigate();
   function open(row: CredentialRow | "new") {
     form.resetFields();
     form.setFieldsValue(
@@ -196,18 +195,21 @@ export function CredentialsPage() {
       void message.info("凭据保存接口尚未配置");
       return;
     }
-    const mask = `••••${values.secret.slice(-4)}`;
+    const characters = Array.from(values.secret);
+    const suffix = characters.length > 4 ? characters.slice(-4).join("") : "";
+    const mask = `••••${suffix}`;
     if (editing === "new")
       setRows((previous) => [
         ...previous,
         {
           id: crypto.randomUUID(),
-          name: values.name,
+          name: values.name.trim(),
           kind: values.kind,
           mask,
           version: 1,
           verified: "未验证",
           bindings: 0,
+          bindingRefs: [],
         },
       ]);
     else if (editing)
@@ -216,8 +218,6 @@ export function CredentialsPage() {
           row.id === editing.id
             ? {
                 ...row,
-                name: values.name,
-                kind: values.kind,
                 mask,
                 version: row.version + 1,
                 verified: "未验证",
@@ -243,18 +243,75 @@ export function CredentialsPage() {
         ),
     });
   }
+  function showBindings(row: CredentialRow) {
+    const dialog = modal.info({
+      title: `${row.name}的绑定任务`,
+      content: row.bindingRefs?.length ? (
+        <div className="credential-binding-list">
+          {row.bindingRefs.map((binding) => (
+            <p key={binding.taskId}>
+              <a
+                href={`/me/tasks/${binding.taskId}`}
+                onClick={(event) => {
+                  dialog.destroy();
+                  if (
+                    event.button === 0 &&
+                    !event.ctrlKey &&
+                    !event.metaKey &&
+                    !event.shiftKey &&
+                    !event.altKey
+                  ) {
+                    event.preventDefault();
+                    navigate(`/me/tasks/${binding.taskId}`);
+                  }
+                }}
+              >
+                {binding.title}
+              </a>
+              <span>
+                绑定 v{binding.version} · 当前 v{row.version}
+              </span>
+            </p>
+          ))}
+          {row.revoked && <Status tone="red">凭据已撤销</Status>}
+        </div>
+      ) : (
+        <Empty
+          description={row.bindings ? "绑定任务明细待接入" : "暂无绑定任务"}
+        />
+      ),
+    });
+  }
   return (
     <div className="credentials-page">
       <PageHeading
         title="凭据管理"
         description="集中管理您在使用脚本服务时所需的账号或访问凭据，保障安全、便于复用。"
+        extra={prototype ? <Status>本地开发示例</Status> : undefined}
       />
-      <UsageBanner compact />
+      <div className="credential-intro">
+        <InfoCircleOutlined />
+        <div>
+          <h2>通用脚本服务：一次完整服务、规则透明</h2>
+          <p>
+            每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择，购买前展示，成交后固定执行。
+          </p>
+        </div>
+      </div>
+      {!prototype && (
+        <Alert
+          className="personal-integration-note"
+          type="info"
+          showIcon
+          title="凭据管理接口待接入"
+          description="凭据读取、版本保存、绑定及受控验证服务接入后可在此管理本人凭据。"
+        />
+      )}
       <div className="credentials-columns">
         <Panel
           title={
             <>
-              凭据列表 <small>共 {rows.length} 条</small>
+              凭据列表 <small>共 {prototype ? rows.length : "—"} 条</small>
             </>
           }
           extra={
@@ -262,6 +319,7 @@ export function CredentialsPage() {
               type="primary"
               aria-label="新增凭据"
               icon={<PlusOutlined />}
+              disabled={!prototype}
               onClick={() => open("new")}
             >
               新增凭据
@@ -270,11 +328,21 @@ export function CredentialsPage() {
         >
           <Table
             rowKey="id"
+            tableLayout="fixed"
+            scroll={{ x: 1080 }}
             pagination={false}
             dataSource={rows}
+            locale={{
+              emptyText: (
+                <Empty
+                  description={prototype ? "尚未添加凭据" : "凭据服务待接入"}
+                />
+              ),
+            }}
             columns={[
               {
                 title: "名称",
+                width: 174,
                 dataIndex: "name",
                 render: (value, row) => (
                   <>
@@ -285,6 +353,7 @@ export function CredentialsPage() {
               },
               {
                 title: "类型",
+                width: 127,
                 dataIndex: "kind",
                 render: (value) => (
                   <Status tone={value === "平台账号" ? "purple" : "blue"}>
@@ -292,37 +361,21 @@ export function CredentialsPage() {
                   </Status>
                 ),
               },
-              { title: "掩码", dataIndex: "mask" },
+              { title: "掩码", dataIndex: "mask", width: 137 },
               {
                 title: "版本",
+                width: 103,
                 dataIndex: "version",
                 render: (value) => `v${value}`,
               },
-              { title: "最近验证", dataIndex: "verified" },
+              { title: "最近验证", dataIndex: "verified", width: 165 },
               {
                 title: "绑定任务",
+                width: 178,
                 dataIndex: "bindings",
-                render: (value, row) => (
-                  <Button
-                    type="link"
-                    onClick={() =>
-                      modal.info({
-                        title: `${row.name}的绑定任务`,
-                        content: (
-                          <div>
-                            {Array.from({ length: value }, (_, index) => (
-                              <p key={index}>
-                                <Link to="/me/tasks/demo">
-                                  任务 {index + 1} · 查看任务配置
-                                </Link>
-                              </p>
-                            ))}
-                          </div>
-                        ),
-                      })
-                    }
-                  >
-                    {value}　查看绑定
+                render: (_, row) => (
+                  <Button type="link" onClick={() => showBindings(row)}>
+                    {row.bindings}　查看绑定
                   </Button>
                 ),
               },
@@ -394,14 +447,17 @@ export function CredentialsPage() {
             name="name"
             label="名称"
             rules={[
-              { required: true, message: "请输入凭据名称" },
+              { required: true, whitespace: true, message: "请输入凭据名称" },
               { max: 120 },
             ]}
           >
-            <Input />
+            <Input disabled={editing !== "new"} />
           </Form.Item>
           <Form.Item name="kind" label="类型" rules={[{ required: true }]}>
-            <Select options={[{ value: "接口凭据" }, { value: "平台账号" }]} />
+            <Select
+              disabled={editing !== "new"}
+              options={[{ value: "接口凭据" }, { value: "平台账号" }]}
+            />
           </Form.Item>
           <Form.Item
             name="secret"
@@ -420,10 +476,23 @@ export function CredentialsPage() {
   );
 }
 
+function maskPersonalValue(value: string, leading: number, trailing: number) {
+  const characters = Array.from(value);
+  if (characters.length <= leading + trailing) return "****";
+  return (
+    characters.slice(0, leading).join("") +
+    "*".repeat(characters.length - leading - trailing) +
+    characters.slice(-trailing).join("")
+  );
+}
+
 export function TravelersPage() {
   const { bootstrap } = useWorkspace();
-  const { travelers: rows, setTravelers: setRows } = usePrototype();
+  const prototype = bootstrap.data_mode === "prototype";
+  const { travelers, setTravelers: setRows } = usePrototype();
+  const rows = prototype ? travelers : [];
   const [editing, setEditing] = useState<string>();
+  const selectedTraveler = rows.find((row) => row.id === editing);
   const [form] = Form.useForm();
   const { modal, message } = App.useApp();
   function reset() {
@@ -434,17 +503,21 @@ export function TravelersPage() {
     name: string;
     phone: string;
     identity: string;
+    kind: string;
     isDefault: boolean;
   }) {
     if (bootstrap.data_mode !== "prototype") {
       void message.info("出行人保存接口尚未配置");
       return;
     }
+    const characters = Array.from(values.name.trim());
     const record = {
       id: editing || crypto.randomUUID(),
-      name: `${Array.from(values.name)[0]}*`,
-      phone: `${values.phone.slice(0, 3)}****${values.phone.slice(-4)}`,
-      identity: `${values.identity.slice(0, 4)}************${values.identity.slice(-4)}`,
+      name: characters.length > 1 ? `${characters[0]}*` : "*",
+      phone: maskPersonalValue(values.phone.replace(/[ -]/g, ""), 3, 4),
+      identity: maskPersonalValue(values.identity.trim(), 4, 4),
+      identityType: values.kind,
+      version: editing ? (selectedTraveler?.version || 1) + 1 : 1,
       isDefault: !!values.isDefault,
     };
     setRows((previous) => {
@@ -465,7 +538,17 @@ export function TravelersPage() {
       <PageHeading
         title="出行人资料"
         description="管理用于脚本服务下单与预约的出行人信息，可添加、编辑或删除。"
+        extra={prototype ? <Status>本地开发示例</Status> : undefined}
       />
+      {!prototype && (
+        <Alert
+          className="personal-integration-note"
+          type="info"
+          showIcon
+          title="出行人资料接口待接入"
+          description="资料版本、授权快照及删除保留策略按本人资料服务接入。"
+        />
+      )}
       <div className="travelers-columns">
         <div>
           <div className="traveler-intro">
@@ -481,12 +564,19 @@ export function TravelersPage() {
               </li>
               <li>未达目标的退款规则由发布者选择，购买前展示、成交后固定。</li>
             </ul>
+            <div className="traveler-card-art" aria-hidden="true">
+              <i />
+              <span />
+              <b />
+            </div>
           </div>
           <Button
             className="new-traveler"
+            aria-label="新建出行人"
             type="primary"
             icon={<PlusOutlined />}
             onClick={reset}
+            disabled={!prototype}
           >
             新建出行人
           </Button>
@@ -498,23 +588,27 @@ export function TravelersPage() {
                 </span>
                 <h2>{row.name}</h2>
                 <div>
-                  <small>手机号</small>
+                  <small>
+                    <PhoneOutlined /> 手机号
+                  </small>
                   <b>{row.phone}</b>
                 </div>
                 <div>
-                  <small>证件</small>
+                  <small>
+                    <IdcardOutlined /> 证件
+                  </small>
                   <b>{row.identity}</b>
                 </div>
                 {row.isDefault && <Status>默认联系人</Status>}
                 <div className="traveler-actions">
                   <Button
                     type="link"
-                    icon={<EditOutlined />}
+                    icon={<EditOutlined aria-hidden />}
                     onClick={() => {
                       setEditing(row.id);
                       form.resetFields();
                       form.setFieldsValue({
-                        kind: "身份证",
+                        kind: row.identityType,
                         isDefault: row.isDefault,
                       });
                     }}
@@ -524,17 +618,19 @@ export function TravelersPage() {
                   <Button
                     type="link"
                     danger
-                    icon={<DeleteOutlined />}
+                    icon={<DeleteOutlined aria-hidden />}
                     onClick={() =>
                       modal.confirm({
                         title: "删除出行人资料",
                         content: "已生成的授权快照和预约记录按原规则保留。",
                         okText: "确认删除",
                         cancelText: "取消",
-                        onOk: () =>
+                        onOk: () => {
                           setRows((previous) =>
                             previous.filter((item) => item.id !== row.id),
-                          ),
+                          );
+                          if (editing === row.id) reset();
+                        },
                       })
                     }
                   >
@@ -544,18 +640,36 @@ export function TravelersPage() {
               </article>
             ))}
           </div>
+          {!rows.length && (
+            <Empty
+              className="traveler-empty"
+              description={
+                prototype ? "尚未添加出行人资料" : "出行人资料服务待接入"
+              }
+            />
+          )}
         </div>
         <Panel title={editing ? "更新出行人资料" : "添加出行人资料"}>
+          {editing && (
+            <p className="traveler-edit-note">
+              正在更新 {selectedTraveler?.name} 的 v
+              {selectedTraveler?.version || 1} 资料，请重新填写完整信息。
+            </p>
+          )}
           <Form
             form={form}
             layout="vertical"
             initialValues={{ kind: "身份证", isDefault: true }}
             onFinish={save}
+            disabled={!prototype}
           >
             <Form.Item
               name="name"
               label="姓名"
-              rules={[{ required: true, message: "请输入姓名" }, { max: 80 }]}
+              rules={[
+                { required: true, whitespace: true, message: "请输入姓名" },
+                { max: 80 },
+              ]}
             >
               <Input placeholder="请输入姓名（如：张三）" />
             </Form.Item>
@@ -567,6 +681,13 @@ export function TravelersPage() {
                 {
                   pattern: /^[+\d][\d -]{5,30}$/,
                   message: "请输入有效的手机号",
+                },
+                {
+                  validator: (_, value: string | undefined) => {
+                    if (!value || value.replace(/\D/g, "").length >= 6)
+                      return Promise.resolve();
+                    return Promise.reject(new Error("请输入有效的手机号"));
+                  },
                 },
               ]}
             >
@@ -589,27 +710,38 @@ export function TravelersPage() {
               name="identity"
               label="证件号码"
               rules={[
-                { required: true, message: "请输入完整的证件号码" },
+                {
+                  required: true,
+                  whitespace: true,
+                  message: "请输入完整的证件号码",
+                },
                 { min: 6, max: 40 },
+                { pattern: /^[^*•]+$/u, message: "请输入完整的证件号码" },
               ]}
             >
               <Input placeholder="请输入证件号码（如：3301************1234）" />
             </Form.Item>
-            <Form.Item name="isDefault" valuePropName="checked">
+            <Form.Item
+              name="isDefault"
+              valuePropName="checked"
+              className="traveler-default-field"
+            >
               <Checkbox>设为默认联系人</Checkbox>
             </Form.Item>
             <p className="muted form-field-help">
               下单时将优先使用默认联系人信息。
             </p>
-            <Notice>
+            <div className="traveler-form-notice">
               <div>
-                <b>说明</b>
+                <b>
+                  <InfoCircleOutlined /> 说明
+                </b>
                 <ul>
                   <li>下单时会生成本次服务的授权快照，用于服务执行与预约。</li>
                   <li>修改出行人资料不会覆盖已生成的预约。</li>
                 </ul>
               </div>
-            </Notice>
+            </div>
             <div className="form-button-row">
               <Button type="primary" htmlType="submit">
                 {editing ? "更新资料" : "添加资料"}

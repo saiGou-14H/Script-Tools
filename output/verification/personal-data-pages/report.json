@@ -1,0 +1,86 @@
+{
+  "date": "2026-11-14T10:52:45.128Z",
+  "checks": [
+    "the production-built credential and traveler layouts restore their reference regions inside 1814 by 868 with complete sidebar access, aligned traveler columns and the whole editing form visible",
+    "the reference Ctrl K hint focuses the global search and submits through the existing service-market route from both personal-data pages",
+    "credential creation validates names and required secrets, short values remain fully masked, rotation keeps the credential identity fixed and cancellation clears the secret editor",
+    "rotating credentials creates the next preview version while existing bindings retain v1, binding links open their own task and close the dialog, and revocation requires confirmation while retaining historical version metadata",
+    "traveler forms reject masked identities and invalid phones, save only masked preview values, retain the selected passport type across edits, advance the same record to v2 and keep one selected default contact",
+    "short names, phone numbers and document numbers remain masked, unchecked defaults preserve the prior selection, deletion cancellation retains the edit and deleting the edited record resets its stale form",
+    "live-mode credential and traveler pages expose pending service integration, keep development fixtures isolated and disable local-only mutation entry points",
+    "the existing narrow-screen layout retains credential-table scrolling and usable traveler forms without horizontal document overflow"
+  ],
+  "screenshots": [
+    "USER-C14",
+    "USER-C15"
+  ],
+  "errors": [],
+  "layouts": {
+    "USER-C14": {
+      "width": 1814,
+      "height": 868,
+      "intro": {
+        "x": 244,
+        "y": 210.796875,
+        "width": 1550,
+        "height": 91,
+        "bottom": 301.796875
+      },
+      "main": {
+        "x": 244,
+        "y": 333.796875,
+        "width": 1122,
+        "height": 292.421875,
+        "bottom": 626.21875
+      },
+      "detail": {
+        "x": 1386,
+        "y": 333.796875,
+        "width": 408,
+        "height": 289.984375,
+        "bottom": 623.78125
+      },
+      "help": {
+        "x": 10,
+        "y": 819.75,
+        "width": 199,
+        "height": 30.5,
+        "bottom": 850.25
+      }
+    },
+    "USER-C15": {
+      "width": 1814,
+      "height": 868,
+      "intro": {
+        "x": 252,
+        "y": 199.796875,
+        "width": 1022.96875,
+        "height": 172.828125,
+        "bottom": 372.625
+      },
+      "main": {
+        "x": 252,
+        "y": 450.625,
+        "width": 1022.96875,
+        "height": 250.421875,
+        "bottom": 701.046875
+      },
+      "detail": {
+        "x": 1292.96875,
+        "y": 199.796875,
+        "width": 499.015625,
+        "height": 639.765625,
+        "bottom": 839.5625
+      },
+      "help": {
+        "x": 10,
+        "y": 823.90625,
+        "width": 201,
+        "height": 30,
+        "bottom": 853.90625
+      }
+    }
+  },
+  "final_visual_acceptance": "pending",
+  "result": "PASS"
+}

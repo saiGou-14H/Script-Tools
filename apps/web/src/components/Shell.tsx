@@ -1,4 +1,13 @@
-import { Avatar, Badge, Button, Dropdown, Input, Tooltip } from "antd";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Dropdown,
+  Input,
+  Tooltip,
+  type InputRef,
+} from "antd";
+import { useEffect, useRef } from "react";
 import {
   BellOutlined,
   DownOutlined,
@@ -14,6 +23,23 @@ import { usePrototype } from "../prototype";
 
 const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
   {
+    C14: {
+      C06: "layers",
+      C12: "folder",
+      C13: "clock",
+      C16: "message",
+      C19: "support",
+      C22: "ticket",
+    },
+    C15: {
+      C06: "layers",
+      C12: "chart",
+      C13: "clock",
+      C15: "user",
+      C16: "message",
+      C19: "refund",
+      C22: "ticket",
+    },
     C12: { C12: "folder", C13: "info" },
     C13: { C13: "calendar" },
     C16: {
@@ -39,6 +65,19 @@ export function Shell({ pageId }: { pageId: PageId }) {
   const { unreadNotificationCount } = usePrototype();
   const navigate = useNavigate();
   const location = useLocation();
+  const searchRef = useRef<InputRef>(null);
+  const quickSearch = ["C14", "C15"].includes(pageId);
+  useEffect(() => {
+    if (!quickSearch) return;
+    function focusSearch(event: KeyboardEvent) {
+      if (event.key.toLowerCase() !== "k" || !(event.ctrlKey || event.metaKey))
+        return;
+      event.preventDefault();
+      searchRef.current?.focus({ cursor: "all" });
+    }
+    document.addEventListener("keydown", focusSearch);
+    return () => document.removeEventListener("keydown", focusSearch);
+  }, [quickSearch]);
   const consumerMenu: PageId[] = [
     "C01",
     "P02",
@@ -77,6 +116,10 @@ export function Shell({ pageId }: { pageId: PageId }) {
   ];
   if (["C02", "C17", "C21"].includes(pageId))
     consumerMenu.splice(1, 5, "C04", "C06", "C22", "P02", "P04");
+  if (pageId === "C14") {
+    consumerMenu.splice(5, 1);
+    consumerMenu.splice(consumerMenu.length - 1, 0, "C22");
+  }
   if (["S01", "S13", "S15"].includes(pageId))
     publisherMenu.splice(
       0,
@@ -148,6 +191,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
     {
       P07: "首页",
       C17: "我的首页",
+      C14: "我的首页",
       S01: "首页",
       S05: "发布者工作台",
       S06: "发布者工作台",
@@ -223,12 +267,16 @@ export function Shell({ pageId }: { pageId: PageId }) {
           <span>通用脚本服务平台</span>
         </Link>
         <Input
+          ref={searchRef}
           className="global-search"
           prefix={<SearchOutlined />}
+          suffix={quickSearch ? <kbd>Ctrl K</kbd> : undefined}
           placeholder={
             role === "ADMIN"
               ? "搜索订单、用户、服务或预约编号"
-              : "搜索脚本、服务或订单"
+              : quickSearch
+                ? "搜索脚本、工具或景点"
+                : "搜索脚本、服务或订单"
           }
           onPressEnter={(event) =>
             navigate(
@@ -357,12 +405,12 @@ export function Shell({ pageId }: { pageId: PageId }) {
             <div className="breadcrumb">
               {pageId === "P01" ? (
                 <Icon name="home" />
-              ) : ["C01", "C12", "C13"].includes(pageId) ||
+              ) : ["C01", "C12", "C13", "C15"].includes(pageId) ||
                 (pageId === "C21" && role === "USER") ? (
                 <>
                   <Link className="consumer-home-breadcrumb" to="/me/home">
                     <Icon name="home" />
-                    我的首页
+                    {pageId === "C15" ? "首页" : "我的首页"}
                   </Link>
                   <span>›</span>
                 </>
