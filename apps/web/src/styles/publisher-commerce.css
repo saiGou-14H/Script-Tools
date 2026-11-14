@@ -1,0 +1,333 @@
+.app-shell:is(.page-S07, .page-S08, .page-S09, .page-S10) .sidebar {
+  padding-top: 12px;
+}
+.app-shell:is(.page-S07, .page-S08, .page-S09, .page-S10) .nav-group {
+  margin-bottom: 8px;
+}
+.app-shell:is(.page-S07, .page-S08, .page-S09, .page-S10) .nav-group-label {
+  padding-bottom: 5px;
+}
+.app-shell:is(.page-S07, .page-S08, .page-S09, .page-S10) .main-content {
+  padding-bottom: 10px;
+}
+.page-S07 .product-tabs .ant-tabs-tab {
+  padding: 15px 20px;
+  font-size: 20px;
+}
+.page-S07 .product-tabs .ant-tabs-tab + .ant-tabs-tab {
+  margin-left: 12px;
+}
+.page-S07 .global-search {
+  left: 37%;
+  width: 27%;
+}
+.page-S08 .global-search {
+  left: 36.4%;
+  width: 29.7%;
+}
+.page-S09 .global-search {
+  left: 30.2%;
+  width: 34.4%;
+}
+.page-S10 .global-search {
+  left: 34%;
+  width: 27.6%;
+}
+.page-S07 .product-list .panel-body {
+  padding-bottom: 18px;
+}
+.page-S07 .product-list .ant-table-thead > tr > th {
+  padding: 13px 14px;
+  font-size: 18px;
+}
+.page-S07 .product-list .ant-table-row > td {
+  padding: 18px 14px;
+}
+.page-S07 .product-list .row-actions .ant-btn {
+  color: #1555ff;
+  border-color: #1555ff;
+}
+.product-release-preview {
+  display: grid;
+  grid-template-columns: 125px minmax(0, 1fr);
+  gap: 8px;
+}
+.product-release-preview dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.product-release-schema {
+  max-height: 240px;
+  overflow: auto;
+  background: #f5f7fc;
+  padding: 12px;
+  border-radius: 8px;
+}
+.page-S08 .product-editor-columns .ant-form-item-row {
+  flex-wrap: nowrap;
+}
+.page-S08 .product-editor-columns .ant-input-affix-wrapper,
+.page-S08 .product-editor-columns .ant-input,
+.page-S08 .product-editor-columns .ant-select {
+  font-size: 16px;
+}
+.page-S08 .product-editor-columns .ant-form-item-control {
+  min-width: 0;
+}
+.page-S08 .product-editor-columns .ant-input-affix-wrapper > input {
+  min-height: 0;
+}
+.page-S08 .product-editor-columns .ant-input-affix-wrapper:has(> input) {
+  height: 40px;
+}
+.page-S08 .product-editor-columns > .panel:first-child {
+  min-height: 678px;
+}
+.page-S08 .product-editor-columns > .panel {
+  margin-bottom: 0;
+}
+.page-S08 .breadcrumb {
+  margin-bottom: 14px;
+}
+.page-S08 .product-editor-columns textarea.ant-input {
+  min-height: 94px;
+}
+.page-S08 .publish-checks .panel-body {
+  padding-bottom: 20px;
+}
+.page-S08 .publish-editor-actions {
+  margin-top: 56px;
+}
+.page-S08 .publish-editor-actions .ant-btn:first-child {
+  color: #1555ff;
+  border-color: #1555ff;
+}
+.page-S08 .product-binding-summary .tile-icon .anticon {
+  font-size: 27px;
+}
+.page-S08 .product-editor-columns .ant-form-item-label > label {
+  font-size: 17px;
+}
+.page-S08 .product-editor-columns .ant-select {
+  height: 40px;
+}
+.product-input-preview span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  overflow-wrap: anywhere;
+}
+.product-input-preview small {
+  color: #68758d;
+  white-space: nowrap;
+}
+.page-S08 .publish-checks .status {
+  white-space: nowrap;
+}
+.page-S09 .pricing-editor .ant-input-affix-wrapper {
+  height: 35px;
+}
+.page-S09 .breadcrumb {
+  margin-bottom: 8px;
+}
+.page-S09 .page-heading {
+  margin-bottom: 14px;
+}
+.page-S09 .pricing-history .panel-body {
+  padding-top: 10px;
+}
+.page-S09 .pricing-columns > .panel {
+  margin-bottom: 0;
+}
+.page-S09 .pricing-field {
+  margin-bottom: 4px;
+}
+.page-S09 .pricing-editor > .panel-body > .notice {
+  margin: 16px 0 18px;
+}
+.page-S09 .pricing-editor > .panel-body > .notice > .anticon:first-child {
+  display: none;
+}
+.page-S09 .pricing-editor > .panel-body > .notice > .anticon:nth-child(2) {
+  display: inline-flex;
+  font-size: 23px;
+}
+.page-S09 .pricing-public-preview > div > span:nth-child(3) {
+  flex: 1.6;
+}
+.page-S09 .pricing-editor .ant-input-suffix {
+  margin-left: 16px;
+}
+.page-S09 .pricing-public-preview > div > span {
+  padding-inline: 10px;
+}
+.page-S10 .sales-summary strong {
+  overflow-wrap: anywhere;
+}
+.page-S10 .sales-summary article > div {
+  min-width: 0;
+}
+.page-S10 .sales-summary {
+  padding-block: 20px;
+  margin-top: 20px;
+}
+.page-S10 .sales-summary .tile-icon .anticon {
+  font-size: 36px;
+}
+.page-S10 .sales-list .ant-table-thead > tr > th {
+  padding: 14px 20px;
+  font-size: 17px;
+}
+.page-S10 .sales-list .ant-table-row > td {
+  padding: 17px 20px;
+}
+.page-S10 .sales-list .ant-select {
+  height: 40px;
+}
+@media (max-width: 1450px) {
+  .page-S08 .product-editor-columns {
+    grid-template-columns: minmax(0, 1.6fr) minmax(320px, 1fr);
+  }
+  .page-S08 .product-editor-columns .ant-form-item-label {
+    flex: 0 0 130px !important;
+  }
+  .page-S08 .product-binding-summary {
+    gap: 8px;
+  }
+  .page-S08 .product-binding-summary > * {
+    padding-inline: 8px;
+    gap: 6px;
+  }
+  .page-S08 .product-binding-summary b {
+    font-size: 17px;
+  }
+  .page-S09 .pricing-columns {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+  .page-S09 .pricing-public-preview > div {
+    flex-wrap: wrap;
+    gap: 14px 0;
+  }
+  .page-S09 .pricing-public-preview > div > span {
+    flex: 0 0 25%;
+  }
+  .page-S09 .pricing-public-preview > div > span:nth-child(3) {
+    flex: 0 0 25%;
+  }
+  .page-S10 .sales-filters {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .page-S10 .sales-summary {
+    padding-inline: 24px;
+  }
+  .page-S10 .sales-summary article + article {
+    padding-left: 24px;
+  }
+  .page-S10 .sales-summary article {
+    gap: 14px;
+  }
+}
+@media (max-width: 1000px) {
+  .page-S08 .product-editor-columns,
+  .page-S09 .pricing-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page-S09 .pricing-columns > .panel {
+    min-height: 0;
+  }
+  .page-S10 .sales-summary .tile-icon {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .app-shell:is(.page-S07, .page-S08, .page-S09, .page-S10) {
+    --sidebar-width: 0px;
+  }
+  .app-shell:is(.page-S07, .page-S08, .page-S09, .page-S10) .main-content {
+    padding-inline: 14px;
+  }
+  .page-S07 .product-tabs .ant-tabs-nav {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .page-S07 .product-tabs .ant-tabs-nav-wrap {
+    flex: 0 0 100%;
+  }
+  .page-S07 .product-tabs .ant-tabs-tab {
+    padding-inline: 8px;
+    font-size: 15px;
+  }
+  .page-S07 .product-list .panel-body,
+  .page-S10 .sales-list .panel-body {
+    padding-inline: 10px;
+  }
+  .page-S08 .product-editor-columns > .panel > .panel-body {
+    padding-inline: 14px;
+  }
+  .page-S08 .product-editor-columns > .panel:first-child {
+    min-height: 0;
+  }
+  .page-S08 .product-editor-columns .ant-form-item-row {
+    display: block;
+  }
+  .page-S08 .product-binding-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page-S08 .product-input-preview > div {
+    grid-template-columns: 35% minmax(0, 1fr);
+  }
+  .page-S08 .product-input-preview b,
+  .page-S08 .product-input-preview span {
+    padding: 8px;
+  }
+  .page-S08 .publish-checks > .panel-body > div:first-child > div {
+    gap: 10px;
+  }
+  .page-S08 .publish-editor-actions {
+    margin-top: 24px;
+  }
+  .page-S09 .pricing-field {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .page-S09 .pricing-field > b {
+    flex-basis: 100%;
+  }
+  .page-S09 .pricing-field > .ant-input[disabled] {
+    width: 100%;
+  }
+  .page-S09 .pricing-public-preview > div > span {
+    flex-basis: 50%;
+  }
+  .page-S09 .pricing-public-preview > div > span:nth-child(3) {
+    flex-basis: 50%;
+  }
+  .page-S10 .sales-summary {
+    padding: 16px 10px;
+    gap: 8px;
+  }
+  .page-S10 .sales-summary article + article {
+    padding-left: 8px;
+  }
+  .page-S10 .sales-summary article span {
+    font-size: 13px;
+  }
+  .page-S10 .sales-summary strong {
+    font-size: 25px;
+  }
+  .page-S10 .sales-summary small {
+    font-size: 15px;
+  }
+  .page-S10 .sales-filters {
+    display: grid;
+    grid-template-columns: 70px minmax(0, 1fr);
+    margin-inline: 0;
+  }
+  .page-S10 .sales-filters .ant-select {
+    width: 100%;
+    margin-right: 0;
+  }
+}

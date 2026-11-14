@@ -1,0 +1,91 @@
+{
+  "date": "2026-11-14T14:44:41.270Z",
+  "checks": [
+    "all four reference regions and sidebar help fit 1814 by 868",
+    "product status selection survives reload and preserves unrelated URL parameters",
+    "selected consumer preview uses its own schema and immutable release, draft and price edits preserve the sale until explicit publication",
+    "editor and price forms reset to the selected resource across SPA routing and browser history",
+    "new products bind the chosen owner script and retain its schema, while publication requires an explicit price and readiness checks",
+    "sales service, date and fulfillment filters survive reload and recompute the same masked-owner records",
+    "schema examples preserve zero, false, nested values and publisher-required fields, and release capture clones the source schema and price facts",
+    "live metadata stays unavailable on all four routes and missing product identities show their own empty state",
+    "sales summaries retain signed-64-bit precision and use the explicit partial-refund amount independently of the payment",
+    "all four routes fit 390px with internal horizontal table scrolling and stacked editor forms",
+    "product, pricing and sales preview actions complete without business mutations or browser exceptions"
+  ],
+  "screenshots": [
+    "PUBLISHER-S07",
+    "PUBLISHER-S08",
+    "PUBLISHER-S09",
+    "PUBLISHER-S10"
+  ],
+  "errors": [],
+  "layouts": {
+    "S07": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 280,
+        "y": 340.9375,
+        "width": 1508,
+        "bottom": 732.390625
+      },
+      "help": {
+        "x": 10,
+        "y": 803.53125,
+        "width": 233,
+        "bottom": 840.53125
+      }
+    },
+    "S08": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 258,
+        "y": 172.8125,
+        "width": 1536,
+        "bottom": 850.8125
+      },
+      "help": {
+        "x": 10,
+        "y": 799.53125,
+        "width": 207,
+        "bottom": 836.53125
+      }
+    },
+    "S09": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 250,
+        "y": 159.8125,
+        "width": 1538,
+        "bottom": 855.8125
+      },
+      "help": {
+        "x": 10,
+        "y": 798.53125,
+        "width": 203,
+        "bottom": 835.53125
+      }
+    },
+    "S10": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 264,
+        "y": 343.375,
+        "width": 1524,
+        "bottom": 652.078125
+      },
+      "help": {
+        "x": 10,
+        "y": 799.53125,
+        "width": 217,
+        "bottom": 836.53125
+      }
+    }
+  },
+  "final_visual_acceptance": "pending",
+  "result": "PASS"
+}

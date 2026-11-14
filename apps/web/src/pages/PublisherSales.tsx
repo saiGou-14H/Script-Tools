@@ -1,67 +1,54 @@
 import { useState } from "react";
 import { Button, Select, Table, Tabs } from "antd";
 import { CloudUploadOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { formatMinorUnits } from "../lib/money";
+import { publisherSales } from "../lib/publisher-sales-preview";
 import { useWorkspace } from "../context";
 import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
 
-const sales = [
-  {
-    id: "TT202611130018",
-    service: "表格清洗",
-    buyer: "张**",
-    amount: 6,
-    fulfillment: "执行完成",
-    refund: "无退款",
-    settlement: "待结算",
-    date: "2026-11-13",
-  },
-  {
-    id: "TT202611130027",
-    service: "景点预约",
-    buyer: "李**",
-    amount: 8,
-    fulfillment: "目标未达",
-    refund: "退款处理中",
-    settlement: "冻结",
-    date: "2026-11-13",
-  },
-];
-
 export function SalesPage() {
   const { bootstrap } = useWorkspace();
-  const [service, setService] = useState("");
-  const [status, setStatus] = useState("");
-  const [date, setDate] = useState("");
-  const all = bootstrap.data_mode === "prototype" ? sales : [];
+  const prototype = bootstrap.data_mode === "prototype";
+  const [params, setParams] = useSearchParams();
+  const service = params.get("service") || "";
+  const status = params.get("status") || "";
+  const date = params.get("date") || "";
+  function filter(key: string, value: string) {
+    const next = new URLSearchParams(params);
+    if (value) next.set(key, value);
+    else next.delete(key);
+    setParams(next);
+  }
+  const all = prototype ? publisherSales : [];
   const rows = all.filter(
     (row) =>
       (!service || row.service === service) &&
       (!status || row.fulfillment === status) &&
       (!date || row.date === date),
   );
-  const paid = rows.reduce((sum, row) => sum + row.amount, 0);
-  const refunded = rows
-    .filter((row) => row.refund === "退款处理中")
-    .reduce((sum, row) => sum + row.amount, 0);
+  const paid = rows.reduce((sum, row) => sum + BigInt(row.amountMinor), 0n);
+  const refunded = rows.reduce((sum, row) => sum + BigInt(row.refundProcessingMinor), 0n);
   return (
     <div className="publisher-sales-page">
       <PageHeading
         title="销售订单"
         description="查看已产生的服务订单，包含履约摘要与结算关联信息。"
+        extra={<Status tone="gray">{prototype ? "本地示例" : "销售服务待接入"}</Status>}
       />
+      {!prototype && <Notice>本人销售订单、履约与退款汇总服务待接入，当前数值暂不可用。</Notice>}
       <div className="sales-summary">
         {[
-          ["file", "订单", rows.length, ""],
-          ["database", "实付", paid, "元"],
-          ["history", "退款处理中", refunded, "元"],
+          ["file", "订单", String(rows.length), ""],
+          ["database", "实付", formatMinorUnits(paid).replace(/\.00$/, ""), "元"],
+          ["history", "退款处理中", formatMinorUnits(refunded).replace(/\.00$/, ""), "元"],
         ].map(([icon, title, value, unit]) => (
           <article key={title}>
             <TileIcon name={String(icon)} />
             <div>
               <span>{title}</span>
               <strong>
-                {value}
+                {prototype ? value : "—"}
                 <small> {unit}</small>
               </strong>
             </div>
@@ -74,7 +61,8 @@ export function SalesPage() {
           <Select
             aria-label="销售服务"
             value={service}
-            onChange={setService}
+            onChange={(value) => filter("service", value)}
+            disabled={!prototype}
             options={[
               { value: "", label: "全部服务" },
               ...["表格清洗", "景点预约"].map((value) => ({ value })),
@@ -84,7 +72,8 @@ export function SalesPage() {
           <Select
             aria-label="销售日期"
             value={date}
-            onChange={setDate}
+            onChange={(value) => filter("date", value)}
+            disabled={!prototype}
             options={[
               { value: "", label: "全部日期" },
               { value: "2026-11-13", label: "2026-11-13" },
@@ -94,7 +83,8 @@ export function SalesPage() {
           <Select
             aria-label="销售履约状态"
             value={status}
-            onChange={setStatus}
+            onChange={(value) => filter("status", value)}
+            disabled={!prototype}
             options={[
               { value: "", label: "全部" },
               { value: "执行完成" },
@@ -106,6 +96,7 @@ export function SalesPage() {
           rowKey="id"
           dataSource={rows}
           pagination={false}
+          scroll={{ x: 1400 }}
           columns={[
             { title: "订单编号", dataIndex: "id" },
             {
@@ -116,10 +107,10 @@ export function SalesPage() {
             { title: "购买用户", dataIndex: "buyer" },
             {
               title: "支付金额",
-              dataIndex: "amount",
+              dataIndex: "amountMinor",
               render: (value) => (
                 <>
-                  实付 <b>{value}</b> 元
+                  实付 <b>{formatMinorUnits(value).replace(/\.00$/, "")}</b> 元
                 </>
               ),
             },

@@ -122,7 +122,7 @@ try {
 
   await menu("服务商品");
   await page.getByRole("tab", { name: "草稿（1）", exact: true }).click();
-  await expect(page.locator(".product-list .ant-table-tbody tr")).toHaveCount(
+  await expect(page.locator(".product-list .ant-table-row")).toHaveCount(
     1,
   );
   await page.getByRole("button", { name: "预览草稿", exact: true }).click();
@@ -130,7 +130,7 @@ try {
   await page.getByRole("button", { name: "关闭预览", exact: true }).click();
   await page.getByRole("tab", { name: "在售（2）", exact: true }).click();
   await page
-    .locator(".product-list .ant-table-tbody tr")
+    .locator(".product-list .ant-table-row")
     .filter({ hasText: "表格清洗" })
     .getByRole("button", { name: "编辑", exact: true })
     .click();
@@ -143,7 +143,7 @@ try {
     page.locator(".product-list .ant-table-tbody"),
   ).not.toContainText("表格清洗改进版");
   await page
-    .locator(".product-list .ant-table-tbody tr")
+    .locator(".product-list .ant-table-row")
     .filter({ hasText: "表格清洗" })
     .getByRole("button", { name: "编辑", exact: true })
     .click();
@@ -168,20 +168,20 @@ try {
   await expect(page.locator(".pricing-history")).toContainText("7.50元/次");
   await menu("服务商品");
   const product = page
-    .locator(".product-list .ant-table-tbody tr")
+    .locator(".product-list .ant-table-row")
     .filter({ hasText: "表格清洗" });
   await expect(product).toContainText("6 元/次");
   await product.getByRole("button", { name: "编辑", exact: true }).click();
   await page.getByRole("button", { name: "发布上架", exact: true }).click();
   await page.getByRole("button", { name: "确认发布预览", exact: true }).click();
   const published = page
-    .locator(".product-list .ant-table-tbody tr")
+    .locator(".product-list .ant-table-row")
     .filter({ hasText: "表格清洗改进版" });
   await expect(published).toContainText("7.50");
   await published.getByRole("button", { name: "停销", exact: true }).click();
   await page.getByRole("button", { name: "确认停销预览", exact: true }).click();
   await page.getByRole("tab", { name: "停销（1）", exact: true }).click();
-  await expect(page.locator(".product-list .ant-table-tbody tr")).toHaveCount(
+  await expect(page.locator(".product-list .ant-table-row")).toHaveCount(
     1,
   );
   report.checks.push(
@@ -190,7 +190,7 @@ try {
 
   await menu("销售订单");
   await choose("销售服务", "景点预约");
-  await expect(page.locator(".sales-list .ant-table-tbody tr")).toHaveCount(1);
+  await expect(page.locator(".sales-list .ant-table-row")).toHaveCount(1);
   await expect(page.locator(".sales-summary")).toContainText("8");
   await expect(page.locator(".sales-list")).toContainText("李**");
   report.checks.push(

@@ -6,7 +6,6 @@ import {
   InfoCircleOutlined,
 } from "@ant-design/icons";
 import { Link, useParams } from "react-router-dom";
-import type { RJSFSchema } from "@rjsf/utils";
 import { useWorkspace } from "../context";
 import { Status, TileIcon } from "../components/ui";
 import { Icon } from "../components/Icon";
@@ -18,45 +17,7 @@ import {
   serviceVersion,
 } from "../lib/service-display";
 import { currency, useServices } from "./Market";
-import type { Service } from "../types";
-
-function parameterExamples(service: Service, tableExample: boolean) {
-  const schema = service.input_schema;
-  if (!schema || typeof schema !== "object" || !schema.properties) return [];
-  const order = service.input_ui_schema?.["ui:order"] || [];
-  const entries = Object.entries(schema.properties).sort(([left], [right]) => {
-    const leftIndex = order.indexOf(left);
-    const rightIndex = order.indexOf(right);
-    return (
-      (leftIndex < 0 ? order.length : leftIndex) -
-      (rightIndex < 0 ? order.length : rightIndex)
-    );
-  });
-  return entries.map(([name, definition]) => {
-    const property =
-      typeof definition === "object" ? (definition as RJSFSchema) : undefined;
-    const value =
-      (Array.isArray(property?.examples) ? property.examples[0] : undefined) ??
-      property?.default ??
-      property?.const ??
-      property?.enum?.[0];
-    return {
-      name,
-      title: property?.title || name,
-      example:
-        value === undefined
-          ? tableExample && name === "source_file"
-            ? "客户数据.csv"
-            : "由使用者填写"
-          : typeof value === "string"
-            ? value
-            : JSON.stringify(value),
-      description:
-        property?.description ||
-        (schema.required?.includes(name) ? "必填参数" : "可选参数"),
-    };
-  });
-}
+import { parameterExamples } from "../lib/schema-parameters";
 
 export function ServiceDetailPage() {
   const { data = [], isPending, error, refetch } = useServices();
@@ -84,7 +45,7 @@ export function ServiceDetailPage() {
     bootstrap.data_mode === "prototype" &&
     service.input_schema_digest === "schema-table";
   const available = serviceAvailable(service);
-  const examples = parameterExamples(service, tableExample);
+  const examples = parameterExamples(service.input_schema, service.input_ui_schema?.["ui:order"] || [], tableExample);
   const workflow = tableExample
     ? [
         { title: "上传数据", text: "上传CSV文件" },

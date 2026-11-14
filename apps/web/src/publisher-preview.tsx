@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import type { RJSFSchema } from "@rjsf/utils";
+import { captureProductRelease, type ProductReleasePreview } from "./lib/publisher-product-preview";
 import { useWorkspace } from "./context";
 
 export interface PublisherScript {
@@ -26,6 +27,7 @@ export interface PublisherProduct {
   refundRule: "FULL_IF_UNMET" | "NO_REFUND_IF_UNMET";
   status: "ACTIVE" | "DRAFT" | "PAUSED" | "RETIRED";
   deploymentReady: boolean;
+  releaseSnapshot?: ProductReleasePreview;
 }
 
 export interface PublisherPricePlan {
@@ -263,9 +265,16 @@ export function PublisherPreviewProvider({
   const [drafts, setDrafts] = useState<Record<string, Record<string, string>>>(
     {},
   );
-  const [productRecords, setProducts] = useState(
-    bootstrap.data_mode === "prototype" ? products : [],
-  );
+  const [productRecords, setProducts] = useState(() => {
+    if (bootstrap.data_mode !== "prototype") return [];
+    return products.map((product) => {
+      const script = scripts.find((item) => item.id === product.scriptId);
+      const plan = initialPlans.find((item) => item.serviceId === product.id);
+      return product.status === "ACTIVE" && script && plan
+        ? { ...product, releaseSnapshot: captureProductRelease(script, plan) }
+        : product;
+    });
+  });
   const [productDrafts, setProductDrafts] = useState<
     Record<string, PublisherProduct>
   >({});
@@ -289,22 +298,44 @@ export function PublisherPreviewProvider({
   }
   function saveProduct(product: PublisherProduct, publishPreview = false) {
     requirePreview();
-    if (!records.some((script) => script.id === product.scriptId))
-      throw new Error("关联的脚本不存在");
+    const script = records.find((item) => item.id === product.scriptId);
+    if (!script) throw new Error("关联的脚本不存在");
+    let updated = product;
+    if (publishPreview) {
+      const candidates = pricePlans
+        .filter((item) => item.serviceId === product.id)
+        .sort((left, right) => right.version - left.version);
+      const selected = product.releaseSnapshot;
+      const plan = selected
+        ? candidates.find((item) => item.id === selected.pricePlanId)
+        : candidates[0];
+      if (!plan) throw new Error("绑定的价格方案不存在");
+      if (script.contentStatus !== "READY" || !product.deploymentReady || !profile.payoutVerified)
+        throw new Error("请先完成发布检查清单");
+      if (selected && (selected.scriptId !== script.id || selected.scriptVersion !== script.version))
+        throw new Error("绑定版本已变化，请重新核对");
+      if (product.refundRule !== plan.refundRule)
+        throw new Error("退款选项须与固定价格方案一致");
+      updated = {
+        ...product,
+        amountMinor: plan.amountMinor,
+        releaseSnapshot: captureProductRelease(script, plan),
+      };
+    }
     setProductDrafts((previous) => ({
       ...previous,
-      [product.id]: { ...product },
+      [updated.id]: structuredClone(updated),
     }));
     setProducts((previous) => {
-      const existing = previous.find((item) => item.id === product.id);
+      const existing = previous.find((item) => item.id === updated.id);
       if (!existing)
         return [
           ...previous,
-          { ...product, status: publishPreview ? "ACTIVE" : "DRAFT" },
+          { ...structuredClone(updated), status: publishPreview ? "ACTIVE" : "DRAFT" },
         ];
       return publishPreview || existing.status === "DRAFT"
         ? previous.map((item) =>
-            item.id === product.id ? { ...product } : item,
+            item.id === updated.id ? structuredClone(updated) : item,
           )
         : previous;
     });

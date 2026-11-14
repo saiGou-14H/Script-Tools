@@ -28,7 +28,10 @@ import {
 } from "../publisher-preview";
 import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
 import { formatMinorUnits, parseYuan } from "../lib/money";
-import { useServices } from "./Market";
+import { useWorkspace } from "../context";
+import { parameterExamples } from "../lib/schema-parameters";
+import { captureProductRelease } from "../lib/publisher-product-preview";
+import { serviceDuration } from "../lib/service-display";
 
 const statusLabels: Record<PublisherProduct["status"], string> = {
   ACTIVE: "在售",
@@ -38,12 +41,19 @@ const statusLabels: Record<PublisherProduct["status"], string> = {
 };
 
 export function ProductsPage() {
-  const { products, setProductStatus } = usePublisherPreview();
-  const { data: catalog = [] } = useServices();
-  const [tab, setTab] = useState("ALL");
+  const { products, scripts, setProductStatus } = usePublisherPreview();
+  const { bootstrap } = useWorkspace();
+  const prototype = bootstrap.data_mode === "prototype";
+  const [params, setParams] = useSearchParams();
+  const tab = params.get("status") || "ALL";
   const [preview, setPreview] = useState<PublisherProduct>();
   const { modal, message } = App.useApp();
-  const rows = products.filter((item) => tab === "ALL" || item.status === tab);
+  const rows = prototype
+    ? products.filter((item) => tab === "ALL" || item.status === tab)
+    : [];
+  const previewSchema =
+    preview?.releaseSnapshot?.inputSchema ??
+    scripts.find((script) => script.id === preview?.scriptId)?.inputSchema;
   function pause(product: PublisherProduct) {
     modal.confirm({
       title: "停销影响预览",
@@ -58,7 +68,8 @@ export function ProductsPage() {
   }
   return (
     <div className="publisher-products-page">
-      <PageHeading title="服务商品" />
+      <PageHeading title="服务商品" extra={<Status tone="gray">{prototype ? "本地示例" : "商品服务待接入"}</Status>} />
+      {!prototype && <Notice>本人商品及发布状态服务待接入，当前记录暂不可用。</Notice>}
       <Notice>
         <b>停销说明</b>
         　停销仅停止新购买，已有订单继续履约或退款，已部署服务保留使用入口。
@@ -66,28 +77,39 @@ export function ProductsPage() {
       <Tabs
         className="product-tabs"
         activeKey={tab}
-        onChange={setTab}
+        onChange={(value) => {
+          const next = new URLSearchParams(params);
+          if (value === "ALL") next.delete("status");
+          else next.set("status", value);
+          setParams(next);
+        }}
         tabBarExtraContent={
-          <Link to="/publisher/services/new/edit">
+          prototype ? <Link to="/publisher/services/new/edit">
             <Button
               type="primary"
-              icon={<PlusOutlined />}
+              icon={<PlusOutlined aria-hidden />}
               aria-label="创建服务"
             >
               创建服务
             </Button>
-          </Link>
+          </Link> : <Button type="primary" disabled>创建服务</Button>
         }
-        items={["ALL", "ACTIVE", "DRAFT", "PAUSED", "RETIRED"].map((key) => ({
-          key,
-          label: `${key === "ALL" ? "全部" : statusLabels[key as PublisherProduct["status"]]}（${key === "ALL" ? products.length : products.filter((item) => item.status === key).length}）`,
-        }))}
+        items={["ALL", "ACTIVE", "DRAFT", "PAUSED", "RETIRED"].map((key) => {
+          const title = key === "ALL"
+            ? "全部"
+            : statusLabels[key as PublisherProduct["status"]];
+          const count = key === "ALL"
+            ? products.length
+            : products.filter((item) => item.status === key).length;
+          return { key, label: `${title}（${prototype ? count : "—"}）` };
+        })}
       />
       <Panel className="product-list">
         <Table
           rowKey="id"
           dataSource={rows}
           pagination={false}
+          scroll={{ x: 1400 }}
           columns={[
             {
               title: "服务商品",
@@ -156,24 +178,7 @@ export function ProductsPage() {
                   )}
                   {row.status === "ACTIVE" ? (
                     <Button
-                      onClick={() => {
-                        const service = catalog.find((item) =>
-                          row.id === "booking"
-                            ? item.scene_key === "travel"
-                            : item.delivery_policy.icon === row.icon,
-                        );
-                        if (!service) {
-                          setPreview(row);
-                          return;
-                        }
-                        window.open(
-                          service.scene_key === "travel"
-                            ? `/travel/attractions/${service.id}`
-                            : `/services/${service.id}`,
-                          "_blank",
-                          "noopener,noreferrer",
-                        );
-                      }}
+                      onClick={() => setPreview(row)}
                     >
                       查看消费者页面
                     </Button>
@@ -191,8 +196,8 @@ export function ProductsPage() {
         />
       </Panel>
       <Modal
-        title="服务商品预览"
-        open={!!preview}
+        title={preview?.status === "ACTIVE" ? "消费者页面预览" : "服务商品预览"}
+        open={prototype && !!preview}
         onCancel={() => setPreview(undefined)}
         footer={<Button onClick={() => setPreview(undefined)}>关闭预览</Button>}
       >
@@ -206,6 +211,17 @@ export function ProductsPage() {
             : "未定价"}
         </p>
         <pre>{preview?.delivery}</pre>
+        {preview?.releaseSnapshot ? (
+          <dl className="product-release-preview">
+            <dt>固定脚本版本</dt><dd>{preview.releaseSnapshot.scriptVersion}</dd>
+            <dt>固定价格版本</dt><dd>v{preview.releaseSnapshot.pricePlanVersion}</dd>
+            <dt>最长服务时间</dt><dd>{serviceDuration(String(preview.releaseSnapshot.maxServiceSeconds))}</dd>
+            <dt>可启动有效期</dt><dd>{preview.releaseSnapshot.validityDays}天</dd>
+            <dt>目标判定</dt><dd>{preview.releaseSnapshot.goal}</dd>
+            <dt>目标核验期限</dt><dd>执行结束后{preview.releaseSnapshot.verificationHours}小时</dd>
+          </dl>
+        ) : <Notice>固定发布快照待载入。</Notice>}
+        <pre className="product-release-schema">{JSON.stringify(previewSchema, null, 2)}</pre>
       </Modal>
     </div>
   );
@@ -213,15 +229,21 @@ export function ProductsPage() {
 
 export function ProductEditorPage() {
   const { id = "demo" } = useParams();
+  return <ProductEditor key={id} id={id} />;
+}
+
+function ProductEditor({ id }: { id: string }) {
+  const { bootstrap } = useWorkspace();
   const { products, scripts, pricePlans, profile, saveProduct, productDrafts } =
     usePublisherPreview();
   const currentProduct = products.find(
     (item) => item.id === (id === "demo" ? "table" : id),
   );
   const product = productDrafts[currentProduct?.id || id] || currentProduct;
-  const script =
-    scripts.find((item) => item.id === (product?.scriptId || id)) ||
-    (id === "new" ? scripts[0] : undefined);
+  const [scriptId, setScriptId] = useState(
+    product?.scriptId || (id === "new" ? scripts[0]?.id : id),
+  );
+  const script = scripts.find((item) => item.id === scriptId);
   const productId = useRef(
     product?.id ||
       (id === "new" ? `preview-service-${crypto.randomUUID()}` : id),
@@ -229,6 +251,8 @@ export function ProductEditorPage() {
   const [form] = Form.useForm();
   const { message, modal } = App.useApp();
   const navigate = useNavigate();
+  if (bootstrap.data_mode !== "prototype")
+    return <Empty description="商品发布服务待接入，编辑资料暂不可用" />;
   if (!script) return <Empty description="服务或关联脚本不存在或已失效" />;
   const plans = pricePlans
     .filter((item) => item.serviceId === product?.id)
@@ -293,6 +317,8 @@ export function ProductEditorPage() {
       icon: product?.icon || "code",
       deploymentReady,
       status: publish ? "ACTIVE" : currentProduct?.status || "DRAFT",
+      releaseSnapshot:
+        publish && plan ? captureProductRelease(script!, plan) : undefined,
     };
     if (publish)
       modal.confirm({
@@ -313,10 +339,10 @@ export function ProductEditorPage() {
       navigate("/publisher/services");
     }
   }
-  const fields = Object.entries(script.inputSchema.properties || {});
+  const fields = parameterExamples(script.inputSchema);
   return (
     <div className="product-editor-page">
-      <PageHeading title="编辑与上架服务" />
+      <PageHeading title="编辑与上架服务" extra={<Status tone="gray">本地示例</Status>} />
       <div className="product-editor-columns">
         <Panel>
           <Form
@@ -324,7 +350,7 @@ export function ProductEditorPage() {
             layout="horizontal"
             labelCol={{ flex: "190px" }}
             wrapperCol={{ flex: 1 }}
-            labelAlign="left"
+            labelAlign="start"
             colon={false}
             initialValues={{
               title: product?.title || script.title,
@@ -339,6 +365,19 @@ export function ProductEditorPage() {
                 plan?.refundRule || product?.refundRule || "FULL_IF_UNMET",
             }}
           >
+            {id === "new" && (
+              <Form.Item label="绑定脚本" required>
+                <Select
+                  aria-label="绑定脚本"
+                  value={scriptId}
+                  onChange={setScriptId}
+                  options={scripts.map((item) => ({
+                    value: item.id,
+                    label: `${item.title} ${item.version}`,
+                  }))}
+                />
+              </Form.Item>
+            )}
             <Form.Item
               name="title"
               label="服务名称"
@@ -370,30 +409,15 @@ export function ProductEditorPage() {
             </Form.Item>
             <Form.Item label="输入参数预览" required>
               <div className="product-input-preview">
-                {fields.map(([key, definition]) => (
-                  <div key={key}>
-                    <b>
-                      {typeof definition === "object"
-                        ? definition.title || key
-                        : key}
-                    </b>
+                {fields.map((field) => (
+                  <div key={field.name}>
+                    <b>{field.title}</b>
                     <span>
-                      {key === "source_file"
-                        ? "CSV / 最大10MB"
-                        : key === "deduplicate_by"
-                          ? "邮箱"
-                          : typeof definition === "object"
-                            ? String(definition.type || "JSON")
-                            : "JSON"}
+                      {field.example}
+                      <small>{field.required ? "必填" : "可选"}</small>
                     </span>
                   </div>
                 ))}
-                {script.id === "table" && (
-                  <div>
-                    <b>输出格式</b>
-                    <span>CSV</span>
-                  </div>
-                )}
                 {!fields.length && (
                   <pre>{JSON.stringify(script.inputSchema, null, 2)}</pre>
                 )}
@@ -503,9 +527,14 @@ export function ProductEditorPage() {
 }
 
 export function PricingPage() {
-  const { products, pricePlans, addPricePlan } = usePublisherPreview();
   const [params] = useSearchParams();
   const serviceId = params.get("service") || "table";
+  return <PricingEditor key={serviceId} serviceId={serviceId} />;
+}
+
+function PricingEditor({ serviceId }: { serviceId: string }) {
+  const { bootstrap } = useWorkspace();
+  const { products, pricePlans, addPricePlan } = usePublisherPreview();
   const product = products.find((item) => item.id === serviceId);
   const plans = pricePlans
     .filter((item) => item.serviceId === serviceId)
@@ -519,6 +548,8 @@ export function PricingPage() {
     initial?.refundRule || "FULL_IF_UNMET",
   );
   const { message } = App.useApp();
+  if (bootstrap.data_mode !== "prototype")
+    return <Empty description="价格服务待接入，方案资料暂不可用" />;
   if (!product) return <Empty description="请先保存服务商品草稿，再配置价格" />;
   let price = "—";
   try {
@@ -547,7 +578,7 @@ export function PricingPage() {
   }
   return (
     <div className="publisher-pricing-page">
-      <PageHeading title="价格方案" />
+      <PageHeading title="价格方案" extra={<Status tone="gray">本地示例</Status>} />
       <div className="pricing-columns">
         <Panel title="历史方案" className="pricing-history">
           {plans.map((plan) => (

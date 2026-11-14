@@ -1,6 +1,6 @@
 {
   "project_name": "Script Tools",
-  "updated_at": "2026-11-14T14:17:40.770Z",
+  "updated_at": "2026-11-14T14:47:23.686Z",
   "goal_status": "active",
   "target": {
     "page_definitions": 66,
@@ -100,7 +100,8 @@
     "output/verification/execution-pages/report.json",
     "output/verification/publisher-execution-pages/report.json",
     "output/verification/publisher-quality-pages/report.json",
-    "output/verification/publisher-finance-pages/report.json"
+    "output/verification/publisher-finance-pages/report.json",
+    "output/verification/publisher-product-pages/report.json"
   ],
   "browser_results": [
     {
@@ -222,6 +223,11 @@
       "report": "output/verification/publisher-finance-pages/report.json",
       "result": "PASS",
       "checks": 10
+    },
+    {
+      "report": "output/verification/publisher-product-pages/report.json",
+      "result": "PASS",
+      "checks": 11
     }
   ],
   "local_preview": "http://127.0.0.1:5174/",
@@ -253,7 +259,8 @@
     "Task list, task detail, run list and run detail have been realigned with their reference regions. Task scope, applied run filters and detail tabs persist in the URL. Task details expose their own configuration snapshot, run history and order references. The active booking example retains the existing two-hour paid service window and consistent task dates. Its execution, business goal, two ready output batches and notification delivery retain independent states. Output links, preview file downloads and redacted log exports use the selected run. Pause and stop actions expose pending integration. Live task scheduling, execution, termination and notification delivery remain pending.",
     "Publisher build and deployment pages have been realigned with their reference regions. Build filters, build/trial tabs and selected records persist in the URL, and unavailable selections retain their own identity. Deployment detail, diagnostics and state-specific actions use the selected deployment. Copy returns a complete local example digest while its displayed value stays abbreviated. Configuration previews use the selected ready version, execution mode and resources, clear on edit and require fresh TCG consent after switching modes. Live builds, tests, deployment jobs, runtime profiles, quotas and stop-impact calculation remain pending and show unavailable metadata.",
     "Publisher metrics and diagnostics have been realigned with their reference regions. Service and version filters persist in the URL. Daily usage, delivered and achieved counts, technical classifications and stored decimal-string refund amounts aggregate independently while preserving the reference totals. Daily detail, refund allocation and diagnostic logs use local examples. Diagnostic selections retain their own owner-build evidence and open the matching script-name, version and build record. Missing build evidence stays unavailable, and unknown booking effects retain their verification classification. Live statistics, refunds and diagnostic queries remain pending with unknown counters.",
-    "Publisher earnings and settlement detail have been realigned with their reference regions. Local ledger groups reconcile to the original 680 income, 80 refund, 60 fees and 540 net totals. The 300 pending-settlement display explicitly includes 100 pending maturity and 200 reserved for SET018, while the separate 200 available scope uses L003. Settlement lines link to their own ledger groups and derive their totals with BIGINT arithmetic. Payout previews capture the current masked account while historical settlements retain their original snapshot. A separate in-memory fixture check verifies signed-64-bit amounts through the normal routes. Live earnings, payout submission and channel-receipt queries remain pending."
+    "Publisher earnings and settlement detail have been realigned with their reference regions. Local ledger groups reconcile to the original 680 income, 80 refund, 60 fees and 540 net totals. The 300 pending-settlement display explicitly includes 100 pending maturity and 200 reserved for SET018, while the separate 200 available scope uses L003. Settlement lines link to their own ledger groups and derive their totals with BIGINT arithmetic. Payout previews capture the current masked account while historical settlements retain their original snapshot. A separate in-memory fixture check verifies signed-64-bit amounts through the normal routes. Live earnings, payout submission and channel-receipt queries remain pending.",
+    "Publisher service products, publication editor, pricing and sales have been realigned with their reference regions. Status and sales filters persist in the URL, and resource changes reset editor and price forms. The local consumer preview uses the selected product's release snapshot, including its own script schema, script version and price-plan identity. Draft and new-price saves preserve the published release until explicit publication. New products bind an owner script and retain its publisher-required schema. The table example therefore displays its two declared fields, removing the undeclared output-format field and 10MB constraint from the reference image. Sales totals use decimal-string minor units and explicit processing-refund amounts, verified independently at signed-64-bit precision. Live product publication, pricing and sales queries remain pending."
   ],
   "items": [
     {

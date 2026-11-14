@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T14:15:50.167Z",
+  "date": "2026-11-14T14:45:26.253Z",
   "checks": [
     "all ten publisher commerce, quality, finance and settings routes render",
     "product filters and draft previews work, and saving a draft preserves the current sale snapshot",
