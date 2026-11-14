@@ -7,7 +7,7 @@ await mkdir(output, { recursive: true });
 const browser = await chromium.launch();
 const report = {
   date: new Date().toISOString(),
-  baseURL: "http://127.0.0.1:5174",
+  baseURL: process.env.SCRIPT_TOOLS_WEB_URL || "http://127.0.0.1:5174",
   checks: [],
   screenshots: [],
   consoleErrors: [],
@@ -85,7 +85,7 @@ try {
   await expect(page.getByRole("heading", { name: "欢迎回来！" })).toBeVisible();
   await capture(page, "USER-C01");
   await page.goto(`${report.baseURL}/me/tasks`);
-  await expect(page.locator(".task-table .ant-table-tbody tr")).toHaveCount(3);
+  await expect(page.locator(".task-table .ant-table-row")).toHaveCount(3);
   await capture(page, "USER-C08");
   await page.getByText("本人自用", { exact: true }).click();
   await expect(page.locator(".task-table .ant-empty")).toBeVisible();
@@ -99,9 +99,7 @@ try {
   ).toBeVisible();
   report.checks.push("RJSF blocks empty required publisher fields");
   await page.goto(`${report.baseURL}/me/runs`);
-  await expect(page.locator(".record-table .ant-table-tbody tr")).toHaveCount(
-    3,
-  );
+  await expect(page.locator(".record-table .ant-table-row")).toHaveCount(3);
   await capture(page, "USER-C10");
   await page.goto(`${report.baseURL}/me/outputs`);
   await expect(page.getByText("cleaned.csv", { exact: true })).toBeVisible();

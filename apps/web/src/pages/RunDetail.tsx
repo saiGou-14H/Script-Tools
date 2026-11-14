@@ -1,88 +1,135 @@
-import { useState } from "react";
-import { Button, Empty, Steps, Table, Tabs } from "antd";
+import { App, Button, Empty, Steps, Table, Tabs } from "antd";
 import {
   CheckCircleOutlined,
   DownloadOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
+import { useWorkspace } from "../context";
 import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
-
-const logs = [
-  ["2026-11-13 09:00:12", "运行环境准备完成。"],
-  ["2026-11-13 09:00:28", "输入文件读取成功，行数为1200。"],
-  ["2026-11-13 09:01:05", "去重处理完成，共去重86条。"],
-  ["2026-11-13 09:01:36", "清洗与校验通过，开始生成产物。"],
-  ["2026-11-13 09:02:10", "产物生成完成，文件已就绪。"],
-  ["2026-11-13 09:02:18", "本次执行已结束，目标已达成。"],
-];
+import {
+  findPreviewRun,
+  outputPath,
+  outputsForRun,
+  runStateLabels,
+  runTones,
+} from "../lib/execution-preview";
+import { formatMinorUnits } from "../lib/money";
+import { serviceDuration } from "../lib/service-display";
+import { downloadPreviewOutput } from "../lib/consumer-preview";
 
 export function RunDetailPage() {
   const { id = "demo" } = useParams();
-  const [tab, setTab] = useState("overview");
-  const running = id === "RUN082" || id === "booking";
-  const pending = id === "RUN083" || id === "data";
-  const completed = !running && !pending;
-  if (
-    ![
-      "demo",
-      "RUN081",
-      "RUN082",
-      "RUN083",
-      "clean",
-      "booking",
-      "data",
-    ].includes(id)
+  const { bootstrap } = useWorkspace();
+  const [params, setParams] = useSearchParams();
+  const { modal, message } = App.useApp();
+  const run = findPreviewRun(id);
+  const tab = ["overview", "logs", "outputs", "notifications"].includes(
+    params.get("tab") || "",
   )
-    return <Empty description="运行不存在或已失效" />;
-  const title = running
-    ? "景点预约 Run082"
-    : pending
-      ? "公开数据整理 Run083"
-      : "表格清洗 Run081";
-  const amount = running ? "8.00" : pending ? "5.00" : "6.00";
-  const status = running ? "执行中" : pending ? "待补充" : "执行已结束";
+    ? params.get("tab")!
+    : "overview";
+  if (bootstrap.data_mode !== "prototype")
+    return <Empty description="运行服务待接入，运行详情暂不可用" />;
+  if (!run) return <Empty description="运行不存在或已失效" />;
+  const completed = run.state === "SUCCEEDED";
+  const waiting = run.state === "WAITING_INPUT";
+  const outputs = outputsForRun(run);
+  const ready = outputs.filter((output) => output.ready);
+  const batches = new Set(ready.map((output) => output.batch)).size;
+  const primary = ready.find((output) => output.kind === "file") || ready[0];
+  function exportLogs() {
+    if (!run) return;
+    const content = run.logs
+      .map((log) => `${log.time} ${log.message}`)
+      .join("\n");
+    const url = URL.createObjectURL(
+      new Blob([content], { type: "text/plain;charset=utf-8" }),
+    );
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `${run.id}-脱敏日志-示例.txt`;
+    anchor.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  function stop() {
+    modal.confirm({
+      title: "停止本次运行",
+      content: "执行服务接入后可请求受控停止。已提交产物可独立查看。",
+      okText: "请求停止",
+      cancelText: "返回",
+      onOk: () => {
+        void message.info("停止接口待接入");
+      },
+    });
+  }
   return (
     <div className="run-detail-page">
       <PageHeading
         title="运行详情"
         description="查看本次脚本服务的执行进度、运行结果与产物文件。"
+        extra={<Status tone="gray">本地示例</Status>}
       />
       <div className="run-service-notice">
-        <InfoCircleOutlined />
+        <InfoCircleOutlined aria-hidden />
         <b>服务说明</b>
         <span>
           每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择，购买前展示，成交后固定。
         </span>
       </div>
       <Panel className="run-header">
-        <TileIcon name={running ? "calendar" : "table"} />
+        <TileIcon name={run.icon} />
         <div>
           <h2>
-            {title}{" "}
-            <Status tone={completed ? "green" : pending ? "orange" : "blue"}>
-              {status}
+            {run.service} {run.id.replace("RUN", "Run")}{" "}
+            <Status tone={runTones[run.state]}>
+              {runStateLabels[run.state]}
             </Status>
-            <Status>{completed ? "目标达成" : "目标待确认"}</Status>
+            <Status>
+              {run.goal === "SUCCEEDED" ? "目标达成" : "目标待确认"}
+            </Status>
           </h2>
-          <p>运行日期 2026-11-13</p>
+          <p>
+            运行日期 {run.started.slice(0, 10)}
+            {run.mode === "continuous" && " · 持续运行"}
+          </p>
         </div>
         <div className="run-cost">
-          费用 <strong>¥{amount}</strong>
+          费用 <strong>¥{formatMinorUnits(run.amountMinor)}</strong>
         </div>
       </Panel>
       <div className="run-steps">
         <Steps
-          current={completed ? 4 : pending ? 0 : 1}
-          items={["校验", "执行", "产物生成", "交付"].map((title) => ({
+          titlePlacement="vertical"
+          current={-1}
+          items={["校验", "执行", "产物生成", "交付"].map((title, index) => ({
             title,
-            content: completed ? "已完成" : undefined,
+            status: run.stages[index],
+            content:
+              run.stages[index] === "finish"
+                ? "已完成"
+                : index === 2 && batches > 0
+                  ? `已提交${batches}批`
+                  : undefined,
+            icon: (
+              <span
+                aria-hidden
+                className={`execution-step ${run.stages[index] === "finish" ? "step-finished" : run.stages[index] === "process" ? "step-current" : ""}`}
+              >
+                {run.stages[index] === "finish" ? "✓" : ""}
+              </span>
+            ),
           }))}
         />
       </div>
       <Tabs
         activeKey={tab}
-        onChange={setTab}
+        onChange={(next) => {
+          const search = new URLSearchParams(params);
+          if (next === "overview") search.delete("tab");
+          else search.set("tab", next);
+          setParams(search);
+        }}
         items={[
           { key: "overview", label: "概览" },
           { key: "logs", label: "脱敏日志" },
@@ -93,95 +140,150 @@ export function RunDetailPage() {
       <div className="run-detail-columns">
         <div>
           {tab === "overview" && (
-            <Panel title="执行结果">
+            <Panel title="执行结果" className="run-result-panel">
               <div className="run-result-grid">
-                <div>
-                  <TileIcon name="table" />
-                  <span>
-                    <small>清洗数据</small>
-                    <b>
-                      {completed ? "1200" : "—"} <em>行</em>
-                    </b>
-                  </span>
-                </div>
-                <div>
-                  <TileIcon name="database" />
-                  <span>
-                    <small>去重数量</small>
-                    <b>
-                      {completed ? "86" : "—"} <em>条</em>
-                    </b>
-                  </span>
-                </div>
+                {run.statistics ? (
+                  <>
+                    <div>
+                      <TileIcon name="table" />
+                      <span>
+                        <small>清洗数据</small>
+                        <b>
+                          {run.statistics.rows} <em>行</em>
+                        </b>
+                      </span>
+                    </div>
+                    <div>
+                      <TileIcon name="layers" />
+                      <span>
+                        <small>去重数量</small>
+                        <b>
+                          {run.statistics.duplicatesRemoved} <em>条</em>
+                        </b>
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <TileIcon name="history" />
+                      <span>
+                        <small>运行方式</small>
+                        <b className="run-mode-label">
+                          {run.mode === "continuous" ? "持续运行" : "单次执行"}
+                        </b>
+                      </span>
+                    </div>
+                    <div>
+                      <TileIcon name="layers" />
+                      <span>
+                        <small>已提交批次</small>
+                        <b>
+                          {batches} <em>批</em>
+                        </b>
+                      </span>
+                    </div>
+                  </>
+                )}
                 <div>
                   <TileIcon name="file" />
                   <span>
-                    <small>文件状态</small>
-                    <Status tone={completed ? "green" : "gray"}>
-                      {completed ? "READY" : "等待生成"}
+                    <small>{run.statistics ? "文件状态" : "就绪产物"}</small>
+                    <Status tone={primary ? "green" : "gray"}>
+                      {run.statistics
+                        ? primary
+                          ? "READY"
+                          : "等待生成"
+                        : `${ready.length} 项`}
                     </Status>
                   </span>
-                  <Link to="/me/outputs">
-                    <Button
-                      size="small"
-                      icon={<DownloadOutlined />}
-                      disabled={!completed}
-                    >
-                      下载文件
-                    </Button>
-                  </Link>
+                  {primary &&
+                    (run.statistics ? (
+                      <Button
+                        size="small"
+                        icon={<DownloadOutlined aria-hidden />}
+                        onClick={() => downloadPreviewOutput(primary)}
+                      >
+                        下载文件
+                      </Button>
+                    ) : (
+                      <Link to={outputPath(primary)}>
+                        <Button
+                          size="small"
+                          icon={<DownloadOutlined aria-hidden />}
+                        >
+                          查看产物
+                        </Button>
+                      </Link>
+                    ))}
                 </div>
               </div>
             </Panel>
           )}
           {(tab === "overview" || tab === "logs") && (
-            <Panel title="运行日志（脱敏）">
+            <Panel
+              title="运行日志（脱敏）"
+              className="run-log-panel"
+              extra={
+                tab === "logs" ? (
+                  <Button
+                    size="small"
+                    icon={<DownloadOutlined aria-hidden />}
+                    onClick={exportLogs}
+                  >
+                    导出日志
+                  </Button>
+                ) : undefined
+              }
+            >
               <div className="run-log-lines">
-                {(completed ? logs : logs.slice(0, running ? 2 : 1)).map(
-                  ([time, text]) => (
-                    <div key={time}>
-                      <CheckCircleOutlined />
-                      <time>{time}</time>
-                      <span>{text}</span>
-                    </div>
-                  ),
-                )}
+                {run.logs.map((log) => (
+                  <div key={log.time}>
+                    <CheckCircleOutlined aria-hidden />
+                    <time>{log.time}</time>
+                    <span>{log.message}</span>
+                  </div>
+                ))}
               </div>
-              {pending && (
+              {waiting && (
                 <Notice>
-                  本次运行等待补充资料，请在待处理事项中完成操作。
+                  <Link to="/me/pending?category=待补充">查看待补充事项</Link>
                 </Notice>
               )}
             </Panel>
           )}
           {tab === "outputs" && (
-            <Panel title="本次运行产物">
+            <Panel title="本次运行产物" className="run-output-panel">
               <Table
                 rowKey="key"
                 size="small"
                 pagination={false}
-                dataSource={
-                  completed
-                    ? [
-                        { key: "1", name: "cleaned.csv", size: "142 KB" },
-                        { key: "2", name: "summary.json", size: "28 KB" },
-                      ]
-                    : []
-                }
+                dataSource={outputs}
+                scroll={{ x: 700 }}
                 columns={[
-                  { title: "文件名称", dataIndex: "name" },
+                  { title: "产物名称", dataIndex: "name" },
+                  { title: "批次", dataIndex: "batch" },
                   { title: "大小", dataIndex: "size" },
                   {
                     title: "状态",
-                    render: () => <Status tone="green">READY</Status>,
+                    render: (_, output) => (
+                      <Status tone={output.ready ? "green" : "orange"}>
+                        {output.ready ? "READY" : "生成中"}
+                      </Status>
+                    ),
                   },
                   {
                     title: "操作",
-                    render: () => (
-                      <Link to="/me/outputs">
-                        <Button size="small">预览与下载</Button>
-                      </Link>
-                    ),
+                    render: (_, output) =>
+                      output.ready ? (
+                        <Link to={outputPath(output)}>
+                          <Button size="small">预览与下载</Button>
+                        </Link>
+                      ) : (
+                        <Button size="small" disabled>
+                          生成中
+                        </Button>
+                      ),
                   },
                 ]}
               />
@@ -193,20 +295,17 @@ export function RunDetailPage() {
                 rowKey="key"
                 size="small"
                 pagination={false}
-                dataSource={
-                  completed
-                    ? [
-                        { key: "1", channel: "站内消息", state: "已通知" },
-                        { key: "2", channel: "邮件", state: "已通知" },
-                      ]
-                    : []
-                }
+                dataSource={run.notifications}
                 columns={[
                   { title: "通知渠道", dataIndex: "channel" },
                   {
                     title: "投递状态",
                     dataIndex: "state",
-                    render: (value) => <Status tone="green">{value}</Status>,
+                    render: (value) => (
+                      <Status tone={value === "SENT" ? "green" : "gray"}>
+                        {value === "SENT" ? "已通知（示例）" : "未触发"}
+                      </Status>
+                    ),
                   },
                   {
                     title: "详情",
@@ -220,24 +319,22 @@ export function RunDetailPage() {
         <Panel title="订单快照" className="run-order-snapshot">
           <dl>
             <dt>服务名称</dt>
-            <dd>
-              {running ? "景点预约" : pending ? "公开数据整理" : "表格清洗"}
-            </dd>
+            <dd>{run.service}</dd>
             <dt>订单编号</dt>
             <dd>
-              {pending ? (
-                <span>原订单资料待载入</span>
-              ) : (
+              {run.orderId ? (
+                <Link className="dark-link" to={`/me/orders/${run.orderId}`}>
+                  {run.orderId}
+                </Link>
+              ) : run.billingOrderId ? (
                 <Link
                   className="dark-link"
-                  to={
-                    running
-                      ? "/me/orders/OD202611130002"
-                      : "/me/bills?order_id=TT202611130018"
-                  }
+                  to={`/me/bills?order_id=${run.billingOrderId}`}
                 >
-                  {running ? "OD202611130002" : "TT202611130018"}
+                  {run.billingOrderId}
                 </Link>
+              ) : (
+                "原订单资料待载入"
               )}
             </dd>
             <dt>支付状态</dt>
@@ -245,15 +342,19 @@ export function RunDetailPage() {
               <Status tone="green">已支付</Status>
             </dd>
             <dt>服务版本</dt>
-            <dd>v1.2</dd>
+            <dd>{run.version}</dd>
             <dt>费用</dt>
             <dd>
-              <b>¥{amount}</b>
+              <b>¥{formatMinorUnits(run.amountMinor)}</b>
             </dd>
             <dt>可启动至</dt>
-            <dd>2026-11-20</dd>
+            <dd>{run.launchUntil}</dd>
             <dt>最长执行</dt>
-            <dd>5分钟</dd>
+            <dd>
+              {run.maxServiceSeconds === null
+                ? "以服务约定为准"
+                : serviceDuration(run.maxServiceSeconds)}
+            </dd>
           </dl>
           <Notice>
             <div>
@@ -261,6 +362,11 @@ export function RunDetailPage() {
               <p>每单只有一次完整服务，同次接续不额外收费。</p>
             </div>
           </Notice>
+          {!completed && (
+            <Button className="run-stop-button" onClick={stop}>
+              停止运行
+            </Button>
+          )}
         </Panel>
       </div>
     </div>

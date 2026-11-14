@@ -44,6 +44,7 @@ const browserReports = [
   "output/verification/personal-data-pages/report.json",
   "output/verification/consumer-finance-pages/report.json",
   "output/verification/consumer-purchase-pages/report.json",
+  "output/verification/execution-pages/report.json",
 ];
 const screenshots = new Set();
 const browserResults = [];
@@ -117,6 +118,7 @@ const report = {
     "Credential and traveler pages have been realigned with their reference regions and Ctrl K search. Preview credential rotation preserves existing task-version bindings, and binding links open their corresponding tasks. Short values stay masked. Traveler edits retain document types and advance the preview version, and deleting the edited record resets its form. Live credential storage, validation, traveler versions and authorization snapshots remain pending.",
     "Billing, refund and booking pages have been realigned with their reference regions. Billing summaries and CSV use decimal-string minor units and share refund records with the refund pages, resolving the conflicting reference fixtures to 3.00 refunded and 8.00 processing. Refund details link to the matching bill, preserve supplementary text, and read stored rule and execution snapshots. Repeated preview submissions reuse the same request. Pending bookings retain verification state and have no usable voucher. Live billing, refunds and official booking verification remain pending.",
     "Order list, order detail, purchased services and configuration have been realigned with their reference regions. Order filters persist in the URL. Entitlement actions retain their own order and task references, and refund entry carries the original order while its policy is loaded. Cashier demo selects the existing unpaid order. New preview orders retain a service contract snapshot and decimal-string amounts. Configuration checks the selected entitlement and purchased version, uses publisher-required JSON Schema fields, and validates and previews the chosen execution time. Live order, entitlement, scheduling and execution services remain pending.",
+    "Task list, task detail, run list and run detail have been realigned with their reference regions. Task scope, applied run filters and detail tabs persist in the URL. Task details expose their own configuration snapshot, run history and order references. The active booking example retains the existing two-hour paid service window and consistent task dates. Its execution, business goal, two ready output batches and notification delivery retain independent states. Output links, preview file downloads and redacted log exports use the selected run. Pause and stop actions expose pending integration. Live task scheduling, execution, termination and notification delivery remain pending.",
   ],
   items,
 };

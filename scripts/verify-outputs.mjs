@@ -2,8 +2,24 @@ import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium, expect } from "@playwright/test";
+import { createServer } from "vite";
 
-const base = "http://127.0.0.1:5174";
+const root = path.resolve("apps/web");
+const server = await createServer({
+  root,
+  configFile: path.join(root, "vite.config.ts"),
+  cacheDir: path.resolve(".local/output-verification-vite"),
+  server: {
+    host: "127.0.0.1",
+    port: 0,
+    strictPort: true,
+    proxy: { "/api": { target: "http://127.0.0.1:3001" } },
+  },
+});
+await server.listen();
+const address = server.httpServer.address();
+assert.ok(address && typeof address === "object");
+const base = `http://127.0.0.1:${address.port}`;
 const output = path.resolve("output/verification/output-pages");
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch();
@@ -86,7 +102,7 @@ try {
     .getByRole("button", { name: /安全预览/ })
     .click();
   await expect(page.getByRole("dialog")).toContainText(
-    '"duplicates_removed": 36',
+    '"duplicates_removed": 86',
   );
   await page
     .locator(".ant-modal-footer")
@@ -101,7 +117,7 @@ try {
   assert.equal(file.suggestedFilename(), "summary.json");
   assert.equal(
     JSON.parse(await readFile(await file.path(), "utf8")).duplicates_removed,
-    36,
+    86,
   );
   await page.reload();
   await expect(page.locator(".output-row-selected")).toContainText(
@@ -283,6 +299,7 @@ try {
   });
 } finally {
   await browser.close();
+  await server.close();
   await writeFile(
     path.join(output, "report.json"),
     JSON.stringify(report, null, 2) + "\n",

@@ -20,6 +20,7 @@ import "./styles/retail.css";
 import "./styles/consumer-home.css";
 import "./styles/outputs.css";
 import "./styles/account.css";
+import "./styles/execution.css";
 
 const client = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },

@@ -1,0 +1,98 @@
+{
+  "date": "2026-11-14T13:05:41.081Z",
+  "checks": [
+    "the task, task-detail, run-list and run-detail reference regions fit 1814 by 868 with visible help navigation",
+    "task scope persists across reload and the pause preview exposes its integration status while the active task remains inspectable",
+    "task detail uses its own order and input snapshot, exposes configuration-copy requirements and filters its run history",
+    "service, state and actual date controls filter records and preserve applied filters in the URL, including invalid and empty ranges",
+    "a continuous run exposes two independently committed ready batches through their own output links and retains its pending business goal",
+    "continuous-run logs, notification delivery and controlled-stop preview each expose their own state and the log export uses the selected run",
+    "the completed result, log evidence and downloaded JSON agree on the duplicate count and the overview file download returns its actual preview content",
+    "a waiting run presents its own pending-input log and routes to the matching pending category",
+    "live task and run pages expose pending integration and unknown resources render their unavailable state",
+    "all four routes fit 390px with internally scrollable tables and local preview actions use no business mutations"
+  ],
+  "screenshots": [
+    "USER-C08",
+    "USER-C09",
+    "USER-C10",
+    "USER-C11"
+  ],
+  "errors": [],
+  "layouts": {
+    "USER-C08": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 256,
+        "y": 425.078125,
+        "width": 1532,
+        "height": 394.140625,
+        "bottom": 819.21875
+      },
+      "help": {
+        "x": 10,
+        "y": 815.453125,
+        "width": 209,
+        "height": 30.5,
+        "bottom": 845.953125
+      }
+    },
+    "USER-C09": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 242,
+        "y": 705.75,
+        "width": 1032.078125,
+        "height": 150,
+        "bottom": 855.75
+      },
+      "help": {
+        "x": 10,
+        "y": 815.453125,
+        "width": 200,
+        "height": 30.5,
+        "bottom": 845.953125
+      }
+    },
+    "USER-C10": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 246,
+        "y": 468.921875,
+        "width": 1546,
+        "height": 302.59375,
+        "bottom": 771.515625
+      },
+      "help": {
+        "x": 10,
+        "y": 815.453125,
+        "width": 193,
+        "height": 30.5,
+        "bottom": 845.953125
+      }
+    },
+    "USER-C11": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 266,
+        "y": 489.078125,
+        "width": 1524,
+        "height": 364.59375,
+        "bottom": 853.671875
+      },
+      "help": {
+        "x": 10,
+        "y": 809.453125,
+        "width": 205,
+        "height": 30.5,
+        "bottom": 839.953125
+      }
+    }
+  },
+  "final_visual_acceptance": "pending",
+  "result": "PASS"
+}

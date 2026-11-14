@@ -225,7 +225,7 @@ export const outputFixtures: PreviewOutput[] = [
     expires: "2026-11-30",
     ready: true,
     content: JSON.stringify(
-      { rows: 1200, duplicates_removed: 36, status: "completed" },
+      { rows: 1200, duplicates_removed: 86, status: "completed" },
       null,
       2,
     ),
@@ -263,6 +263,27 @@ export const inlineOutputFixtures: PreviewOutput[] = [
     mediaType: "text/plain;charset=utf-8",
     content: "表格清洗完成，已生成 cleaned.csv 与 summary.json。",
   },
+  ...[1, 2].map((batch): PreviewOutput => ({
+    key: `booking-progress-${batch}`,
+    kind: "json",
+    mediaType: "application/json;charset=utf-8",
+    deliveryStatus: "NOT_TRIGGERED",
+    runId: "booking",
+    task: "免费景点预约",
+    goal: "提交景点预约申请",
+    name: `预约进度-${batch}.json`,
+    size: "1 KB",
+    run: "运行-20261113-002",
+    batch: `进度批次 0${batch}`,
+    created: `2026-11-13 10:0${batch}`,
+    expires: "2026-11-30",
+    ready: true,
+    content: JSON.stringify(
+      { batch, execution_status: "RUNNING", goal_status: "PENDING" },
+      null,
+      2,
+    ),
+  })),
 ];
 
 export function downloadPreviewOutput(output: PreviewOutput) {

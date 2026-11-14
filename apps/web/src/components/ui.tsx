@@ -77,7 +77,7 @@ export function More({
 }) {
   return (
     <Link className="more" to={to}>
-      {children} <RightOutlined />
+      {children} <RightOutlined aria-hidden />
     </Link>
   );
 }

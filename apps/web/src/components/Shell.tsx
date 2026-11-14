@@ -23,6 +23,38 @@ import { usePrototype } from "../prototype";
 
 const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
   {
+    C08: {
+      C06: "layers",
+      C13: "warning",
+      C16: "message",
+      C19: "shield",
+      C22: "ticket",
+    },
+    C09: {
+      C04: "file",
+      C06: "layers",
+      C12: "folder",
+      C13: "info",
+      C16: "message",
+      C22: "ticket",
+    },
+    C10: {
+      C06: "layers",
+      C10: "file",
+      C12: "chart",
+      C13: "calendar",
+      C16: "mail",
+      C19: "refund",
+      C22: "ticket",
+    },
+    C11: {
+      C04: "file",
+      C06: "layers",
+      C10: "file",
+      C12: "chart",
+      C13: "clock",
+      C22: "ticket",
+    },
     C14: {
       C06: "layers",
       C12: "folder",
@@ -107,7 +139,15 @@ export function Shell({ pageId }: { pageId: PageId }) {
   const navigate = useNavigate();
   const location = useLocation();
   const searchRef = useRef<InputRef>(null);
-  const quickSearch = ["C05", "C06", "C14", "C15"].includes(pageId);
+  const quickSearch = [
+    "C05",
+    "C06",
+    "C08",
+    "C10",
+    "C11",
+    "C14",
+    "C15",
+  ].includes(pageId);
   useEffect(() => {
     if (!quickSearch) return;
     function focusSearch(event: KeyboardEvent) {
@@ -235,6 +275,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
       C14: "我的首页",
       C18: "我的首页",
       C19: "我的首页",
+      C10: "我的首页",
       S01: "首页",
       S05: "发布者工作台",
       S06: "发布者工作台",
@@ -459,10 +500,12 @@ export function Shell({ pageId }: { pageId: PageId }) {
                 </>
               ) : ancestors.length > 0 ? (
                 <>
-                  {["C07", "C20"].includes(pageId) && (
+                  {["C07", "C11", "C20"].includes(pageId) && (
                     <>
                       <Link to="/me/home">
-                        {pageId === "C07" ? "我的服务" : "我的首页"}
+                        {["C07", "C11"].includes(pageId)
+                          ? "我的服务"
+                          : "我的首页"}
                       </Link>
                       <span>›</span>
                     </>
