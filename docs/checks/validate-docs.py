@@ -5,13 +5,18 @@ import re
 from collections import Counter, defaultdict
 from pathlib import Path
 
+def matches_text_digest(data: bytes, expected: str) -> bool:
+    normalized = data.replace(b'\r\n', b'\n')
+    candidates = {data, normalized, normalized.replace(b'\n', b'\r\n')}
+    return any(hashlib.sha256(candidate).hexdigest() == expected for candidate in candidates)
+
 root = Path(__file__).resolve().parents[1]
 delivery_targets = {
     (root.parent/'output/prototypes/2026-11-13-v5-commercial'/name).resolve()
     for name in ('index.html','manifest.json')
 } | {
     (root.parent/'output/verification'/name).resolve()
-    for name in ('v5-prototype-delivery.json','v3-final-static-checks.json','detailed-design-database.json','detailed-design-coverage.json','postgresql-foundation.json','persistence-foundation.json','frontend-implementation-progress.json','admin-operations/report.json','admin-travel/report.json','identity/report.json','production-build.json','retail-pages/report.json','consumer-overview/report.json','publisher-profile/report.json','output-pages/report.json','account-pages/report.json')
+    for name in ('v5-prototype-delivery.json','v3-final-static-checks.json','detailed-design-database.json','detailed-design-coverage.json','postgresql-foundation.json','persistence-foundation.json','frontend-implementation-progress.json','admin-operations/report.json','admin-travel/report.json','identity/report.json','production-build.json','retail-pages/report.json','consumer-overview/report.json','publisher-profile/report.json','output-pages/report.json','account-pages/report.json','notification-pages/report.json')
 }
 expected_files = {
     'README.md', '01-产品需求与功能设计.md', '02-系统架构与详细设计.md',
@@ -133,11 +138,11 @@ for source in ledger['sources']:
 for relative, digest in ledger['assets'].items():
     path = root/relative
     expected_digest = ledger.get('branding_title_changes', {}).get(relative, digest)
-    if not path.exists() or hashlib.sha256(path.read_bytes()).hexdigest() != expected_digest:
+    if not path.exists() or not matches_text_digest(path.read_bytes(), expected_digest):
         issues.append(f'contract changed during documentation refactor: {relative}')
     elif expected_digest != digest:
         original_title = path.read_bytes().replace(b'"title": "Script Tools ', b'"title": "Travel Tools ')
-        if hashlib.sha256(original_title).hexdigest() != digest:
+        if not matches_text_digest(original_title, digest):
             issues.append(f'contract branding revision changed more than its title: {relative}')
 if any((root/'contracts'/name).exists() for name in ('README.md','validate-docs.py','validate-contracts.ps1','validate-adapter-contracts.py','validate-output-contracts.py')):
     issues.append('old contract index or check location remains')

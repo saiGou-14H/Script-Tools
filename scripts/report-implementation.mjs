@@ -40,6 +40,7 @@ const browserReports = [
   "output/verification/publisher-profile/report.json",
   "output/verification/output-pages/report.json",
   "output/verification/account-pages/report.json",
+  "output/verification/notification-pages/report.json",
 ];
 const screenshots = new Set();
 const browserResults = [];
@@ -109,6 +110,7 @@ const report = {
     "Publisher onboarding and profile settings use the owner-scoped API with explicit terms consent, encrypted idempotency receipts, revision checks, audit and outbox writes. An isolated API and production-built UI verify the complete onboarding route. The publisher home fits the reference viewport and labels its development examples. Live publisher business overviews and payouts remain pending.",
     "The output and pending pages have been realigned with the reference regions. Output links and toolbar actions use the selected record, and JSON/text/file previews preserve their own MIME types. Live output metadata uses owner-scoped committed-batch queries with signed pagination. Content storage, downloads, notification delivery and pending-action execution remain in progress.",
     "Account settings now have distinct consumer, publisher and administrator layouts. Identity, nickname edits and session management use owner-scoped APIs, generic encrypted command receipts and revision checks. Security revisions use decimal strings. Account closure, email changes and subscription disconnection remain pending.",
+    "The message center and notification settings have been realigned with their reference regions, including the fixed footer and unobscured Webhook card. Message category and unread filters persist in the URL, and preview read state drives the list, total and header badge together. Preview links use their existing output, order, refund and pending-verification records. Notification services, channel binding and subscription persistence remain pending. Live mode exposes that integration state and disables local-only saves.",
   ],
   items,
 };

@@ -9,7 +9,7 @@
   "tables": 145,
   "fields": 1755,
   "documents": {
-    "06-详细开发设计.md": "4b548e35a51a12562918842bf839eeffea4a76b4e8792f0a3553aa37a17dcdfc",
+    "06-详细开发设计.md": "42bc98d93726b6050ce3d080fdd72032084028106aea557df9b47c5df56237a5",
     "07-完整系统数据库设计.md": "add047d1a2573fe85e8682e575ea9c7c685ab8d1577a46ef09f09a0389b1ea8e"
   },
   "limit": "Static coverage and dictionary/DDL alignment; not live implementation acceptance"

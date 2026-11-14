@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T09:17:32.909Z",
+  "date": "2026-11-14T09:44:08.877Z",
   "baseURL": "http://127.0.0.1:5174",
   "checks": [
     "Script Tools branding is consistent in the browser, navigation and API documentation",

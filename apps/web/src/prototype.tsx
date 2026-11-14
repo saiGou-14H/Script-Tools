@@ -2,6 +2,7 @@ import { createContext, useContext, useState, type ReactNode } from "react";
 import { useWorkspace } from "./context";
 import type { Service } from "./types";
 import { serviceAvailable, serviceDate } from "./lib/service-display";
+import { notificationFixtures } from "./lib/consumer-preview";
 
 export interface PreviewOrder {
   id: string;
@@ -143,6 +144,7 @@ interface PrototypeContextValue {
   ) => PreviewOrder;
   cancelUnpaidOrder: (id: string) => void;
   readNotificationIds: Set<string>;
+  unreadNotificationCount: number | null;
   markNotificationRead: (id: string) => void;
   emailEventKeys: string[];
   saveEmailEventKeys: (keys: string[]) => void;
@@ -249,6 +251,11 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
         createOrder,
         cancelUnpaidOrder,
         readNotificationIds,
+        unreadNotificationCount: isPrototype
+          ? notificationFixtures.filter(
+              (item) => !readNotificationIds.has(item.id),
+            ).length
+          : null,
         markNotificationRead: (id) =>
           setReadNotificationIds((previous) => new Set([...previous, id])),
         emailEventKeys,

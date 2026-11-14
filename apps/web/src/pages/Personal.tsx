@@ -20,7 +20,7 @@ import {
   PlusOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useWorkspace } from "../context";
 import { usePrototype, type CredentialRow } from "../prototype";
 import {
@@ -34,7 +34,16 @@ import {
 
 export function PendingActionsPage() {
   const { bootstrap } = useWorkspace();
-  const [tab, setTab] = useState("全部");
+  const [filters, setFilters] = useSearchParams();
+  const requested = filters.get("category") || "全部";
+  const categories = ["全部", "待补充", "待核验", "已解决"];
+  const tab = categories.includes(requested) ? requested : "全部";
+  function setTab(value: string) {
+    const next = new URLSearchParams(filters);
+    if (value === "全部") next.delete("category");
+    else next.set("category", value);
+    setFilters(next);
+  }
   const [verify, setVerify] = useState(false);
   const { message } = App.useApp();
   const allItems = bootstrap.data_mode === "prototype" ? pendingFixtures : [];
@@ -63,7 +72,7 @@ export function PendingActionsPage() {
             <Tabs
               activeKey={tab}
               onChange={setTab}
-              items={["全部", "待补充", "待核验", "已解决"].map((label) => ({
+              items={categories.map((label) => ({
                 key: label,
                 label: `${label}（${label === "全部" ? allItems.length : allItems.filter((item) => item.category === label).length}）`,
               }))}

@@ -20,6 +20,8 @@ const context = await browser.newContext({
 const page = await context.newPage();
 page.on("pageerror", (error) => report.errors.push(error.message));
 async function capture(id) {
+  const pageId = id.split("-")[1];
+  await expect(page.locator(`.page-${pageId} .page-heading h1`)).toBeVisible();
   await page.screenshot({
     path: path.join(output, `${id}.png`),
     fullPage: true,
@@ -255,6 +257,7 @@ try {
   );
   await live.close();
   await page.goto(base + "/me/pending");
+  await expect(page.locator(".pending-action-card")).toHaveCount(2);
   await capture("USER-C13");
   await page.getByRole("tab", { name: "待核验（1）", exact: true }).click();
   await expect(page.locator(".pending-action-card")).toHaveCount(1);

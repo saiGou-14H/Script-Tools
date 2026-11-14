@@ -1,90 +1,91 @@
 import { useState } from "react";
-import { App, Button, Form, Input, Modal, Switch } from "antd";
-import { CheckCircleFilled, SettingOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Alert, App, Button, Checkbox, Form, Input, Modal, Switch } from "antd";
+import {
+  CheckCircleFilled,
+  InfoCircleOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+import { Link, useSearchParams } from "react-router-dom";
 import { useWorkspace } from "../context";
 import { usePrototype } from "../prototype";
 import { PageHeading, Panel, Status, TileIcon } from "../components/ui";
-
-const notificationFixtures = [
-  {
-    id: "result",
-    category: "运行",
-    icon: "table",
-    color: "blue",
-    title: "表格清洗结果已可领取",
-    description:
-      "您提交的表格清洗任务已经处理完成，结果文件可前往运行记录中领取。",
-    action: "查看结果",
-    to: "/me/outputs",
-  },
-  {
-    id: "payment",
-    category: "交易",
-    icon: "payment",
-    color: "green",
-    title: "订单付款已确认",
-    description: "您的订单付款已确认，服务将按订单内容执行。",
-    action: "查看订单",
-    to: "/me/orders/demo",
-  },
-  {
-    id: "refund",
-    category: "退款",
-    icon: "wallet",
-    color: "orange",
-    title: "退款¥8.00渠道处理中",
-    description: "您的退款申请已受理，目前正在通过支付渠道处理中，请耐心等待。",
-    action: "查看订单",
-    to: "/me/refunds/demo",
-  },
-  {
-    id: "booking",
-    category: "系统",
-    icon: "gift",
-    color: "purple",
-    title: "预约结果待核验",
-    description: "预约请求已提交，结果仍待核验，请查看原预约进度。",
-    action: "查看结果",
-    to: "/me/pending",
-  },
-];
+import { notificationFixtures } from "../lib/consumer-preview";
 
 export function NotificationsPage() {
   const { bootstrap } = useWorkspace();
-  const { readNotificationIds, markNotificationRead } = usePrototype();
-  const [category, setCategory] = useState("全部");
-  const all = bootstrap.data_mode === "prototype" ? notificationFixtures : [];
-  const unread = all.filter((item) => !readNotificationIds.has(item.id)).length;
+  const { readNotificationIds, markNotificationRead, unreadNotificationCount } =
+    usePrototype();
+  const [params, setParams] = useSearchParams();
+  const categories = ["全部", "交易", "运行", "退款", "系统"];
+  const requested = params.get("category") || "全部";
+  const category = categories.includes(requested) ? requested : "全部";
+  const unreadOnly = params.get("read") === "unread";
+  const prototype = bootstrap.data_mode === "prototype";
+  const all = prototype ? notificationFixtures : [];
   const rows = all.filter(
-    (item) => category === "全部" || item.category === category,
+    (item) =>
+      (category === "全部" || item.category === category) &&
+      (!unreadOnly || !readNotificationIds.has(item.id)),
   );
+  function filter(key: string, value: string | null) {
+    const next = new URLSearchParams(params);
+    if (value) next.set(key, value);
+    else next.delete(key);
+    setParams(next);
+  }
   return (
     <div className="notifications-page">
-      <PageHeading title="消息中心" />
+      <PageHeading
+        title="消息中心"
+        extra={prototype ? <Status>本地开发示例</Status> : undefined}
+      />
       <div className="notification-hero">
         <div>
           <h1>消息中心</h1>
           <p>接收与您订单、运行结果、退款及系统相关的消息通知。</p>
         </div>
-        <div className="envelope-art" aria-hidden="true" />
+        <div className="envelope-art" aria-hidden="true">
+          <i />
+        </div>
         <span>
-          未读 <strong>{unread}</strong> 条
+          未读 <strong>{unreadNotificationCount ?? "—"}</strong> 条
         </span>
         <Link to="/me/settings/notifications">
           <Button icon={<SettingOutlined />}>通知设置</Button>
         </Link>
       </div>
-      <div className="pill-tabs">
-        {["全部", "交易", "运行", "退款", "系统"].map((value) => (
-          <Button
-            key={value}
-            type={category === value ? "primary" : "default"}
-            onClick={() => setCategory(value)}
-          >
-            {value}
-          </Button>
-        ))}
+      {!prototype && (
+        <Alert
+          className="notification-integration-note"
+          type="info"
+          showIcon
+          title="站内消息接口待接入"
+          description="订单、运行与退款通知将在消息服务接入后显示。"
+        />
+      )}
+      <div className="notification-filters">
+        <div className="pill-tabs" aria-label="消息分类">
+          {categories.map((value) => (
+            <Button
+              key={value}
+              type={category === value ? "primary" : "default"}
+              aria-pressed={category === value}
+              onClick={() =>
+                filter("category", value === "全部" ? null : value)
+              }
+            >
+              {value}
+            </Button>
+          ))}
+        </div>
+        <Checkbox
+          checked={unreadOnly}
+          onChange={(event) =>
+            filter("read", event.target.checked ? "unread" : null)
+          }
+        >
+          仅看未读
+        </Checkbox>
       </div>
       <Panel className="notification-list">
         {rows.length ? (
@@ -92,6 +93,9 @@ export function NotificationsPage() {
             <article key={item.id}>
               <i
                 className={`notification-unread ${readNotificationIds.has(item.id) ? "is-read" : ""}`}
+                aria-label={
+                  readNotificationIds.has(item.id) ? "已读消息" : "未读消息"
+                }
               />
               <TileIcon name={item.icon} color={item.color} />
               <div>
@@ -112,7 +116,13 @@ export function NotificationsPage() {
             </article>
           ))
         ) : (
-          <p className="empty-list">暂无此类消息</p>
+          <p className="empty-list">
+            {!prototype
+              ? "消息列表待接入"
+              : unreadOnly
+                ? "暂无未读消息"
+                : "暂无此类消息"}
+          </p>
         )}
       </Panel>
     </div>
@@ -143,18 +153,22 @@ const emailEvents = [
 ];
 export function NotificationSettingsPage() {
   const { bootstrap } = useWorkspace();
+  const prototype = bootstrap.data_mode === "prototype";
   const {
     emailEventKeys,
     saveEmailEventKeys,
     notificationEmail,
     updateNotificationEmail,
   } = usePrototype();
-  const [events, setEvents] = useState(emailEventKeys);
-  const { mask: email, verified } = notificationEmail;
+  const [events, setEvents] = useState(prototype ? emailEventKeys : []);
+  const { mask: email, verified } = prototype
+    ? notificationEmail
+    : { mask: "", verified: false };
   const [editingEmail, setEditingEmail] = useState(false);
   const [form] = Form.useForm();
   const { message } = App.useApp();
   function saveEmail(values: { email: string }) {
+    if (!prototype) return;
     const [name, domain] = values.email.trim().split("@");
     updateNotificationEmail(`${name.slice(0, 1)}***@${domain}`);
     setEditingEmail(false);
@@ -162,6 +176,7 @@ export function NotificationSettingsPage() {
     void message.info("邮箱已更新，完成验证后可接收邮件通知");
   }
   function toggle(key: string, checked: boolean) {
+    if (!prototype) return;
     setEvents((previous) =>
       checked ? [...previous, key] : previous.filter((item) => item !== key),
     );
@@ -171,21 +186,38 @@ export function NotificationSettingsPage() {
       <PageHeading
         title="通知设置"
         description="管理服务事件的提醒方式与投递配置，及时接收关键状态更新。"
+        extra={prototype ? <Status>本地开发示例</Status> : undefined}
       />
+      {!prototype && (
+        <Alert
+          className="notification-integration-note"
+          type="info"
+          showIcon
+          title="邮件渠道绑定与事件订阅接口待接入"
+          description="站内通知随业务事实保留，邮件配置接入后可绑定并验证收件地址。"
+        />
+      )}
       <Panel className="notification-setting-card">
-        <TileIcon name="bell" />
+        <TileIcon name="mail" />
         <div>
           <h2>邮件通知</h2>
           <p>用于接收服务事件的邮件提醒。邮箱需完成验证后才能接收通知。</p>
           <div className="email-binding">
             <span>
-              {verified ? "已验证邮箱" : "待验证邮箱"}　
+              {verified ? "已验证邮箱" : email ? "待验证邮箱" : "通知邮箱"}　
               <b>{email || "尚未绑定"}</b>
             </span>
-            <Button onClick={() => setEditingEmail(true)}>
+            <Button
+              onClick={() =>
+                prototype
+                  ? setEditingEmail(true)
+                  : void message.info("邮箱绑定与收件地址验证接口待接入")
+              }
+            >
               {email ? "修改邮箱" : "绑定邮箱"}
             </Button>
             <Button
+              disabled={!verified}
               onClick={() =>
                 void message.info("邮件渠道尚未配置，本次未发送测试邮件")
               }
@@ -195,11 +227,11 @@ export function NotificationSettingsPage() {
           </div>
         </div>
         <Status tone={verified ? "green" : "orange"}>
-          {verified ? "✓ 已验证" : "待验证"}
+          {verified ? "✓ 已验证" : email ? "待验证" : "未绑定"}
         </Status>
       </Panel>
       <Panel className="notification-event-settings">
-        <TileIcon name="settings" />
+        <TileIcon name="sliders" />
         <section>
           <h2>事件通知开关</h2>
           <p>
@@ -211,7 +243,8 @@ export function NotificationSettingsPage() {
               <span>{item.description}</span>
               <Switch
                 aria-label={item.title}
-                checked={events.includes(item.key)}
+                checked={prototype && events.includes(item.key)}
+                disabled={!prototype}
                 onChange={(checked) => toggle(item.key, checked)}
               />
             </div>
@@ -219,7 +252,7 @@ export function NotificationSettingsPage() {
         </section>
       </Panel>
       <Panel className="notification-setting-card in-app-setting">
-        <TileIcon name="file" />
+        <TileIcon name="message" />
         <div>
           <h2>站内通知</h2>
           <p>所有事件的通知将在站内消息中心保留，可随时查看。</p>
@@ -234,26 +267,32 @@ export function NotificationSettingsPage() {
         </div>
         <Status tone="gray">后续功能（未启用）</Status>
       </Panel>
-      <footer className="notification-save-bar">
+      <footer
+        className={`notification-save-bar ${verified && prototype ? "has-test-example" : "is-unconfigured"}`}
+      >
         <div>
-          <CheckCircleFilled />
-          <b>
-            {verified && bootstrap.data_mode === "prototype"
-              ? "最近测试　投递成功"
-              : "邮件通知配置"}
-          </b>
+          {verified && prototype ? (
+            <CheckCircleFilled />
+          ) : (
+            <InfoCircleOutlined />
+          )}
+          <b>{verified && prototype ? "本地示例　投递成功" : "邮件通知配置"}</b>
           <span>
-            {verified && bootstrap.data_mode === "prototype"
-              ? `一封测试邮件已成功发送至 ${email}，请查收。`
-              : "完成邮箱验证后，可按已保存的事件偏好接收通知。"}
+            {verified && prototype
+              ? `示例收件地址 ${email}，实际邮件渠道待接入。`
+              : prototype
+                ? "完成邮箱验证后，可按已保存的事件偏好接收通知。"
+                : "邮件绑定、验证与订阅服务接入后，可配置事件提醒。"}
           </span>
         </div>
         <Button
           type="primary"
           size="large"
+          disabled={!prototype}
           onClick={() => {
+            if (!prototype) return;
             saveEmailEventKeys(events);
-            void message.success("通知偏好已保存");
+            void message.success("本地示例通知偏好已保存");
           }}
         >
           保存设置

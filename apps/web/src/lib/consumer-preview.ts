@@ -1,3 +1,47 @@
+export const notificationFixtures = [
+  {
+    id: "result",
+    category: "运行",
+    icon: "table",
+    color: "blue",
+    title: "表格清洗结果已可领取",
+    description:
+      "您提交的表格清洗任务已经处理完成，结果文件可前往运行记录中领取。",
+    action: "查看结果",
+    to: "/me/outputs?kind=file&output=csv",
+  },
+  {
+    id: "payment",
+    category: "交易",
+    icon: "payment",
+    color: "green",
+    title: "订单付款已确认",
+    description: "您的订单付款已确认，服务将按订单内容执行。",
+    action: "查看订单",
+    to: "/me/orders/OD202611130001",
+  },
+  {
+    id: "refund",
+    category: "退款",
+    icon: "money",
+    color: "orange",
+    title: "退款¥8.00渠道处理中",
+    description: "您的退款申请已受理，目前正在通过支付渠道处理中，请耐心等待。",
+    action: "查看退款",
+    to: "/me/refunds/REF018",
+  },
+  {
+    id: "booking",
+    category: "系统",
+    icon: "ticket",
+    color: "purple",
+    title: "预约结果待核验",
+    description: "预约请求已提交，结果仍待核验，请查看原预约进度。",
+    action: "查看结果",
+    to: "/me/pending?category=待核验",
+  },
+];
+
 export const purchaseFixtures = [
   {
     id: "clean",

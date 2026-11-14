@@ -44,9 +44,17 @@ import {
   TagOutlined,
   WindowsOutlined,
   CustomerServiceOutlined,
+  MailOutlined,
+  MessageOutlined,
+  SlidersOutlined,
+  PayCircleOutlined,
 } from "@ant-design/icons";
 
 const icons = {
+  mail: MailOutlined,
+  message: MessageOutlined,
+  sliders: SlidersOutlined,
+  money: PayCircleOutlined,
   windows: WindowsOutlined,
   support: CustomerServiceOutlined,
   layers: BlockOutlined,

@@ -10,15 +10,33 @@ import { menuForRole, pagePath, pages, PageId, roles } from "../catalog";
 import { useWorkspace } from "../context";
 import { Icon, pageIcons } from "./Icon";
 import type { Role } from "../types";
+import { usePrototype } from "../prototype";
 
 const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
   {
     C12: { C12: "folder", C13: "info" },
     C13: { C13: "calendar" },
+    C16: {
+      C16: "mail",
+      C17: "settings",
+      C06: "layers",
+      C12: "folder",
+      C13: "clock",
+      C19: "money",
+      C22: "ticket",
+    },
+    C17: {
+      C16: "mail",
+      C06: "layers",
+      C13: "clock",
+      C19: "refund",
+      C22: "ticket",
+    },
   };
 
 export function Shell({ pageId }: { pageId: PageId }) {
   const { role, setRole, bootstrap } = useWorkspace();
+  const { unreadNotificationCount } = usePrototype();
   const navigate = useNavigate();
   const location = useLocation();
   const consumerMenu: PageId[] = [
@@ -57,7 +75,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
     "C21",
     "P06",
   ];
-  if (pageId === "C02" || pageId === "C21")
+  if (["C02", "C17", "C21"].includes(pageId))
     consumerMenu.splice(1, 5, "C04", "C06", "C22", "P02", "P04");
   if (["S01", "S13", "S15"].includes(pageId))
     publisherMenu.splice(
@@ -129,6 +147,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
   const breadcrumbRoot = (
     {
       P07: "首页",
+      C17: "我的首页",
       S01: "首页",
       S05: "发布者工作台",
       S06: "发布者工作台",
@@ -262,7 +281,13 @@ export function Shell({ pageId }: { pageId: PageId }) {
                   shape="circle"
                   onClick={() => navigate("/me/notifications")}
                 >
-                  <Badge dot>
+                  <Badge
+                    className="notification-header-badge"
+                    dot={
+                      unreadNotificationCount !== null &&
+                      unreadNotificationCount > 0
+                    }
+                  >
                     <BellOutlined />
                   </Badge>
                 </Button>

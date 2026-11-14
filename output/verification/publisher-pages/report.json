@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T09:18:19.906Z",
+  "date": "2026-11-14T09:48:31.430Z",
   "checks": [
     "version self-use form previews publisher-defined fields and requires explicit owner authorization",
     "version, self-use and impact tabs switch without mixing published facts and new drafts",

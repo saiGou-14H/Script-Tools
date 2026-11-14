@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T09:18:50.215Z",
+  "date": "2026-11-14T09:52:53.883Z",
   "checks": [
     "application connects to its independent database with a non-superuser role",
     "two independent pooled connections initialize the travel search path so cross-table trigger references resolve consistently",

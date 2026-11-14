@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-14T09:51:58.094Z",
+  "checks": [
+    "the production-built message and notification-setting pages restore their reference regions inside 1814 by 868, retain sidebar access and keep the Webhook card above the fixed footer with legible save-button text",
+    "message category and unread filters survive reload in the URL, and the booking notification opens the original pending-verification category through its normal route",
+    "marking preview messages read updates the list, global unread count and header badge together, removes rows from unread views and persists across route navigation",
+    "result, payment and refund notification actions select their existing output, order and refund records while reading preserves the original pending refund facts",
+    "preview event settings require an explicit save, cancelled email edits clear their input, new addresses remain masked and unverified, and the preview workflow keeps external mutations separate",
+    "live-mode notification views expose pending integration and unknown unread state, keep preview records and success examples isolated, and disable local-only preference saves and unverified test delivery",
+    "message filtering and notification settings retain usable narrow-screen layouts without horizontal document overflow"
+  ],
+  "screenshots": [
+    "USER-C16",
+    "USER-C17"
+  ],
+  "errors": [],
+  "layouts": {
+    "USER-C16": {
+      "width": 1814,
+      "height": 868,
+      "hero": {
+        "x": 266,
+        "y": 147.1875,
+        "width": 1521,
+        "height": 118,
+        "bottom": 265.1875
+      },
+      "list": {
+        "x": 266,
+        "y": 362.1875,
+        "width": 1521,
+        "height": 386,
+        "bottom": 748.1875
+      },
+      "webhook": null,
+      "footer": null,
+      "help": {
+        "x": 10,
+        "y": 834.40625,
+        "width": 211,
+        "height": 30.5,
+        "bottom": 864.90625
+      },
+      "save_color": null
+    },
+    "USER-C17": {
+      "width": 1814,
+      "height": 868,
+      "hero": null,
+      "list": null,
+      "webhook": {
+        "x": 258,
+        "y": 690.203125,
+        "width": 1526,
+        "height": 73.796875,
+        "bottom": 764
+      },
+      "footer": {
+        "x": 228,
+        "y": 773,
+        "width": 1586,
+        "height": 95,
+        "bottom": 868
+      },
+      "help": {
+        "x": 10,
+        "y": 799.5625,
+        "width": 207,
+        "height": 31.5,
+        "bottom": 831.0625
+      },
+      "save_color": "rgb(255, 255, 255)"
+    }
+  },
+  "final_visual_acceptance": "pending",
+  "result": "PASS"
+}
