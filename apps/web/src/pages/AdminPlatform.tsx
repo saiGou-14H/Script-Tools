@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   App,
   Button,
@@ -15,6 +15,8 @@ import {
 import dayjs from "dayjs";
 import { Link, useSearchParams } from "react-router-dom";
 import { AdminPlatformSettingsLivePage } from "./AdminDeliverySettings";
+import { AdminAccessLivePage, AdminRecoveryLivePage } from "./AdminGovernance";
+import { governanceCapabilities } from "../lib/admin-governance";
 import { AdminOperationDialog } from "../components/AdminOperationDialog";
 import { Icon } from "../components/Icon";
 import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
@@ -347,8 +349,24 @@ export function AdminAccessPage() {
   const { enabled, grants, saveGrant, revokeGrant } = useAdminOperations();
   const { notes } = useAdminPreview();
   const { bootstrap } = useWorkspace();
-  const [editing, setEditing] = useState(false);
-  const [sessionsOpen, setSessionsOpen] = useState(false);
+  const [params, setParams] = useSearchParams();
+  const editingId = params.get("grant");
+  const editing = Boolean(editingId);
+  const sessionsOpen = params.get("sessions") === "1";
+  const requestKey = useRef(crypto.randomUUID());
+  const submitted = useRef(false);
+  function setEditing(value: boolean, id = "new") {
+    const next = new URLSearchParams(params);
+    if (value) next.set("grant", id);
+    else next.delete("grant");
+    setParams(next);
+  }
+  function setSessionsOpen(value: boolean) {
+    const next = new URLSearchParams(params);
+    if (value) next.set("sessions", "1");
+    else next.delete("sessions");
+    setParams(next);
+  }
   const [form] = Form.useForm();
   const { message } = App.useApp();
   const activeGrants = grants.filter((item) => !item.revoked);
@@ -364,33 +382,51 @@ export function AdminAccessPage() {
         ...initialAuditRows,
       ]
     : [];
+  useEffect(() => {
+    if (!enabled || !editingId) return;
+    form.resetFields();
+    const grant = grants.find((item) => item.id === editingId && !item.revoked);
+    if (grant)
+      form.setFieldsValue({
+        id: grant.id,
+        capabilities: grant.capabilities,
+        expiresAt: grant.expiresAt ? dayjs(grant.expiresAt) : undefined,
+        revision: grant.revision ?? 1,
+        reason: "",
+      });
+    requestKey.current = crypto.randomUUID();
+    submitted.current = false;
+  }, [editingId, enabled, form]);
   function chooseGrant(id: string) {
-    const grant = grants.find((item) => item.id === id);
-    form.setFieldsValue({
-      id,
-      capabilities: grant?.capabilities,
-      expiresAt: grant?.expiresAt ? dayjs(grant.expiresAt) : undefined,
-      reason: "",
-    });
+    setEditing(true, id);
   }
   function open(grant?: GrantPreview) {
-    form.resetFields();
-    if (grant) chooseGrant(grant.id);
-    setEditing(true);
+    setEditing(true, grant?.id || "new");
   }
+  if (!enabled) return <AdminAccessLivePage />;
   function submit(revoke = false) {
     void form
       .validateFields()
       .then((values) => {
         try {
-          if (revoke) revokeGrant(values.id, values.reason);
+          if (submitted.current) return;
+          if (revoke)
+            revokeGrant(
+              values.id,
+              values.reason,
+              values.revision,
+              requestKey.current,
+            );
           else
             saveGrant(
               values.id,
               values.capabilities,
               values.expiresAt?.format("YYYY-MM-DD"),
               values.reason,
+              values.revision,
+              requestKey.current,
             );
+          submitted.current = true;
           setEditing(false);
           void message.success("授权管理预览已保存");
         } catch (error) {
@@ -411,15 +447,11 @@ export function AdminAccessPage() {
       </div>
       <Panel title="ADMIN能力矩阵" className="admin-capability-matrix">
         <div>
-          {[
-            ["commerce.manage", "管理服务订单、退款与结算"],
-            ["catalog.manage", "维护目录、风险停销与核查恢复"],
-            ["runtime.manage", "管理运行环境与调度配置"],
-            ["access.manage", "管理账号、角色与权限授权"],
-            ["data.diagnose", "按对象与字段范围限时读取排障数据，密钥不可读"],
-          ].map(([capability, text]) => (
+          {governanceCapabilities.map(([capability, text]) => (
             <article key={capability}>
-              <TileIcon name="code" />
+              <span className="governance-capability-icon" aria-hidden>
+                {"</>"}
+              </span>
               <span>
                 <h3>{capability}</h3>
                 <p>{text}</p>
@@ -441,6 +473,7 @@ export function AdminAccessPage() {
           <Table<GrantPreview>
             rowKey="id"
             dataSource={activeGrants}
+            scroll={{ x: 690 }}
             pagination={false}
             columns={[
               {
@@ -485,8 +518,12 @@ export function AdminAccessPage() {
         <Panel
           title="操作审计"
           extra={
-            <Button type="text" onClick={() => setSessionsOpen(true)}>
-              ◷ 限时排障会话30分钟
+            <Button
+              type="text"
+              disabled={!bootstrap.user?.capabilities.includes("data.diagnose")}
+              onClick={() => setSessionsOpen(true)}
+            >
+              <Icon name="clock" /> 限时排障会话30分钟
             </Button>
           }
         >
@@ -496,6 +533,7 @@ export function AdminAccessPage() {
           <Table
             rowKey="id"
             dataSource={auditRows}
+            scroll={{ x: 740 }}
             pagination={
               auditRows.length > 5
                 ? { pageSize: 5, showSizeChanger: false }
@@ -543,7 +581,22 @@ export function AdminAccessPage() {
         <Notice>
           后台能力按账号分配，账号身份和当前登录会话以服务端授权为准。
         </Notice>
-        <Form name="adminplatform-2" form={form} layout="vertical">
+        {editingId &&
+          editingId !== "new" &&
+          !activeGrants.some((item) => item.id === editingId) && (
+            <Empty description={`授权 ${editingId} 不可用`} />
+          )}
+        <Form
+          name="adminplatform-2"
+          form={form}
+          layout="vertical"
+          onValuesChange={() => {
+            requestKey.current = crypto.randomUUID();
+          }}
+        >
+          <Form.Item name="revision" hidden>
+            <Input />
+          </Form.Item>
           <Form.Item
             name="id"
             label="目标账号"
@@ -612,15 +665,50 @@ export function AdminAccessPage() {
 export function AdminRecoveryPage() {
   const { enabled, retention, operations, saveRetention, requestOperation } =
     useAdminOperations();
-  const [policyOpen, setPolicyOpen] = useState(false);
-  const [precheckOpen, setPrecheckOpen] = useState(false);
-  const [operation, setOperation] = useState<
-    "BACKUP_CREATE" | "RECOVERY_PLAN"
-  >();
+  const [params, setParams] = useSearchParams();
+  const dialog = params.get("dialog");
+  const policyOpen = dialog === "retention";
+  const precheckOpen = dialog === "precheck";
+  const operation =
+    dialog === "backup"
+      ? "BACKUP_CREATE"
+      : dialog === "drill"
+        ? "RECOVERY_PLAN"
+        : undefined;
+  function setDialog(value?: string) {
+    const next = new URLSearchParams(params);
+    if (value) next.set("dialog", value);
+    else next.delete("dialog");
+    setParams(next);
+  }
+  function setPolicyOpen(value: boolean) {
+    setDialog(value ? "retention" : undefined);
+  }
+  function setPrecheckOpen(value: boolean) {
+    setDialog(value ? "precheck" : undefined);
+  }
+  function setOperation(value?: "BACKUP_CREATE" | "RECOVERY_PLAN") {
+    setDialog(
+      value === "BACKUP_CREATE"
+        ? "backup"
+        : value === "RECOVERY_PLAN"
+          ? "drill"
+          : undefined,
+    );
+  }
   const [form] = Form.useForm();
   const requestKey = useRef(crypto.randomUUID());
+  const policySubmitted = useRef(false);
+  useEffect(() => {
+    if (!enabled || !policyOpen) return;
+    form.resetFields();
+    form.setFieldsValue({ ...retention, reason: "" });
+    requestKey.current = crypto.randomUUID();
+    policySubmitted.current = false;
+  }, [policyOpen, enabled, form]);
   const { message, modal } = App.useApp();
   const planned = operations.some((item) => item.kind === "RECOVERY_PLAN");
+  if (!enabled) return <AdminRecoveryLivePage />;
   const policyRows = enabled
     ? [
         {
@@ -701,17 +789,17 @@ export function AdminRecoveryPage() {
           <Table
             rowKey="id"
             dataSource={policyRows}
+            scroll={{ x: 944 }}
             pagination={false}
             columns={[
               {
                 title: "数据对象",
+                width: 230,
                 render: (_, row) => (
                   <Button
                     type="text"
                     onClick={() => {
                       if (row.id === "logs" || row.id === "outputs") {
-                        form.setFieldsValue({ ...retention, reason: "" });
-                        requestKey.current = crypto.randomUUID();
                         setPolicyOpen(true);
                       } else
                         modal.info({
@@ -729,14 +817,18 @@ export function AdminRecoveryPage() {
                   </Button>
                 ),
               },
-              { title: "保留策略", dataIndex: "policy" },
-              { title: "说明", dataIndex: "description" },
+              { title: "保留策略", dataIndex: "policy", width: 237 },
+              { title: "说明", dataIndex: "description", width: 477 },
             ]}
           />
         </Panel>
         <div>
           <Panel title="备份包含范围" className="backup-scope">
-            <TileIcon name="database" />
+            <span className="backup-scope-cylinder" aria-hidden>
+              <i />
+              <i />
+              <i />
+            </span>
             <span>
               <h3>备份包含权益去重及撤权墓碑</h3>
               <p>
@@ -787,6 +879,7 @@ export function AdminRecoveryPage() {
           }}
           onFinish={(values) => {
             try {
+              if (policySubmitted.current) return;
               saveRetention(
                 {
                   hotDays: values.hotDays,
@@ -795,7 +888,9 @@ export function AdminRecoveryPage() {
                 },
                 values.reason,
                 requestKey.current,
+                values.version,
               );
+              policySubmitted.current = true;
               setPolicyOpen(false);
               void message.success("保留策略预览已保存");
             } catch (error) {
@@ -805,6 +900,9 @@ export function AdminRecoveryPage() {
             }
           }}
         >
+          <Form.Item name="version" hidden>
+            <Input />
+          </Form.Item>
           <Form.Item
             name="hotDays"
             label="日志热检索天数"

@@ -53,6 +53,7 @@ export interface GrantPreview {
   capabilities: string[];
   expiresAt?: string;
   revoked?: boolean;
+  revision?: number;
 }
 export interface PlatformPreview {
   pauseSales: boolean;
@@ -225,12 +226,20 @@ const OperationsContext = createContext<{
     capabilities: string[],
     expiresAt: string | undefined,
     reason: string,
+    expectedRevision: number,
+    requestKey: string,
   ) => void;
-  revokeGrant: (id: string, reason: string) => void;
+  revokeGrant: (
+    id: string,
+    reason: string,
+    expectedRevision: number,
+    requestKey: string,
+  ) => void;
   saveRetention: (
     values: { hotDays: number; totalDays: number; outputDays: number },
     reason: string,
     requestKey: string,
+    expectedVersion: number,
   ) => void;
 } | null>(null);
 
@@ -330,6 +339,10 @@ export function AdminOperationsProvider({ children }: { children: ReactNode }) {
         ]
       : [],
   );
+  const currentGrants = useRef(grants);
+  const savedGrantRequests = useRef(new Set<string>());
+  const currentRetention = useRef(retention);
+  const savedRetentionRequests = useRef(new Set<string>());
   function requirePreview(capability: string, reason: string) {
     if (!enabled) throw new Error("管理业务接口尚未接入");
     if (!bootstrap.user?.capabilities.includes(capability))
@@ -466,24 +479,45 @@ export function AdminOperationsProvider({ children }: { children: ReactNode }) {
     setRuleDrafts(currentRuleDrafts.current);
     recordNote(rule.id, `规则草稿v${rule.version} · ${reason}`, requestKey);
   }
-  function validateGrant(id: string, capabilities: string[]) {
-    const grant = grants.find((item) => item.id === id);
+  function validateGrant(
+    id: string,
+    capabilities: string[],
+    expectedRevision: number,
+  ) {
+    const grant = currentGrants.current.find((item) => item.id === id);
     if (!grant || grant.revoked) throw new Error("授权不存在或已失效");
+    if ((grant.revision ?? 1) !== expectedRevision)
+      throw new Error("授权修订已变更，请重新打开编辑");
     if (grant.ownerId === bootstrap.user?.id)
       throw new Error("本人授权受到保护，请使用其他有效权限管理员处理");
     if (capabilities.some((item) => !managementCapabilities.includes(item)))
       throw new Error("授权能力不在支持范围内");
-    const activeManagers = grants.filter(
+    const activeManagers = new Set(
+      currentGrants.current
+        .filter(
+          (item) =>
+            !item.revoked &&
+            item.capabilities.includes("access.manage") &&
+            (!item.expiresAt ||
+              new Date(`${item.expiresAt}T23:59:59.999`).getTime() >
+                Date.now()),
+        )
+        .map((item) => item.ownerId),
+    );
+    const otherGrantPreservesAccess = currentGrants.current.some(
       (item) =>
+        item.id !== id &&
+        item.ownerId === grant.ownerId &&
         !item.revoked &&
         item.capabilities.includes("access.manage") &&
         (!item.expiresAt ||
-          new Date(`${item.expiresAt}T23:59:59`).getTime() > Date.now()),
+          new Date(`${item.expiresAt}T23:59:59.999`).getTime() > Date.now()),
     );
     if (
       grant.capabilities.includes("access.manage") &&
       !capabilities.includes("access.manage") &&
-      activeManagers.length <= 1
+      activeManagers.size <= 1 &&
+      !otherGrantPreservesAccess
     )
       throw new Error("最后有效权限管理员受到保护");
     return grant;
@@ -493,37 +527,63 @@ export function AdminOperationsProvider({ children }: { children: ReactNode }) {
     capabilities: string[],
     expiresAt: string | undefined,
     reason: string,
+    expectedRevision: number,
+    requestKey: string,
   ) {
     requirePreview("access.manage", reason);
-    validateGrant(id, capabilities);
+    if (savedGrantRequests.current.has(requestKey)) return;
+    const grant = validateGrant(id, capabilities, expectedRevision);
     if (!capabilities.length) throw new Error("至少选择一项能力");
-    if (expiresAt && new Date(`${expiresAt}T23:59:59`).getTime() <= Date.now())
+    if (
+      expiresAt &&
+      (!/^\d{4}-\d{2}-\d{2}$/.test(expiresAt) ||
+        Number.isNaN(Date.parse(expiresAt)) ||
+        new Date(expiresAt).toISOString().slice(0, 10) !== expiresAt ||
+        new Date(`${expiresAt}T23:59:59.999`).getTime() <= Date.now())
+    )
       throw new Error("授权到期日须晚于当前时间");
-    setGrants((previous) =>
-      previous.map((item) =>
-        item.id === id
-          ? { ...item, capabilities: [...new Set(capabilities)], expiresAt }
-          : item,
-      ),
+    currentGrants.current = currentGrants.current.map((item) =>
+      item.id === id
+        ? {
+            ...item,
+            capabilities: [...new Set(capabilities)],
+            expiresAt,
+            revision: (grant.revision ?? 1) + 1,
+          }
+        : item,
     );
-    recordNote(id, `调整授权预览 · ${reason}`, crypto.randomUUID());
+    savedGrantRequests.current.add(requestKey);
+    setGrants(currentGrants.current);
+    recordNote(id, `调整授权预览 · ${reason}`, requestKey);
   }
-  function revokeGrant(id: string, reason: string) {
+  function revokeGrant(
+    id: string,
+    reason: string,
+    expectedRevision: number,
+    requestKey: string,
+  ) {
     requirePreview("access.manage", reason);
-    validateGrant(id, []);
-    setGrants((previous) =>
-      previous.map((item) =>
-        item.id === id ? { ...item, revoked: true } : item,
-      ),
+    if (savedGrantRequests.current.has(requestKey)) return;
+    const grant = validateGrant(id, [], expectedRevision);
+    currentGrants.current = currentGrants.current.map((item) =>
+      item.id === id
+        ? { ...item, revoked: true, revision: (grant.revision ?? 1) + 1 }
+        : item,
     );
-    recordNote(id, `撤销授权预览 · ${reason}`, crypto.randomUUID());
+    savedGrantRequests.current.add(requestKey);
+    setGrants(currentGrants.current);
+    recordNote(id, `撤销授权预览 · ${reason}`, requestKey);
   }
   function saveRetention(
     values: { hotDays: number; totalDays: number; outputDays: number },
     reason: string,
     requestKey: string,
+    expectedVersion: number,
   ) {
     requirePreview("runtime.manage", reason);
+    if (savedRetentionRequests.current.has(requestKey)) return;
+    if (expectedVersion !== currentRetention.current.version)
+      throw new Error("保留策略版本已变更，请重新打开编辑");
     if (
       ![values.hotDays, values.totalDays, values.outputDays].every(
         (value) => Number.isSafeInteger(value) && value >= 1,
@@ -531,11 +591,13 @@ export function AdminOperationsProvider({ children }: { children: ReactNode }) {
       values.hotDays > values.totalDays
     )
       throw new Error("保留天数须为正整数，热检索天数须在总期限内");
-    setRetention((previous) =>
-      previous.requestKey === requestKey
-        ? previous
-        : { ...values, version: previous.version + 1, requestKey },
-    );
+    currentRetention.current = {
+      ...values,
+      version: currentRetention.current.version + 1,
+      requestKey,
+    };
+    savedRetentionRequests.current.add(requestKey);
+    setRetention(currentRetention.current);
     recordNote("RETENTION", reason, requestKey);
   }
   return (

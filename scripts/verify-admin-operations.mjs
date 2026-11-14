@@ -48,17 +48,17 @@ async function menu(title) {
     .click();
 }
 async function choose(scope, label, value) {
-  await scope.getByRole("combobox", { name: label, exact: true }).click();
+  const field = scope.getByRole("combobox", { name: label, exact: true });
+  const multiple = await field.evaluate((element) =>
+    element.closest(".ant-select")?.classList.contains("ant-select-multiple"),
+  );
+  await field.click();
   await page
     .locator(".ant-select-dropdown .ant-select-item-option-content")
     .getByText(value, { exact: true })
     .click();
-  if (await page.locator(".ant-select-dropdown:visible").count()) {
-    await scope
-      .getByRole("combobox", { name: label, exact: true })
-      .press("Escape");
-    await expect(page.locator(".ant-select-dropdown:visible")).toHaveCount(0);
-  }
+  if (multiple) await field.press("Escape");
+  await expect(page.locator(".ant-select-dropdown:visible")).toHaveCount(0);
 }
 async function confirmOperation(reason) {
   await page
@@ -390,17 +390,18 @@ try {
   });
   const livePage = await live.newPage();
   livePage.on("pageerror", (error) => report.errors.push(error.message));
-  for (const route of ["/admin/access", "/admin/recovery"]) {
-    await livePage.goto(base + route);
-    await expect(
-      livePage.locator(".admin-page .ant-empty").first(),
-    ).toBeVisible();
-    await expect(livePage.locator(".admin-page")).not.toContainText(
-      "MAIL-****7D91",
-    );
-  }
   for (const [route, endpoint, selector] of [
     ["/admin/runs", "/admin/runs?limit=20", ".admin-runs-table"],
+    [
+      "/admin/access",
+      "/admin/role-grants?limit=20",
+      ".admin-access-columns > .panel:first-child",
+    ],
+    [
+      "/admin/recovery",
+      "/admin/observability/policies?limit=20",
+      ".admin-recovery-columns > .panel:first-child",
+    ],
     [
       "/admin/deliveries",
       "/admin/notification-deliveries?limit=20",
@@ -458,7 +459,7 @@ try {
   await live.close();
   expect(report.errors).toEqual([]);
   report.checks.push(
-    "live-mode infrastructure reads paged node, image, run, log, delivery and platform-feature metadata with actual scheduling counters while pending controls retain their integration state",
+    "live-mode administration reads paged infrastructure, execution, notification, platform and governance metadata with actual scheduling counters while pending controls retain their integration state",
   );
   report.result = "PASS";
 } catch (error) {

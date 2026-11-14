@@ -10,6 +10,137 @@ import { AdminMetadataService } from "./admin-metadata.service";
 export class AdminMetadataController {
   constructor(private readonly metadata: AdminMetadataService) {}
 
+  @Get("role-grants")
+  @Capability("access.manage")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({
+    name: "status",
+    required: false,
+    enum: ["ACTIVE", "REVOKED", "EXPIRED", "ACCOUNT_INACTIVE"],
+  })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  roleGrants(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.roleGrants(request.user!, query);
+  }
+
+  @Get("audit-events")
+  @Capability("access.manage")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({
+    name: "status",
+    required: false,
+    enum: ["SUCCESS", "DENIED", "FAILED"],
+  })
+  @ApiQuery({ name: "actor", required: false, type: String })
+  @ApiQuery({ name: "object", required: false, type: String })
+  @ApiQuery({ name: "action", required: false, type: String })
+  @ApiQuery({ name: "from", required: false, type: String })
+  @ApiQuery({ name: "to", required: false, type: String })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  auditEvents(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.auditEvents(request.user!, query, request.requestId);
+  }
+
+  @Get("data-access-sessions")
+  @Capability("data.diagnose")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({
+    name: "status",
+    required: false,
+    enum: ["ACTIVE", "REVOKED", "EXPIRED", "GRANT_INACTIVE"],
+  })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  dataAccessSessions(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.dataAccessSessions(request.user!, query);
+  }
+
+  @Get("backups")
+  @Capability("runtime.manage")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  backups(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.backups(request.user!, query);
+  }
+
+  @Get("recovery-drills")
+  @Capability("runtime.manage")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({
+    name: "status",
+    required: false,
+    enum: ["PLANNED", "RUNNING", "PASSED", "FAILED", "CANCELLED"],
+  })
+  @ApiQuery({ name: "backup_id", required: false, type: String })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  recoveryDrills(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.recoveryDrills(request.user!, query);
+  }
+
+  @Get("cleanup-jobs")
+  @Capability("runtime.manage")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({
+    name: "status",
+    required: false,
+    enum: ["PENDING", "RUNNING", "DONE", "FAILED"],
+  })
+  @ApiQuery({ name: "request_id", required: false, type: String })
+  @ApiQuery({ name: "store", required: false, type: String })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  cleanupJobs(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.cleanupJobs(request.user!, query);
+  }
+
+  @Get("observability/policies")
+  @Capability("runtime.manage")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  retentionPolicies(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.retentionPolicies(request.user!, query);
+  }
+
   @Get("notification-deliveries")
   @Capability("observability.manage")
   @ApiQuery({ name: "q", required: false, type: String })

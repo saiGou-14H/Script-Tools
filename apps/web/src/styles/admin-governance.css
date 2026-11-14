@@ -1,0 +1,257 @@
+.page-O19 .main-content {
+  padding-top: 74px;
+}
+.admin-access-banner {
+  position: relative;
+  overflow: hidden;
+}
+.admin-access-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 65%;
+  background: linear-gradient(120deg, #dfe5ff80, #bccbff90);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%, 38% 63%);
+  pointer-events: none;
+}
+.governance-capability-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: linear-gradient(120deg, #e2ecff, #d2e2ff);
+  color: #1555ff;
+  font:
+    25px/1 Consolas,
+    monospace;
+  letter-spacing: -3px;
+}
+.admin-access-columns .panel-heading {
+  padding-top: 8px;
+}
+.admin-access-columns .panel-body > p {
+  margin-bottom: 10px;
+}
+.admin-access-columns .panel-heading .ant-btn-primary {
+  min-width: 96px;
+  height: 35px;
+}
+.admin-access-columns .panel-heading .ant-btn-text {
+  padding: 0 12px;
+  background: #eaf2ff;
+  color: #1555ff;
+  font-size: 14px;
+}
+.admin-access-columns .panel-heading .ant-btn-text .anticon {
+  font-size: 16px;
+}
+.backup-scope-cylinder {
+  position: relative;
+  width: 59px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: #edf3ff;
+}
+.backup-scope-cylinder i {
+  position: absolute;
+  left: 16px;
+  width: 28px;
+  height: 15px;
+  border-radius: 50%;
+  background: linear-gradient(#9ec2ff 35%, #377cff 38%);
+  box-shadow: 0 2px 0 #dbe7ff;
+}
+.backup-scope-cylinder i:nth-child(1) {
+  top: 23px;
+}
+.backup-scope-cylinder i:nth-child(2) {
+  top: 14px;
+}
+.backup-scope-cylinder i:nth-child(3) {
+  top: 5px;
+}
+.admin-capability-matrix .panel-heading h2 {
+  font-size: 20px;
+}
+.admin-capability-matrix h3 {
+  font-size: 16px;
+  line-height: 22px;
+}
+.admin-capability-matrix p {
+  font-size: 13px;
+}
+.admin-access-columns > *,
+.admin-recovery-columns > * {
+  min-width: 0;
+}
+.admin-access-columns .ant-table-thead > tr > th,
+.admin-access-columns .ant-table-tbody > tr > td {
+  font-size: 14px;
+}
+.admin-access-columns > .panel:first-child .ant-table-tbody > tr > td {
+  height: 44px;
+  padding: 6px 14px;
+}
+.admin-access-columns .ant-table-tbody > tr > td:first-child {
+  font-weight: 600;
+}
+.admin-access-columns .ant-table .status,
+.grant-capabilities code {
+  font-size: 12px;
+}
+.grant-capabilities code {
+  line-height: 16px;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+.admin-access-columns .ant-table .ant-btn,
+.admin-access-columns .panel-body > p,
+.admin-access-columns .notice,
+.admin-access-page > .notice {
+  font-size: 13px;
+}
+.admin-recovery-columns .ant-table-tbody > tr > td {
+  font-size: 15px;
+}
+.admin-recovery-columns .ant-table .ant-btn {
+  font-size: 17px;
+}
+.backup-scope h3,
+.recovery-steps article h3 {
+  font-size: 16px;
+}
+.backup-scope p,
+.recovery-steps article p,
+.recovery-steps .notice p {
+  font-size: 13px;
+}
+.backup-scope .panel-body {
+  padding-bottom: 16px;
+}
+.recovery-steps .notice h3 {
+  font-size: 15px;
+  line-height: 22px;
+}
+.governance-filters,
+.governance-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 12px 0 16px;
+}
+.governance-filters .ant-input-search {
+  width: 260px;
+  max-width: 100%;
+}
+.governance-filters .ant-select {
+  width: 160px;
+}
+.governance-scope {
+  margin-top: 14px;
+  color: #50617b;
+  overflow-wrap: anywhere;
+}
+.governance-live .ant-table-cell {
+  overflow-wrap: anywhere;
+}
+.governance-live .ant-table .ant-btn {
+  white-space: normal;
+  height: auto;
+  text-align: left;
+  padding: 0;
+}
+.governance-live .grant-capabilities {
+  min-width: 0;
+}
+@media (max-width: 760px) {
+  .app-shell.admin-workspace:is(.page-O19, .page-O20) {
+    --sidebar-width: 0px;
+  }
+  .app-shell:is(.page-O19, .page-O20) .main-content {
+    padding: calc(var(--header-height) + 20px) 16px 24px;
+  }
+  .app-shell:is(.page-O19, .page-O20) .brand {
+    min-width: 0;
+  }
+  .app-shell:is(.page-O19, .page-O20) .brand strong {
+    font-size: 17px;
+  }
+  .app-shell:is(.page-O19, .page-O20) .workspace-button {
+    font-size: 0;
+    gap: 8px;
+    padding: 0 10px;
+  }
+  .app-shell:is(.page-O19, .page-O20) .workspace-button b,
+  .app-shell:is(.page-O19, .page-O20) .workspace-button .anticon {
+    font-size: 12px;
+  }
+  .admin-access-banner {
+    padding: 16px;
+    height: auto;
+  }
+  .admin-access-banner h1 {
+    font-size: 26px;
+    line-height: 34px;
+  }
+  .admin-capability-matrix .panel-body > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .admin-access-columns,
+  .admin-recovery-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .admin-access-columns .ant-table,
+  .admin-recovery-columns .ant-table {
+    min-width: 0;
+  }
+  .admin-access-columns .panel-heading,
+  .admin-recovery-columns .panel-heading {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .admin-access-columns > .panel,
+  .admin-recovery-columns > .panel {
+    min-height: 0;
+  }
+  .admin-backup-banner {
+    height: auto;
+    min-height: 120px;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 16px;
+  }
+  .admin-backup-banner .backup-stack {
+    width: 82px;
+  }
+  .admin-backup-banner > span {
+    flex: 1 0 calc(100% - 98px);
+  }
+  .admin-backup-banner h2 {
+    font-size: 22px;
+  }
+  .admin-backup-banner p {
+    font-size: 14px;
+    line-height: 22px;
+  }
+  .admin-backup-banner .ant-btn {
+    margin-left: 0;
+    min-width: 0;
+    flex: 1;
+    height: 42px;
+    font-size: 15px;
+  }
+  .backup-status-row {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .backup-status-row .status {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  .governance-filters .ant-input-search,
+  .governance-filters .ant-select {
+    width: 100%;
+  }
+}

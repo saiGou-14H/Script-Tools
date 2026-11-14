@@ -123,6 +123,322 @@ export class AdminMetadataService {
     };
   }
 
+  async roleGrants(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "access.manage");
+    const options = this.options(query, [
+      "ACTIVE",
+      "REVOKED",
+      "EXPIRED",
+      "ACCOUNT_INACTIVE",
+    ]);
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-role-grants",
+      options,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      WITH managers AS MATERIALIZED (
+        SELECT DISTINCT g.owner_user_id FROM travel.management_role_grants g
+        JOIN travel.users u ON u.id=g.owner_user_id AND u.status='ACTIVE' AND u.verified_at IS NOT NULL
+        WHERE g.revoked_at IS NULL AND (g.expires_at IS NULL OR g.expires_at>now()) AND 'access.manage'=ANY(g.capabilities)
+      ), grants AS (
+        SELECT g.id,g.created_at,g.revision::text,g.capabilities,g.expires_at,g.revoked_at,g.reason,
+          ${accountMask("u")} AS account_mask,u.status AS account_status,(u.id=$1::uuid) AS is_current_user,
+          ((SELECT count(*) FROM managers)=1 AND u.id IN (SELECT owner_user_id FROM managers)) AS is_last_access_manager,
+          CASE WHEN g.revoked_at IS NOT NULL THEN 'REVOKED' WHEN g.expires_at<=now() THEN 'EXPIRED'
+            WHEN u.status<>'ACTIVE' OR u.verified_at IS NULL THEN 'ACCOUNT_INACTIVE' ELSE 'ACTIVE' END AS status,
+          ${cursorProjection("g")}
+        FROM travel.management_role_grants g JOIN travel.users u ON u.id=g.owner_user_id
+      ) SELECT * FROM grants g
+      WHERE ($2::text IS NULL OR g.status=$2) AND (g.id::text ILIKE $3 ESCAPE '\\' OR g.account_mask ILIKE $3 ESCAPE '\\'
+        OR EXISTS(SELECT 1 FROM unnest(g.capabilities) capability WHERE capability ILIKE $3 ESCAPE '\\'))
+        AND ($4::uuid IS NULL OR (g.created_at,g.id)<($5::timestamptz,$4::uuid))
+      ORDER BY g.created_at DESC,g.id DESC LIMIT $6`,
+      [
+        actor.id,
+        options.status || null,
+        literalPattern(options.q),
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+      ],
+    );
+    return this.pagination.page(scope, result.rows, options.limit);
+  }
+
+  async auditEvents(
+    actor: CurrentUser,
+    query: Record<string, unknown>,
+    requestId: string = randomUUID(),
+  ) {
+    this.authorize(actor, "access.manage");
+    const options = this.options(
+      query,
+      ["SUCCESS", "DENIED", "FAILED"],
+      ["actor", "object", "action", "from", "to"],
+    );
+    for (const key of ["actor", "object", "action"]) {
+      if (
+        query[key] !== undefined &&
+        (typeof query[key] !== "string" || (query[key] as string).length > 200)
+      )
+        invalidQuery(`${key}应为不超过200字的字符串`);
+    }
+    const actorFilter = (query.actor as string | undefined)?.trim() || null;
+    const objectFilter = (query.object as string | undefined)?.trim() || null;
+    const actionFilter = (query.action as string | undefined)?.trim() || null;
+    const window = this.observationWindow(query);
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-audit-events",
+      options,
+      actorFilter,
+      objectFilter,
+      actionFilter,
+      window,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      SELECT a.id,a.created_at,a.revision::text,a.action,a.target_type,a.target_id,a.request_id,a.outcome,
+        a.before_revision::text,a.after_revision::text,
+        CASE WHEN a.actor_user_id IS NOT NULL THEN 'u****'||right(a.actor_user_id::text,4) ELSE a.actor_service END AS actor_mask,
+        CASE WHEN a.subject_owner_user_id IS NOT NULL THEN 'u****'||right(a.subject_owner_user_id::text,4) END AS subject_mask,
+        CASE WHEN jsonb_typeof(a.summary->'reason')='string' THEN a.summary->>'reason' END AS reason,
+        ${cursorProjection("a")}
+      FROM travel.audit_events a
+      WHERE ($1::text IS NULL OR a.outcome=$1)
+        AND (a.action ILIKE $2 ESCAPE '\\' OR a.target_type ILIKE $2 ESCAPE '\\' OR a.request_id ILIKE $2 ESCAPE '\\' OR a.id::text ILIKE $2 ESCAPE '\\')
+        AND ($3::text IS NULL OR a.actor_user_id::text=lower($3) OR a.actor_service=$3)
+        AND ($4::text IS NULL OR a.target_id::text=lower($4) OR a.target_type=$4)
+        AND ($5::text IS NULL OR a.action=$5)
+        AND ($6::timestamptz IS NULL OR a.created_at>=$6) AND ($7::timestamptz IS NULL OR a.created_at<$7)
+        AND ($8::uuid IS NULL OR (a.created_at,a.id)<($9::timestamptz,$8::uuid))
+      ORDER BY a.created_at DESC,a.id DESC LIMIT $10`,
+      [
+        options.status || null,
+        literalPattern(options.q),
+        actorFilter,
+        objectFilter,
+        actionFilter,
+        window.from,
+        window.to,
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+      ],
+    );
+    const page = await this.pagination.page(scope, result.rows, options.limit);
+    await this.database.query(
+      `INSERT INTO travel.audit_events(id,actor_user_id,action,target_type,request_id,outcome,summary)
+      VALUES(gen_random_uuid(),$1,'ops.audit.read','AUDIT_QUERY',$2,'SUCCESS',$3)`,
+      [
+        actor.id,
+        requestId,
+        JSON.stringify({
+          returned: page.items.length,
+          from: window.from,
+          to: window.to,
+        }),
+      ],
+    );
+    return page;
+  }
+
+  async dataAccessSessions(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "data.diagnose");
+    const options = this.options(query, [
+      "ACTIVE",
+      "REVOKED",
+      "EXPIRED",
+      "GRANT_INACTIVE",
+    ]);
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-own-data-sessions",
+      options,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      WITH sessions AS (
+        SELECT s.id,s.created_at,s.revision::text,s.capability_grant_id,s.purpose,s.ticket_ref,s.expires_at,s.revoked_at,
+          jsonb_array_length(s.scope)::text AS scope_count,
+          CASE WHEN s.revoked_at IS NOT NULL THEN 'REVOKED' WHEN s.expires_at<=now() THEN 'EXPIRED'
+            WHEN g.id IS NULL OR g.revoked_at IS NOT NULL OR g.expires_at<=now() OR NOT ('data.diagnose'=ANY(g.capabilities)) THEN 'GRANT_INACTIVE' ELSE 'ACTIVE' END AS status,
+          ${cursorProjection("s")}
+        FROM travel.data_access_sessions s
+        LEFT JOIN travel.management_role_grants g ON g.id=s.capability_grant_id AND g.owner_user_id=s.owner_user_id
+        WHERE s.owner_user_id=$1::uuid
+      ) SELECT * FROM sessions s WHERE ($2::text IS NULL OR s.status=$2)
+        AND (s.id::text ILIKE $3 ESCAPE '\\' OR s.ticket_ref ILIKE $3 ESCAPE '\\')
+        AND ($4::uuid IS NULL OR (s.created_at,s.id)<($5::timestamptz,$4::uuid))
+      ORDER BY s.created_at DESC,s.id DESC LIMIT $6`,
+      [
+        actor.id,
+        options.status || null,
+        literalPattern(options.q),
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+      ],
+    );
+    return this.pagination.page(scope, result.rows, options.limit);
+  }
+
+  async backups(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "runtime.manage");
+    const options = this.options(query, []);
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-backups",
+      options,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      SELECT b.id,b.created_at,b.revision::text,b.completed_at,b.expires_at,(b.expires_at<=now()) AS expired,
+        (length(b.revocation_watermark)>0) AS has_revocation_watermark,${cursorProjection("b")}
+      FROM travel.backup_manifests b WHERE b.id::text ILIKE $1 ESCAPE '\\'
+        AND ($2::uuid IS NULL OR (b.created_at,b.id)<($3::timestamptz,$2::uuid))
+      ORDER BY b.created_at DESC,b.id DESC LIMIT $4`,
+      [
+        literalPattern(options.q),
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+      ],
+    );
+    return this.pagination.page(scope, result.rows, options.limit);
+  }
+
+  async recoveryDrills(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "runtime.manage");
+    const options = this.options(
+      query,
+      ["PLANNED", "RUNNING", "PASSED", "FAILED", "CANCELLED"],
+      ["backup_id"],
+    );
+    const backupId = referenceId(query.backup_id, "backup_id");
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-recovery-drills",
+      options,
+      backupId,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      SELECT d.id,d.created_at,d.revision::text,d.backup_id,d.status,d.started_at,d.finished_at,${evidencePresent("d")} AS has_evidence,
+        b.completed_at AS backup_completed_at,(b.expires_at<=now()) AS backup_expired,${cursorProjection("d")}
+      FROM travel.recovery_drills d JOIN travel.backup_manifests b ON b.id=d.backup_id
+      WHERE ($1::text IS NULL OR d.status=$1) AND ($2::uuid IS NULL OR d.backup_id=$2)
+        AND (d.id::text ILIKE $3 ESCAPE '\\' OR d.backup_id::text ILIKE $3 ESCAPE '\\')
+        AND ($4::uuid IS NULL OR (d.created_at,d.id)<($5::timestamptz,$4::uuid))
+      ORDER BY d.created_at DESC,d.id DESC LIMIT $6`,
+      [
+        options.status || null,
+        backupId,
+        literalPattern(options.q),
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+      ],
+    );
+    return this.pagination.page(scope, result.rows, options.limit);
+  }
+
+  async cleanupJobs(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "runtime.manage");
+    const options = this.options(
+      query,
+      ["PENDING", "RUNNING", "DONE", "FAILED"],
+      ["request_id", "store"],
+    );
+    const requestId = referenceId(query.request_id, "request_id");
+    const store = query.store;
+    if (
+      store !== undefined &&
+      ![
+        "DATABASE",
+        "OBJECT",
+        "LOKI",
+        "TRACE",
+        "CACHE",
+        "EXPORT",
+        "NODE_WAL",
+        "WORKSPACE",
+        "CHECKPOINT",
+        "BACKUP",
+      ].includes(store as string)
+    )
+      invalidQuery("清理存储类型无效");
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-cleanup-jobs",
+      options,
+      requestId,
+      store,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      SELECT s.id,s.created_at,s.revision::text,s.request_id,s.store,s.status,s.attempt_count,s.next_attempt_at,s.completed_at,s.failure_code,
+        r.status AS request_status,r.scope_type,r.latest_backup_expiry,${cursorProjection("s")}
+      FROM travel.deletion_steps s JOIN travel.deletion_requests r ON r.id=s.request_id AND r.owner_user_id=s.owner_user_id
+      WHERE ($1::text IS NULL OR s.status=$1) AND ($2::uuid IS NULL OR s.request_id=$2) AND ($3::text IS NULL OR s.store=$3)
+        AND (s.id::text ILIKE $4 ESCAPE '\\' OR s.request_id::text ILIKE $4 ESCAPE '\\')
+        AND ($5::uuid IS NULL OR (s.created_at,s.id)<($6::timestamptz,$5::uuid))
+      ORDER BY s.created_at DESC,s.id DESC LIMIT $7`,
+      [
+        options.status || null,
+        requestId,
+        store || null,
+        literalPattern(options.q),
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+      ],
+    );
+    return this.pagination.page(scope, result.rows, options.limit);
+  }
+
+  async retentionPolicies(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "runtime.manage");
+    const options = this.options(query, []);
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-retention-policies",
+      options,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      SELECT p.id,p.created_at,p.revision::text,p.kind,p.version,p.effective_at,(p.effective_at>now()) AS is_future,
+        (p.effective_at<=now() AND NOT EXISTS(SELECT 1 FROM travel.observability_policies later WHERE later.kind=p.kind AND later.version>p.version AND later.effective_at<=now())) AS is_current,
+        ${cursorProjection("p")} FROM travel.observability_policies p
+      WHERE (p.kind ILIKE $1 ESCAPE '\\' OR p.id::text ILIKE $1 ESCAPE '\\')
+        AND ($2::uuid IS NULL OR (p.created_at,p.id)<($3::timestamptz,$2::uuid))
+      ORDER BY p.created_at DESC,p.id DESC LIMIT $4`,
+      [
+        literalPattern(options.q),
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+      ],
+    );
+    return this.pagination.page(scope, result.rows, options.limit);
+  }
+
   async deliveries(actor: CurrentUser, query: Record<string, unknown>) {
     this.authorize(actor, "observability.manage");
     const options = this.options(

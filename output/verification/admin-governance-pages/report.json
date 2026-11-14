@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-14T19:35:19.513Z",
+  "checks": [
+    "HTTP governance queries enforce separate access.manage, data.diagnose and runtime.manage capabilities and recheck changed grants",
+    "Role metadata keeps revoked, expired and inactive-account records distinct, preserves BIGINT revisions and counts the last effective access manager by distinct active verified account",
+    "Audit reads expose scoped reason and revision fields and append their own query audit, while diagnostic-session reads stay with the authenticated owner and exclude tokens and scope bodies",
+    "Backup manifests, drill states and evidence presence, per-store cleanup receipts and per-kind retention versions retain independent stored facts without exposing object paths or raw evidence",
+    "Strict filters reject malformed queries and cross-owner session requests, and signed pagination binds query scope while audit self-recording avoids cursor duplication",
+    "PostgreSQL 18 verifies all governance projections, audited reads and security-revision cursors inside fully rolled-back transactions",
+    "Prototype grant selection restores from URL, captures its revision, preserves updated capabilities and records one result for repeated confirmation without substituting an unavailable target",
+    "Prototype retention and recovery dialogs restore from URL, capture their policy version and advance once for duplicate saves while precheck evidence retains its pending state",
+    "LIVE access queries retry failures, paginate real grants, locate a grant beyond the loaded page and show only the current operator's diagnostic session metadata",
+    "LIVE recovery restores exact backup identity, paginates manifests and keeps passed drill status, evidence presence and per-store cleanup results independently visible",
+    "Desktop and 390px governance pages preserve full-width content with internal table scrolling and leave grants, backup manifests and cleanup business records unchanged"
+  ],
+  "screenshots": [
+    "ADMIN-O19",
+    "ADMIN-O20",
+    "ADMIN-O19-prototype-mobile",
+    "ADMIN-O20-prototype-mobile",
+    "ADMIN-O19-live",
+    "ADMIN-O20-live",
+    "ADMIN-O19-mobile",
+    "ADMIN-O20-mobile"
+  ],
+  "layouts": {
+    "ADMIN-O19-mobile": {
+      "left": 16,
+      "width": 358
+    },
+    "ADMIN-O20-mobile": {
+      "left": 16,
+      "width": 358
+    }
+  },
+  "errors": [],
+  "result": "PASS"
+}
