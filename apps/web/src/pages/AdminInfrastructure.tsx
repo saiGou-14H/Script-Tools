@@ -1,9 +1,19 @@
 import { useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useWorkspace } from "../context";
+import { useAdminMetadata } from "../lib/admin-metadata";
+import {
+  type RuntimeNodeMetadata,
+  type RuntimeImageMetadata,
+  type CapacityQuotaMetadata,
+  type SchedulingMetadata,
+  runtimeModeLabels,
+  nodeStateLabels,
+} from "../lib/admin-runtime-metadata";
 import {
   Alert,
   App,
   Button,
-  Empty,
   Form,
   Input,
   InputNumber,
@@ -19,62 +29,121 @@ import { useAdminOperations, type OperationKind } from "../admin-operations";
 import { api } from "../api";
 
 const capacities = [
-  { mode: "Docker", used: 48, total: 64, icon: "container" },
-  { mode: "KVM", used: 24, total: 32, icon: "laptop" },
-  { mode: "TCG", used: 12, total: 16, icon: "settings" },
+  { mode: "Docker", key: "docker", used: 48, total: 64, icon: "docker" },
+  { mode: "KVM", key: "qemu_kvm", used: 24, total: 32, icon: "desktop" },
+  { mode: "TCG", key: "qemu_tcg", used: 12, total: 16, icon: "settings" },
 ];
 export function AdminSchedulingPage() {
   const { enabled, platform, operations, savePlatform, requestOperation } =
     useAdminOperations();
+  const { bootstrap } = useWorkspace();
+  const snapshot = useQuery({
+    queryKey: [
+      "admin",
+      bootstrap.user?.id,
+      bootstrap.user?.security_revision,
+      "scheduling",
+    ],
+    enabled: !enabled,
+    queryFn: ({ signal }) =>
+      api<SchedulingMetadata>("/admin/scheduling", { signal }),
+  });
+  const quotas = useAdminMetadata<CapacityQuotaMetadata>(
+    "scheduling/quotas",
+    "",
+    !enabled,
+  );
   const [rateOpen, setRateOpen] = useState(false);
   const [drainOpen, setDrainOpen] = useState(false);
   const [form] = Form.useForm();
   const requestKey = useRef(crypto.randomUUID());
   const { message } = App.useApp();
-  if (!enabled)
-    return (
-      <div className="admin-page admin-scheduling-page">
-        <PageHeading title="调度与容量" />
-        <Empty description="调度指标接口尚未接入" />
-      </div>
-    );
-  const rows = enabled ? capacities : [];
+  const rows = capacities;
+  const modeMetadata = (key: string) =>
+    snapshot.data?.modes.find((item) => item.mode === key);
   const draining = operations.some(
     (item) => item.kind === "NODE_DRAIN" && item.resourceId === "resource-pool",
   );
   return (
-    <div className="admin-page admin-scheduling-page">
+    <div
+      className={`admin-page admin-scheduling-page ${enabled ? "" : "runtime-metadata-live"}`}
+    >
       <PageHeading
         title="调度与容量"
         description="管理计算资源池、调度队列与配额，控制运行与排空策略，保障服务稳定与高效运行。"
+        extra={
+          !enabled && (
+            <div className="runtime-snapshot-time">
+              <span>
+                {snapshot.data
+                  ? `查询快照 ${snapshot.data.as_of}`
+                  : "正在查询调度快照"}
+              </span>
+              <Button
+                loading={snapshot.isFetching || quotas.isFetching}
+                onClick={() => {
+                  void snapshot.refetch();
+                  void quotas.refetch();
+                }}
+              >
+                刷新快照
+              </Button>
+            </div>
+          )
+        }
       />
+      {!enabled && snapshot.isError && (
+        <Alert
+          type="error"
+          title="调度快照查询失败"
+          action={
+            <Button onClick={() => void snapshot.refetch()}>
+              重试调度快照
+            </Button>
+          }
+        />
+      )}
       <div className="admin-resource-banner">
-        <TileIcon name="container" />
+        <TileIcon name="layers" />
         <span>
           <h3>资源池</h3>
-          <small>当前可用的计算资源池类型</small>
+          <small>
+            {enabled ? "当前可用的计算资源池类型" : "按实际执行模式统计租约"}
+          </small>
         </span>
         <div className="resource-mode-tags">
           {["Docker", "KVM", "TCG"].map((mode) => (
             <span key={mode}>
               <Icon name="shield" />
               {mode}
-              {mode === "TCG" && <Status tone="green">允许</Status>}
+              {enabled && mode === "TCG" && <Status tone="green">允许</Status>}
             </span>
           ))}
         </div>
         <div className="resource-queue-stats">
           {[
-            ["队列待运行", "12", "play"],
-            ["活跃", "32", "chart"],
-            ["预约等待", "8", "clock"],
+            [
+              "队列待运行",
+              enabled ? "12" : (snapshot.data?.counts.queued_runs ?? "—"),
+              "play",
+            ],
+            [
+              "活跃",
+              enabled ? "32" : (snapshot.data?.counts.active_runs ?? "—"),
+              "chart",
+            ],
+            [
+              "预约等待",
+              enabled ? "8" : (snapshot.data?.counts.waiting_bookings ?? "—"),
+              "clock",
+            ],
           ].map(([label, value, icon]) => (
             <article key={label}>
               <b>
                 <Icon name={icon} />
                 {label}
               </b>
-              <strong>{enabled ? value : "—"}</strong>
+              <strong>{value}</strong>
             </article>
           ))}
         </div>
@@ -83,7 +152,8 @@ export function AdminSchedulingPage() {
         <Panel
           title={
             <>
-              容量概览 <small>（资源单位）</small>
+              {enabled ? "容量概览" : "执行模式租约"}{" "}
+              <small>{enabled ? "（资源单位）" : "（有效租约）"}</small>
             </>
           }
         >
@@ -92,17 +162,39 @@ export function AdminSchedulingPage() {
               <article key={row.mode}>
                 <TileIcon name={row.icon} />
                 <strong>{row.mode}</strong>
-                <Progress percent={75} showInfo={false} strokeWidth={10} />
-                <span>
-                  {row.used} / {row.total}　（75%）
-                </span>
+                {enabled ? (
+                  <>
+                    <Progress
+                      percent={Math.round((row.used * 100) / row.total)}
+                      showInfo={false}
+                      strokeWidth={10}
+                    />
+                    <span>
+                      {row.used} / {row.total}　（
+                      {Math.round((row.used * 100) / row.total)}%）
+                    </span>
+                  </>
+                ) : (
+                  <span className="runtime-mode-count">
+                    {modeMetadata(row.key)?.active_leases ?? "—"} 个有效租约
+                  </span>
+                )}
               </article>
             ))}
           </div>
-          {!enabled && <Empty description="调度指标接口尚未接入" />}
+          {!enabled && (
+            <p className="muted">按模式的容量总量及使用率采集继续接入。</p>
+          )}
         </Panel>
-        <Panel title="已购服务履约调度" className="scheduling-priorities">
-          <p>按服务截止时间、等待时长和公平配额调度。</p>
+        <Panel
+          title={enabled ? "已购服务履约调度" : "履约调度设计"}
+          className="scheduling-priorities"
+        >
+          <p>
+            {enabled
+              ? "按服务截止时间、等待时长和公平配额调度。"
+              : "调度策略接入中，以下为设计中的资源分配顺序。"}
+          </p>
           {[
             ["临近截止", "优先处理接近约定截止时间的服务"],
             ["常规履约", "按等待时长和公平配额分配资源"],
@@ -128,38 +220,107 @@ export function AdminSchedulingPage() {
             </>
           }
         >
-          <p>各资源池的总量、已用与可用配额。</p>
-          <Table
-            rowKey="mode"
-            dataSource={rows}
-            pagination={false}
-            columns={[
-              {
-                title: "资源池",
-                render: (_, row) => (
-                  <b>
-                    <Icon name={row.icon} /> {row.mode}
-                  </b>
-                ),
-              },
-              { title: "总配额", dataIndex: "total" },
-              { title: "已用", dataIndex: "used" },
-              { title: "可用", render: (_, row) => row.total - row.used },
-              {
-                title: "使用率",
-                render: () => (
-                  <div className="quota-progress">
-                    <Progress percent={75} showInfo={false} strokeWidth={9} />
-                    <span>75%</span>
-                  </div>
-                ),
-              },
-            ]}
-          />
+          <p>
+            {enabled
+              ? "各资源池的总量、已用与可用配额。"
+              : "按范围及资源分别展示当前窗口的上限、预留、消耗与可用量。"}
+          </p>
+          {enabled ? (
+            <Table
+              rowKey="mode"
+              dataSource={rows}
+              pagination={false}
+              scroll={{ x: 850 }}
+              columns={[
+                {
+                  title: "资源池",
+                  width: 230,
+                  render: (_, row) => (
+                    <b>
+                      <Icon name={row.icon} /> {row.mode}
+                    </b>
+                  ),
+                },
+                { title: "总配额", width: 144, dataIndex: "total" },
+                { title: "已用", width: 140, dataIndex: "used" },
+                {
+                  title: "可用",
+                  width: 120,
+                  render: (_, row) => row.total - row.used,
+                },
+                {
+                  title: "使用率",
+                  render: (_, row) => (
+                    <div className="quota-progress">
+                      <Progress
+                        percent={Math.round((row.used * 100) / row.total)}
+                        showInfo={false}
+                        strokeWidth={9}
+                      />
+                      <span>{Math.round((row.used * 100) / row.total)}%</span>
+                    </div>
+                  ),
+                },
+              ]}
+            />
+          ) : (
+            <>
+              {quotas.isError && (
+                <Alert
+                  type="error"
+                  title="容量配额查询失败"
+                  action={
+                    <Button onClick={() => void quotas.refetch()}>
+                      重试容量配额
+                    </Button>
+                  }
+                />
+              )}
+              <Table<CapacityQuotaMetadata>
+                className="runtime-capacity-quotas"
+                rowKey="id"
+                pagination={false}
+                loading={quotas.isFetching}
+                dataSource={
+                  quotas.data?.pages.flatMap((page) => page.items) || []
+                }
+                scroll={{ x: 1000 }}
+                columns={[
+                  {
+                    title: "范围",
+                    render: (_, row) => (
+                      <span>
+                        {row.scope} · {row.scope_key}
+                      </span>
+                    ),
+                  },
+                  { title: "资源", dataIndex: "resource_key" },
+                  { title: "上限", dataIndex: "limit_amount" },
+                  { title: "预留", dataIndex: "reserved_amount" },
+                  { title: "消耗", dataIndex: "consumed_amount" },
+                  { title: "可用", dataIndex: "available_amount" },
+                  { title: "窗口起点", dataIndex: "window_start" },
+                ]}
+              />
+              {quotas.hasNextPage && (
+                <Button
+                  loading={quotas.isFetchingNextPage}
+                  onClick={() => void quotas.fetchNextPage()}
+                >
+                  加载更多容量配额
+                </Button>
+              )}
+            </>
+          )}
         </Panel>
         <Panel title="租约健康">
-          <p>计算租约的运行健康状态。</p>
+          <p>
+            {enabled
+              ? "计算租约的运行健康状态。"
+              : "按实际模式核对当前租约记录。"}
+          </p>
           <Table
+            className="runtime-lease-health"
             rowKey="mode"
             dataSource={rows}
             showHeader={false}
@@ -173,13 +334,28 @@ export function AdminSchedulingPage() {
                 ),
               },
               {
-                render: () => <Status tone="green">✓ 正常</Status>,
+                render: (_, row) =>
+                  enabled ? (
+                    <Status tone="green">✓ 正常</Status>
+                  ) : (
+                    <span>
+                      过期未撤销{" "}
+                      {modeMetadata(row.key)?.expired_unrevoked_leases ?? "—"}
+                    </span>
+                  ),
                 align: "right",
               },
             ]}
           />
         </Panel>
       </div>
+      {!enabled && (
+        <Notice>
+          容量数据保留原资源单位。实际模式未报告的有效租约为
+          {snapshot.data?.counts.unreported_mode_leases ?? "—"}
+          个。控制指令及调度策略接入中。
+        </Notice>
+      )}
       <Panel title="操作控制" className="scheduling-controls">
         <p>对资源池进行运行限流或排空，保障平台稳定与维护操作。</p>
         <div>
@@ -232,13 +408,19 @@ export function AdminSchedulingPage() {
             requestKey.current = crypto.randomUUID();
           }}
           onFinish={(values) => {
-            savePlatform(
-              { requestsPerMinute: values.rate },
-              values.reason,
-              requestKey.current,
-            );
-            setRateOpen(false);
-            void message.success("运行限流预览已保存");
+            try {
+              savePlatform(
+                { requestsPerMinute: values.rate },
+                values.reason,
+                requestKey.current,
+              );
+              setRateOpen(false);
+              void message.success("运行限流预览已保存");
+            } catch (error) {
+              void message.error(
+                error instanceof Error ? error.message : "保存失败",
+              );
+            }
           }}
         >
           <Form.Item
@@ -281,9 +463,11 @@ interface NodeDisplay {
   id: string;
   name: string;
   status: string;
-  cores?: number;
+  cores?: number | string;
+  memoryMiB?: string;
+  metadata?: RuntimeNodeMetadata;
   memoryGb?: number;
-  leases?: number;
+  leases?: number | string;
   cleanup?: boolean;
 }
 const imageFixtures = [
@@ -291,40 +475,113 @@ const imageFixtures = [
     id: "script-runtime",
     name: "script-runtime:1.2.0",
     digest: "sha256:9f3d2a1e6b4c********e7a1",
+    fullDigest: "sha256:" + "9f3d2a1e6b4c" + "0".repeat(48) + "e7a1",
     verified: true,
   },
   {
     id: "reserve-worker",
     name: "reserve-worker:0.9.6",
     digest: "sha256:3b7c9e0d11a2********c4f8",
+    fullDigest: "sha256:" + "3b7c9e0d11a2" + "0".repeat(48) + "c4f8",
     verified: false,
   },
   {
     id: "proxy-adapter",
     name: "proxy-adapter:2.1.3",
     digest: "sha256:7e1a4b8f93d0********17c9",
+    fullDigest: "sha256:" + "7e1a4b8f93d0" + "0".repeat(48) + "17c9",
     verified: false,
   },
 ];
 export function AdminInfrastructurePage() {
   const { enabled, nodes, operations, requestOperation } = useAdminOperations();
-  const [focus, setFocus] = useState("nodes");
-  const [nodeDetail, setNodeDetail] = useState<NodeDisplay>();
-  const [imageDetail, setImageDetail] =
-    useState<(typeof imageFixtures)[number]>();
+  const { bootstrap } = useWorkspace();
+  const [params, setParams] = useSearchParams();
+  const focus = params.get("section") || "nodes";
+  const requestedNode = params.get("node")?.toLowerCase();
+  const requestedImage = params.get("image")?.toLowerCase();
+  function changeParams(values: Record<string, string | undefined>) {
+    const next = new URLSearchParams(params);
+    for (const [key, value] of Object.entries(values)) {
+      if (value) next.set(key, value);
+      else next.delete(key);
+    }
+    setParams(next);
+  }
+  const setNodeDetail = (node: NodeDisplay | undefined) =>
+    changeParams({ node: node?.id });
+  const setImageDetail = (image: { id: string } | undefined) =>
+    changeParams({ image: image?.id });
   const [operation, setOperation] = useState<{
     kind: OperationKind;
     id: string;
     title: string;
   }>();
   const { message } = App.useApp();
-  const query = useQuery({
-    queryKey: ["admin", "nodes"],
-    queryFn: () => api<NodeDisplay[]>("/admin/nodes"),
-    enabled: !enabled,
+  const query = useAdminMetadata<RuntimeNodeMetadata>(
+    "nodes",
+    new URLSearchParams({
+      view: "metadata",
+      q: params.get("node_q") || "",
+    }).toString(),
+    !enabled,
+  );
+  const imageQuery = useAdminMetadata<RuntimeImageMetadata>(
+    "images",
+    new URLSearchParams({ q: params.get("image_q") || "" }).toString(),
+    !enabled,
+  );
+  const detailQuery = useQuery({
+    queryKey: [
+      "admin",
+      bootstrap.user?.id,
+      bootstrap.user?.security_revision,
+      "node",
+      requestedNode,
+    ],
+    enabled: !enabled && Boolean(requestedNode),
+    queryFn: ({ signal }) =>
+      api<RuntimeNodeMetadata>(
+        `/admin/nodes/${encodeURIComponent(requestedNode!)}`,
+        { signal },
+      ),
   });
-  const rows: NodeDisplay[] = enabled ? nodes : query.data || [];
+  function displayNode(node: RuntimeNodeMetadata): NodeDisplay {
+    return {
+      id: node.id,
+      name: node.name,
+      status: node.status,
+      cores: node.cpu_cores ?? undefined,
+      memoryMiB: node.memory_mib ?? undefined,
+      leases: node.active_leases,
+      metadata: node,
+    };
+  }
+  const rows: NodeDisplay[] = enabled
+    ? nodes
+    : (query.data?.pages.flatMap((page) => page.items) || []).map(displayNode);
+  const images = imageQuery.data?.pages.flatMap((page) => page.items) || [];
+  const imageLookup = useAdminMetadata<RuntimeImageMetadata>(
+    "images",
+    new URLSearchParams({ q: requestedImage || "" }).toString(),
+    !enabled &&
+      Boolean(
+        requestedImage && !images.some((image) => image.id === requestedImage),
+      ),
+  );
+  const nodeDetail = enabled
+    ? rows.find((node) => node.id === requestedNode)
+    : detailQuery.data
+      ? displayNode(detailQuery.data)
+      : undefined;
+  const imageDetail = enabled
+    ? imageFixtures.find((image) => image.id === requestedImage)
+    : images.find((image) => image.id === requestedImage) ||
+      imageLookup.data?.pages
+        .flatMap((page) => page.items)
+        .find((image) => image.id === requestedImage);
   const status = (node: NodeDisplay) =>
+    enabled &&
     operations.some(
       (item) => item.resourceId === node.id && item.kind === "NODE_DRAIN",
     )
@@ -341,8 +598,9 @@ export function AdminInfrastructurePage() {
           <Button
             key={key}
             type={focus === key ? "primary" : "default"}
+            aria-pressed={focus === key}
             onClick={() => {
-              setFocus(key);
+              changeParams({ section: key });
               document
                 .getElementById(`infrastructure-${key}`)
                 ?.scrollIntoView({ block: "nearest", behavior: "smooth" });
@@ -352,6 +610,14 @@ export function AdminInfrastructurePage() {
           </Button>
         ))}
       </div>
+      {!["nodes", "images"].includes(focus) && (
+        <Notice>所选基础设施视图不存在，请选择节点或镜像。</Notice>
+      )}
+      {!enabled && (
+        <Notice>
+          当前支持节点与镜像元数据查询。受控操作、清理证明及验证内容接入中。
+        </Notice>
+      )}
       {query.isError && !enabled && (
         <Alert
           type="error"
@@ -361,28 +627,46 @@ export function AdminInfrastructurePage() {
         />
       )}
       <div id="infrastructure-nodes">
-        <Panel title="计算节点">
+        <Panel
+          title="计算节点"
+          extra={
+            !enabled && (
+              <Input.Search
+                key={params.get("node_q") || ""}
+                aria-label="搜索节点"
+                placeholder="搜索节点"
+                defaultValue={params.get("node_q") || ""}
+                onSearch={(value) =>
+                  changeParams({ node_q: value.trim() || undefined })
+                }
+              />
+            )
+          }
+        >
           <Table<NodeDisplay>
             rowKey="id"
             loading={query.isLoading && !enabled}
             dataSource={rows}
             pagination={false}
+            scroll={{ x: 1400 }}
             columns={[
               {
                 title: "节点名称",
+                width: 254,
                 render: (_, row) => (
                   <Button
                     type="text"
                     className="node-name"
                     onClick={() => setNodeDetail(row)}
                   >
-                    <Icon name="container" />
+                    <Icon name="cube" />
                     {row.name}
                   </Button>
                 ),
               },
               {
                 title: "状态",
+                width: 204,
                 render: (_, row) => (
                   <Status
                     tone={
@@ -393,31 +677,45 @@ export function AdminInfrastructurePage() {
                           : "gray"
                     }
                   >
-                    {status(row) === "ONLINE"
-                      ? "● 健康"
-                      : status(row) === "DRAINING"
-                        ? "● 排空中"
-                        : "● 停用"}
+                    {!enabled
+                      ? nodeStateLabels[status(row)] || status(row)
+                      : status(row) === "ONLINE"
+                        ? "● 健康"
+                        : status(row) === "DRAINING"
+                          ? "● 排空中"
+                          : "● 停用"}
                   </Status>
                 ),
               },
               {
                 title: "CPU",
-                render: (_, row) => (row.cores ? `${row.cores} 核` : "—"),
+                width: 169,
+                render: (_, row) =>
+                  row.cores !== undefined ? `${row.cores} 核` : "—",
               },
               {
                 title: "内存",
-                render: (_, row) => (row.memoryGb ? `${row.memoryGb} GB` : "—"),
+                width: 181,
+                render: (_, row) =>
+                  row.memoryMiB !== undefined
+                    ? `${row.memoryMiB} MiB`
+                    : row.memoryGb !== undefined
+                      ? `${row.memoryGb} GB`
+                      : "—",
               },
               {
                 title: "活动租约",
+                width: 173,
                 render: (_, row) =>
                   row.leases === undefined ? "—" : `${row.leases} 个`,
               },
               {
                 title: "最近清理证明",
+                width: 251,
                 render: (_, row) =>
-                  row.cleanup === undefined ? (
+                  row.metadata ? (
+                    "证明查询待接入"
+                  ) : row.cleanup === undefined ? (
                     "待采集"
                   ) : row.cleanup ? (
                     <Status tone="green">✓ 已生成</Status>
@@ -453,32 +751,86 @@ export function AdminInfrastructurePage() {
               },
             ]}
           />
+          {!enabled && query.hasNextPage && (
+            <Button
+              loading={query.isFetchingNextPage}
+              onClick={() => void query.fetchNextPage()}
+            >
+              加载更多节点
+            </Button>
+          )}
         </Panel>
       </div>
       <div id="infrastructure-images">
-        <Panel title="镜像列表">
+        <Panel
+          title="镜像列表"
+          extra={
+            !enabled && (
+              <Input.Search
+                key={params.get("image_q") || ""}
+                aria-label="搜索镜像"
+                placeholder="搜索镜像"
+                defaultValue={params.get("image_q") || ""}
+                onSearch={(value) =>
+                  changeParams({ image_q: value.trim() || undefined })
+                }
+              />
+            )
+          }
+        >
+          {!enabled && imageQuery.isError && (
+            <Alert
+              type="error"
+              title="镜像查询失败"
+              action={
+                <Button onClick={() => void imageQuery.refetch()}>
+                  重试镜像查询
+                </Button>
+              }
+            />
+          )}
           <Table
             rowKey="id"
-            dataSource={enabled ? imageFixtures : []}
+            dataSource={
+              enabled
+                ? imageFixtures
+                : images.map((image) => ({
+                    id: image.id,
+                    name: `${image.name}:${image.version}`,
+                    digest: image.digest,
+                    fullDigest: image.digest,
+                    verified: false,
+                    metadata: image,
+                  }))
+            }
             pagination={false}
+            loading={!enabled && imageQuery.isFetching}
+            scroll={{ x: 1250 }}
             columns={[
               {
                 title: "镜像名称",
+                width: 414,
                 render: (_, row) => (
                   <b>
-                    <Icon name="container" /> {row.name}
+                    <Icon name="cube" /> {row.name}
                   </b>
                 ),
               },
               {
                 title: "摘要（SHA256）",
+                width: 559,
                 dataIndex: "digest",
                 render: (value) => <code>{value}</code>,
               },
               {
-                title: "镜像验证",
+                title: enabled ? "镜像验证" : "镜像状态",
+                width: 266,
                 render: (_, row) =>
-                  row.verified ? (
+                  !enabled ? (
+                    <Status>
+                      {images.find((image) => image.id === row.id)?.status}
+                    </Status>
+                  ) : row.verified ? (
                     <Status tone="green">✓ 已验证</Status>
                   ) : (
                     <span>⊖ 未验证</span>
@@ -492,23 +844,74 @@ export function AdminInfrastructurePage() {
               },
             ]}
           />
+          {!enabled && imageQuery.hasNextPage && (
+            <Button
+              loading={imageQuery.isFetchingNextPage}
+              onClick={() => void imageQuery.fetchNextPage()}
+            >
+              加载更多镜像
+            </Button>
+          )}
         </Panel>
       </div>
       <p className="infrastructure-footnote">
         <Icon name="info" />{" "}
-        环境清理与镜像验证的证据可分别查看，业务结果由运行核验确认。
+        {enabled
+          ? "环境清理与镜像验证的证据可分别查看，业务结果由运行核验确认。"
+          : "环境回收及镜像验证内容接入中，业务结果由运行核验确认。"}
       </p>
       <Modal
         title="节点状态与受控操作"
-        open={Boolean(nodeDetail)}
+        open={Boolean(requestedNode)}
         onCancel={() => setNodeDetail(undefined)}
         footer={
           <Button onClick={() => setNodeDetail(undefined)}>关闭节点详情</Button>
         }
       >
+        {!nodeDetail && (
+          <Alert
+            type={!enabled && detailQuery.isError ? "error" : "info"}
+            title={
+              !enabled && detailQuery.isPending
+                ? "正在查询节点详情"
+                : "所选节点不存在或暂不可用"
+            }
+            action={
+              !enabled &&
+              detailQuery.isError && (
+                <Button onClick={() => void detailQuery.refetch()}>
+                  重试节点详情
+                </Button>
+              )
+            }
+          />
+        )}
         <p>
           {nodeDetail?.name}　活动租约 · {nodeDetail?.leases ?? "—"}
         </p>
+        {nodeDetail?.metadata && (
+          <dl className="runtime-node-summary">
+            <dt>记录修订</dt>
+            <dd>{nodeDetail.metadata.revision}</dd>
+            <dt>节点状态</dt>
+            <dd>
+              {nodeStateLabels[nodeDetail.metadata.status] ||
+                nodeDetail.metadata.status}
+            </dd>
+            <dt>最近心跳</dt>
+            <dd>{nodeDetail.metadata.last_heartbeat_at || "未报告"}</dd>
+            <dt>时钟偏差</dt>
+            <dd>{nodeDetail.metadata.clock_offset_ms ?? "未报告"} ms</dd>
+            <dt>隔离纪元</dt>
+            <dd>{nodeDetail.metadata.isolation_epoch}</dd>
+            <dt>过期未撤销租约</dt>
+            <dd>{nodeDetail.metadata.expired_unrevoked_leases}</dd>
+            <dt>已停止待清理环境</dt>
+            <dd>{nodeDetail.metadata.cleanup_pending}</dd>
+            <dt>清理失败记录</dt>
+            <dd>{nodeDetail.metadata.cleanup_failed}</dd>
+          </dl>
+        )}
         <Notice>
           恢复节点需要新的健康与隔离清理证据，旧租约继续保持既有状态。
         </Notice>
@@ -537,7 +940,7 @@ export function AdminInfrastructurePage() {
       </Modal>
       <Modal
         title="镜像验证证据"
-        open={Boolean(imageDetail)}
+        open={Boolean(requestedImage)}
         onCancel={() => setImageDetail(undefined)}
         footer={
           <>
@@ -570,14 +973,76 @@ export function AdminInfrastructurePage() {
           </>
         }
       >
+        {!imageDetail && (
+          <Alert
+            type={!enabled && imageLookup.isError ? "error" : "info"}
+            title={
+              !enabled && imageLookup.isPending
+                ? "正在查询镜像详情"
+                : "所选镜像不存在或暂不可用"
+            }
+            action={
+              !enabled &&
+              imageLookup.isError && (
+                <Button onClick={() => void imageLookup.refetch()}>
+                  重试镜像详情
+                </Button>
+              )
+            }
+          />
+        )}
         <h3>{imageDetail?.name}</h3>
         <p>
           <code>{imageDetail?.digest}</code>
         </p>
-        <p>摘要固定，支持Docker、KVM和TCG的证据分别记录。</p>
-        <Status tone={imageDetail?.verified ? "green" : "gray"}>
-          {imageDetail?.verified ? "已保存示例验证证据" : "等待对应模式验证"}
-        </Status>
+        <p>
+          {enabled
+            ? "本地镜像示例用于复制交互，验证证据按执行模式记录。"
+            : "镜像状态及支持模式读取当前记录，验证内容接入中。"}
+        </p>
+        {enabled && imageDetail && "verified" in imageDetail ? (
+          <Status tone={imageDetail.verified ? "green" : "gray"}>
+            {imageDetail.verified ? "已保存示例验证证据" : "等待对应模式验证"}
+          </Status>
+        ) : (
+          imageDetail &&
+          "status" in imageDetail && (
+            <dl className="runtime-node-summary">
+              <dt>镜像状态</dt>
+              <dd>{imageDetail.status}</dd>
+              <dt>记录修订</dt>
+              <dd>{imageDetail.revision}</dd>
+              <dt>执行模式</dt>
+              <dd>
+                {imageDetail.modes
+                  .map((mode) => runtimeModeLabels[mode] || mode)
+                  .join("、")}
+              </dd>
+              <dt>证据元数据</dt>
+              <dd>{imageDetail.has_evidence ? "有记录" : "暂无记录"}</dd>
+              <dt>样例标记</dt>
+              <dd>
+                {imageDetail.development_fixture ? "开发样例" : "常规记录"}
+              </dd>
+            </dl>
+          )
+        )}
+        <Button
+          disabled={!imageDetail}
+          onClick={() => {
+            if (!imageDetail) return;
+            const digest =
+              "fullDigest" in imageDetail
+                ? imageDetail.fullDigest
+                : imageDetail.digest;
+            void navigator.clipboard.writeText(digest).then(
+              () => message.success("摘要已复制"),
+              () => message.error("复制失败，请手动复制摘要"),
+            );
+          }}
+        >
+          复制摘要
+        </Button>
       </Modal>
       {operation && (
         <AdminOperationDialog

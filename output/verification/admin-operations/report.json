@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T09:48:32.934Z",
+  "date": "2026-11-14T17:45:01.268Z",
   "checks": [
     "all eight infrastructure and platform pages render within the reference viewport with complete navigation",
     "rate and pool-drain previews preserve occupied capacity while pending work remains visible",
@@ -12,7 +12,7 @@
     "retention validates the total window and recovery registration remains distinct from actual execution and verification",
     "infrastructure and platform workflows complete without browser runtime exceptions",
     "read-only observation grants retain log visibility while management and sensitive-session controls require their separate capabilities",
-    "live-mode infrastructure uses the real node API and shows unavailable business modules without prototype records"
+    "live-mode infrastructure reads paged node and image metadata and actual scheduling counters while pending controls and other business modules retain their integration state"
   ],
   "screenshots": [
     "ADMIN-O13",

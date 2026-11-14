@@ -130,4 +130,65 @@ export class AdminMetadataController {
     response.setHeader("Cache-Control", "no-store");
     return this.metadata.channelRules(request.user!, id, query);
   }
+
+  @Get("nodes/:id")
+  @Capability("runtime.manage")
+  node(
+    @Req() request: AppRequest,
+    @Param("id") id: string,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.node(request.user!, id, query);
+  }
+
+  @Get("images")
+  @Capability("runtime.manage")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({
+    name: "status",
+    required: false,
+    enum: ["DRAFT", "READY", "RETIRED", "REVOKED"],
+  })
+  @ApiQuery({
+    name: "mode",
+    required: false,
+    enum: ["docker", "qemu_kvm", "qemu_tcg"],
+  })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  images(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.images(request.user!, query);
+  }
+
+  @Get("scheduling")
+  @Capability("runtime.manage")
+  scheduling(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.scheduling(request.user!, query);
+  }
+
+  @Get("scheduling/quotas")
+  @Capability("runtime.manage")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  capacityQuotas(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.capacityQuotas(request.user!, query);
+  }
 }

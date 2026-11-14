@@ -10,6 +10,31 @@ import {
 const userStates = ["UNVERIFIED", "ACTIVE", "FROZEN", "CLOSING", "CLOSED"];
 const serviceStates = ["DRAFT", "ACTIVE", "PAUSED", "RETIRED", "BLOCKED"];
 const versionStates = ["DRAFT", "SEALED", "READY", "RETIRED", "REVOKED"];
+const nodeStates = [
+  "REGISTERING",
+  "ONLINE",
+  "DRAINING",
+  "OFFLINE",
+  "QUARANTINED",
+];
+const imageStates = ["DRAFT", "READY", "RETIRED", "REVOKED"];
+const executionModes = ["docker", "qemu_kvm", "qemu_tcg"];
+const executionLeaseRows = `
+  SELECT l.id,a.node_id,a.actual_execution_mode,
+    (l.revoked_at IS NULL AND l.expires_at>now()
+      AND a.status IN ('CREATED','PREPARING','RUNNING','STOPPING')
+      AND r.status IN ('PREPARING','READY','RUNNING','STOPPING','WAITING_INPUT','RECONCILING')) AS active,
+    (l.revoked_at IS NULL AND l.expires_at<=now()) AS expired_unrevoked
+  FROM travel.execution_leases l
+  JOIN travel.attempts a ON a.id=l.attempt_id AND a.owner_user_id=l.owner_user_id
+    AND a.run_id=l.run_id AND a.lease_generation=l.generation
+  JOIN travel.runs r ON r.id=l.run_id AND r.owner_user_id=l.owner_user_id
+`;
+function reportedInteger(field: string) {
+  const value = `n.capabilities->>'${field}'`;
+  return `CASE WHEN ${value} ~ '^(0|[1-9][0-9]{0,18})$'
+    AND (length(${value})<19 OR ${value}<='9223372036854775807') THEN ${value} ELSE NULL END`;
+}
 const channelStates = [
   "UNVERIFIED",
   "MONITOR_ONLY",
@@ -434,5 +459,167 @@ export class AdminMetadataService {
       result.rows[0].versions as DatabaseRow[],
       limit,
     );
+  }
+
+  async nodes(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "runtime.manage");
+    if (query.view !== "metadata")
+      invalidQuery("节点分页查询需要view=metadata");
+    return this.nodePage(actor, query, null);
+  }
+
+  async node(actor: CurrentUser, id: string, query: Record<string, unknown>) {
+    this.authorize(actor, "runtime.manage");
+    if (Object.keys(query).length) invalidQuery("节点详情不支持查询参数");
+    const nodeId = referenceId(id, "节点编号");
+    const page = await this.nodePage(
+      actor,
+      { view: "metadata", limit: "1" },
+      nodeId,
+    );
+    if (!page.items.length)
+      throw new HttpException(
+        { code: "NOT_FOUND", message: "节点不存在或已失效" },
+        404,
+      );
+    return page.items[0];
+  }
+
+  private async nodePage(
+    actor: CurrentUser,
+    query: Record<string, unknown>,
+    nodeId: string | null,
+  ) {
+    const options = this.options(query, nodeStates, ["view"]);
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-nodes",
+      options,
+      nodeId,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      WITH lease_rows AS MATERIALIZED (${executionLeaseRows})
+      SELECT n.id,n.name,n.status,n.revision::text,n.created_at,n.last_heartbeat_at,
+        n.clock_offset_ms::text,n.isolation_epoch::text,
+        ${reportedInteger("cpu_cores")} AS cpu_cores,${reportedInteger("memory_mib")} AS memory_mib,
+        (SELECT count(*)::text FROM lease_rows l WHERE l.node_id=n.id AND l.active) AS active_leases,
+        (SELECT count(*)::text FROM lease_rows l WHERE l.node_id=n.id AND l.expired_unrevoked) AS expired_unrevoked_leases,
+        (SELECT count(*)::text FROM travel.environment_leases e
+          JOIN travel.attempts a ON a.id=e.attempt_id AND a.owner_user_id=e.owner_user_id AND a.node_id=e.node_id
+          WHERE e.node_id=n.id AND e.stopped_at IS NOT NULL AND e.cleanup_status IN ('PENDING','RUNNING')) AS cleanup_pending,
+        (SELECT count(*)::text FROM travel.environment_leases e
+          JOIN travel.attempts a ON a.id=e.attempt_id AND a.owner_user_id=e.owner_user_id AND a.node_id=e.node_id
+          WHERE e.node_id=n.id AND e.cleanup_status='FAILED') AS cleanup_failed,
+        ${cursorProjection("n")}
+      FROM travel.nodes n WHERE ($1::text IS NULL OR n.status=$1) AND (
+        n.name ILIKE $2 ESCAPE '\\' OR n.id::text ILIKE $2 ESCAPE '\\'
+      ) AND ($3::uuid IS NULL OR (n.created_at,n.id)<($4::timestamptz,$3::uuid))
+        AND ($6::uuid IS NULL OR n.id=$6)
+      ORDER BY n.created_at DESC,n.id DESC LIMIT $5`,
+      [
+        options.status || null,
+        literalPattern(options.q),
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+        nodeId,
+      ],
+    );
+    return this.pagination.page(scope, result.rows, options.limit);
+  }
+
+  async images(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "runtime.manage");
+    const options = this.options(query, imageStates, ["mode"]);
+    if (
+      query.mode !== undefined &&
+      (typeof query.mode !== "string" || !executionModes.includes(query.mode))
+    )
+      invalidQuery("镜像模式无效");
+    const mode = query.mode || null;
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-images",
+      options,
+      mode,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      SELECT i.id,i.name,i.digest,i.language,i.version,i.architecture,i.modes,i.status,i.revision::text,i.created_at,
+        ${evidencePresent("i")} AS has_evidence,
+        COALESCE(i.evidence->'development_fixture'='true'::jsonb,false) AS development_fixture,
+        ${cursorProjection("i")}
+      FROM travel.runtime_images i WHERE ($1::text IS NULL OR i.status=$1) AND ($2::text IS NULL OR $2=ANY(i.modes)) AND (
+        i.name ILIKE $3 ESCAPE '\\' OR i.digest ILIKE $3 ESCAPE '\\' OR i.id::text ILIKE $3 ESCAPE '\\'
+      ) AND ($4::uuid IS NULL OR (i.created_at,i.id)<($5::timestamptz,$4::uuid))
+      ORDER BY i.created_at DESC,i.id DESC LIMIT $6`,
+      [
+        options.status || null,
+        mode,
+        literalPattern(options.q),
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+      ],
+    );
+    return this.pagination.page(scope, result.rows, options.limit);
+  }
+
+  async scheduling(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "runtime.manage");
+    if (Object.keys(query).length) invalidQuery("调度快照不支持查询参数");
+    const result = await this.database.query(`
+      WITH lease_rows AS MATERIALIZED (${executionLeaseRows}),
+      mode_counts AS (
+        SELECT mode,
+          (SELECT count(*)::text FROM lease_rows l WHERE l.actual_execution_mode=mode AND l.active) AS active_leases,
+          (SELECT count(*)::text FROM lease_rows l WHERE l.actual_execution_mode=mode AND l.expired_unrevoked) AS expired_unrevoked_leases
+        FROM unnest(ARRAY['docker','qemu_kvm','qemu_tcg']) AS mode
+      )
+      SELECT now() AS as_of,jsonb_build_object(
+        'queued_runs',(SELECT count(*)::text FROM travel.runs WHERE status='QUEUED'),
+        'active_runs',(SELECT count(*)::text FROM travel.runs WHERE status IN ('PREPARING','READY','RUNNING','STOPPING')),
+        'waiting_bookings',(SELECT count(*)::text FROM travel.booking_operations WHERE status IN ('READY','SUBMITTING','UNKNOWN')),
+        'unreported_mode_leases',(SELECT count(*)::text FROM lease_rows WHERE actual_execution_mode IS NULL AND active)
+      ) AS counts,(SELECT jsonb_agg(to_jsonb(m) ORDER BY m.mode) FROM mode_counts m) AS modes`);
+    return result.rows[0];
+  }
+
+  async capacityQuotas(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "runtime.manage");
+    const options = this.options(query, []);
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-capacity-quotas",
+      options,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      WITH latest AS (
+        SELECT DISTINCT ON (scope,scope_key,resource_key) * FROM travel.quota_accounts
+        WHERE scope IN ('NODE','GLOBAL') AND window_start<=now()
+        ORDER BY scope,scope_key,resource_key,window_start DESC,id DESC
+      )
+      SELECT q.id,q.scope,q.scope_key,q.resource_key,q.window_start,q.revision::text,q.created_at,
+        q.limit_amount::text,q.reserved_amount::text,q.consumed_amount::text,
+        (q.limit_amount-q.reserved_amount-q.consumed_amount)::text AS available_amount,${cursorProjection("q")}
+      FROM latest q WHERE (q.resource_key ILIKE $1 ESCAPE '\\' OR q.scope_key ILIKE $1 ESCAPE '\\')
+        AND ($2::uuid IS NULL OR (q.created_at,q.id)<($3::timestamptz,$2::uuid))
+      ORDER BY q.created_at DESC,q.id DESC LIMIT $4`,
+      [
+        literalPattern(options.q),
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+      ],
+    );
+    return this.pagination.page(scope, result.rows, options.limit);
   }
 }

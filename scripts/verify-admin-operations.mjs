@@ -9,7 +9,22 @@ const context = await browser.newContext({
   viewport: { width: 1814, height: 868 },
 });
 const page = await context.newPage();
-const base = "http://127.0.0.1:5174";
+import { preview } from "vite";
+const webRoot = path.resolve("apps/web");
+const server = await preview({
+  root: webRoot,
+  configFile: path.join(webRoot, "vite.config.ts"),
+  preview: {
+    host: "127.0.0.1",
+    port: 0,
+    strictPort: true,
+    proxy: { "/api": { target: "http://127.0.0.1:3001" } },
+  },
+});
+const address = server.httpServer.address();
+if (!address || typeof address !== "object")
+  throw new Error("Preview address is unavailable");
+const base = `http://127.0.0.1:${address.port}`;
 const report = {
   date: new Date().toISOString(),
   checks: [],
@@ -38,6 +53,12 @@ async function choose(scope, label, value) {
     .locator(".ant-select-dropdown .ant-select-item-option-content")
     .getByText(value, { exact: true })
     .click();
+  if (await page.locator(".ant-select-dropdown:visible").count()) {
+    await scope
+      .getByRole("combobox", { name: label, exact: true })
+      .press("Escape");
+    await expect(page.locator(".ant-select-dropdown:visible")).toHaveCount(0);
+  }
 }
 async function confirmOperation(reason) {
   await page
@@ -82,6 +103,7 @@ try {
     expect(new Set(fieldIds).size, `${id} form control identifiers`).toBe(
       fieldIds.length,
     );
+    await page.mouse.move(0, 0);
     await page.screenshot({
       path: path.join(output, `ADMIN-${id}.png`),
       fullPage: true,
@@ -367,7 +389,6 @@ try {
   const livePage = await live.newPage();
   livePage.on("pageerror", (error) => report.errors.push(error.message));
   for (const route of [
-    "/admin/scheduling",
     "/admin/runs",
     "/admin/observability",
     "/admin/deliveries",
@@ -383,7 +404,9 @@ try {
       "MAIL-****7D91",
     );
   }
-  const realNodes = await live.request.get(base + "/api/v1/admin/nodes");
+  const realNodes = await live.request.get(
+    base + "/api/v1/admin/nodes?view=metadata&limit=20&q=",
+  );
   expect(realNodes.ok()).toBe(true);
   const nodeRows = (await realNodes.json()).data;
   await livePage.goto(base + "/admin/infrastructure");
@@ -395,13 +418,28 @@ try {
     await expect(
       livePage.locator("#infrastructure-nodes .ant-empty"),
     ).toBeVisible();
+  const realImages = await live.request.get(
+    base + "/api/v1/admin/images?limit=20&q=",
+  );
+  expect(realImages.status()).toBe(200);
+  const imageRows = (await realImages.json()).data;
   await expect(
-    livePage.locator("#infrastructure-images .ant-empty"),
-  ).toBeVisible();
+    livePage.locator("#infrastructure-images .ant-table-row"),
+  ).toHaveCount(imageRows.length);
+  const snapshot = (
+    await (await live.request.get(base + "/api/v1/admin/scheduling")).json()
+  ).data;
+  await livePage.goto(base + "/admin/scheduling");
+  await expect(
+    livePage.locator(".resource-queue-stats strong").first(),
+  ).toHaveText(snapshot.counts.queued_runs);
+  await expect(
+    livePage.getByRole("button", { name: "设置限流", exact: true }),
+  ).toBeDisabled();
   await live.close();
   expect(report.errors).toEqual([]);
   report.checks.push(
-    "live-mode infrastructure uses the real node API and shows unavailable business modules without prototype records",
+    "live-mode infrastructure reads paged node and image metadata and actual scheduling counters while pending controls and other business modules retain their integration state",
   );
   report.result = "PASS";
 } catch (error) {
@@ -414,6 +452,7 @@ try {
   });
 } finally {
   await browser.close();
+  await server.close();
   if (report.result === "PASS")
     await rm(path.join(output, "failure.png"), { force: true });
   await writeFile(

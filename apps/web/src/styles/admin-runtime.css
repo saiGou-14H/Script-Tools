@@ -1,0 +1,211 @@
+.page-O13 .admin-capacity-middle {
+  grid-template-columns: 1.75fr 1fr;
+}
+.page-O13 .admin-scheduling-page .panel-heading {
+  min-height: 40px;
+  padding-bottom: 2px;
+}
+.page-O13 .capacity-bars strong {
+  width: 110px;
+}
+.page-O13 .capacity-bars article > span:last-child {
+  min-width: 140px;
+}
+.page-O13 .scheduling-priorities article {
+  grid-template-columns: 40px 182px minmax(0, 1fr);
+}
+.page-O13 .scheduling-priorities article > span:last-child {
+  font-size: 14px;
+}
+.page-O13 .admin-capacity-middle .panel-body > p {
+  margin-bottom: 2px;
+  font-size: 14px;
+}
+.page-O13 .admin-capacity-middle .ant-table-cell {
+  font-size: 15px;
+}
+.page-O13 .admin-capacity-middle .ant-table-thead .ant-table-cell {
+  font-size: 14px;
+}
+.page-O13 .quota-progress .ant-progress {
+  max-width: 170px;
+}
+.page-O13 .scheduling-controls .panel-body > div {
+  grid-template-columns: 1fr 1.08fr;
+}
+.page-O13 .scheduling-controls .panel-body > p,
+.page-O13 .scheduling-controls article p {
+  font-size: 14px;
+}
+.page-O14 .admin-infrastructure-page .ant-table-cell {
+  font-size: 16px;
+}
+.page-O14 .admin-infrastructure-page .status {
+  border-radius: 7px;
+  font-size: 15px;
+}
+.page-O14 .admin-infrastructure-page .ant-btn-default:not(:disabled) {
+  border-color: #527aff;
+  color: #1555ff;
+}
+.page-O14 .admin-infrastructure-page .node-name {
+  max-width: 240px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.page-O14 .admin-infrastructure-page .panel-heading .ant-input-search {
+  width: 240px;
+}
+.page-O14 .admin-infrastructure-page .ant-table code {
+  white-space: nowrap;
+}
+.runtime-node-summary {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: 12px;
+  margin: 18px 0;
+}
+.runtime-node-summary dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.runtime-metadata-live .admin-capacity-top > .panel,
+.runtime-metadata-live .admin-capacity-middle > .panel,
+.runtime-metadata-live .scheduling-controls {
+  height: auto;
+  min-height: 193px;
+}
+.runtime-metadata-live .scheduling-controls {
+  min-height: 124px;
+}
+.runtime-metadata-live .notice {
+  margin-bottom: 16px;
+}
+.runtime-capacity-quotas .ant-table-cell {
+  overflow-wrap: anywhere;
+}
+.runtime-snapshot-time {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 360px;
+  font-size: 12px;
+}
+.runtime-snapshot-time span {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1100px) {
+  .page-O13 .admin-capacity-middle {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 760px) {
+  .app-shell.admin-workspace:is(.page-O13, .page-O14) {
+    --sidebar-width: 0px;
+  }
+  :is(.page-O13, .page-O14) .sidebar {
+    display: none;
+  }
+  :is(.page-O13, .page-O14) .brand {
+    min-width: 0;
+    gap: 8px;
+  }
+  :is(.page-O13, .page-O14) .brand strong {
+    font-size: 17px;
+  }
+  :is(.page-O13, .page-O14) .brand-code {
+    font-size: 23px;
+  }
+  :is(.page-O13, .page-O14) .brand > span:last-child {
+    display: none;
+  }
+  :is(.page-O13, .page-O14) .main-content {
+    padding: calc(var(--header-height) + 22px) 16px 24px;
+  }
+  .page-O13 .runtime-metadata-live .page-heading {
+    flex-wrap: wrap;
+  }
+  .page-O13 .runtime-snapshot-time {
+    max-width: 100%;
+  }
+  .page-O13 .admin-resource-banner {
+    padding: 16px;
+  }
+  .page-O13 .resource-mode-tags {
+    flex-wrap: wrap;
+    margin-left: 0;
+  }
+  .page-O13 .resource-queue-stats {
+    min-width: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .page-O13 .resource-queue-stats article {
+    padding-left: 8px;
+  }
+  .page-O13 .resource-queue-stats b {
+    font-size: 13px;
+    gap: 6px;
+  }
+  .page-O13 .resource-queue-stats b .anticon {
+    font-size: 15px;
+  }
+  .page-O13 .admin-capacity-top > .panel,
+  .page-O13 .admin-capacity-middle > .panel,
+  .page-O13 .scheduling-controls {
+    height: auto;
+  }
+  .page-O13 .runtime-lease-health .ant-table {
+    min-width: 0;
+  }
+  .page-O13 .capacity-bars article {
+    display: grid;
+    grid-template-columns: 35px 90px minmax(0, 1fr);
+    gap: 8px;
+    height: auto;
+    margin-bottom: 14px;
+  }
+  .page-O13 .capacity-bars article > .ant-progress {
+    min-width: 0;
+    width: 100%;
+  }
+  .page-O13 .capacity-bars article > span:last-child {
+    grid-column: 2 / -1;
+    min-width: 0;
+    margin-left: 0;
+    text-align: right;
+  }
+  .page-O13 .scheduling-priorities article {
+    grid-template-columns: 28px 96px minmax(0, 1fr);
+    gap: 8px;
+    height: auto;
+    min-height: 50px;
+    padding: 8px 0;
+  }
+  .page-O13 .scheduling-priorities article b {
+    font-size: 15px;
+  }
+  .page-O13 .scheduling-priorities article > span:last-child {
+    font-size: 12px;
+  }
+  .page-O13 .scheduling-controls .panel-body > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .page-O13 .scheduling-controls article {
+    padding: 0;
+  }
+  .page-O13 .scheduling-controls article + article {
+    border-left: 0;
+    border-top: 1px solid #d8e0f3;
+    padding: 12px 0 0;
+  }
+  .page-O13 .scheduling-controls .ant-btn {
+    flex-shrink: 0;
+    width: 100px;
+  }
+  .page-O14 .admin-infrastructure-page .panel-heading {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}

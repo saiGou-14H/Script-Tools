@@ -6,9 +6,11 @@ import {
   HttpException,
   Param,
   Post,
+  Query,
   Req,
   Res,
 } from "@nestjs/common";
+import { ApiQuery } from "@nestjs/swagger";
 import { Response } from "express";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
@@ -19,6 +21,7 @@ import { Capability, Public } from "./auth/auth.guard";
 import { AppRequest } from "./common/http";
 import { AuthChallengeService } from "./auth/auth-challenge.service";
 import { AccountService } from "./account/account.service";
+import { AdminMetadataService } from "./admin/admin-metadata.service";
 
 @Controller("api/v1")
 export class AppController {
@@ -27,6 +30,7 @@ export class AppController {
     private readonly auth: AuthService,
     private readonly challenges: AuthChallengeService,
     private readonly accounts: AccountService,
+    private readonly adminMetadata: AdminMetadataService,
   ) {}
 
   @Public()
@@ -210,7 +214,24 @@ export class AppController {
     ).rows;
   }
 
-  @Capability("runtime.manage") @Get("admin/nodes") async nodes() {
+  @Capability("runtime.manage")
+  @Get("admin/nodes")
+  @ApiQuery({ name: "view", required: false, enum: ["metadata"] })
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({
+    name: "status", required: false,
+    enum: ["REGISTERING", "ONLINE", "DRAINING", "OFFLINE", "QUARANTINED"],
+  })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  async nodes(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    if (Object.keys(query).length)
+      return this.adminMetadata.nodes(request.user!, query);
     return (
       await this.database.query(
         "SELECT id,name,status,capabilities,last_heartbeat_at FROM travel.nodes ORDER BY created_at DESC LIMIT 100",

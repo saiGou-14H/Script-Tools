@@ -50,9 +50,15 @@ import {
   PayCircleOutlined,
   CheckCircleOutlined,
   AimOutlined,
+  CodeSandboxOutlined,
+  DockerOutlined,
+  DesktopOutlined,
 } from "@ant-design/icons";
 
 const icons = {
+  cube: CodeSandboxOutlined,
+  docker: DockerOutlined,
+  desktop: DesktopOutlined,
   check: CheckCircleOutlined,
   target: AimOutlined,
   mail: MailOutlined,

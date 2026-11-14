@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T17:05:30.005Z",
+  "date": "2026-11-14T17:45:48.301Z",
   "checks": [
     "travel catalog and rule-version HTTP routes require an authenticated ADMIN with catalog.manage, independently of user.manage",
     "city and attraction counts retain string precision, literal wildcard search and FREE ticket policy while duplicate links and cross-attraction channel links cannot inflate associated services",

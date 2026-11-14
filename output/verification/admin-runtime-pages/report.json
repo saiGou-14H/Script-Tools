@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-14T17:44:36.103Z",
+  "checks": [
+    "node, image and scheduling HTTP routes enforce authenticated runtime.manage access independently of runtime.observe",
+    "legacy node reads retain their response fields while paged metadata preserves five states, zero and BIGINT hardware values and excludes fingerprints, private capabilities and workspace identifiers",
+    "scheduling snapshots retain old continuous runs and count only current-generation, unrevoked, unexpired execution leases with live attempts and runs, preserving unreported actual modes separately",
+    "image metadata keeps stored state distinct from evidence presence and capacity quotas retain each GLOBAL or NODE resource's latest started window and exact decimal-string quantities",
+    "runtime metadata rejects unsupported queries, malformed references and cursor changes across actors, filters, page sizes and resources",
+    "PostgreSQL 18 verifies node details, exact lease counts, image metadata, scoped quotas and scheduling snapshots with complete fixture rollback",
+    "prototype infrastructure retains section and selected record in the URL, reloads the same node, copies an explicit complete local example digest and keeps missing resources unavailable",
+    "capacity and infrastructure layouts fit the desktop viewport and retain full-width content and internal table scrolling on 390px screens",
+    "LIVE infrastructure recovers from node failures, paginates real records, searches by URL and opens node or image IDs outside the loaded page while preserving exact reported quantities and pending operations",
+    "LIVE scheduling reads current database counters and per-resource quotas, retains unknown capacity collection and control states and issues no runtime business mutations"
+  ],
+  "screenshots": [
+    "ADMIN-O13",
+    "ADMIN-O14",
+    "ADMIN-O13-mobile",
+    "ADMIN-O14-mobile",
+    "ADMIN-O14-live",
+    "ADMIN-O13-live"
+  ],
+  "layouts": {
+    "ADMIN-O13": {
+      "width": 1814,
+      "height": 868,
+      "left": 244,
+      "contentWidth": 1546,
+      "actionsRight": 1790
+    },
+    "ADMIN-O14": {
+      "width": 1814,
+      "height": 868,
+      "left": 239,
+      "contentWidth": 1549,
+      "actionsRight": 1790
+    },
+    "ADMIN-O13-mobile": {
+      "width": 390,
+      "height": 1798,
+      "left": 16,
+      "contentWidth": 358,
+      "actionsRight": 375
+    },
+    "ADMIN-O14-mobile": {
+      "width": 390,
+      "height": 902,
+      "left": 16,
+      "contentWidth": 358,
+      "actionsRight": 375
+    },
+    "ADMIN-O14-live": {
+      "width": 1814,
+      "height": 2835,
+      "left": 239,
+      "contentWidth": 1549,
+      "actionsRight": 1790
+    },
+    "ADMIN-O13-live": {
+      "width": 1814,
+      "height": 1012,
+      "left": 244,
+      "contentWidth": 1546,
+      "actionsRight": 1790
+    }
+  },
+  "errors": [],
+  "result": "PASS"
+}
