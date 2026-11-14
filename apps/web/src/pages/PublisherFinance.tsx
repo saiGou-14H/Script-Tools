@@ -24,6 +24,8 @@ import { PublisherProfileEditor } from "../components/PublisherProfileEditor";
 import type { PublisherProfileView } from "../types";
 import {
   earningsLedger,
+  payoutLabels,
+  payoutTones,
   settlementPreview,
 } from "../lib/publisher-finance-preview";
 const compactMoney = (value: string | bigint) =>
@@ -244,18 +246,19 @@ export function SettlementDetailPage() {
   const refunded = batch.lines.reduce((sum, row) => sum + BigInt(row.refund), 0n);
   const fees = batch.lines.reduce((sum, row) => sum + BigInt(row.fee), 0n);
   const net = income - refunded - fees;
+  const confirmedSteps = batch.status === "SUCCEEDED" ? 4 : batch.status === "UNKNOWN" ? 2 : 3;
   return (
     <div className="publisher-settlement-page">
       <PageHeading title="结算详情" extra={<Status tone="gray">本地示例</Status>} />
       <div className="settlement-steps">
         <Steps
-          current={3}
-          items={["可结算", "资金预占", "渠道受理", "等待回执"].map(
+          current={confirmedSteps}
+          items={["可结算", "资金预占", "渠道受理", batch.status === "SUCCEEDED" ? "回执已确认" : "等待回执"].map(
             (title, index) => ({
               title,
-              status: index === 3 ? "wait" : "finish",
+              status: index < confirmedSteps ? "finish" : "wait",
               icon:
-                index < 3 ? (
+                index < confirmedSteps ? (
                   <CheckCircleFilled aria-hidden />
                 ) : (
                   <span className="settlement-wait-icon" aria-hidden />
@@ -273,9 +276,12 @@ export function SettlementDetailPage() {
           <article>
             <span>打款</span>
             <strong>
-              {batch.payoutId} <Status>处理中</Status>
+              {batch.payoutId}{" "}
+              <Status tone={payoutTones[batch.status]}>
+                {payoutLabels[batch.status]}
+              </Status>
             </strong>
-            <p>待渠道回执</p>
+            <p>{batch.status === "SUCCEEDED" ? "渠道回执已确认" : "待渠道回执"}</p>
           </article>
           <article>
             <span>金额</span>
@@ -289,6 +295,9 @@ export function SettlementDetailPage() {
             <p>使用发起时快照</p>
           </article>
         </div>
+        {net !== BigInt(batch.amountMinor) && (
+          <Notice>批次净额与原打款金额待核对。</Notice>
+        )}
         <Table
           rowKey="id"
           pagination={false}

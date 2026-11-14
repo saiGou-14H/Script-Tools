@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ConfigProvider, App as AntApp, Spin } from "antd";
 import zhCN from "antd/locale/zh_CN";
+import "dayjs/locale/zh-cn";
 import { BrowserRouter } from "react-router-dom";
 import { Application } from "./router";
 import "antd/dist/reset.css";
@@ -26,6 +27,7 @@ import "./styles/publisher-quality.css";
 import "./styles/publisher-finance.css";
 import "./styles/publisher-commerce.css";
 import "./styles/admin-commerce.css";
+import "./styles/admin-finance.css";
 
 const client = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },

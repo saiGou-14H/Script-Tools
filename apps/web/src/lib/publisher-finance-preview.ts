@@ -65,10 +65,23 @@ export interface PreviewSettlementLine {
   fee: string;
 }
 
-export const settlementPreview = {
+export type PreviewPayoutStatus = "PROCESSING" | "UNKNOWN" | "SUCCEEDED";
+
+export interface PreviewSettlementSnapshot {
+  id: string;
+  currency: string;
+  payoutId: string;
+  status: PreviewPayoutStatus;
+  accountMask: string;
+  amountMinor: string;
+  lines: PreviewSettlementLine[];
+}
+
+export const settlementPreview: PreviewSettlementSnapshot = {
   id: "SET018",
   currency: "CNY",
   payoutId: "P0018",
+  status: "PROCESSING",
   accountMask: "****1234",
   amountMinor: "20000",
   lines: [
@@ -88,3 +101,14 @@ export const settlementPreview = {
     },
   ] satisfies PreviewSettlementLine[],
 };
+
+export const payoutLabels = {
+  SUCCEEDED: "已到账",
+  PROCESSING: "处理中",
+  UNKNOWN: "待核对",
+};
+export const payoutTones = {
+  SUCCEEDED: "green",
+  PROCESSING: "blue",
+  UNKNOWN: "orange",
+} as const;

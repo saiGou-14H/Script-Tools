@@ -1,0 +1,192 @@
+.page-O10 .global-search {
+  left: 40.2%;
+  width: 29%;
+}
+.page-O11 .global-search {
+  left: 30.5%;
+  width: 35.4%;
+}
+.page-O12 .global-search {
+  left: 37.8%;
+  width: 26.8%;
+}
+.app-shell:is(.page-O10, .page-O11, .page-O12) .nav-item {
+  font-size: 14px;
+}
+.page-O10 .admin-reconciliation-toolbar .ant-select {
+  height: 45px;
+  font-size: 16px;
+}
+.page-O10 .admin-reconciliation-page .page-heading {
+  margin-bottom: 12px;
+}
+.page-O10 .admin-reconciliation-page > .panel > .panel-body {
+  padding-bottom: 27px;
+}
+.page-O10 .admin-reconciliation-stats h3 {
+  color: #101526;
+}
+.page-O10 .admin-reconciliation-stats .tile-icon .anticon {
+  font-size: 28px;
+}
+.page-O10 .admin-reconciliation-page .ant-table-thead > tr > th,
+.page-O10 .admin-reconciliation-page .ant-table-row > td {
+  padding: 11px 40px;
+  font-size: 16px;
+}
+.page-O10 .admin-reconciliation-page .ant-table-thead > tr > th {
+  height: 56px;
+}
+.page-O10 .admin-reconciliation-page .ant-table-row .ant-btn-text {
+  height: 28px;
+  padding: 0;
+}
+.page-O10 .admin-reconciliation-toolbar .ant-btn:not(.ant-btn-primary) {
+  color: #1555ff;
+  border-color: #1555ff;
+}
+.page-O11 .admin-settlement-hero .tile-icon .anticon {
+  font-size: 36px;
+}
+.page-O11 .admin-settlement-hero .tile-icon {
+  background: linear-gradient(135deg, #4c9dff, #2455ff);
+  color: white;
+}
+.page-O11 .admin-settlement-ledger .notice {
+  font-size: 18px;
+}
+.page-O11 .admin-settlement-columns .ant-table-cell .status {
+  font-size: 14px;
+}
+.page-O11 .admin-settlement-hero h2 {
+  white-space: normal;
+}
+.page-O11 .admin-settlement-hero > div {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.page-O11 .admin-settlement-hero strong {
+  overflow-wrap: anywhere;
+}
+.page-O11 .admin-settlement-toolbar .ant-btn:not(.ant-btn-primary) {
+  color: #11213b;
+  border-color: #4a76ff;
+}
+.page-O11 .admin-settlement-columns > .panel {
+  min-width: 0;
+}
+.page-O11 .admin-settlement-columns .ant-table-thead > tr > th {
+  padding: 10px 18px;
+  font-size: 15px;
+}
+.page-O11 .admin-settlement-columns .ant-table-row > td {
+  padding: 8px 18px;
+  font-size: 16px;
+}
+.page-O12 .admin-policy-form .ant-form-item-label > label {
+  font-size: 16px;
+}
+.page-O12 .admin-policy-form .ant-form-item {
+  margin-bottom: 12px;
+}
+.page-O12 .admin-policy-form .ant-form-item-required::before {
+  order: 1;
+  margin-inline: 4px 0;
+}
+.page-O12 .admin-policy-form .ant-input-affix-wrapper,
+.page-O12 .admin-policy-form .ant-input,
+.page-O12 .admin-policy-form .ant-select,
+.page-O12 .admin-policy-form .ant-input-number {
+  font-size: 16px;
+}
+.page-O12 .admin-policy-form .ant-select {
+  height: 34px;
+}
+.page-O12 .admin-policy-example strong {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1400px) {
+  .page-O11 .admin-settlement-hero {
+    height: auto;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .page-O11 .admin-settlement-hero > div {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+}
+@media (max-width: 700px) {
+  .app-shell.admin-workspace:is(.page-O10, .page-O11, .page-O12) {
+    --sidebar-width: 0px;
+  }
+  .app-shell:is(.page-O10, .page-O11, .page-O12) .main-content {
+    padding-inline: 14px;
+  }
+  .page-O10 .admin-reconciliation-page .panel-body {
+    padding-inline: 14px;
+  }
+  .page-O10 .admin-reconciliation-toolbar {
+    gap: 14px;
+  }
+  .page-O10 .admin-reconciliation-toolbar .row-actions {
+    margin-left: 0;
+    flex-wrap: wrap;
+  }
+  .page-O10 .admin-reconciliation-stats {
+    gap: 8px;
+  }
+  .page-O10 .admin-reconciliation-stats article {
+    padding: 12px;
+    height: auto;
+  }
+  .page-O10 .admin-reconciliation-stats .tile-icon {
+    display: none;
+  }
+  .page-O10 .admin-reconciliation-stats h3 {
+    font-size: 13px;
+  }
+  .page-O11 .admin-settlement-columns,
+  .page-O12 .admin-policy-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page-O11 .admin-settlement-toolbar {
+    gap: 12px;
+  }
+  .page-O11 .admin-settlement-toolbar .notice {
+    margin-left: 0;
+  }
+  .page-O11 .admin-settlement-columns > .panel {
+    min-height: 0;
+  }
+  .page-O11 .admin-settlement-hero strong {
+    font-size: 26px;
+  }
+  .page-O11 .admin-settlement-hero h2 {
+    flex: 1;
+  }
+  .page-O12 .admin-policy-versions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page-O12 .admin-policy-form .ant-form-item-row {
+    display: block;
+  }
+  .page-O12 .admin-policy-form .ant-form-item-label {
+    flex: none !important;
+    width: 100%;
+  }
+  .page-O12 .admin-policy-form .ant-radio-group {
+    flex-wrap: wrap;
+    gap: 10px;
+    white-space: normal;
+  }
+  .page-O12 .admin-policy-example {
+    padding-inline: 12px;
+  }
+  .page-O12 .admin-policy-example article {
+    padding-left: 8px;
+    min-width: 0;
+  }
+  .page-O12 .admin-policy-columns > .panel {
+    min-height: 0;
+  }
+}

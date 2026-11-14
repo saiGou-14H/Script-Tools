@@ -1,0 +1,75 @@
+{
+  "date": "2026-11-14T16:00:11.889Z",
+  "checks": [
+    "reconciliation, settlement and policy reference regions and sidebar help fit 1814 by 868",
+    "date and channel filters persist in the URL, all-date selection is explicit, and unavailable refunds expose a disabled button without a link",
+    "local reconciliation notes deduplicate within a captured date/channel scope and filter changes close the form without resolving the original unknown refund",
+    "settlement selection survives reload and opens its own immutable payout receipt, ledger lines and canonical P0018 request",
+    "batch generation previews the separate available L003 scope, retains funds while integration is pending, and shares SET018 with the publisher view",
+    "policy URI selection restores the saved version and channel-cost previews leave unknown consumer totals or publisher net proceeds pending the channel quote",
+    "duplicate policy saves retain one new version, historical selection stays distinct from the active version, and unknown policies or batches retain their own identity",
+    "live reconciliation and settlement counters remain unavailable and live policy records expose their integration state",
+    "normal administrator routes aggregate payout differences and signed-64-bit ledger evidence while preserving the original unknown payout and zero available scope",
+    "publisher payout status and confirmation steps read the same stored status for unknown and confirmed receipts",
+    "all three financial routes fit 390px with internally scrollable ledgers and stacked policy controls",
+    "financial previews issue no business mutations and finish without browser exceptions"
+  ],
+  "screenshots": [
+    "ADMIN-O10",
+    "ADMIN-O11",
+    "ADMIN-O12"
+  ],
+  "errors": [],
+  "layouts": {
+    "O10": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 252,
+        "y": 189.21875,
+        "width": 1538,
+        "bottom": 662.21875
+      },
+      "help": {
+        "x": 12,
+        "y": 822.90625,
+        "width": 199,
+        "bottom": 849.90625
+      }
+    },
+    "O11": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 245,
+        "y": 395.421875,
+        "width": 1550,
+        "bottom": 836.421875
+      },
+      "help": {
+        "x": 12,
+        "y": 825.90625,
+        "width": 199,
+        "bottom": 852.90625
+      }
+    },
+    "O12": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 252,
+        "y": 289.5625,
+        "width": 1538,
+        "bottom": 857.5625
+      },
+      "help": {
+        "x": 12,
+        "y": 822.90625,
+        "width": 199,
+        "bottom": 849.90625
+      }
+    }
+  },
+  "final_visual_acceptance": "pending",
+  "result": "PASS"
+}

@@ -10,6 +10,7 @@ import {
   Select,
   Table,
   Tabs,
+  Tooltip,
 } from "antd";
 import { BookOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -23,6 +24,15 @@ import {
   refundTones,
 } from "../lib/admin-commerce-preview";
 import { formatMinorUnits } from "../lib/money";
+import {
+  payoutLabels,
+  payoutTones,
+  reconciliationRows,
+  settlementBalance,
+  settlementBatches,
+  settlementOwners,
+  settlementTotals,
+} from "../lib/admin-finance-preview";
 
 export function AdminPaymentsPage() {
   const { payments, refunds, enabled } = useAdminPreview();
@@ -410,71 +420,75 @@ function AdminRefundException({ id }: { id?: string }) {
   );
 }
 
-const reconciliationRows = [
-  {
-    id: "PAY021",
-    description: "订单取消后晚到成功",
-    result: "已原路退款",
-    resolved: true,
-    kind: "payment",
-  },
-  {
-    id: "PAY022",
-    description: "同一订单第二笔真实收款",
-    result: "额外款已退款",
-    resolved: true,
-    kind: "payment",
-  },
-  {
-    id: "REF019",
-    description: "渠道结果未知",
-    result: "原退款待查询",
-    resolved: false,
-    kind: "refund",
-  },
-];
 export function AdminReconciliationPage() {
+  const { enabled } = useAdminPreview();
+  const [params] = useSearchParams();
+  const scope = `${params.get("date") || (enabled ? "2026-11-13" : "all")}/${params.get("channel") || (enabled ? "A" : "")}`;
+  return <AdminReconciliation key={scope} />;
+}
+
+function AdminReconciliation() {
   const { enabled, notes, recordNote } = useAdminPreview();
-  const [date, setDate] = useState<dayjs.Dayjs | null>(dayjs("2026-11-13"));
-  const [channel, setChannel] = useState("A");
+  const [params, setParams] = useSearchParams();
+  const dateKey = params.get("date") || (enabled ? "2026-11-13" : "all");
+  const channel = params.get("channel") || (enabled ? "A" : "");
+  const validDate = dateKey === "all" || (
+    /^\d{4}-\d{2}-\d{2}$/.test(dateKey) && dayjs(dateKey).isValid() &&
+    dayjs(dateKey).format("YYYY-MM-DD") === dateKey
+  );
+  const date = dateKey !== "all" && validDate ? dayjs(dateKey) : null;
+  const scopeId = `RECONCILIATION/${dateKey}/${channel}`;
+  function filter(key: string, value: string) {
+    const next = new URLSearchParams(params);
+    next.set(key, value);
+    setParams(next);
+  }
   const [editing, setEditing] = useState(false);
   const [recordsOpen, setRecordsOpen] = useState(false);
   const [form] = Form.useForm();
   const requestKey = useRef(crypto.randomUUID());
   const { message, modal } = App.useApp();
-  const rows =
-    enabled &&
-    (!date || date.format("YYYY-MM-DD") === "2026-11-13") &&
-    (channel === "A" || channel === "ALL")
-      ? reconciliationRows
-      : [];
+  const rows = enabled && validDate
+    ? reconciliationRows.filter((row) =>
+        (dateKey === "all" || row.date === dateKey) &&
+        (channel === "ALL" || row.channel === channel),
+      )
+    : [];
+  const originalRefund = rows.find((row) => row.kind === "refund" && !row.resolved);
+
   return (
     <div className="admin-page admin-reconciliation-page">
       <PageHeading
         title="对账中心"
         description="核对渠道收款、退款与打款的一致性，定位并跟进差异，确保资金数据准确。"
+        extra={<Status tone="gray">{enabled ? "本地示例" : "对账服务待接入"}</Status>}
       />
+      {!enabled && <Notice>对账查询服务待接入，当前计数及记录暂不可用。</Notice>}
+      {!validDate && <Notice>对账日期无效，请重新选择。</Notice>}
       <Panel>
         <div className="admin-reconciliation-toolbar">
           <DatePicker
             aria-label="对账日期"
             allowClear
             value={date}
-            onChange={setDate}
+            onChange={(value) => filter("date", value?.format("YYYY-MM-DD") || "all")}
+            disabled={!enabled}
           />
           <Select
             aria-label="对账渠道"
-            value={channel}
-            onChange={setChannel}
-            options={[
+            value={channel || undefined}
+            placeholder="渠道待载入"
+            onChange={(value) => filter("channel", value)}
+            disabled={!enabled}
+            options={enabled ? [
               { value: "A", label: "示例渠道A" },
               { value: "ALL", label: "全部渠道" },
-            ]}
+            ] : []}
           />
           <div className="row-actions">
             <Button
               type="primary"
-              disabled={!enabled}
+              disabled={!enabled || !validDate || !["A", "ALL"].includes(channel)}
               onClick={() => {
                 form.resetFields();
                 requestKey.current = crypto.randomUUID();
@@ -483,12 +497,10 @@ export function AdminReconciliationPage() {
             >
               启动对账
             </Button>
-            <Button onClick={() => setRecordsOpen(true)}>查看核对记录</Button>
-            <Link to="/admin/refunds/REF019">
-              <Button disabled={!rows.some((item) => item.id === "REF019")}>
-                查询原退款
-              </Button>
-            </Link>
+            <Button disabled={!enabled} onClick={() => setRecordsOpen(true)}>查看核对记录</Button>
+            {originalRefund ? (
+              <Link to={`/admin/refunds/${originalRefund.id}`}><Button>查询原退款</Button></Link>
+            ) : <Button disabled>查询原退款</Button>}
           </div>
         </div>
         <div className="admin-reconciliation-stats">
@@ -505,13 +517,13 @@ export function AdminReconciliationPage() {
               rows.filter((item) => item.kind === "refund").length,
               "orange",
             ],
-            ["sync", "打款差异", 0, "green"],
+            ["sync", "打款差异", rows.filter((row) => row.kind === "payout").length, "green"],
           ].map(([icon, label, count, color]) => (
             <article key={String(label)} className={`reconciliation-${color}`}>
               <TileIcon name={String(icon)} color={String(color)} />
               <span>
                 <h3>{label}</h3>
-                <strong>{count}</strong>
+                <strong>{enabled ? count : "—"}</strong>
               </span>
             </article>
           ))}
@@ -520,6 +532,7 @@ export function AdminReconciliationPage() {
           rowKey="id"
           dataSource={rows}
           pagination={false}
+          scroll={{ x: 1100 }}
           columns={[
             {
               title: "编号",
@@ -581,7 +594,7 @@ export function AdminReconciliationPage() {
           form={form}
           layout="vertical"
           onFinish={(values) => {
-            recordNote("RECONCILIATION", values.reason, requestKey.current);
+            recordNote(scopeId, values.reason, requestKey.current);
             setEditing(false);
             void message.info("核对预览已记录，渠道查询接口尚未接入");
           }}
@@ -608,7 +621,7 @@ export function AdminReconciliationPage() {
           rowKey="id"
           pagination={false}
           dataSource={notes.filter(
-            (item) => item.resourceId === "RECONCILIATION",
+            (item) => enabled && item.resourceId === scopeId,
           )}
           columns={[
             { title: "时间", dataIndex: "createdAt" },
@@ -620,56 +633,59 @@ export function AdminReconciliationPage() {
   );
 }
 
-const settlementBatches = [
-  {
-    id: "SET017",
-    payoutId: "PO017",
-    status: "SUCCEEDED",
-    amountMinor: "4000",
-    income: "4400",
-    fee: "400",
-    refund: "0",
-  },
-  {
-    id: "SET018",
-    payoutId: "PO018",
-    status: "PROCESSING",
-    amountMinor: "20000",
-    income: "23000",
-    fee: "2000",
-    refund: "1000",
-  },
-];
 export function AdminSettlementsPage() {
   const { enabled } = useAdminPreview();
-  const [selectedId, setSelectedId] = useState("SET018");
+  const [params] = useSearchParams();
+  const selectedId = params.get("batch") || (enabled ? "SET018" : "");
+  return <AdminSettlements key={selectedId} selectedId={selectedId} />;
+}
+
+function AdminSettlements({ selectedId }: { selectedId: string }) {
+  const { enabled } = useAdminPreview();
+  const [params, setParams] = useSearchParams();
   const [generating, setGenerating] = useState(false);
+  const [ledgerOpen, setLedgerOpen] = useState(false);
   const [form] = Form.useForm();
   const { message, modal } = App.useApp();
-  const rows = enabled ? settlementBatches : [];
-  const selected = rows.find((item) => item.id === selectedId);
-  const net = selected
-    ? BigInt(selected.income) - BigInt(selected.fee) - BigInt(selected.refund)
-    : 0n;
+  const rows = enabled
+    ? settlementBatches.map((batch) => ({
+        ...batch.snapshot,
+        publisherId: batch.publisherId,
+      }))
+    : [];
+  const selected = rows.find((batch) => batch.id === selectedId);
+  const owner = selected && settlementOwners.find((item) => item.id === selected.publisherId);
+  const balance = owner ? settlementBalance(owner.ledger) : undefined;
+  const totals = selected ? settlementTotals(selected) : undefined;
+  function select(id: string) {
+    if (id === selectedId) return;
+    const next = new URLSearchParams(params);
+    next.set("batch", id);
+    setParams(next);
+  }
   return (
     <div className="admin-page admin-settlements-page">
-      <PageHeading title="发布者结算" />
+      <PageHeading title="发布者结算" extra={<Status tone="gray">{enabled ? "本地示例" : "结算服务待接入"}</Status>} />
+      {!enabled && <Notice>结算查询服务待接入，当前计数及记录暂不可用。</Notice>}
       <div className="admin-settlement-hero">
         <TileIcon name="database" color="gradient" />
-        <h2>
-          批次 · {selected?.id || "—"}　 |　 发布者 · {enabled ? "林**" : "—"}
-        </h2>
+        <h2>批次 · {selectedId || "—"}　 |　 发布者 · {owner?.mask || "—"}</h2>
         <div>
           {[
-            ["待结算", enabled ? "30000" : "0"],
-            ["打款在途", enabled ? "20000" : "0"],
-            ["退款冻结", "0"],
+            ["待结算", balance?.pending],
+            ["打款在途", balance?.reserved],
+            ["退款冻结", balance?.frozen],
           ].map(([label, amount]) => (
             <article key={label}>
-              {label}
+              {label === "待结算" ? (
+                <Tooltip trigger={["hover", "focus"]} title={balance
+                  ? `发布者全部账本，待成熟${formatMinorUnits(balance.pending - balance.reserved).replace(/\.00$/, "")}元，打款预占${formatMinorUnits(balance.reserved).replace(/\.00$/, "")}元`
+                  : "余额待载入"}>
+                  <span tabIndex={0} aria-label="待结算金额组成">{label}</span>
+                </Tooltip>
+              ) : label}
               <strong>
-                {formatMinorUnits(amount).replace(/\.00$/, "")}{" "}
-                <small>元</small>
+                {amount === undefined ? "—" : formatMinorUnits(amount).replace(/\.00$/, "")} <small>元</small>
               </strong>
             </article>
           ))}
@@ -678,8 +694,8 @@ export function AdminSettlementsPage() {
       <div className="admin-settlement-toolbar">
         <Button
           type="primary"
-          icon={<PlusOutlined aria-hidden="true" />}
-          disabled={!enabled}
+          icon={<PlusOutlined aria-hidden />}
+          disabled={!owner || !balance || balance.available <= 0n}
           onClick={() => {
             form.resetFields();
             setGenerating(true);
@@ -687,36 +703,29 @@ export function AdminSettlementsPage() {
         >
           生成批次
         </Button>
-        <Button
-          icon={<BookOutlined aria-hidden="true" />}
-          onClick={() =>
-            document
-              .getElementById("admin-settlement-ledger")
-              ?.scrollIntoView({ block: "nearest", behavior: "smooth" })
-          }
-        >
+        <Button icon={<BookOutlined aria-hidden />} disabled={!selected} onClick={() => setLedgerOpen(true)}>
           查看账本
         </Button>
         <Button
-          icon={<SearchOutlined aria-hidden="true" />}
+          icon={<SearchOutlined aria-hidden />}
           disabled={!selected}
           onClick={() => {
-            if (selected?.status === "SUCCEEDED")
+            if (selected?.status === "SUCCEEDED") {
               modal.info({
                 title: "历史打款回执",
                 content: (
                   <p>
-                    {selected.payoutId} ·{" "}
-                    {formatMinorUnits(selected.amountMinor)}{" "}
-                    CNY，已到账。收款账号快照 · ****1234。
+                    {selected.payoutId} · {formatMinorUnits(selected.amountMinor)}
+                    {" "}CNY，已到账。收款账号快照 · {selected.accountMask}。
                   </p>
                 ),
                 okText: "关闭",
               });
-            else
+            } else if (selected) {
               void message.info(
-                `${selected?.payoutId || "打款"}的查询接口尚未接入，打款状态仍为处理中`,
+                `原请求${selected.payoutId}的查询接口尚未接入，打款状态仍为${payoutLabels[selected.status]}`,
               );
+            }
           }}
         >
           查询原回执
@@ -729,130 +738,101 @@ export function AdminSettlementsPage() {
             rowKey="id"
             dataSource={rows}
             pagination={false}
-            rowClassName={(row) =>
-              row.id === selectedId ? "selected-row" : ""
-            }
-            onRow={(row) => ({ onClick: () => setSelectedId(row.id) })}
+            scroll={{ x: 630 }}
+            rowClassName={(row) => row.id === selectedId ? "selected-row" : ""}
+            onRow={(row) => ({ onClick: () => select(row.id) })}
             columns={[
               {
                 title: "批次号",
                 dataIndex: "id",
-                render: (value) => (
-                  <Button type="text" onClick={() => setSelectedId(value)}>
-                    {value}
-                  </Button>
-                ),
+                render: (id) => <Button type="text">{id}</Button>,
               },
               { title: "打款单号", dataIndex: "payoutId" },
               {
                 title: "状态",
-                render: (_, row) => (
-                  <Status tone={row.status === "SUCCEEDED" ? "green" : "blue"}>
-                    {row.status === "SUCCEEDED" ? "已到账" : "处理中"}
-                  </Status>
-                ),
+                render: (_, row) => <Status tone={payoutTones[row.status]}>{payoutLabels[row.status]}</Status>,
               },
               {
                 title: "结算金额",
                 dataIndex: "amountMinor",
-                render: (value) =>
-                  `${formatMinorUnits(value).replace(/\.00$/, "")} 元`,
+                render: (value) => `${formatMinorUnits(value).replace(/\.00$/, "")} 元`,
               },
             ]}
           />
         </Panel>
-        <Panel
-          title={`批次明细（${selected?.id || "—"}）`}
-          className="admin-settlement-ledger"
-        >
-          {selected ? (
-            <div id="admin-settlement-ledger">
-              <Notice>
-                <b>
-                  净额 ·{" "}
-                  {formatMinorUnits(selected.income).replace(/\.00$/, "")}{" "}
-                  元收入 - {formatMinorUnits(selected.fee).replace(/\.00$/, "")}{" "}
-                  元费用 -{" "}
-                  {formatMinorUnits(selected.refund).replace(/\.00$/, "")}{" "}
-                  元退款 ={" "}
-                  <strong>
-                    {formatMinorUnits(net).replace(/\.00$/, "")} 元
-                  </strong>
-                </b>
-              </Notice>
-              <h3>明细记录</h3>
-              <Table
-                rowKey="kind"
-                pagination={false}
-                dataSource={[
-                  {
-                    kind: "原单收入",
-                    amount: `+${formatMinorUnits(selected.income).replace(/\.00$/, "")} 元`,
-                    description: "服务收入",
-                    tone: "green" as const,
-                  },
-                  {
-                    kind: "平台及渠道费",
-                    amount: `-${formatMinorUnits(selected.fee).replace(/\.00$/, "")} 元`,
-                    description: "成交快照费用",
-                    tone: "orange" as const,
-                  },
-                  {
-                    kind: "退款冲正",
-                    amount: `-${formatMinorUnits(selected.refund).replace(/\.00$/, "")} 元`,
-                    description: "追加记录，冲减原收益",
-                    tone: "purple" as const,
-                  },
-                ]}
-                columns={[
-                  {
-                    title: "类型",
-                    render: (_, row) => (
-                      <Status tone={row.tone}>{row.kind}</Status>
-                    ),
-                  },
-                  { title: "金额", dataIndex: "amount" },
-                  { title: "说明", dataIndex: "description" },
-                ]}
-              />
-            </div>
-          ) : (
-            <Empty description="暂无结算批次" />
-          )}
+        <Panel title={`批次明细（${selectedId || "—"}）`} className="admin-settlement-ledger">
+          {selected && totals ? <div id="admin-settlement-ledger">
+            <Notice><b>
+              净额 · {formatMinorUnits(totals.income).replace(/\.00$/, "")} 元收入 -{" "}
+              {formatMinorUnits(totals.fee).replace(/\.00$/, "")} 元费用 -{" "}
+              {formatMinorUnits(totals.refund).replace(/\.00$/, "")} 元退款 ={" "}
+              <strong>{formatMinorUnits(totals.net).replace(/\.00$/, "")} 元</strong>
+            </b></Notice>
+            {totals.net !== BigInt(selected.amountMinor) && <Notice>批次净额与原打款金额待核对。</Notice>}
+            <h3>明细记录</h3>
+            <Table rowKey="kind" pagination={false} scroll={{ x: 630 }} dataSource={[
+              {
+                kind: "原单收入",
+                amount: `+${formatMinorUnits(totals.income).replace(/\.00$/, "")} 元`,
+                description: "服务收入",
+                tone: "green" as const,
+              },
+              {
+                kind: "平台及渠道费",
+                amount: `-${formatMinorUnits(totals.fee).replace(/\.00$/, "")} 元`,
+                description: "成交快照费用",
+                tone: "orange" as const,
+              },
+              {
+                kind: "退款冲正",
+                amount: `-${formatMinorUnits(totals.refund).replace(/\.00$/, "")} 元`,
+                description: "追加记录，冲减原收益",
+                tone: "purple" as const,
+              },
+            ]} columns={[
+              { title: "类型", render: (_, row) => <Status tone={row.tone}>{row.kind}</Status> },
+              { title: "金额", dataIndex: "amount" },
+              { title: "说明", dataIndex: "description" },
+            ]} />
+          </div> : <Empty description={enabled ? `结算批次${selectedId}不存在或已失效` : "结算批次待载入"} />}
         </Panel>
       </div>
       <Modal
+        title={`批次${selectedId}账本来源`}
+        width={900}
+        open={ledgerOpen && !!selected}
+        onCancel={() => setLedgerOpen(false)}
+        footer={<Button onClick={() => setLedgerOpen(false)}>关闭账本</Button>}
+      >
+        <Table rowKey="id" dataSource={selected?.lines || []} pagination={false} scroll={{ x: 750 }} columns={[
+          { title: "交易编号", dataIndex: "id" },
+          { title: "账本分组", dataIndex: "ledgerGroupId" },
+          { title: "收入", dataIndex: "income", render: formatMinorUnits },
+          { title: "费用", dataIndex: "fee", render: formatMinorUnits },
+          { title: "退款", dataIndex: "refund", render: formatMinorUnits },
+        ]} />
+        <p>原打款请求 · {selected?.payoutId}　收款快照 · {selected?.accountMask}</p>
+      </Modal>
+      <Modal
         forceRender
         title="生成结算批次"
-        open={generating}
+        open={generating && !!owner}
         onCancel={() => setGenerating(false)}
         onOk={() => form.submit()}
         okText="提交生成"
         cancelText="返回"
       >
         <Notice>按成熟窗口、退款冻结与有效收款资料筛选结算分录。</Notice>
-        <Form
-          form={form}
-          layout="vertical"
-          initialValues={{ publisher: "林**", currency: "CNY" }}
-          onFinish={() =>
-            void message.info("结算批次接口尚未接入，待结算金额保留")
-          }
-        >
-          <Form.Item label="发布者" name="publisher">
-            <Input readOnly />
-          </Form.Item>
-          <Form.Item label="币种" name="currency">
-            <Input readOnly />
-          </Form.Item>
-          <Form.Item
-            label="结算期间"
-            name="period"
-            rules={[{ required: true, message: "请选择结算期间" }]}
-          >
+        <Form form={form} layout="vertical" initialValues={{ publisher: owner?.mask, currency: owner?.currency }}
+          onFinish={() => void message.info("结算批次接口尚未接入，可结算范围保留")}>
+          <Form.Item label="发布者" name="publisher"><Input readOnly /></Form.Item>
+          <Form.Item label="币种" name="currency"><Input readOnly /></Form.Item>
+          <Form.Item label="结算期间" name="period" rules={[{ required: true, message: "请选择结算期间" }]}>
             <DatePicker.RangePicker />
           </Form.Item>
-          <p>待结算 · 300.00 CNY　收款资料快照 · ****1234</p>
+          <p>当前可结算 · {balance ? formatMinorUnits(balance.available) : "—"} CNY　范围 · {balance?.eligibleIds.join("、")}</p>
+          <p>期间内可纳入金额待生成预览核定。</p>
+          <p>当前收款资料待载入。</p>
         </Form>
       </Modal>
     </div>

@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   App,
   Button,
@@ -46,6 +47,11 @@ function PolicyForm({
   } catch {
     /* Field validation explains an invalid rate. */
   }
+  const channelBearer = bearer || policy.channelCostBearer;
+  const userTotal = channelBearer === "CONSUMER" ? "待渠道报价" : "100.00";
+  const publisherNet = channelBearer === "PUBLISHER"
+    ? "待渠道报价"
+    : exampleFee === null ? "—" : formatMinorUnits(10000n - BigInt(exampleFee));
   return (
     <Panel
       title={`规则配置（v${policy.version}）`}
@@ -55,6 +61,7 @@ function PolicyForm({
         form={form}
         labelCol={{ flex: "178px" }}
         labelAlign="start"
+        colon={false}
         wrapperCol={{ flex: 1 }}
         disabled={readOnly}
         initialValues={{
@@ -68,7 +75,7 @@ function PolicyForm({
           requestKey.current = crypto.randomUUID();
         }}
         onFinish={(values) => {
-          savePolicy({
+          const version = savePolicy({
             currency: values.currency,
             feeBasisPoints: feeBasisPoints(values.rate),
             channelCostBearer: values.channelCostBearer,
@@ -76,7 +83,7 @@ function PolicyForm({
             refundDays: values.refundDays,
             requestKey: requestKey.current,
           });
-          onSaved(policy.version);
+          onSaved(version);
           void message.success("新费用规则预览已保存，仅用于后续报价预览");
         }}
       >
@@ -162,23 +169,18 @@ function PolicyForm({
             <b>配置样例（示例，非确定费率）</b>
           </Notice>
           <p>
-            示例 · 用户应付100元，平台费
-            {exampleFee === null ? "—" : formatMinorUnits(String(exampleFee))}
-            元，发布者净额
-            {exampleFee === null
-              ? "—"
-              : formatMinorUnits(10000n - BigInt(exampleFee))}
-            元，渠道费用
-            {(bearer || policy.channelCostBearer) === "PLATFORM"
+            示例 · 服务费100元，平台费
+            {exampleFee === null ? "—" : formatMinorUnits(String(exampleFee))}元，
+            用户应付{userTotal}{userTotal === "待渠道报价" ? "" : "元"}，
+            发布者净额{publisherNet}{publisherNet === "待渠道报价" ? "" : "元"}，
+            渠道费用
+            {channelBearer === "PLATFORM"
               ? "由平台另行承担"
-              : (bearer || policy.channelCostBearer) === "CONSUMER"
-                ? "由用户承担，随实时报价展示"
-                : "由发布者承担，按成交报价扣除"}
-            。
+              : channelBearer === "CONSUMER" ? "由用户承担" : "由发布者承担"}。
           </p>
           <div>
             {[
-              ["用户应付", "100.00"],
+              ["用户应付", userTotal],
               [
                 "平台费",
                 exampleFee === null
@@ -187,14 +189,12 @@ function PolicyForm({
               ],
               [
                 "发布者净额",
-                exampleFee === null
-                  ? "—"
-                  : formatMinorUnits(10000n - BigInt(exampleFee)),
+                publisherNet,
               ],
             ].map(([label, amount]) => (
               <article key={label}>
                 {label}
-                <strong>{amount} 元</strong>
+                <strong>{amount}{amount === "待渠道报价" ? "" : " 元"}</strong>
               </article>
             ))}
           </div>
@@ -211,7 +211,14 @@ function PolicyForm({
 
 export function AdminCommercePolicyPage() {
   const { policies, enabled } = useAdminPreview();
-  const [selected, setSelected] = useState<number | "draft">("draft");
+  const [params, setParams] = useSearchParams();
+  const requested = params.get("version") || "draft";
+  const selected = requested === "draft" ? "draft" : Number(requested);
+  function choose(version: number | "draft") {
+    const next = new URLSearchParams(params);
+    next.set("version", String(version));
+    setParams(next);
+  }
   const current = policies.at(-1);
   if (!enabled || !current)
     return (
@@ -223,22 +230,23 @@ export function AdminCommercePolicyPage() {
   const policy =
     selected === "draft"
       ? { ...current, version: current.version + 1 }
-      : policies.find((item) => item.version === selected) || current;
+      : policies.find((item) => item.version === selected);
   return (
     <div className="admin-page admin-policy-page">
       <PageHeading
         title="费用与结算规则"
         description="配置平台计费与结算相关规则，生成新版本规则用于后续报价与结算。"
+        extra={<Status tone="gray">本地示例</Status>}
       />
       <div className="admin-policy-versions">
         <button
           type="button"
-          aria-pressed={selected !== "draft"}
-          className={selected !== "draft" ? "selected" : ""}
-          onClick={() => setSelected(current.version)}
+          aria-pressed={selected === current.version}
+          className={selected === current.version ? "selected" : ""}
+          onClick={() => choose(current.version)}
         >
           <span
-            className={`policy-version-radio ${selected !== "draft" ? "checked" : ""}`}
+            className={`policy-version-radio ${selected === current.version ? "checked" : ""}`}
             aria-hidden="true"
           />
           <span>
@@ -253,7 +261,7 @@ export function AdminCommercePolicyPage() {
           type="button"
           aria-pressed={selected === "draft"}
           className={selected === "draft" ? "selected" : ""}
-          onClick={() => setSelected("draft")}
+          onClick={() => choose("draft")}
         >
           <span
             className={`policy-version-radio ${selected === "draft" ? "checked" : ""}`}
@@ -268,14 +276,16 @@ export function AdminCommercePolicyPage() {
         </button>
       </div>
       <div className="admin-policy-columns">
-        <PolicyForm
-          key={
-            selected === "draft" ? `draft-${current.version}` : policy.version
-          }
-          policy={policy}
-          readOnly={selected !== "draft"}
-          onSaved={setSelected}
-        />
+        {policy ? (
+          <PolicyForm
+            key={selected === "draft" ? "draft" : policy.version}
+            policy={policy}
+            readOnly={selected !== "draft"}
+            onSaved={choose}
+          />
+        ) : (
+          <Panel><Empty description={`费用规则版本${requested}不存在或已失效`} /></Panel>
+        )}
         <Panel title="影响预览" className="admin-policy-impact">
           <Notice>
             <b>仅影响新报价，旧订单按快照执行。</b>
@@ -291,9 +301,9 @@ export function AdminCommercePolicyPage() {
               <h3>规则历史版本</h3>
               <Select
                 aria-label="规则历史版本"
-                value={selected === "draft" ? undefined : selected}
+                value={selected === "draft" || !policy ? undefined : selected}
                 placeholder="查看历史规则快照"
-                onChange={setSelected}
+                onChange={choose}
                 options={policies.map((item) => ({
                   value: item.version,
                   label: `v${item.version} · ${(item.feeBasisPoints / 100).toFixed(2)}%`,

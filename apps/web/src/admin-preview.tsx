@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useRef, useState, type ReactNode } from "react";
 import { useWorkspace } from "./context";
 
 import {
@@ -74,7 +74,7 @@ const AdminPreviewContext = createContext<{
     change: Partial<Pick<AdminService, "active" | "revoked">>,
     reason: string,
   ) => void;
-  savePolicy: (policy: Omit<CommercePolicyPreview, "version">) => void;
+  savePolicy: (policy: Omit<CommercePolicyPreview, "version">) => number;
   recordNote: (resourceId: string, reason: string, requestKey: string) => void;
 } | null>(null);
 
@@ -150,6 +150,7 @@ export function AdminPreviewProvider({ children }: { children: ReactNode }) {
         ]
       : [],
   );
+  const policyRecords = useRef(policies);
   const [notes, setNotes] = useState<AdminNote[]>([]);
   function requirePreview(reason: string, capability?: string) {
     if (!enabled) throw new Error("管理业务接口尚未接入");
@@ -238,17 +239,15 @@ export function AdminPreviewProvider({ children }: { children: ReactNode }) {
       )
     )
       throw new Error("等待与处理期限须为0至365天的整数");
-    setPolicies((previous) =>
-      previous.some((item) => item.requestKey === policy.requestKey)
-        ? previous
-        : [
-            ...previous,
-            {
-              ...policy,
-              version: Math.max(0, ...previous.map((item) => item.version)) + 1,
-            },
-          ],
-    );
+    const existing = policyRecords.current.find((item) => item.requestKey === policy.requestKey);
+    if (existing) return existing.version;
+    const saved = {
+      ...policy,
+      version: Math.max(0, ...policyRecords.current.map((item) => item.version)) + 1,
+    };
+    policyRecords.current = [...policyRecords.current, saved];
+    setPolicies(policyRecords.current);
+    return saved.version;
   }
   return (
     <AdminPreviewContext.Provider

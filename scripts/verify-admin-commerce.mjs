@@ -158,7 +158,7 @@ try {
   );
 
   await menu("对账中心");
-  await expect(page.locator(".admin-reconciliation-page tbody tr")).toHaveCount(
+  await expect(page.locator(".admin-reconciliation-page .ant-table-row")).toHaveCount(
     3,
   );
   await page.getByRole("button", { name: "启动对账", exact: true }).click();
@@ -172,6 +172,8 @@ try {
     "核对11月13日退款未知记录",
   );
   await page.getByRole("button", { name: "关闭记录", exact: true }).click();
+  await page.getByLabel("对账日期", { exact: true }).click();
+  await expect(page.locator(".ant-picker-dropdown:visible")).toBeVisible();
   await page.getByLabel("对账日期", { exact: true }).fill("2026-11-14");
   await page.getByLabel("对账日期", { exact: true }).press("Enter");
   await expect(
@@ -201,7 +203,7 @@ try {
   await page.getByRole("button", { name: "SET018", exact: true }).click();
   await page.getByRole("button", { name: "查询原回执", exact: true }).click();
   await expect(
-    page.getByText("PO018的查询接口尚未接入，打款状态仍为处理中", {
+    page.getByText("原请求P0018的查询接口尚未接入，打款状态仍为处理中", {
       exact: true,
     }),
   ).toBeVisible();
