@@ -1,5 +1,6 @@
 import { useRef, useState, type Key } from "react";
 import {
+  Alert,
   App,
   Button,
   Form,
@@ -10,7 +11,13 @@ import {
   Tabs,
 } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import {
+  useAdminMetadata,
+  type AdminUserMetadata,
+  type AdminQuotaMetadata,
+  type AdminCatalogMetadata,
+} from "../lib/admin-metadata";
 import { Notice, PageHeading, Panel, Status } from "../components/ui";
 import {
   useAdminPreview,
@@ -19,10 +26,71 @@ import {
 } from "../admin-preview";
 import { useWorkspace } from "../context";
 
+const accountStatuses: Record<string, string> = {
+  UNVERIFIED: "待验证",
+  ACTIVE: "正常",
+  FROZEN: "已冻结",
+  CLOSING: "注销处理中",
+  CLOSED: "已注销",
+};
+const serviceStatuses: Record<string, string> = {
+  DRAFT: "草稿",
+  ACTIVE: "在售",
+  PAUSED: "停销",
+  RETIRED: "已退役",
+  BLOCKED: "风险停销",
+};
+function AccountQuotas({ id }: { id: string }) {
+  const query = useAdminMetadata<AdminQuotaMetadata>(
+    `users/${encodeURIComponent(id)}/quotas`,
+    "",
+    true,
+  );
+  return (
+    <div className="admin-quota-details">
+      <h3>当前资源配额</h3>
+      {query.isError && (
+        <Alert
+          type="error"
+          title="配额查询失败"
+          action={
+            <Button onClick={() => void query.refetch()}>重试配额</Button>
+          }
+        />
+      )}
+      <Table<AdminQuotaMetadata>
+        rowKey="id"
+        pagination={false}
+        loading={query.isFetching}
+        dataSource={query.data?.pages.flatMap((page) => page.items) || []}
+        scroll={{ x: 720 }}
+        columns={[
+          { title: "资源", dataIndex: "resource_key" },
+          { title: "窗口起点", dataIndex: "window_start" },
+          { title: "上限", dataIndex: "limit_amount" },
+          { title: "预留", dataIndex: "reserved_amount" },
+          { title: "已消耗", dataIndex: "consumed_amount" },
+          { title: "可用", dataIndex: "available_amount" },
+        ]}
+      />
+      {query.hasNextPage && (
+        <Button
+          loading={query.isFetchingNextPage}
+          onClick={() => void query.fetchNextPage()}
+        >
+          加载更多配额
+        </Button>
+      )}
+    </div>
+  );
+}
+
 export function AdminUsersPage() {
-  const { accounts, updateAccount } = useAdminPreview();
+  const { accounts, updateAccount, enabled } = useAdminPreview();
   const { bootstrap } = useWorkspace();
-  const [query, setQuery] = useState("");
+  const [params, setParams] = useSearchParams();
+  const query = params.get("q") || "";
+  const handled = useRef(false);
   const [selectedIds, setSelectedIds] = useState<Key[]>([]);
   const [dialog, setDialog] = useState<{
     account: AdminAccount;
@@ -30,21 +98,55 @@ export function AdminUsersPage() {
   }>();
   const [form] = Form.useForm();
   const { message } = App.useApp();
-  const rows = accounts.filter(
-    (item) =>
-      item.name.includes(query.trim()) || item.mask.includes(query.trim()),
+  const canRead = Boolean(bootstrap.user?.capabilities.includes("user.manage"));
+  const canManage = enabled && canRead;
+  const remote = useAdminMetadata<AdminUserMetadata>(
+    "users",
+    new URLSearchParams({ q: query.trim() }).toString(),
+    !enabled && canRead,
   );
-  const canManage = Boolean(
-    bootstrap.user?.capabilities.includes("user.manage"),
+  const rows: AdminAccount[] = enabled
+    ? accounts.filter(
+        (item) =>
+          item.name.includes(query.trim()) || item.mask.includes(query.trim()),
+      )
+    : (remote.data?.pages.flatMap((page) => page.items) || []).map((item) => ({
+        id: item.id,
+        name: item.display_name_mask,
+        mask: item.account_mask,
+        publisher: item.publisher,
+        status: item.status as AdminAccount["status"],
+        revision: item.revision,
+        quota: 0,
+        used: 0,
+        openOrders: item.open_order_count,
+        live: true,
+        quotaResourceCount: item.quota_resource_count,
+        lastAccessManager: item.is_last_access_manager,
+      }));
+  const visibleSelectedIds = selectedIds.filter((id) =>
+    rows.some((item) => item.id === id),
   );
+  const selected =
+    visibleSelectedIds.length === 1
+      ? rows.find((item) => item.id === visibleSelectedIds[0])
+      : undefined;
+  function protectedAccount(account: AdminAccount) {
+    return account.id === bootstrap.user?.id || account.lastAccessManager;
+  }
   function open(account: AdminAccount, action: "summary" | "quota" | "status") {
+    if (
+      action !== "summary" &&
+      (!canManage || (action === "status" && protectedAccount(account)))
+    )
+      return;
+    handled.current = false;
     form.resetFields();
     form.setFieldValue("quota", account.quota);
     setDialog({ account, action });
   }
   function openSelected(action: "summary" | "quota" | "status") {
-    const selected = accounts.find((item) => item.id === selectedIds[0]);
-    if (!selected || selectedIds.length !== 1) {
+    if (!selected) {
       void message.info("请先选择一个账号");
       return;
     }
@@ -74,8 +176,13 @@ export function AdminUsersPage() {
           <Button disabled={!canManage} onClick={() => openSelected("quota")}>
             调整配额
           </Button>
-          <Button disabled={!canManage} onClick={() => openSelected("status")}>
-            限制新业务
+          <Button
+            disabled={
+              !canManage || Boolean(selected && protectedAccount(selected))
+            }
+            onClick={() => openSelected("status")}
+          >
+            {selected?.status === "FROZEN" ? "解除限制" : "限制新业务"}
           </Button>
         </div>
         <Input
@@ -83,17 +190,38 @@ export function AdminUsersPage() {
           prefix={<SearchOutlined />}
           placeholder="搜索用户昵称或账号"
           value={query}
-          onChange={(event) => setQuery(event.target.value)}
+          onChange={(event) => {
+            const next = new URLSearchParams(params);
+            if (event.target.value) next.set("q", event.target.value);
+            else next.delete("q");
+            setParams(next, { replace: true });
+            setSelectedIds([]);
+          }}
           allowClear
         />
       </div>
+      {!enabled && (
+        <Notice>管理变更接口待接入，当前支持账号摘要与按资源查看配额。</Notice>
+      )}
+      {!enabled && remote.isError && (
+        <Alert
+          className="admin-metadata-error"
+          type="error"
+          title="账号查询失败"
+          action={
+            <Button onClick={() => void remote.refetch()}>重试账号查询</Button>
+          }
+        />
+      )}
       <Panel className="admin-users-table">
         <Table<AdminAccount>
           rowKey="id"
           dataSource={rows}
+          loading={!enabled && remote.isFetching}
+          scroll={{ x: 1100 }}
           pagination={false}
           rowSelection={{
-            selectedRowKeys: selectedIds,
+            selectedRowKeys: visibleSelectedIds,
             onChange: setSelectedIds,
           }}
           columns={[
@@ -109,16 +237,22 @@ export function AdminUsersPage() {
               title: "状态",
               render: (_, row) => (
                 <Status tone={row.status === "ACTIVE" ? "green" : "orange"}>
-                  {row.status === "ACTIVE" ? "正常" : "已冻结"}
+                  {accountStatuses[row.status] || row.status}
                 </Status>
               ),
             },
             {
               title: "配额",
               dataIndex: "quota",
-              render: (value) => `${value.toLocaleString("en-US")} 次`,
+              render: (_, row) =>
+                row.live
+                  ? `${row.quotaResourceCount} 类资源`
+                  : `${row.quota.toLocaleString("en-US")} 次`,
             },
-            { title: "未结订单", dataIndex: "openOrders" },
+            {
+              title: enabled ? "未结订单" : "待支付/履约订单",
+              dataIndex: "openOrders",
+            },
             {
               title: "操作",
               width: 355,
@@ -138,8 +272,8 @@ export function AdminUsersPage() {
                     type="link"
                     disabled={
                       !canManage ||
-                      row.id === bootstrap.user?.id ||
-                      row.lastAccessManager
+                      protectedAccount(row) ||
+                      !["ACTIVE", "FROZEN"].includes(row.status)
                     }
                     onClick={() => open(row, "status")}
                   >
@@ -150,9 +284,18 @@ export function AdminUsersPage() {
             },
           ]}
         />
+        {!enabled && remote.hasNextPage && (
+          <Button
+            loading={remote.isFetchingNextPage}
+            onClick={() => void remote.fetchNextPage()}
+          >
+            加载更多账号
+          </Button>
+        )}
       </Panel>
       <Modal
         forceRender
+        width={dialog?.account.live ? 820 : 520}
         title={
           dialog?.action === "summary"
             ? "账号摘要"
@@ -174,28 +317,51 @@ export function AdminUsersPage() {
         onOk={() => form.submit()}
       >
         {dialog?.action === "summary" ? (
-          <dl className="admin-account-summary">
-            <dt>用户昵称</dt>
-            <dd>{dialog.account.name}</dd>
-            <dt>账号掩码</dt>
-            <dd>{dialog.account.mask}</dd>
-            <dt>账号能力</dt>
-            <dd>消费者{dialog.account.publisher ? "、发布者" : ""}</dd>
-            <dt>资源配额</dt>
-            <dd>
-              {dialog.account.used} / {dialog.account.quota} 次
-            </dd>
-            <dt>未结订单</dt>
-            <dd>{dialog.account.openOrders}</dd>
-            <dt>状态</dt>
-            <dd>{dialog.account.status === "ACTIVE" ? "正常" : "已冻结"}</dd>
-          </dl>
+          <div>
+            <dl className="admin-account-summary">
+              <dt>用户昵称</dt>
+              <dd>{dialog.account.name}</dd>
+              <dt>账号掩码</dt>
+              <dd>{dialog.account.mask}</dd>
+              <dt>账号能力</dt>
+              <dd>消费者{dialog.account.publisher ? "、发布者" : ""}</dd>
+              <dt>资源配额</dt>
+              <dd>
+                {dialog.account.live
+                  ? `${dialog.account.quotaResourceCount} 类资源`
+                  : `${dialog.account.used} / ${dialog.account.quota} 次`}
+              </dd>
+              <dt>{dialog.account.live ? "待支付/履约订单" : "未结订单"}</dt>
+              <dd>{dialog.account.openOrders}</dd>
+              <dt>状态</dt>
+              <dd>
+                {accountStatuses[dialog.account.status] ||
+                  dialog.account.status}
+              </dd>
+              <dt>记录版本</dt>
+              <dd>{dialog.account.revision}</dd>
+              {(dialog.account.id === bootstrap.user?.id ||
+                dialog.account.lastAccessManager) && (
+                <>
+                  <dt>账号保护</dt>
+                  <dd>
+                    {dialog.account.id === bootstrap.user?.id
+                      ? "当前管理员"
+                      : "最后有效权限管理员"}
+                  </dd>
+                </>
+              )}
+            </dl>
+            {dialog.account.live && (
+              <AccountQuotas key={dialog.account.id} id={dialog.account.id} />
+            )}
+          </div>
         ) : (
           <Form
             form={form}
             layout="vertical"
             onFinish={(values) => {
-              if (!dialog) return;
+              if (!dialog || handled.current || !canManage) return;
               try {
                 updateAccount(
                   dialog.account.id,
@@ -208,7 +374,9 @@ export function AdminUsersPage() {
                             : "ACTIVE",
                       },
                   values.reason,
+                  dialog.account.revision,
                 );
+                handled.current = true;
                 setDialog(undefined);
                 void message.success("账号管理预览已保存");
               } catch (error) {
@@ -268,9 +436,17 @@ export function AdminUsersPage() {
 }
 
 export function AdminServicesPage() {
-  const { services, updateService, notes } = useAdminPreview();
+  const { services, updateService, notes, enabled } = useAdminPreview();
   const { bootstrap } = useWorkspace();
-  const [tab, setTab] = useState("services");
+  const [params, setParams] = useSearchParams();
+  const requestedTab = params.get("view") || "services";
+  const validTab = ["services", "scripts"].includes(requestedTab);
+  const tab = validTab ? requestedTab : "services";
+  function setTab(value: string) {
+    const next = new URLSearchParams(params);
+    next.set("view", value);
+    setParams(next);
+  }
   const [dialog, setDialog] = useState<{
     service: AdminService;
     action: "block" | "restore" | "revoke" | "impact";
@@ -278,13 +454,44 @@ export function AdminServicesPage() {
   const [form] = Form.useForm();
   const handled = useRef(false);
   const { message } = App.useApp();
-  const canManage = Boolean(
+  const canRead = Boolean(
     bootstrap.user?.capabilities.includes("catalog.manage"),
   );
+  const canManage = enabled && canRead;
+  const remote = useAdminMetadata<AdminCatalogMetadata>(
+    "services",
+    new URLSearchParams({
+      view: tab === "scripts" ? "versions" : "services",
+    }).toString(),
+    !enabled && canRead && validTab,
+  );
+  const rows: AdminService[] = !validTab
+    ? []
+    : enabled
+      ? services
+      : (remote.data?.pages.flatMap((page) => page.items) || []).map(
+          (item) => ({
+            id: item.id,
+            title: item.title,
+            publisher: item.publisher,
+            version: item.version || "未绑定版本",
+            deployed: item.deployment_status === "READY",
+            active: item.status === "ACTIVE",
+            revoked: item.content_status === "REVOKED",
+            entitlements: item.entitlement_count,
+            revision: item.revision,
+            contentStatus: item.content_status,
+            deploymentStatus: item.deployment_status,
+            status: item.status,
+            live: true,
+            risk: "待接入风险核验",
+          }),
+        );
   function open(
     service: AdminService,
     action: "block" | "restore" | "revoke" | "impact",
   ) {
+    if (action !== "impact" && !canManage) return;
     form.resetFields();
     handled.current = false;
     setDialog({ service, action });
@@ -292,6 +499,22 @@ export function AdminServicesPage() {
   return (
     <div className="admin-page admin-services-page">
       <PageHeading title="服务与脚本" />
+      {!validTab && (
+        <Notice>所选目录视图不存在，请选择服务商品或脚本版本。</Notice>
+      )}
+      {!enabled && (
+        <Notice>管理变更接口待接入，当前支持服务和脚本版本元数据查询。</Notice>
+      )}
+      {!enabled && remote.isError && (
+        <Alert
+          className="admin-metadata-error"
+          type="error"
+          title="目录查询失败"
+          action={
+            <Button onClick={() => void remote.refetch()}>重试目录查询</Button>
+          }
+        />
+      )}
       <Panel>
         <Tabs
           activeKey={tab}
@@ -303,7 +526,9 @@ export function AdminServicesPage() {
               children: (
                 <Table<AdminService>
                   rowKey="id"
-                  dataSource={services}
+                  dataSource={rows}
+                  loading={!enabled && remote.isFetching}
+                  scroll={{ x: 1200 }}
                   pagination={false}
                   columns={[
                     {
@@ -317,7 +542,11 @@ export function AdminServicesPage() {
                       title: "部署",
                       render: (_, row) => (
                         <Status tone={row.deployed ? "green" : "orange"}>
-                          {row.deployed ? "READY" : "未就绪"}
+                          {row.live
+                            ? row.deploymentStatus || "未绑定部署"
+                            : row.deployed
+                              ? "READY"
+                              : "未就绪"}
                         </Status>
                       ),
                     },
@@ -325,7 +554,11 @@ export function AdminServicesPage() {
                       title: "在售状态",
                       render: (_, row) => (
                         <Status tone={row.active ? "blue" : "gray"}>
-                          {row.active ? "在售" : "停销"}
+                          {row.live
+                            ? serviceStatuses[row.status || ""] || row.status
+                            : row.active
+                              ? "在售"
+                              : "停销"}
                         </Status>
                       ),
                     },
@@ -334,25 +567,26 @@ export function AdminServicesPage() {
                       render: (_, row) => (
                         <Status
                           tone={
-                            row.revoked
-                              ? "red"
-                              : row.active
-                                ? "orange"
-                                : "purple"
+                            row.live
+                              ? "gray"
+                              : row.revoked
+                                ? "red"
+                                : row.risk === "需关注"
+                                  ? "orange"
+                                  : row.risk === "已核查"
+                                    ? "green"
+                                    : "purple"
                           }
                         >
-                          {row.revoked
-                            ? "已撤销执行"
-                            : row.active
-                              ? "需关注"
-                              : "待核查"}
+                          {row.risk}
                         </Status>
                       ),
                     },
                     {
                       title: "存量权益",
                       dataIndex: "entitlements",
-                      render: (value) => `${value.toLocaleString("en-US")} 次`,
+                      render: (value, row) =>
+                        `${typeof value === "number" ? value.toLocaleString("en-US") : value} ${row.live ? "项" : "次"}`,
                     },
                     {
                       title: "操作",
@@ -371,6 +605,7 @@ export function AdminServicesPage() {
                               !canManage ||
                               row.active ||
                               !row.deployed ||
+                              row.contentStatus !== "READY" ||
                               row.revoked
                             }
                             onClick={() => open(row, "restore")}
@@ -393,7 +628,9 @@ export function AdminServicesPage() {
               children: (
                 <Table<AdminService>
                   rowKey="id"
-                  dataSource={services}
+                  dataSource={rows}
+                  loading={!enabled && remote.isFetching}
+                  scroll={{ x: 1200 }}
                   pagination={false}
                   columns={[
                     { title: "脚本", dataIndex: "title" },
@@ -403,14 +640,15 @@ export function AdminServicesPage() {
                       title: "内容状态",
                       render: (_, row) => (
                         <Status tone={row.revoked ? "red" : "green"}>
-                          {row.revoked ? "REVOKED" : "READY"}
+                          {row.contentStatus || "未绑定版本"}
                         </Status>
                       ),
                     },
                     {
                       title: "存量权益",
                       dataIndex: "entitlements",
-                      render: (value) => `${value.toLocaleString("en-US")} 次`,
+                      render: (value, row) =>
+                        `${typeof value === "number" ? value.toLocaleString("en-US") : value} ${row.live ? "项" : "次"}`,
                     },
                     {
                       title: "操作",
@@ -435,6 +673,14 @@ export function AdminServicesPage() {
             },
           ]}
         />
+        {!enabled && remote.hasNextPage && (
+          <Button
+            loading={remote.isFetchingNextPage}
+            onClick={() => void remote.fetchNextPage()}
+          >
+            加载更多目录
+          </Button>
+        )}
       </Panel>
       <Modal
         forceRender
@@ -460,23 +706,44 @@ export function AdminServicesPage() {
       >
         <p>
           <b>{dialog?.service.title}</b> · {dialog?.service.version} · 存量权益{" "}
-          {dialog?.service.entitlements.toLocaleString("en-US")} 次
+          {dialog?.service.entitlements.toLocaleString("en-US")}{" "}
+          {dialog?.service.live ? "项" : "次"}
         </p>
         <Notice>
-          {dialog?.action === "restore"
-            ? "基础可售检查预览 · 部署READY、版本有效。恢复后开放新购买，历史合同继续可追溯。"
-            : dialog?.action === "revoke"
-              ? "问题版本停止新调用，存量履约进入影响核验与补偿流程。"
-              : "停销停止新购买，存量订单继续履约或按成交规则处理退款。"}
+          {dialog?.action === "impact"
+            ? "以下为所选记录快照，权益覆盖仍须结合订单、版本和履约状态核验。"
+            : dialog?.action === "restore"
+              ? "基础可售检查预览 · 部署READY、版本有效。恢复后开放新购买，历史合同继续可追溯。"
+              : dialog?.action === "revoke"
+                ? "问题版本停止新调用，存量履约进入影响核验与补偿流程。"
+                : "停销停止新购买，存量订单继续履约或按成交规则处理退款。"}
         </Notice>
         {dialog?.action === "impact" ? (
           <div>
-            <Link
-              to={`/admin/orders?service=${encodeURIComponent(dialog.service.id === "clean" ? "表格清洗" : "文件工具")}`}
-            >
-              查看相关服务订单
-            </Link>
-            <h3>本地处理记录</h3>
+            <dl className="admin-account-summary">
+              <dt>资源编号</dt>
+              <dd>{dialog.service.id}</dd>
+              <dt>记录版本</dt>
+              <dd>{dialog.service.revision}</dd>
+              <dt>内容状态</dt>
+              <dd>{dialog.service.contentStatus || "未绑定版本"}</dd>
+              <dt>部署状态</dt>
+              <dd>
+                {dialog.service.live
+                  ? dialog.service.deploymentStatus || "未绑定部署"
+                  : dialog.service.deployed
+                    ? "READY"
+                    : "未就绪"}
+              </dd>
+            </dl>
+            {enabled && (
+              <Link
+                to={`/admin/orders?service=${encodeURIComponent(dialog.service.id === "clean" ? "表格清洗" : dialog.service.title)}`}
+              >
+                查看相关服务订单
+              </Link>
+            )}
+            {enabled && <h3>本地处理记录</h3>}
             {notes
               .filter((item) => item.resourceId === dialog.service.id)
               .map((item) => (
@@ -490,7 +757,7 @@ export function AdminServicesPage() {
             form={form}
             layout="vertical"
             onFinish={(values) => {
-              if (!dialog || handled.current) return;
+              if (!dialog || handled.current || !canManage) return;
               try {
                 updateService(
                   dialog.service.id,
@@ -498,6 +765,7 @@ export function AdminServicesPage() {
                     ? { revoked: true }
                     : { active: dialog.action === "restore" },
                   values.reason,
+                  dialog.service.revision,
                 );
                 handled.current = true;
                 setDialog(undefined);

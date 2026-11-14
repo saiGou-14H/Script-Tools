@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T16:00:11.889Z",
+  "date": "2026-11-14T16:41:25.777Z",
   "checks": [
     "reconciliation, settlement and policy reference regions and sidebar help fit 1814 by 868",
     "date and channel filters persist in the URL, all-date selection is explicit, and unavailable refunds expose a disabled button without a link",

@@ -1,0 +1,104 @@
+.page-O02 .ant-table-cell {
+  font-size: 16px;
+}
+.page-O02 .ant-table-thead .ant-table-cell {
+  font-size: 17px;
+}
+.page-O02 .admin-users-table .ant-table-row .ant-table-cell:nth-child(2) {
+  font-weight: 600;
+}
+.page-O02 .admin-users-table .status {
+  font-size: 15px;
+  padding: 4px 10px;
+}
+.page-O02 .admin-users-table .ant-btn-link {
+  font-size: 16px;
+}
+.page-O02 .admin-users-toolbar .ant-btn-default:not(:disabled),
+.page-O03 .admin-services-page .ant-btn-default:not(:disabled) {
+  border-color: #527aff;
+  color: #1555ff;
+}
+.page-O02 .admin-users-table .ant-table-selection-column {
+  width: 48px;
+}
+.page-O02 .admin-users-table .ant-btn-link {
+  height: auto;
+  padding: 0;
+}
+.page-O02 .admin-users-table .row-actions > .ant-btn + .ant-btn {
+  border-left: 1px solid #e5e9f1;
+  border-radius: 0;
+  padding-left: 17px;
+}
+.page-O03 .admin-services-page .ant-table-cell {
+  font-size: 18px;
+}
+.page-O03 .admin-services-page .ant-table-thead .ant-table-cell {
+  font-size: 17px;
+}
+.page-O03 .admin-services-page .ant-table-cell > strong {
+  font-size: 20px;
+}
+.page-O03 .admin-services-page .ant-tabs-tab + .ant-tabs-tab {
+  margin-left: 6px;
+}
+.page-O03 .admin-services-page .ant-tabs-tab:not(.ant-tabs-tab-active) {
+  color: #657087;
+}
+.page-O03 .admin-services-page .status {
+  padding: 4px 12px;
+  border-radius: 7px;
+}
+.admin-metadata-error {
+  margin-bottom: 16px;
+}
+.admin-quota-details .ant-table-cell {
+  overflow-wrap: anywhere;
+}
+.admin-quota-details h3 {
+  margin-bottom: 12px;
+}
+.admin-account-summary dd {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 760px) {
+  .app-shell.admin-workspace:is(.page-O02, .page-O03) {
+    --sidebar-width: 0px;
+  }
+  :is(.page-O02, .page-O03) .sidebar {
+    display: none;
+  }
+  :is(.page-O02, .page-O03) .brand {
+    min-width: 0;
+    gap: 8px;
+  }
+  :is(.page-O02, .page-O03) .brand strong {
+    font-size: 17px;
+  }
+  :is(.page-O02, .page-O03) .brand-code {
+    font-size: 23px;
+  }
+  :is(.page-O02, .page-O03) .brand > span:last-child {
+    display: none;
+  }
+  .page-O02 .main-content,
+  .page-O03 .main-content {
+    padding: calc(var(--header-height) + 22px) 16px 24px;
+  }
+  .admin-users-toolbar {
+    flex-wrap: wrap;
+  }
+  .admin-users-toolbar > .ant-input-affix-wrapper {
+    width: 100%;
+  }
+  .admin-users-toolbar > .row-actions {
+    flex-wrap: wrap;
+  }
+  .admin-users-toolbar .ant-btn {
+    padding: 0 12px;
+  }
+  .admin-users-freeze-notice .notice {
+    padding: 16px;
+  }
+}

@@ -1,4 +1,10 @@
-import { createContext, useContext, useRef, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { useWorkspace } from "./context";
 
 import {
@@ -23,10 +29,13 @@ export interface AdminAccount {
   name: string;
   mask: string;
   publisher: boolean;
-  status: "ACTIVE" | "FROZEN";
+  status: "UNVERIFIED" | "ACTIVE" | "FROZEN" | "CLOSING" | "CLOSED";
+  revision: string;
+  live?: boolean;
+  quotaResourceCount?: string;
   quota: number;
   used: number;
-  openOrders: number;
+  openOrders: number | string;
   lastAccessManager?: boolean;
 }
 export interface AdminService {
@@ -37,7 +46,13 @@ export interface AdminService {
   deployed: boolean;
   active: boolean;
   revoked: boolean;
-  entitlements: number;
+  entitlements: number | string;
+  revision: string;
+  contentStatus: string | null;
+  deploymentStatus?: string | null;
+  status?: string;
+  live?: boolean;
+  risk: string;
 }
 export interface CommercePolicyPreview {
   version: number;
@@ -68,11 +83,13 @@ const AdminPreviewContext = createContext<{
     id: string,
     change: Partial<Pick<AdminAccount, "quota" | "status">>,
     reason: string,
+    expectedRevision: string,
   ) => void;
   updateService: (
     id: string,
     change: Partial<Pick<AdminService, "active" | "revoked">>,
     reason: string,
+    expectedRevision: string,
   ) => void;
   savePolicy: (policy: Omit<CommercePolicyPreview, "version">) => number;
   recordNote: (resourceId: string, reason: string, requestKey: string) => void;
@@ -92,6 +109,7 @@ export function AdminPreviewProvider({ children }: { children: ReactNode }) {
             mask: "u****3821",
             publisher: true,
             status: "ACTIVE",
+            revision: "1",
             quota: 1000,
             used: 128,
             openOrders: 3,
@@ -102,6 +120,7 @@ export function AdminPreviewProvider({ children }: { children: ReactNode }) {
             mask: "u****9074",
             publisher: false,
             status: "ACTIVE",
+            revision: "1",
             quota: 300,
             used: 82,
             openOrders: 0,
@@ -120,7 +139,10 @@ export function AdminPreviewProvider({ children }: { children: ReactNode }) {
             deployed: true,
             active: true,
             revoked: false,
+            revision: "1",
+            contentStatus: "READY",
             entitlements: 1240,
+            risk: "需关注",
           },
           {
             id: "files",
@@ -130,7 +152,10 @@ export function AdminPreviewProvider({ children }: { children: ReactNode }) {
             deployed: true,
             active: false,
             revoked: false,
+            revision: "1",
+            contentStatus: "READY",
             entitlements: 560,
+            risk: "待核查",
           },
         ]
       : [],
@@ -150,6 +175,8 @@ export function AdminPreviewProvider({ children }: { children: ReactNode }) {
         ]
       : [],
   );
+  const accountRecords = useRef(accounts);
+  const serviceRecords = useRef(services);
   const policyRecords = useRef(policies);
   const [notes, setNotes] = useState<AdminNote[]>([]);
   function requirePreview(reason: string, capability?: string) {
@@ -178,10 +205,15 @@ export function AdminPreviewProvider({ children }: { children: ReactNode }) {
     id: string,
     change: Partial<Pick<AdminAccount, "quota" | "status">>,
     reason: string,
+    expectedRevision: string,
   ) {
     requirePreview(reason, "user.manage");
-    const account = accounts.find((item) => item.id === id);
+    const account = accountRecords.current.find((item) => item.id === id);
     if (!account) throw new Error("账号不存在或已失效");
+    if (account.revision !== expectedRevision)
+      throw new Error("账号已更新，请重新打开操作");
+    if (change.status && !["ACTIVE", "FROZEN"].includes(change.status))
+      throw new Error("账号状态无效");
     if (
       change.status === "FROZEN" &&
       (id === bootstrap.user?.id || account.lastAccessManager)
@@ -194,35 +226,55 @@ export function AdminPreviewProvider({ children }: { children: ReactNode }) {
         change.quota > 1000000)
     )
       throw new Error(`配额须为${account.used}至1000000之间的整数`);
-    setAccounts((previous) =>
-      previous.map((item) => (item.id === id ? { ...item, ...change } : item)),
+    accountRecords.current = accountRecords.current.map((item) =>
+      item.id === id
+        ? {
+            ...item,
+            ...change,
+            revision: (BigInt(item.revision) + 1n).toString(),
+          }
+        : item,
     );
+    setAccounts(accountRecords.current);
     recordNote(id, reason, crypto.randomUUID());
   }
   function updateService(
     id: string,
     change: Partial<Pick<AdminService, "active" | "revoked">>,
     reason: string,
+    expectedRevision: string,
   ) {
     requirePreview(reason, "catalog.manage");
-    const service = services.find((item) => item.id === id);
+    const service = serviceRecords.current.find((item) => item.id === id);
     if (!service) throw new Error("服务不存在或已失效");
+    if (service.revision !== expectedRevision)
+      throw new Error("服务已更新，请重新打开操作");
+    if (change.revoked === false) throw new Error("已撤销版本需要发布新版本");
     if (
       change.active &&
-      (!service.deployed || service.revoked || change.revoked)
+      (!service.deployed ||
+        service.contentStatus !== "READY" ||
+        service.revoked ||
+        change.revoked)
     )
       throw new Error("当前版本未通过可售检查");
-    setServices((previous) =>
-      previous.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              ...change,
-              active: change.revoked ? false : (change.active ?? item.active),
-            }
-          : item,
-      ),
+    serviceRecords.current = serviceRecords.current.map((item) =>
+      item.id === id
+        ? {
+            ...item,
+            ...change,
+            revision: (BigInt(item.revision) + 1n).toString(),
+            contentStatus: change.revoked ? "REVOKED" : item.contentStatus,
+            risk: change.revoked
+              ? "已撤销执行"
+              : change.active
+                ? "已核查"
+                : "需关注",
+            active: change.revoked ? false : (change.active ?? item.active),
+          }
+        : item,
     );
+    setServices(serviceRecords.current);
     recordNote(id, reason, crypto.randomUUID());
   }
   function savePolicy(policy: Omit<CommercePolicyPreview, "version">) {
@@ -239,11 +291,14 @@ export function AdminPreviewProvider({ children }: { children: ReactNode }) {
       )
     )
       throw new Error("等待与处理期限须为0至365天的整数");
-    const existing = policyRecords.current.find((item) => item.requestKey === policy.requestKey);
+    const existing = policyRecords.current.find(
+      (item) => item.requestKey === policy.requestKey,
+    );
     if (existing) return existing.version;
     const saved = {
       ...policy,
-      version: Math.max(0, ...policyRecords.current.map((item) => item.version)) + 1,
+      version:
+        Math.max(0, ...policyRecords.current.map((item) => item.version)) + 1,
     };
     policyRecords.current = [...policyRecords.current, saved];
     setPolicies(policyRecords.current);

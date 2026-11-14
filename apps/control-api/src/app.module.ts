@@ -16,6 +16,8 @@ import { OutputQueryController } from "./outputs/output-query.controller";
 import { OutputQueryService } from "./outputs/output-query.service";
 import { AccountController } from "./account/account.controller";
 import { AccountService } from "./account/account.service";
+import { AdminMetadataController } from "./admin/admin-metadata.controller";
+import { AdminMetadataService } from "./admin/admin-metadata.service";
 
 @Module({
   controllers: [
@@ -24,6 +26,7 @@ import { AccountService } from "./account/account.service";
     PublisherProfileController,
     OutputQueryController,
     AccountController,
+    AdminMetadataController,
   ],
   providers: [
     DatabaseService,
@@ -36,6 +39,7 @@ import { AccountService } from "./account/account.service";
     PaginationService,
     OutputQueryService,
     AccountService,
+    AdminMetadataService,
     { provide: APP_GUARD, useClass: AuthGuard },
   ],
 })

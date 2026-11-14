@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T16:01:03.892Z",
+  "date": "2026-11-14T16:40:56.703Z",
   "checks": [
     "nine administrator account, catalog and commerce routes render with Script Tools branding",
     "booking filters and order detail links preserve independent payment, fulfillment, refund and settlement states",
@@ -13,7 +13,7 @@
     "service block, recovery and version revocation previews preserve existing entitlements and prevent restoring a revoked version",
     "administrator detail pages handle unknown resources and the flow completes without browser runtime exceptions",
     "administrator UI pages require their declared management capabilities in addition to the ADMIN workspace role",
-    "live-mode UI renders empty or unavailable business data while prototype fixtures are scoped to the local preview mode"
+    "live-mode account and catalog pages read real metadata while pending commerce reads expose empty or unavailable data and local fixtures remain scoped to prototype mode"
   ],
   "screenshots": [
     "ADMIN-O02",

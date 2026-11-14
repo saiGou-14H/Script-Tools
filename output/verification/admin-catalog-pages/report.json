@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-14T16:40:36.497Z",
+  "checks": [
+    "anonymous, consumer and limited administrator HTTP requests enforce independent user.manage and catalog.manage capabilities",
+    "masked account projections retain exact string revisions, current-account identity and last effective access-manager protection while ignoring expired grants",
+    "search escapes literal wildcard characters and strict queries reject unsupported fields, arrays, invalid states, malformed UUIDs and unavailable accounts",
+    "signed keyset cursors preserve microsecond timestamp ties and reject actor, filter, page-size, resource and signature changes without duplicate rows",
+    "quota snapshots select each USER resource's latest started window, exclude future and NODE windows and preserve signed 64-bit quantities and exact availability",
+    "catalog queries include unbound draft services and all private version states while projecting metadata without source, manifests, build artifacts or credentials",
+    "the PostgreSQL 18 service queries validate account, quota, draft service and private version projections inside a transaction with complete fixture rollback",
+    "prototype account search clears hidden selections, duplicate governance saves retain one note, URL search and version tabs survive reload and unknown views show unavailable state",
+    "account and catalog reference layouts render at 1814 pixels and confine wide tables to internal scrolling at 390 pixels",
+    "LIVE account UI queries real masked metadata, retries failures, loads cursor pages, preserves per-resource BIGINT quota values and disables pending mutations",
+    "LIVE service and version views render stored DRAFT, SEALED and REVOKED facts, missing bindings and selected-record impact metadata without fabricated order links or mutation success"
+  ],
+  "screenshots": [
+    "ADMIN-O02",
+    "ADMIN-O03",
+    "ADMIN-O02-mobile",
+    "ADMIN-O03-mobile",
+    "ADMIN-O02-live",
+    "ADMIN-O03-live"
+  ],
+  "layouts": {
+    "ADMIN-O02": {
+      "width": 1814,
+      "height": 868
+    },
+    "ADMIN-O03": {
+      "width": 1814,
+      "height": 868
+    },
+    "ADMIN-O02-mobile": {
+      "width": 390,
+      "height": 879
+    },
+    "ADMIN-O03-mobile": {
+      "width": 390,
+      "height": 844
+    },
+    "ADMIN-O02-live": {
+      "width": 1814,
+      "height": 868
+    },
+    "ADMIN-O03-live": {
+      "width": 1814,
+      "height": 952
+    }
+  },
+  "errors": [],
+  "result": "PASS"
+}

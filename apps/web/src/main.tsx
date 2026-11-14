@@ -28,6 +28,7 @@ import "./styles/publisher-finance.css";
 import "./styles/publisher-commerce.css";
 import "./styles/admin-commerce.css";
 import "./styles/admin-finance.css";
+import "./styles/admin-catalog.css";
 
 const client = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },
