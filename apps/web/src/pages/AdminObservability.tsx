@@ -3,6 +3,7 @@ import {
   App,
   Button,
   Form,
+  Empty,
   Input,
   InputNumber,
   Modal,
@@ -20,6 +21,7 @@ import { useAdminPreview } from "../admin-preview";
 import { useWorkspace } from "../context";
 import { useSearchParams } from "react-router-dom";
 import { AdminObservabilityLivePage } from "./AdminRuntimeDiagnostics";
+import { AdminDeliveriesLivePage } from "./AdminDeliverySettings";
 
 const logFixtures = [
   {
@@ -549,22 +551,40 @@ export function AdminDeliveriesPage() {
   const { enabled, deliveries, operations, requestOperation } =
     useAdminOperations();
   const [form] = Form.useForm();
-  const [filters, setFilters] = useState<{
-    type?: string;
-    channel?: string;
-    status?: string;
-  }>({});
-  const [selected, setSelected] = useState<DeliveryPreview>();
+  const [params, setParams] = useSearchParams();
+  const filters = {
+    type: params.get("type") || undefined,
+    channel: params.get("channel") || undefined,
+    status: params.get("status") || undefined,
+  };
+  useEffect(() => {
+    if (enabled) form.setFieldsValue(filters);
+  }, [form, enabled, filters.type, filters.channel, filters.status]);
+  const selectedId = params.get("delivery");
+  const selected = deliveries.find((item) => item.id === selectedId);
+  function setSelected(row?: DeliveryPreview) {
+    const next = new URLSearchParams(params);
+    if (row) next.set("delivery", row.id);
+    else next.delete("delivery");
+    setParams(next);
+  }
+  function setFilters(values: typeof filters) {
+    const next = new URLSearchParams(params);
+    for (const key of ["type", "channel", "status"] as const) {
+      if (values[key]) next.set(key, values[key]);
+      else next.delete(key);
+    }
+    setParams(next);
+  }
+  if (!enabled) return <AdminDeliveriesLivePage />;
   const rows = deliveries.filter(
     (item) =>
       (!filters.type || item.type === filters.type) &&
       (!filters.channel || item.channel === filters.channel) &&
       (!filters.status || item.status === filters.status),
   );
-  const queued = (id: string) =>
-    operations.some(
-      (item) => item.resourceId === id && item.kind === "DELIVERY_RETRY",
-    );
+  const queued = (id: string, kind = "DELIVERY_RETRY") =>
+    operations.some((item) => item.resourceId === id && item.kind === kind);
   return (
     <div className="admin-page admin-deliveries-page">
       <PageHeading title="通知投递" />
@@ -576,10 +596,12 @@ export function AdminDeliveriesPage() {
           name="adminobservability-3"
           form={form}
           layout="inline"
+          initialValues={filters}
           onFinish={setFilters}
         >
           <Form.Item label="消息类型" name="type">
             <Select
+              aria-label="消息类型"
               placeholder="全部"
               allowClear
               options={[
@@ -591,6 +613,7 @@ export function AdminDeliveriesPage() {
           </Form.Item>
           <Form.Item label="渠道" name="channel">
             <Select
+              aria-label="渠道"
               placeholder="全部"
               allowClear
               options={[{ value: "站内" }, { value: "邮件" }]}
@@ -598,6 +621,7 @@ export function AdminDeliveriesPage() {
           </Form.Item>
           <Form.Item label="状态" name="status">
             <Select
+              aria-label="状态"
               placeholder="全部"
               allowClear
               options={Object.entries(deliveryLabels).map(([value, label]) => ({
@@ -613,7 +637,11 @@ export function AdminDeliveriesPage() {
             <Button
               onClick={() => {
                 form.resetFields();
-                setFilters({});
+                setFilters({
+                  type: undefined,
+                  channel: undefined,
+                  status: undefined,
+                });
               }}
             >
               重置
@@ -625,6 +653,7 @@ export function AdminDeliveriesPage() {
         <Table<DeliveryPreview>
           rowKey="id"
           dataSource={rows}
+          scroll={{ x: 1500 }}
           pagination={{
             pageSize: 10,
             hideOnSinglePage: false,
@@ -634,6 +663,7 @@ export function AdminDeliveriesPage() {
           columns={[
             {
               title: "消息类型",
+              width: 250,
               dataIndex: "type",
               render: (value) => (
                 <Status
@@ -649,9 +679,10 @@ export function AdminDeliveriesPage() {
                 </Status>
               ),
             },
-            { title: "渠道", dataIndex: "channel" },
+            { title: "渠道", dataIndex: "channel", width: 220 },
             {
               title: "状态",
+              width: 272,
               render: (_, row) => (
                 <Status
                   tone={queued(row.id) ? "blue" : deliveryTones[row.status]}
@@ -660,19 +691,25 @@ export function AdminDeliveriesPage() {
                 </Status>
               ),
             },
-            { title: "回执（掩码）", dataIndex: "receipt", width: "25%" },
-            { title: "次数", dataIndex: "attempts" },
+            { title: "回执（掩码）", dataIndex: "receipt", width: 351 },
+            { title: "次数", dataIndex: "attempts", width: 167 },
             {
               title: "操作",
-              width: 230,
+              width: 240,
               render: (_, row) =>
                 row.status === "FAILED" || row.status === "UNKNOWN" ? (
                   <Button
-                    disabled={!enabled || queued(row.id)}
+                    disabled={
+                      !enabled ||
+                      queued(row.id) ||
+                      queued(row.id, "DELIVERY_RECONCILE")
+                    }
                     onClick={() => setSelected(row)}
                   >
                     {row.status === "UNKNOWN"
-                      ? "先核验"
+                      ? queued(row.id, "DELIVERY_RECONCILE")
+                        ? "核验待处理"
+                        : "先核验"
                       : queued(row.id)
                         ? "重投待处理"
                         : "重投"}
@@ -684,6 +721,18 @@ export function AdminDeliveriesPage() {
           ]}
         />
       </Panel>
+      {selectedId && !selected && (
+        <Modal
+          title="投递记录不可用"
+          open
+          onCancel={() => setSelected(undefined)}
+          footer={
+            <Button onClick={() => setSelected(undefined)}>关闭投递详情</Button>
+          }
+        >
+          <Empty description={`投递 ${selectedId} 不可用`} />
+        </Modal>
+      )}
       {selected && (
         <AdminOperationDialog
           title={

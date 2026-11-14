@@ -269,6 +269,8 @@ export function AdminOperationsProvider({ children }: { children: ReactNode }) {
       ]
     : [];
   const [operations, setOperations] = useState<OperationPreview[]>([]);
+  const currentOperations = useRef(operations);
+  const savedPlatformRequests = useRef(new Set<string>());
   const [platform, setPlatform] = useState<PlatformPreview>({
     pauseSales: false,
     pauseRuns: false,
@@ -341,6 +343,14 @@ export function AdminOperationsProvider({ children }: { children: ReactNode }) {
     requestKey: string,
   ) {
     requirePreview(operationCapability[kind], reason);
+    if (
+      currentOperations.current.some(
+        (item) =>
+          item.id === requestKey ||
+          (item.kind === kind && item.resourceId === resourceId),
+      )
+    )
+      return;
     const node = nodes.find((item) => item.id === resourceId);
     if (
       kind === "NODE_DRAIN" &&
@@ -355,24 +365,19 @@ export function AdminOperationsProvider({ children }: { children: ReactNode }) {
     const delivery = deliveryFixtures.find((item) => item.id === resourceId);
     if (kind === "DELIVERY_RETRY" && delivery?.status !== "FAILED")
       throw new Error("当前投递需要先查询原回执");
-    setOperations((previous) =>
-      previous.some(
-        (item) =>
-          item.id === requestKey ||
-          (item.kind === kind && item.resourceId === resourceId),
-      )
-        ? previous
-        : [
-            ...previous,
-            {
-              id: requestKey,
-              kind,
-              resourceId,
-              reason: reason.trim(),
-              createdAt: new Date().toLocaleString("sv-SE"),
-            },
-          ],
-    );
+    if (kind === "DELIVERY_RECONCILE" && delivery?.status !== "UNKNOWN")
+      throw new Error("当前投递无待核验的未知回执");
+    currentOperations.current = [
+      ...currentOperations.current,
+      {
+        id: requestKey,
+        resourceId,
+        kind,
+        reason: reason.trim(),
+        createdAt: new Date().toLocaleString("sv-SE"),
+      },
+    ];
+    setOperations(currentOperations.current);
     recordNote(resourceId, `${kind} · ${reason.trim()}`, requestKey);
   }
   function savePlatform(
@@ -381,6 +386,7 @@ export function AdminOperationsProvider({ children }: { children: ReactNode }) {
     requestKey: string,
   ) {
     requirePreview("runtime.manage", reason);
+    if (savedPlatformRequests.current.has(requestKey)) return;
     if (
       patch.requestsPerMinute !== undefined &&
       (!Number.isSafeInteger(patch.requestsPerMinute) ||
@@ -398,6 +404,7 @@ export function AdminOperationsProvider({ children }: { children: ReactNode }) {
           throw new Error("请填写公网域名，使用逐项白名单");
       }
     }
+    savedPlatformRequests.current.add(requestKey);
     setPlatform((previous) => ({ ...previous, ...patch }));
     recordNote("PLATFORM", reason, requestKey);
   }

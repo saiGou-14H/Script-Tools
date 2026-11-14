@@ -1,0 +1,213 @@
+.admin-deliveries-page .ant-table-wrapper,
+.admin-platform-grid > *,
+.admin-platform-grid .panel,
+.admin-platform-grid .panel-body {
+  min-width: 0;
+}
+.admin-deliveries-page .admin-delivery-table .ant-table-tbody > tr > td {
+  height: 38px;
+}
+.page-O17 .breadcrumb {
+  margin-bottom: 12px;
+}
+.page-O17 .page-heading {
+  margin-bottom: 13px;
+}
+.admin-delivery-filters .panel-body {
+  padding: 20px 20px 20px 28px;
+}
+.admin-delivery-filters form {
+  gap: 50px;
+}
+.admin-delivery-filters .ant-form-item-label > label {
+  font-size: 16px;
+}
+.admin-delivery-filters .ant-form-item-label {
+  padding-right: 4px;
+}
+.admin-delivery-filters .ant-btn-primary {
+  min-width: 100px;
+}
+.admin-delivery-filters .row-actions > .ant-btn:not(.ant-btn-primary) {
+  min-width: 90px;
+}
+.admin-delivery-table .ant-pagination {
+  margin-top: 35px;
+  padding-right: 4px;
+}
+.admin-delivery-table .ant-pagination-total-text {
+  margin-right: 33px;
+  color: #68768d;
+}
+.admin-delivery-table .ant-pagination-item-active {
+  background: #1555ff;
+  border-color: #1555ff;
+}
+.admin-delivery-table .ant-pagination-item-active a {
+  color: #fff;
+}
+.admin-delivery-table .ant-pagination-prev .ant-pagination-item-link,
+.admin-delivery-table .ant-pagination-next .ant-pagination-item-link {
+  border: 1px solid #dce3ef;
+  border-radius: 8px;
+}
+.admin-platform-settings-page .page-heading p {
+  font-size: 14px;
+}
+.admin-platform-settings-page .platform-section-title {
+  font-size: 20px;
+  line-height: 27px;
+}
+.admin-platform-grid .panel-heading h2 {
+  font-size: 22px;
+}
+.platform-feature-row h3,
+.platform-protection-row h3,
+.platform-network-row h3,
+.platform-history-row h3 {
+  font-size: 18px;
+  line-height: 24px;
+}
+.platform-feature-row p,
+.platform-protection-row p,
+.platform-network-row p,
+.platform-history-row p {
+  font-size: 13px;
+}
+.platform-feature-row {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+.delivery-live-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.delivery-live-filters .ant-input-search {
+  width: 320px;
+  max-width: 100%;
+}
+.delivery-live-filters .ant-select {
+  width: 170px;
+}
+.delivery-settings-live .admin-delivery-table .ant-btn-link {
+  padding: 0;
+  max-width: 100%;
+  height: auto;
+  white-space: normal;
+  text-align: left;
+}
+.delivery-settings-live .admin-platform-grid .ant-input-search {
+  margin-bottom: 14px;
+}
+.delivery-settings-live .ant-table-cell,
+.settings-read-scope {
+  overflow-wrap: anywhere;
+}
+.settings-read-scope {
+  color: #52627a;
+  margin: 12px 0 0;
+  font-size: 13px;
+}
+.settings-metadata-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+.admin-platform-grid .platform-feature-row > span:nth-child(2),
+.admin-platform-grid .platform-protection-row > span:nth-child(2) {
+  min-width: 0;
+}
+@media (max-width: 760px) {
+  .app-shell.admin-workspace:is(.page-O17, .page-O18) {
+    --sidebar-width: 0px;
+  }
+  .app-shell:is(.page-O17, .page-O18) .main-content {
+    padding: calc(var(--header-height) + 20px) 16px 24px;
+  }
+  .app-shell:is(.page-O17, .page-O18) .brand {
+    min-width: 0;
+  }
+  .app-shell:is(.page-O17, .page-O18) .brand strong {
+    font-size: 17px;
+  }
+  .app-shell:is(.page-O17, .page-O18) .workspace-button {
+    font-size: 0;
+    gap: 8px;
+    padding: 0 10px;
+  }
+  .app-shell:is(.page-O17, .page-O18) .workspace-button b,
+  .app-shell:is(.page-O17, .page-O18) .workspace-button .anticon {
+    font-size: 12px;
+  }
+  .admin-deliveries-page > .notice {
+    height: auto;
+    min-height: 45px;
+  }
+  .admin-delivery-filters .panel-body {
+    padding: 16px;
+  }
+  .admin-delivery-filters .ant-form-inline {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .admin-delivery-filters .ant-form-item-row {
+    display: block;
+  }
+  .admin-delivery-filters .ant-select,
+  .delivery-live-filters .ant-select,
+  .delivery-live-filters .ant-input-search {
+    width: 100%;
+  }
+  .admin-delivery-filters .row-actions {
+    margin-left: 0;
+  }
+  .admin-deliveries-page .ant-table,
+  .admin-platform-settings-page .ant-table {
+    min-width: 0;
+  }
+  .admin-platform-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .admin-platform-settings-page .admin-segment-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .admin-platform-settings-page .admin-segment-tabs .ant-btn,
+  .admin-platform-settings-page .admin-segment-tabs .ant-btn:first-child {
+    min-width: 0;
+    flex: 1 0 calc(50% - 8px);
+  }
+  .admin-platform-grid .panel-body {
+    padding: 16px;
+  }
+  .commerce-core-switch,
+  .platform-feature-row,
+  .platform-protection-row,
+  .platform-network-row,
+  .platform-history-row {
+    gap: 10px;
+    padding: 12px;
+    flex-wrap: wrap;
+  }
+  .commerce-core-switch > span:nth-child(2),
+  .platform-feature-row > span:nth-child(2),
+  .platform-protection-row > span:nth-child(2),
+  .platform-network-row > span:nth-child(2),
+  .platform-history-row > span:nth-child(2) {
+    flex: 1 0 calc(100% - 64px);
+  }
+  .platform-protection-row .ant-switch,
+  .platform-feature-row .ant-switch,
+  .commerce-core-switch .ant-switch {
+    margin-left: 48px;
+  }
+  .platform-network-row .status,
+  .platform-history-row .status {
+    margin-left: 48px;
+  }
+}

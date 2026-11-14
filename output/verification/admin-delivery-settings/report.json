@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-14T18:54:57.742Z",
+  "checks": [
+    "HTTP access separates observability.manage delivery metadata from runtime.manage configuration records and rechecks updated management grants",
+    "Delivery metadata retains six transport states, independent read and expiry times, zero attempts, latest sending evidence and repeated-output source identity while masking receipts and excluding message, target and policy bodies",
+    "Configuration metadata preserves exact revisions, feature flags and evidence presence, per-key active policy versions, future effective dates and resource retirement independently of policy bodies and control execution",
+    "Strict query validation and signed keyset cursors reject unsupported filters, repeated fields, invalid dates and changed list scopes while direct UUID details preserve unavailable identities",
+    "PostgreSQL 18 verifies delivery/output joins, decimal-string configuration metadata and security-revision cursors inside fully rolled-back transactions",
+    "Prototype delivery filters and selected original receipts restore from URL, reset clears applied filters and unknown-receipt reconciliation keeps UNKNOWN while preventing duplicate preview requests",
+    "Prototype platform tabs persist through reload while confirmed protection previews retain their state across normal in-app navigation",
+    "LIVE delivery queries retry errors, preserve transport filters and direct message identities across reloads, retain separate read state and leave unavailable records explicit",
+    "LIVE platform settings paginate and search literal feature keys, retry failed reads, preserve active and future policy versions and restore metadata dialogs from URL without asserting unimplemented protection controls",
+    "Desktop and 390px prototype/LIVE routes retain full-width layouts and internal table scrolling while metadata interactions leave notification and platform business records unchanged"
+  ],
+  "screenshots": [
+    "ADMIN-O17",
+    "ADMIN-O18",
+    "ADMIN-O17-prototype-mobile",
+    "ADMIN-O18-prototype-mobile",
+    "ADMIN-O17-live",
+    "ADMIN-O18-live",
+    "ADMIN-O17-mobile",
+    "ADMIN-O18-mobile"
+  ],
+  "layouts": {
+    "ADMIN-O17-mobile": {
+      "left": 16,
+      "width": 358
+    },
+    "ADMIN-O18-mobile": {
+      "left": 16,
+      "width": 358
+    }
+  },
+  "errors": [],
+  "result": "PASS"
+}

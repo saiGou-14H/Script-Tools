@@ -10,6 +10,119 @@ import { AdminMetadataService } from "./admin-metadata.service";
 export class AdminMetadataController {
   constructor(private readonly metadata: AdminMetadataService) {}
 
+  @Get("notification-deliveries")
+  @Capability("observability.manage")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({
+    name: "status",
+    required: false,
+    enum: ["PENDING", "SENDING", "SENT", "UNKNOWN", "FAILED", "SUPPRESSED"],
+  })
+  @ApiQuery({
+    name: "channel",
+    required: false,
+    enum: ["IN_APP", "EMAIL", "WEBHOOK", "PUSH"],
+  })
+  @ApiQuery({ name: "source", required: false, enum: ["EVENT", "OUTPUT"] })
+  @ApiQuery({ name: "from", required: false, type: String })
+  @ApiQuery({ name: "to", required: false, type: String })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  deliveries(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.deliveries(request.user!, query);
+  }
+
+  @Get("notification-deliveries/:id")
+  @Capability("observability.manage")
+  delivery(
+    @Req() request: AppRequest,
+    @Param("id") id: string,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.delivery(request.user!, id, query);
+  }
+
+  @Get("features")
+  @Capability("runtime.manage")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({ name: "enabled", required: false, enum: ["true", "false"] })
+  @ApiQuery({
+    name: "phase",
+    required: false,
+    enum: ["P0", "P1", "P2", "SCENE"],
+  })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  features(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.configuration(request.user!, "features", query);
+  }
+
+  @Get("runtime-policies")
+  @Capability("runtime.manage")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  runtimePolicies(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.configuration(
+      request.user!,
+      "runtime-policies",
+      query,
+    );
+  }
+
+  @Get("network-policies")
+  @Capability("runtime.manage")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  networkPolicies(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.configuration(
+      request.user!,
+      "network-policies",
+      query,
+    );
+  }
+
+  @Get("resource-profiles")
+  @Capability("runtime.manage")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  resourceProfiles(
+    @Req() request: AppRequest,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.metadata.configuration(
+      request.user!,
+      "resource-profiles",
+      query,
+    );
+  }
+
   @Get("runs")
   @Capability("runtime.manage")
   @ApiQuery({ name: "q", required: false, type: String })

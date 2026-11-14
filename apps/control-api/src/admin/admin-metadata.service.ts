@@ -48,6 +48,9 @@ const literalPattern = (value: string) =>
   `%${value.replace(/[\\%_]/g, "\\$&")}%`;
 const evidencePresent = (alias: string) =>
   `COALESCE(${alias}.evidence NOT IN ('null'::jsonb,'{}'::jsonb,'[]'::jsonb),false)`;
+const receiptMask = (alias: string) =>
+  `CASE WHEN ${alias}.provider_ref IS NULL OR ${alias}.provider_ref='' THEN NULL
+    WHEN length(${alias}.provider_ref)>4 THEN '****'||right(${alias}.provider_ref,4) ELSE '****' END`;
 function referenceId(value: unknown, name: string) {
   if (value === undefined) return null;
   if (typeof value !== "string" || !uuidPattern.test(value))
@@ -118,6 +121,184 @@ export class AdminMetadataService {
       status: query.status as string | undefined,
       limit: Number(size),
     };
+  }
+
+  async deliveries(actor: CurrentUser, query: Record<string, unknown>) {
+    this.authorize(actor, "observability.manage");
+    const options = this.options(
+      query,
+      ["PENDING", "SENDING", "SENT", "UNKNOWN", "FAILED", "SUPPRESSED"],
+      ["channel", "source", "from", "to"],
+    );
+    const channel = query.channel;
+    if (
+      channel !== undefined &&
+      !["IN_APP", "EMAIL", "WEBHOOK", "PUSH"].includes(channel as string)
+    )
+      invalidQuery("通知渠道无效");
+    const source = query.source;
+    if (source !== undefined && source !== "EVENT" && source !== "OUTPUT")
+      invalidQuery("消息来源无效");
+    const window = this.observationWindow(query);
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-notification-deliveries",
+      options,
+      channel,
+      source,
+      window,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.deliveryRows(options.limit + 1, [
+      options.status || null,
+      literalPattern(options.q),
+      channel || null,
+      source || null,
+      window.from,
+      window.to,
+      cursor?.id || null,
+      cursor?.created_at || null,
+      null,
+    ]);
+    return this.pagination.page(scope, result.rows, options.limit);
+  }
+
+  async delivery(
+    actor: CurrentUser,
+    id: string,
+    query: Record<string, unknown>,
+  ) {
+    this.authorize(actor, "observability.manage");
+    const deliveryId = referenceId(id, "投递编号");
+    if (Object.keys(query).length) invalidQuery("投递详情不接受查询参数");
+    const result = await this.deliveryRows(1, [
+      null,
+      "%",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      deliveryId,
+    ]);
+    if (!result.rows.length)
+      throw new HttpException(
+        { code: "NOT_FOUND", message: "投递记录不存在" },
+        404,
+      );
+    const { cursor_created_at, ...item } = result.rows[0];
+    return item;
+  }
+
+  private deliveryRows(limit: number, values: unknown[]) {
+    return this.database.query(
+      `
+      SELECT d.id,d.created_at,d.revision::text,d.notification_id,n.channel,d.status,d.attempt_count,
+        d.next_attempt_at,d.dependency_deadline,d.rendering_mode,d.failure_code,
+        ${receiptMask("d")} AS receipt_mask,n.read_at,n.expires_at AS notification_expires_at,
+        (n.expires_at<=now()) AS notification_expired,
+        CASE WHEN n.message_output_id IS NOT NULL THEN 'OUTPUT' ELSE 'EVENT' END AS source,
+        event.event_type,b.masked_target,b.verified_at AS binding_verified_at,b.disabled_at AS binding_disabled_at,
+        CASE WHEN b.id IS NULL THEN 'UNAVAILABLE' WHEN b.channel<>n.channel THEN 'CHANNEL_MISMATCH' ELSE 'BOUND' END AS binding_state,
+        (d.message_output_id IS NOT DISTINCT FROM n.message_output_id) AS output_binding_matches,
+        CASE WHEN a.id IS NULL THEN NULL ELSE jsonb_build_object(
+          'id',a.id,'attempt_no',a.attempt_no,'status',a.status,'sent_at',a.sent_at,'response_at',a.response_at,
+          'receipt_mask',${receiptMask("a")},'failure_code',a.failure_code,'duplicate_risk',a.duplicate_risk
+        ) END AS latest_attempt,${cursorProjection("d")}
+      FROM travel.notification_deliveries d
+      JOIN travel.notifications n ON n.id=d.notification_id AND n.owner_user_id=d.owner_user_id
+      LEFT JOIN travel.notification_bindings b ON b.id=d.channel_binding_id AND b.owner_user_id=d.owner_user_id
+      LEFT JOIN travel.outbox_events event ON event.id=n.event_id AND (event.owner_user_id IS NULL OR event.owner_user_id=n.owner_user_id)
+      LEFT JOIN LATERAL (
+        SELECT a.* FROM travel.delivery_attempts a WHERE a.delivery_id=d.id AND a.owner_user_id=d.owner_user_id
+        ORDER BY a.attempt_no DESC,a.id DESC LIMIT 1
+      ) a ON true
+      WHERE ($1::text IS NULL OR d.status=$1)
+        AND (d.id::text ILIKE $2 ESCAPE '\\' OR event.event_type ILIKE $2 ESCAPE '\\' OR b.masked_target ILIKE $2 ESCAPE '\\')
+        AND ($3::text IS NULL OR n.channel=$3)
+        AND ($4::text IS NULL OR ($4='OUTPUT' AND n.message_output_id IS NOT NULL) OR ($4='EVENT' AND n.event_id IS NOT NULL))
+        AND ($5::timestamptz IS NULL OR d.created_at>=$5) AND ($6::timestamptz IS NULL OR d.created_at<$6)
+        AND ($7::uuid IS NULL OR (d.created_at,d.id)<($8::timestamptz,$7::uuid))
+        AND ($9::uuid IS NULL OR d.id=$9)
+      ORDER BY d.created_at DESC,d.id DESC LIMIT $10`,
+      [...values, limit],
+    );
+  }
+
+  async configuration(
+    actor: CurrentUser,
+    kind:
+      | "features"
+      | "runtime-policies"
+      | "network-policies"
+      | "resource-profiles",
+    query: Record<string, unknown>,
+  ) {
+    this.authorize(actor, "runtime.manage");
+    const definitions = {
+      features: {
+        table: "platform_features",
+        search: "p.key",
+        projection: `p.key,p.enabled,p.phase,${evidencePresent("p")} AS has_evidence`,
+      },
+      "runtime-policies": {
+        table: "runtime_policies",
+        search: "p.version::text",
+        projection: `p.version,p.effective_at,(p.effective_at>now()) AS is_future,(p.effective_at<=now() AND NOT EXISTS(SELECT 1 FROM travel.runtime_policies later WHERE later.version>p.version AND later.effective_at<=now())) AS is_current`,
+      },
+      "network-policies": {
+        table: "network_policies",
+        search: "p.policy_key",
+        projection: `p.policy_key,p.version,p.effective_at,(p.effective_at>now()) AS is_future,(p.effective_at<=now() AND NOT EXISTS(SELECT 1 FROM travel.network_policies later WHERE later.policy_key=p.policy_key AND later.version>p.version AND later.effective_at<=now())) AS is_current`,
+      },
+      "resource-profiles": {
+        table: "resource_profiles",
+        search: "p.name",
+        projection: "p.name,p.version,p.retired_at",
+      },
+    };
+    const definition = definitions[kind];
+    const options = this.options(
+      query,
+      [],
+      kind === "features" ? ["enabled", "phase"] : [],
+    );
+    const enabled = enabledFilter(query.enabled);
+    const phase = query.phase;
+    if (
+      phase !== undefined &&
+      !["P0", "P1", "P2", "SCENE"].includes(phase as string)
+    )
+      invalidQuery("功能阶段无效");
+    const scope = JSON.stringify([
+      actor.id,
+      actor.security_revision,
+      "admin-configuration",
+      kind,
+      options,
+      enabled,
+      phase,
+    ]);
+    const cursor = await this.pagination.decode(scope, query.cursor);
+    const result = await this.database.query(
+      `
+      SELECT p.id,p.created_at,p.revision::text,${definition.projection},${cursorProjection("p")}
+      FROM travel.${definition.table} p
+      WHERE (${definition.search} ILIKE $1 ESCAPE '\\' OR p.id::text ILIKE $1 ESCAPE '\\')
+        ${kind === "features" ? "AND ($5::boolean IS NULL OR p.enabled=$5) AND ($6::text IS NULL OR p.phase=$6)" : ""}
+        AND ($2::uuid IS NULL OR (p.created_at,p.id)<($3::timestamptz,$2::uuid))
+      ORDER BY p.created_at DESC,p.id DESC LIMIT $4`,
+      [
+        literalPattern(options.q),
+        cursor?.id || null,
+        cursor?.created_at || null,
+        options.limit + 1,
+        ...(kind === "features" ? [enabled, phase || null] : []),
+      ],
+    );
+    return this.pagination.page(scope, result.rows, options.limit);
   }
 
   async runs(actor: CurrentUser, query: Record<string, unknown>) {

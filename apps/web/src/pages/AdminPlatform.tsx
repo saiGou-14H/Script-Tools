@@ -13,7 +13,8 @@ import {
   Table,
 } from "antd";
 import dayjs from "dayjs";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { AdminPlatformSettingsLivePage } from "./AdminDeliverySettings";
 import { AdminOperationDialog } from "../components/AdminOperationDialog";
 import { Icon } from "../components/Icon";
 import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
@@ -28,7 +29,17 @@ import { useWorkspace } from "../context";
 
 export function AdminPlatformSettingsPage() {
   const { enabled, platform, savePlatform } = useAdminOperations();
-  const [tab, setTab] = useState("basic");
+  const [params, setParams] = useSearchParams();
+  const tab = ["basic", "features", "network", "protection"].includes(
+    params.get("tab") || "",
+  )
+    ? params.get("tab")!
+    : "basic";
+  function setTab(value: string) {
+    const next = new URLSearchParams(params);
+    next.set("tab", value);
+    setParams(next);
+  }
   const [change, setChange] = useState<{
     field: "pauseSales" | "pauseRuns" | "pauseFunds";
     value: boolean;
@@ -38,13 +49,7 @@ export function AdminPlatformSettingsPage() {
   const [form] = Form.useForm();
   const requestKey = useRef(crypto.randomUUID());
   const { message } = App.useApp();
-  if (!enabled)
-    return (
-      <div className="admin-page">
-        <PageHeading title="平台设置" />
-        <Empty description="平台设置接口尚未接入" />
-      </div>
-    );
+  if (!enabled) return <AdminPlatformSettingsLivePage />;
   const protections = [
     {
       field: "pauseSales" as const,

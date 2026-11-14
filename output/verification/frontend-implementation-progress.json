@@ -1,6 +1,6 @@
 {
   "project_name": "Script Tools",
-  "updated_at": "2026-11-14T18:24:26.568Z",
+  "updated_at": "2026-11-14T18:57:06.446Z",
   "goal_status": "active",
   "target": {
     "page_definitions": 66,
@@ -107,7 +107,8 @@
     "output/verification/admin-catalog-pages/report.json",
     "output/verification/admin-travel-metadata/report.json",
     "output/verification/admin-runtime-pages/report.json",
-    "output/verification/admin-diagnostics-pages/report.json"
+    "output/verification/admin-diagnostics-pages/report.json",
+    "output/verification/admin-delivery-settings/report.json"
   ],
   "browser_results": [
     {
@@ -264,6 +265,11 @@
       "report": "output/verification/admin-diagnostics-pages/report.json",
       "result": "PASS",
       "checks": 11
+    },
+    {
+      "report": "output/verification/admin-delivery-settings/report.json",
+      "result": "PASS",
+      "checks": 10
     }
   ],
   "local_preview": "http://127.0.0.1:5174/",
@@ -302,7 +308,8 @@
     "Administrator account and catalog pages now read capability-scoped, masked metadata with signed cursor pagination and retry controls. Quotas retain their individual resource keys, latest started windows and decimal-string BIGINT quantities. Live account order counts explicitly cover awaiting payment and active fulfillment. Unbound drafts and private script version states retain stored null bindings and content status. Prototype governance uses revision checks, hidden-selection cleanup and duplicate-confirmation protection. Isolated PGlite HTTP, production-built browser routes and rolled-back PostgreSQL 18 transactions verify these reads. Freeze, quota mutation, risk controls and execution revocation remain pending, and all final fidelity acceptances remain open.",
     "Administrator city, attraction and channel pages now read capability-scoped directory metadata and channel rule-version history with signed pagination. City selection and channel filters persist in the URL, and hidden selections cannot trigger a preview change. Current rules validate their channel relationship and preserve their own verification timestamp, while higher historical versions stay distinct. Linked services deduplicate valid owner/channel associations. LIVE pages retain the five stored adapter states and keep directory activation separate from sale eligibility. Reference layouts and full-width mobile content are checked alongside isolated PGlite HTTP and rolled-back PostgreSQL 18 reads. Directory maintenance, adapter bindings, capability upgrades, evidence content and sensitive unresolved-booking queries remain pending.",
     "Administrator scheduling and infrastructure pages now read paged node metadata, direct node details, image records, scheduling snapshots and per-resource capacity quotas. Node states retain all five stored values, optional cpu_cores and memory_mib reports preserve zero and decimal-string BIGINT values, and private capability payloads stay outside the metadata projection. Current-generation lease counts verify ownership and execution lifecycles while retaining expired unrevoked leases, unreported actual modes and failed cleanup records separately. Current-state counters retain old continuous runs and expose snapshot time and manual refresh. URL selection restores the same node or image, including records beyond the first list page. Prototype digest copying uses an explicit fixed local fixture. Isolated HTTP/browser and rolled-back PostgreSQL 18 queries verify these reads. Mode capacity totals, control commands, scheduling policy execution, cleanup proof and image verification content remain pending.",
-    "Administrator run and observability pages now read capability-scoped run metadata, platform log segment manifests and alert instances with signed pagination. Runs retain all thirteen states, historical continuous execution, latest-attempt lease generations, absent actual modes and independently stored cleanup evidence. Platform segments retain exact sequence and byte counts, overlap windows, archive/index/expiry states and successful-read audit events. Alert acknowledgements, recovery timestamps and evidence-event counts remain distinct. URL filters and direct run selection survive reloads, time windows remain fixed across pagination, and unknown selections remain explicit. Prototype rule drafts restore all selected-rule fields, advance versions and deduplicate requests, while bounded silences expire on idle pages. Isolated PGlite HTTP, production-built desktop/mobile routes and rolled-back PostgreSQL 18 transactions verify these reads. Runtime controls, diagnostic-session issuance, effect verification, log bodies and exports, alert actions and rule synchronization remain pending."
+    "Administrator run and observability pages now read capability-scoped run metadata, platform log segment manifests and alert instances with signed pagination. Runs retain all thirteen states, historical continuous execution, latest-attempt lease generations, absent actual modes and independently stored cleanup evidence. Platform segments retain exact sequence and byte counts, overlap windows, archive/index/expiry states and successful-read audit events. Alert acknowledgements, recovery timestamps and evidence-event counts remain distinct. URL filters and direct run selection survive reloads, time windows remain fixed across pagination, and unknown selections remain explicit. Prototype rule drafts restore all selected-rule fields, advance versions and deduplicate requests, while bounded silences expire on idle pages. Isolated PGlite HTTP, production-built desktop/mobile routes and rolled-back PostgreSQL 18 transactions verify these reads. Runtime controls, diagnostic-session issuance, effect verification, log bodies and exports, alert actions and rule synchronization remain pending.",
+    "Administrator notification delivery and platform setting pages now read capability-scoped delivery metadata and feature, network policy, runtime policy and resource-profile versions with signed pagination. Delivery states, read/expiry times, dependency deadlines, latest attempts and masked receipts retain their separate stored facts. Two output emissions retain separate notification/delivery identities. Feature flags and evidence presence stay distinct, and current, historical and future policies use per-key version/effective-time checks. URL filters, original receipt selection, platform tabs and configuration dialogs survive reloads. Prototype reconciliation preserves UNKNOWN and marks its pending request while management operations and platform saves deduplicate confirmations. Desktop column/typography and 390px layouts retain internal table scrolling. Isolated PGlite HTTP, production-built routes and rolled-back PostgreSQL 18 queries verify the metadata. Safe retry/reconciliation execution, message bodies, policy content and mutation, protection state and execution-gateway enforcement remain pending."
   ],
   "items": [
     {

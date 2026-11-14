@@ -15,6 +15,7 @@ export function AdminOperationDialog({
   const [form] = Form.useForm();
   const formId = useId();
   const requestKey = useRef(crypto.randomUUID());
+  const submitted = useRef(false);
   const { message } = App.useApp();
   return (
     <Modal
@@ -33,8 +34,10 @@ export function AdminOperationDialog({
           requestKey.current = crypto.randomUUID();
         }}
         onFinish={(values) => {
+          if (submitted.current) return;
           try {
             onConfirm(values.reason, requestKey.current);
+            submitted.current = true;
             onClose();
             void message.success("本地操作预览已保存");
           } catch (error) {

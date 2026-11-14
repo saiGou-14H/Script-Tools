@@ -360,7 +360,9 @@ try {
   });
   const limitedPage = await limited.newPage();
   await limitedPage.goto(base + "/admin/observability");
-  await expect(limitedPage.locator(".admin-log-panel .ant-table-row")).toHaveCount(5);
+  await expect(
+    limitedPage.locator(".admin-log-panel .ant-table-row"),
+  ).toHaveCount(5);
   await expect(
     limitedPage
       .locator(".admin-alert-toolbar")
@@ -388,12 +390,7 @@ try {
   });
   const livePage = await live.newPage();
   livePage.on("pageerror", (error) => report.errors.push(error.message));
-  for (const route of [
-    "/admin/deliveries",
-    "/admin/settings",
-    "/admin/access",
-    "/admin/recovery",
-  ]) {
+  for (const route of ["/admin/access", "/admin/recovery"]) {
     await livePage.goto(base + route);
     await expect(
       livePage.locator(".admin-page .ant-empty").first(),
@@ -404,6 +401,12 @@ try {
   }
   for (const [route, endpoint, selector] of [
     ["/admin/runs", "/admin/runs?limit=20", ".admin-runs-table"],
+    [
+      "/admin/deliveries",
+      "/admin/notification-deliveries?limit=20",
+      ".admin-delivery-table",
+    ],
+    ["/admin/settings", "/admin/features?limit=20", "#platform-basic"],
     [
       "/admin/observability",
       "/admin/observability/logs?view=segments&limit=20",
@@ -455,7 +458,7 @@ try {
   await live.close();
   expect(report.errors).toEqual([]);
   report.checks.push(
-    "live-mode infrastructure reads paged node, image, run and platform log metadata with actual scheduling counters while pending controls and other business modules retain their integration state",
+    "live-mode infrastructure reads paged node, image, run, log, delivery and platform-feature metadata with actual scheduling counters while pending controls retain their integration state",
   );
   report.result = "PASS";
 } catch (error) {
