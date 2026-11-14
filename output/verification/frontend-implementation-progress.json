@@ -1,0 +1,872 @@
+{
+  "project_name": "Script Tools",
+  "updated_at": "2026-11-14T08:18:21.282Z",
+  "goal_status": "active",
+  "target": {
+    "page_definitions": 66,
+    "role_page_deliverables": 75
+  },
+  "page_components": [
+    "P01",
+    "P02",
+    "P03",
+    "P04",
+    "P05",
+    "P06",
+    "P07",
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C06",
+    "C07",
+    "C08",
+    "C09",
+    "C10",
+    "C11",
+    "C12",
+    "C13",
+    "C14",
+    "C15",
+    "C16",
+    "C17",
+    "C18",
+    "C19",
+    "C20",
+    "C21",
+    "C22",
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07",
+    "S08",
+    "S09",
+    "S10",
+    "S11",
+    "S12",
+    "S13",
+    "S14",
+    "S15",
+    "S16",
+    "O01",
+    "O02",
+    "O03",
+    "O04",
+    "O05",
+    "O06",
+    "O07",
+    "O08",
+    "O09",
+    "O10",
+    "O11",
+    "O12",
+    "O13",
+    "O14",
+    "O15",
+    "O16",
+    "O17",
+    "O18",
+    "O19",
+    "O20",
+    "O21"
+  ],
+  "pending_page_definitions": [],
+  "visual_acceptance_count": 0,
+  "browser_reports": [
+    "output/verification/frontend-foundation/report.json",
+    "output/verification/consumer-pages/report.json",
+    "output/verification/personal-pages/report.json",
+    "output/verification/publisher-pages/report.json",
+    "output/verification/shared-pages/report.json",
+    "output/verification/publisher-commerce/report.json",
+    "output/verification/admin-commerce/report.json",
+    "output/verification/admin-operations/report.json",
+    "output/verification/admin-travel/report.json",
+    "output/verification/identity/report.json",
+    "output/verification/production-build.json",
+    "output/verification/retail-pages/report.json",
+    "output/verification/consumer-overview/report.json",
+    "output/verification/publisher-profile/report.json",
+    "output/verification/output-pages/report.json"
+  ],
+  "browser_results": [
+    {
+      "report": "output/verification/frontend-foundation/report.json",
+      "result": "PASS",
+      "checks": 14
+    },
+    {
+      "report": "output/verification/consumer-pages/report.json",
+      "result": "PASS",
+      "checks": 6
+    },
+    {
+      "report": "output/verification/personal-pages/report.json",
+      "result": "PASS",
+      "checks": 10
+    },
+    {
+      "report": "output/verification/publisher-pages/report.json",
+      "result": "PASS",
+      "checks": 8
+    },
+    {
+      "report": "output/verification/shared-pages/report.json",
+      "result": "PASS",
+      "checks": 7
+    },
+    {
+      "report": "output/verification/publisher-commerce/report.json",
+      "result": "PASS",
+      "checks": 11
+    },
+    {
+      "report": "output/verification/admin-commerce/report.json",
+      "result": "PASS",
+      "checks": 13
+    },
+    {
+      "report": "output/verification/admin-operations/report.json",
+      "result": "PASS",
+      "checks": 12
+    },
+    {
+      "report": "output/verification/admin-travel/report.json",
+      "result": "PASS",
+      "checks": 7
+    },
+    {
+      "report": "output/verification/identity/report.json",
+      "result": "PASS",
+      "checks": 10
+    },
+    {
+      "report": "output/verification/production-build.json",
+      "result": "PASS",
+      "checks": 5
+    },
+    {
+      "report": "output/verification/retail-pages/report.json",
+      "result": "PASS",
+      "checks": 8
+    },
+    {
+      "report": "output/verification/consumer-overview/report.json",
+      "result": "PASS",
+      "checks": 12
+    },
+    {
+      "report": "output/verification/publisher-profile/report.json",
+      "result": "PASS",
+      "checks": 12
+    },
+    {
+      "report": "output/verification/output-pages/report.json",
+      "result": "PASS",
+      "checks": 6
+    }
+  ],
+  "local_preview": "http://127.0.0.1:5174/",
+  "api_docs": "http://127.0.0.1:3001/api/docs",
+  "database": {
+    "mode": "postgresql",
+    "tables": 145,
+    "development_server_version": "PostgreSQL 18.7 on x86_64-windows, compiled by msvc-19.44.35229, 64-bit",
+    "development_postgresql_verified": true,
+    "verification": "output/verification/postgresql-foundation.json",
+    "production_postgresql_verified": false
+  },
+  "implementation_notes": [
+    "All catalog page definitions have initial components. Individual fidelity acceptance and complete interaction coverage remain in progress.",
+    "Prototype financial, task and output records are local visual fixtures. Live payments, execution, notifications and artifact storage are pending.",
+    "Service catalog and session authentication use the local database. RJSF validation is verified for the example schema only.",
+    "All 75 role-page deliverables still require individual fidelity acceptance.",
+    "The public home and authentication page have been realigned with their reference regions. The user confirmed email/password authentication from the detailed design on 2026-11-14.",
+    "Registration, email verification and password reset are integrated with PostgreSQL in development preview mode. Verification delivery currently uses explicit development tokens.",
+    "The market, general service detail and travel service detail now use separate guest and consumer layouts. Catalog facts and parameter examples come from the published service contract. The consumer eight-card layout uses a browser-only fixture because the development database currently contains four services.",
+    "The consumer home and checkout are aligned with their reference regions. The live personal overview reads owner-scoped metadata in one database snapshot. Current-state counters retain old continuous runs, and committed outputs can be visible before process completion. Preview records are explicitly labeled and shared across their related pages.",
+    "Publisher onboarding and profile settings use the owner-scoped API with explicit terms consent, encrypted idempotency receipts, revision checks, audit and outbox writes. An isolated API and production-built UI verify the complete onboarding route. The publisher home fits the reference viewport and labels its development examples. Live publisher business overviews and payouts remain pending.",
+    "The output and pending pages have been realigned with the reference regions. Output links and toolbar actions use the selected record, and JSON/text/file previews preserve their own MIME types. Live output metadata uses owner-scoped committed-batch queries with signed pagination. Content storage, downloads, notification delivery and pending-action execution remain in progress."
+  ],
+  "items": [
+    {
+      "role": "GUEST",
+      "page_id": "P01",
+      "title": "平台首页",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/01-游客/P01-平台首页.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "GUEST",
+      "page_id": "P02",
+      "title": "脚本市场",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/01-游客/P02-脚本市场.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "GUEST",
+      "page_id": "P03",
+      "title": "脚本服务详情",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/01-游客/P03-脚本服务详情.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "GUEST",
+      "page_id": "P04",
+      "title": "城市与景点",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/01-游客/P04-城市与景点.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "GUEST",
+      "page_id": "P05",
+      "title": "景点代抢服务详情",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/01-游客/P05-景点代抢服务详情.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "GUEST",
+      "page_id": "P06",
+      "title": "使用帮助",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/01-游客/P06-使用帮助.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "GUEST",
+      "page_id": "P07",
+      "title": "登录与注册",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/01-游客/P07-登录与注册.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C01",
+      "title": "我的首页",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C01-我的首页.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "P02",
+      "title": "脚本市场",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/P02-脚本市场.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "P03",
+      "title": "脚本服务详情",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/P03-脚本服务详情.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "P04",
+      "title": "城市与景点",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/P04-城市与景点.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "P05",
+      "title": "景点代抢服务详情",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/P05-景点代抢服务详情.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C02",
+      "title": "确认订单",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C02-确认订单.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C03",
+      "title": "收银台",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C03-收银台.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C04",
+      "title": "我的订单",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C04-我的订单.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C05",
+      "title": "订单详情",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C05-订单详情.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C06",
+      "title": "已购服务",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C06-已购服务.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C07",
+      "title": "配置与使用服务",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C07-配置与使用服务.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C08",
+      "title": "我的任务",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C08-我的任务.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C09",
+      "title": "任务详情",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C09-任务详情.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C10",
+      "title": "运行记录",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C10-运行记录.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C11",
+      "title": "运行详情",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C11-运行详情.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C12",
+      "title": "结果与产物",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C12-结果与产物.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C13",
+      "title": "待处理事项",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C13-待处理事项.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C14",
+      "title": "凭据管理",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C14-凭据管理.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C15",
+      "title": "出行人资料",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C15-出行人资料.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C16",
+      "title": "消息中心",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C16-消息中心.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C17",
+      "title": "通知设置",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C17-通知设置.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C18",
+      "title": "支付与账单",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C18-支付与账单.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C19",
+      "title": "退款与售后",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C19-退款与售后.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C20",
+      "title": "退款详情",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C20-退款详情.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C21",
+      "title": "账户设置",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C21-账户设置.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "C22",
+      "title": "预约凭证与票款",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/C22-预约凭证与票款.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "USER",
+      "page_id": "P06",
+      "title": "使用帮助",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/02-消费者/P06-使用帮助.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S01",
+      "title": "发布者工作台",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S01-发布者工作台.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S02",
+      "title": "我的脚本",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S02-我的脚本.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S03",
+      "title": "脚本编辑",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S03-脚本编辑.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S04",
+      "title": "版本与测试",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S04-版本与测试.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S05",
+      "title": "构建与测试记录",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S05-构建与测试记录.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S06",
+      "title": "部署管理",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S06-部署管理.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S07",
+      "title": "服务商品",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S07-服务商品.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S08",
+      "title": "编辑与上架服务",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S08-编辑与上架服务.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S09",
+      "title": "价格方案",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S09-价格方案.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S10",
+      "title": "销售订单",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S10-销售订单.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S11",
+      "title": "使用统计",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S11-使用统计.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S12",
+      "title": "故障诊断",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S12-故障诊断.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S13",
+      "title": "收益与结算",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S13-收益与结算.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S14",
+      "title": "结算详情",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S14-结算详情.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S15",
+      "title": "发布者设置",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S15-发布者设置.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "S16",
+      "title": "来源与同步",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/S16-来源与同步.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "C21",
+      "title": "账户设置",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/C21-账户设置.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "PUBLISHER",
+      "page_id": "P06",
+      "title": "使用帮助",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/03-脚本发布者/P06-使用帮助.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O01",
+      "title": "运营总览",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O01-运营总览.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O02",
+      "title": "用户与发布者",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O02-用户与发布者.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O03",
+      "title": "服务与脚本",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O03-服务与脚本.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O04",
+      "title": "城市与景点",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O04-城市与景点.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O05",
+      "title": "渠道与适配",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O05-渠道与适配.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O06",
+      "title": "服务订单",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O06-服务订单.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O07",
+      "title": "服务订单详情",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O07-服务订单详情.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O08",
+      "title": "支付与退款",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O08-支付与退款.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O09",
+      "title": "退款异常处理",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O09-退款异常处理.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O10",
+      "title": "对账中心",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O10-对账中心.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O11",
+      "title": "发布者结算",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O11-发布者结算.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O12",
+      "title": "费用与结算规则",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O12-费用与结算规则.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O13",
+      "title": "调度与容量",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O13-调度与容量.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O14",
+      "title": "节点与镜像",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O14-节点与镜像.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O15",
+      "title": "运行与排障",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O15-运行与排障.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O16",
+      "title": "日志与告警",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O16-日志与告警.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O17",
+      "title": "通知投递",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O17-通知投递.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O18",
+      "title": "平台设置",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O18-平台设置.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O19",
+      "title": "权限与操作审计",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O19-权限与操作审计.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O20",
+      "title": "备份与清理",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O20-备份与清理.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "O21",
+      "title": "异常预约",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/O21-异常预约.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "C21",
+      "title": "账户设置",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/C21-账户设置.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    },
+    {
+      "role": "ADMIN",
+      "page_id": "P06",
+      "title": "使用帮助",
+      "reference": "output/prototypes/2026-11-13-v5-commercial/04-平台管理员/P06-使用帮助.png",
+      "component_present": true,
+      "screenshot_present": true,
+      "visual_acceptance": "pending"
+    }
+  ]
+}

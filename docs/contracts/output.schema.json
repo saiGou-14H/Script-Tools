@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Script Tools output registration 2.0",
+  "type": "object",
+  "properties": {
+    "protocol_version": {
+      "const": "2.0"
+    },
+    "output_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_.-]{0,127}$"
+    },
+    "kind": {
+      "enum": [
+        "text",
+        "json",
+        "file",
+        "message"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "payload": {}
+  },
+  "required": [
+    "protocol_version",
+    "output_key",
+    "kind",
+    "payload"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "file"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "properties": {
+              "upload_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "file_name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[^/\\\\\\x00-\\x1f]+$",
+                "not": {
+                  "enum": [
+                    ".",
+                    ".."
+                  ]
+                }
+              },
+              "media_type": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9!#$&^_.+-]+/[A-Za-z0-9!#$&^_.+-]+$"
+              },
+              "size_bytes": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "upload_id",
+              "file_name",
+              "media_type",
+              "size_bytes",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "text"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "string",
+                "maxLength": 1048576
+              },
+              "media_type": {
+                "enum": [
+                  "text/plain",
+                  "text/markdown"
+                ]
+              }
+            },
+            "required": [
+              "content",
+              "media_type"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "json"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "properties": {
+              "data": {}
+            },
+            "required": [
+              "data"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "message"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "body": {
+                "type": "string",
+                "maxLength": 16384
+              },
+              "format": {
+                "enum": [
+                  "text/plain",
+                  "text/markdown"
+                ]
+              },
+              "channel_binding_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "minItems": 1,
+                "maxItems": 10,
+                "uniqueItems": true
+              },
+              "attachments": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "output_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  },
+                  "required": [
+                    "output_id"
+                  ],
+                  "additionalProperties": false
+                },
+                "maxItems": 10,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "title",
+              "body",
+              "format",
+              "channel_binding_ids",
+              "attachments"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,892 @@
+.bill-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 20px 0 24px;
+}
+.bill-summary .panel {
+  margin: 0;
+}
+.bill-summary .panel-body {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-height: 105px;
+  padding: 20px;
+}
+.bill-summary .tile-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  font-size: 30px;
+}
+.bill-summary h3 {
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.bill-summary strong {
+  font-size: 30px;
+  line-height: 1.2;
+  margin-right: 6px;
+}
+.bills-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 2.05fr) minmax(340px, 0.96fr);
+  gap: 18px;
+}
+.bills-columns > .panel {
+  min-height: 482px;
+  margin: 0;
+}
+.bill-list .panel-body {
+  padding: 22px 20px;
+}
+.bill-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 26px;
+  font-size: 16px;
+}
+.bill-filter .ant-select {
+  width: 278px;
+}
+.bill-filter > .ant-btn {
+  margin-left: auto;
+  height: 43px;
+  font-size: 16px;
+}
+.bill-list .ant-table {
+  font-size: 16px;
+}
+.bill-list .ant-table-thead > tr > th {
+  background: #f1f3f9;
+  padding: 14px;
+  white-space: nowrap;
+}
+.bill-list .ant-table-tbody > tr > td {
+  padding: 15px 14px;
+}
+.bill-list .ant-table-tbody > tr.selected-bill > td {
+  background: #e8f1ff;
+}
+.bill-list .status {
+  margin-left: 10px;
+}
+.bill-list .ant-table-thead > tr > th::before {
+  display: none;
+}
+.bill-detail .panel-body {
+  padding: 26px 28px;
+  font-size: 17px;
+}
+.bill-detail h2 {
+  font-size: 21px;
+  margin-bottom: 16px;
+}
+.bill-detail dl {
+  display: grid;
+  grid-template-columns: 102px minmax(0, 1fr);
+  gap: 9px 10px;
+  margin: 0;
+}
+.bill-detail dt {
+  color: #445370;
+}
+.bill-detail dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.bill-detail strong {
+  font-size: 22px;
+}
+.bill-detail hr {
+  border: 0;
+  border-top: 1px solid #e5eaf3;
+  margin: 18px 0;
+}
+.bill-fees p {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.refunds-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 2.15fr) minmax(365px, 1fr);
+  gap: 24px;
+  margin-top: 26px;
+  align-items: start;
+}
+.refunds-list .panel-body {
+  padding: 16px;
+}
+.refunds-list .ant-table {
+  font-size: 15px;
+}
+.refunds-list .ant-table-thead > tr > th {
+  background: #f3f5fa;
+  font-size: 16px;
+  white-space: nowrap;
+  padding: 14px 12px;
+}
+.refunds-list .ant-table-tbody > tr > td {
+  padding: 20px 12px;
+}
+.refunds-list .ant-table-thead > tr > th::before {
+  display: none;
+}
+.refund-application .panel-heading {
+  border: 0;
+  padding: 20px 22px 0;
+}
+.refund-application .panel-heading h2 {
+  font-size: 21px;
+}
+.refund-application .panel-body {
+  padding: 22px;
+}
+.refund-application .ant-form-item-label > label {
+  font-size: 15px;
+  font-weight: 600;
+}
+.refund-application .ant-select {
+  height: 40px;
+}
+.refund-application .notice {
+  margin: -4px 0 18px;
+  padding: 14px 16px;
+  align-items: start;
+}
+.refund-application .notice p {
+  margin: 4px 0 8px;
+}
+.refund-application .price {
+  color: #1455ff;
+  font-size: 20px;
+}
+.refund-application .ant-btn-primary {
+  height: 44px;
+  font-size: 17px;
+  margin-top: 4px;
+}
+.refund-detail-banner {
+  border: 4px solid white;
+  background: linear-gradient(110deg, #e9efff, #e6edfd);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 32px;
+  min-height: 118px;
+  margin: 26px 0 20px;
+}
+.refund-detail-banner .tile-icon {
+  width: 68px;
+  height: 68px;
+  font-size: 34px;
+  border-radius: 15px;
+}
+.refund-detail-banner h2 {
+  font-size: 24px;
+}
+.refund-detail-banner strong {
+  font-size: 28px;
+  color: #1c5cff;
+}
+.refund-detail-banner > div:last-child {
+  margin-left: auto;
+  padding-right: 8px;
+}
+.refund-detail-banner p {
+  color: #55627c;
+  margin-bottom: 6px;
+}
+.refund-detail-banner .status {
+  border-radius: 26px;
+  font-size: 19px;
+  padding: 8px 20px;
+}
+.refund-progress-panel .panel-body {
+  padding: 24px 20px 22px;
+}
+.refund-progress-panel .ant-steps {
+  padding: 0 82px;
+  margin-bottom: 36px;
+}
+.refund-progress-panel .ant-steps-item-title {
+  font-size: 17px;
+}
+.refund-facts {
+  border: 1px solid #e1e7f2;
+  border-radius: 11px;
+  overflow: hidden;
+}
+.refund-facts > div {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e5eaf3;
+  padding: 8px 20px;
+  gap: 22px;
+  font-size: 17px;
+}
+.refund-facts > div:last-child {
+  border: 0;
+}
+.refund-facts .tile-icon {
+  width: 37px;
+  height: 34px;
+  font-size: 21px;
+  border-radius: 9px;
+}
+.refund-facts b {
+  min-width: 186px;
+  width: 186px;
+  border-right: 2px solid #dce1ed;
+  font-weight: 600;
+}
+.refund-delivery-facts {
+  margin: 20px 0 34px;
+}
+.refund-progress-panel > .panel-body > .ant-btn {
+  min-width: 160px;
+  font-size: 18px;
+  height: 46px;
+}
+.account-page .ant-tabs {
+  margin-top: -4px;
+}
+.account-page .ant-tabs-nav {
+  margin-bottom: 20px;
+}
+.account-page .ant-tabs-tab {
+  font-size: 19px;
+  padding: 10px 30px;
+}
+.account-page .ant-tabs-tab + .ant-tabs-tab {
+  margin-left: 8px;
+}
+.account-top-cards {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 18px;
+}
+.account-top-cards .panel {
+  min-height: 156px;
+}
+.account-page .panel-heading {
+  padding: 12px 24px;
+}
+.account-page .panel-heading h2 {
+  font-size: 20px;
+}
+.account-top-cards .panel-body {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+  min-height: 108px;
+  padding: 16px 26px;
+}
+.account-page .panel p {
+  color: #526180;
+}
+.account-top-cards .panel-body p {
+  margin-bottom: 5px;
+  font-size: 17px;
+}
+.account-top-cards .panel-body p:last-child {
+  margin-bottom: 0;
+}
+.account-top-cards .panel-body b {
+  color: #121725;
+}
+.account-top-cards .ant-btn {
+  margin-left: 14px;
+  height: 30px;
+}
+.account-top-cards > div:last-child .panel-body {
+  gap: 26px;
+}
+.account-top-cards > div:last-child .panel-body > .ant-btn {
+  margin-left: auto;
+}
+.account-sessions .panel-body {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 16px 24px;
+  min-height: 76px;
+}
+.account-sessions .ant-btn {
+  margin-left: auto;
+}
+.account-sessions .tile-icon {
+  width: 42px;
+  height: 42px;
+}
+.account-sessions h3 {
+  margin-bottom: 4px;
+}
+.account-workspace {
+  border-radius: 14px;
+  border: 3px solid white;
+  background: linear-gradient(110deg, #eef8ff, #eee8ff);
+  padding: 14px 22px 20px;
+  margin: 18px 0;
+}
+.account-workspace > p {
+  color: #51617e;
+  font-size: 15px;
+  margin: 4px 0 14px;
+}
+.account-workspace > div {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.account-workspace .ant-radio-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 77%;
+}
+.account-workspace .ant-radio-wrapper {
+  border: 1px solid #d9e2f0;
+  background: #f8faff;
+  min-height: 80px;
+  border-radius: 12px;
+  padding: 12px 22px;
+  margin: 0;
+}
+.account-workspace .ant-radio-wrapper-checked {
+  border-color: #1555ff;
+  background: #ecf2ff;
+}
+.account-workspace .ant-radio-wrapper > span:last-child {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.account-workspace .ant-radio {
+  align-self: center;
+}
+.account-workspace .tile-icon {
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+}
+.account-workspace .ant-radio-wrapper b {
+  font-size: 18px;
+  display: block;
+}
+.account-workspace small {
+  display: block;
+  font-size: 14px;
+  margin-top: 4px;
+}
+.account-workspace > div > .ant-btn {
+  margin-left: auto;
+  font-size: 18px;
+  height: 42px;
+}
+.account-close .panel-body {
+  padding: 8px 24px 16px;
+}
+.account-close .panel-body > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #ffebbc;
+  border-radius: 7px;
+  background: #fff8e5;
+  padding: 8px 16px;
+}
+.account-close .panel-body .anticon {
+  color: #ffa000;
+}
+.account-close .panel-body b {
+  color: #f33b2c;
+}
+.account-close .panel-body .ant-btn {
+  margin-left: auto;
+}
+.account-logout {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+.booking-ticket-notice {
+  border-radius: 14px;
+  background: linear-gradient(110deg, #e1f1ff, #e6dfff);
+  margin: 24px 0 28px;
+}
+.booking-ticket-notice .notice {
+  background: transparent;
+  border: 0;
+  min-height: 86px;
+  font-size: 15px;
+  padding: 16px 28px;
+  gap: 18px;
+}
+.booking-ticket-notice .notice > .anticon {
+  font-size: 32px;
+  align-self: center;
+}
+.booking-ticket-notice h2 {
+  color: #111;
+  margin-bottom: 3px;
+}
+.bookings-list .panel-body {
+  padding: 8px 10px 18px;
+}
+.bookings-list .ant-table {
+  font-size: 17px;
+}
+.bookings-list .ant-table-thead > tr > th {
+  background: #f5f7fc;
+  padding: 14px 20px;
+}
+.bookings-list .ant-table-tbody > tr > td {
+  padding: 16px 20px;
+}
+.bookings-list .ant-table-thead > tr > th::before {
+  display: none;
+}
+.bookings-list .ant-btn {
+  font-size: 16px;
+  height: 40px;
+}
+.bookings-list .status {
+  font-size: 15px;
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+.public-resource-banner {
+  position: relative;
+  background: linear-gradient(110deg, #e0ebff, #e1dcfd 65%, #bdb2ff);
+  border: 1px solid #e1e6fb;
+  padding: 20px 34px;
+  border-radius: 14px;
+  margin: 24px 0 16px;
+  overflow: hidden;
+}
+.public-resource-banner::after {
+  content: "";
+  width: 480px;
+  height: 200px;
+  position: absolute;
+  right: -100px;
+  top: -50px;
+  border: 1px solid #ffffff60;
+  border-radius: 50%;
+  transform: rotate(-25deg);
+  background: #ffffff12;
+  pointer-events: none;
+}
+.public-resource-banner h2 {
+  font-size: 26px;
+}
+.public-resource-banner p {
+  font-size: 19px;
+  margin-top: 3px;
+  color: #334665;
+}
+.attraction-filters {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: white;
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  font-size: 17px;
+}
+.attraction-filters > div:first-of-type {
+  display: flex;
+  gap: 12px;
+}
+.attraction-filters .ant-btn {
+  height: 43px;
+  min-width: 88px;
+  font-size: 18px;
+}
+.attraction-filters .ant-picker {
+  width: 280px;
+  height: 43px;
+}
+.attraction-filters > .ant-input-affix-wrapper {
+  margin-left: auto;
+  max-width: 440px;
+  min-width: 180px;
+  height: 43px;
+  background: #f8faff;
+  font-size: 17px;
+}
+.filter-divider {
+  height: 38px;
+  border-left: 1px solid #d5ddea;
+  margin: 0 12px;
+}
+.attractions-page > .notice {
+  padding: 12px 20px;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+.attraction-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.attraction-grid .panel-body {
+  padding: 18px;
+}
+.attraction-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+.attraction-card-heading h2 {
+  font-size: 22px;
+}
+.attraction-card-heading .status {
+  padding: 4px 14px;
+  border-radius: 22px;
+}
+.attraction-grid .panel-body > p {
+  margin: 8px 0 12px;
+  color: #455577;
+  font-size: 15px;
+}
+.attraction-fees {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #f2f5fa;
+  margin-bottom: 14px;
+}
+.attraction-fees > div + div {
+  border-left: 1px solid #cdd8e9;
+  padding-left: 42px;
+}
+.attraction-fees span {
+  color: #60718b;
+  font-size: 15px;
+}
+.attraction-fees strong {
+  font-size: 25px;
+  color: #1555ff;
+  display: block;
+  margin-top: 4px;
+}
+.attraction-rules {
+  background: #f3f6fb;
+  padding: 8px 16px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  font-size: 15px;
+}
+.attraction-rules p {
+  margin: 1px 0;
+}
+.attraction-rules .anticon {
+  margin-right: 14px;
+}
+.attraction-rules b {
+  font-weight: 600;
+}
+.attraction-grid .ant-btn-primary {
+  height: 40px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.help-banner {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 20px 28px;
+  margin-bottom: 18px;
+}
+.help-banner .tile-icon {
+  width: 65px;
+  height: 53px;
+  font-size: 32px;
+}
+.help-banner h2 {
+  font-size: 24px;
+}
+.help-banner p {
+  font-size: 16px;
+  margin-top: 4px;
+}
+.help-columns {
+  display: grid;
+  grid-template-columns: 245px minmax(0, 1fr) 31%;
+  gap: 14px;
+  align-items: stretch;
+}
+.help-directory,
+.help-questions {
+  margin: 0;
+}
+.help-directory .panel-heading {
+  border: 0;
+  padding: 18px 22px 0;
+}
+.help-directory .panel-heading h2 {
+  font-size: 21px;
+  border-bottom: 1px solid #e4e9f3;
+  width: 100%;
+  padding-bottom: 14px;
+}
+.help-directory .panel-body {
+  padding: 8px 18px;
+}
+.help-directory .ant-btn {
+  display: flex;
+  width: 100%;
+  gap: 16px;
+  text-align: left;
+  justify-content: flex-start;
+  height: 47px;
+  font-size: 17px;
+  padding: 2px 7px;
+}
+.help-directory .tile-icon {
+  background: none;
+  font-size: 21px;
+  width: 26px;
+  height: 26px;
+  color: #53617b;
+}
+.help-directory .selected {
+  color: #1555ff;
+  background: #edf3ff;
+}
+.help-questions .panel-body {
+  padding: 18px 22px;
+}
+.help-questions .ant-input-affix-wrapper {
+  height: 42px;
+  background: #f8faff;
+  font-size: 16px;
+  margin-bottom: 18px;
+}
+.help-questions h2 {
+  font-size: 21px;
+  margin-bottom: 14px;
+}
+.help-questions .ant-collapse {
+  border: 0;
+  background: none;
+}
+.help-questions .ant-collapse-item {
+  border: 1px solid #e1e7f2;
+  border-radius: 11px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.help-questions .ant-collapse > .ant-collapse-item:last-child {
+  border-radius: 11px;
+}
+.help-questions .ant-collapse-header {
+  font-size: 17px;
+  font-weight: 600;
+  padding: 8px 16px !important;
+  min-height: 46px;
+  align-items: center !important;
+}
+.help-questions .ant-collapse-header-text {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.help-questions .ant-collapse-item-active > .ant-collapse-header {
+  background: #eaf1ff;
+}
+.help-questions .ant-collapse-content {
+  border: 0;
+}
+.help-questions .ant-collapse-content-box {
+  padding: 8px 16px 18px !important;
+}
+.qa-letter {
+  font-size: 20px;
+  color: #1760ff;
+  background: linear-gradient(#deebff, #b7ceff);
+  width: 32px;
+  height: 30px;
+  border-radius: 8px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.help-answer {
+  display: flex;
+  align-items: start;
+  gap: 16px;
+  padding: 9px 14px;
+  background: #f4f6fb;
+  border-radius: 10px;
+  line-height: 1.7;
+  font-size: 16px;
+}
+.help-quickstart .panel-heading {
+  border: 0;
+  padding: 18px 22px 10px;
+}
+.help-quickstart .panel-heading h2 {
+  font-size: 21px;
+  border-bottom: 1px solid #e2e8f2;
+  width: 100%;
+  padding-bottom: 14px;
+}
+.help-quickstart .panel-body {
+  padding: 0 26px 18px;
+}
+.help-quickstart .panel-body > div {
+  display: flex;
+  gap: 16px;
+  position: relative;
+  padding-bottom: 15px;
+}
+.help-quickstart .panel-body > div:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  background: #dfe7ff;
+  left: 17px;
+  top: 36px;
+  bottom: 0;
+}
+.help-quickstart .panel-body > div:last-child {
+  padding-bottom: 0;
+}
+.help-quickstart .panel-body > div > span {
+  border-radius: 50%;
+  background: linear-gradient(#3c90ff, #1251ff);
+  color: white;
+  width: 35px;
+  height: 35px;
+  display: grid;
+  place-items: center;
+  font-size: 19px;
+  flex-shrink: 0;
+}
+.help-quickstart h3 {
+  font-size: 17px;
+}
+.help-quickstart p {
+  line-height: 1.45;
+  font-size: 15px;
+  color: #5d6980;
+  margin-top: 4px;
+}
+.help-contact {
+  margin-bottom: 0;
+}
+.help-contact .panel-heading {
+  padding: 16px 22px 6px;
+  border: 0;
+}
+.help-contact .panel-heading h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 22px;
+}
+.help-contact .tile-icon {
+  width: 30px;
+  height: 30px;
+  background: none;
+}
+.help-contact .panel-body {
+  padding: 6px 22px 24px;
+}
+.help-contact p {
+  font-size: 15px;
+  color: #59677f;
+  margin-bottom: 16px;
+}
+.help-contact .ant-btn {
+  height: 45px;
+  font-size: 17px;
+  min-width: 190px;
+}
+@media (max-width: 1300px) {
+  .bill-list .ant-table,
+  .refunds-list .ant-table {
+    font-size: 13px;
+  }
+  .bills-columns,
+  .refunds-columns {
+    grid-template-columns: minmax(0, 1fr) 330px;
+  }
+  .help-columns {
+    grid-template-columns: 180px minmax(0, 1fr) 28%;
+  }
+  .attraction-filters {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .filter-divider {
+    display: none;
+  }
+  .attraction-card-heading h2 {
+    font-size: 18px;
+  }
+  .account-workspace .ant-radio-group {
+    width: 100%;
+  }
+  .account-workspace > div {
+    flex-wrap: wrap;
+  }
+  .refund-facts b {
+    width: 150px;
+    min-width: 150px;
+  }
+}
+@media (max-width: 950px) {
+  .bill-summary,
+  .account-top-cards,
+  .attraction-grid {
+    grid-template-columns: 1fr;
+  }
+  .bills-columns,
+  .refunds-columns,
+  .help-columns {
+    grid-template-columns: 1fr;
+  }
+  .help-directory .panel-body {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .help-directory .ant-btn {
+    width: auto;
+  }
+  .refund-facts > div {
+    flex-wrap: wrap;
+    font-size: 14px;
+  }
+  .refund-facts b {
+    min-width: 100px;
+    width: auto;
+    padding-right: 12px;
+  }
+  .refund-progress-panel .ant-steps {
+    padding: 0;
+  }
+  .account-workspace .ant-radio-group {
+    grid-template-columns: 1fr;
+  }
+  .bill-list,
+  .bookings-list,
+  .refunds-list {
+    overflow-x: auto;
+  }
+  .bill-list .ant-table,
+  .bookings-list .ant-table,
+  .refunds-list .ant-table {
+    min-width: 850px;
+  }
+}

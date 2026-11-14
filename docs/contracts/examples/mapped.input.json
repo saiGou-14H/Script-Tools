@@ -1,0 +1,8 @@
+{
+  "source_url": "https://api.example.invalid/records",
+  "limit": 20,
+  "label": "report $(example) `literal` \"quoted\"",
+  "options": {
+    "compact": false
+  }
+}

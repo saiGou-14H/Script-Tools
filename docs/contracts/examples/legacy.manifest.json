@@ -1,0 +1,37 @@
+{
+  "schema_version": "2.0",
+  "script_id": "legacy-demo",
+  "version": "2.0.0",
+  "language": "python",
+  "entrypoint": "main.py",
+  "integration_mode": "legacy",
+  "default_action": "execute",
+  "actions": {
+    "execute": {
+      "side_effects": "unknown"
+    }
+  },
+  "hooks": {},
+  "dependencies_lock": "requirements.lock",
+  "credential_requirements": [],
+  "network_requirements": {
+    "mode": "HTTP",
+    "domains": [
+      "api.example.invalid"
+    ],
+    "methods": [
+      "GET"
+    ]
+  },
+  "supported_execution_modes": [
+    "docker",
+    "qemu_kvm",
+    "qemu_tcg"
+  ],
+  "input_schema": {
+    "type": "object",
+    "maxProperties": 0
+  },
+  "events": {},
+  "extensions": []
+}

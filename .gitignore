@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.local/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+playwright-report/
+test-results/
+output/*
+!output/prototypes/
+output/prototypes/*
+!output/prototypes/2026-11-13-v5-commercial/
+!output/verification/
+output/verification/**/failure.png
+output/prototypes/**/previous-attempts/
+output/prototypes/**/.manifest.lock

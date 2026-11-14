@@ -1,0 +1,24 @@
+{
+  "protocol_version": "2.0",
+  "run_id": "run_outputs_001",
+  "attempt_id": "attempt_outputs_001",
+  "invocation_id": "inv_outputs_001",
+  "script_version_id": "sv_outputs_v2",
+  "action": "summarize_records",
+  "context": {},
+  "input": {
+    "source_url": "https://api.example.invalid/records",
+    "limit": 10
+  },
+  "runtime": {
+    "requested_execution_mode": "docker",
+    "actual_execution_mode": "docker",
+    "deadline": "2026-11-13T12:03:00Z",
+    "output_deadline": "2026-11-13T12:03:30Z",
+    "run_mode": "finite",
+    "output_series_id": "series_run_outputs_001",
+    "lease_expires_at": "2026-11-13T12:03:00Z"
+  },
+  "credential_bindings": [],
+  "output_path": "/work/results/inv_outputs_001.json"
+}

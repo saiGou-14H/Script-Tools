@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-14T08:15:20.322Z",
+  "checks": [
+    "all ten publisher commerce, quality, finance and settings routes render",
+    "product filters and draft previews work, and saving a draft preserves the current sale snapshot",
+    "price versions retain old prices, duplicate saves reuse one intent, and publish and pause previews update the service list",
+    "sales filters update masked buyer and fulfillment summaries",
+    "service and version filters keep metric totals, quality rows and charts aligned",
+    "diagnostics opens an editable repair draft with a matching next-version manifest",
+    "earnings and settlement totals reconcile and payout requests preserve pending channel state",
+    "profile changes persist, payout secrets are masked and cleared, and historical settlement account snapshots remain fixed",
+    "P1 source tabs filter example snapshots while disabled remote operations remain unavailable",
+    "BIGINT minor-unit formatting retains the full signed 64-bit amount precision",
+    "new publisher pages handle unknown IDs and complete checks without browser exceptions"
+  ],
+  "screenshots": [
+    "PUBLISHER-S07",
+    "PUBLISHER-S08",
+    "PUBLISHER-S09",
+    "PUBLISHER-S10",
+    "PUBLISHER-S11",
+    "PUBLISHER-S12",
+    "PUBLISHER-S13",
+    "PUBLISHER-S14",
+    "PUBLISHER-S15",
+    "PUBLISHER-S16"
+  ],
+  "errors": [],
+  "result": "PASS"
+}

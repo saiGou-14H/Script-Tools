@@ -1,0 +1,15 @@
+{
+  "protocol_version": "2.0",
+  "run_id": "run_continuous_001",
+  "attempt_id": "attempt_continuous_001",
+  "invocation_id": "inv_continuous_001",
+  "action": "watch_records",
+  "outcome": "COMPLETED",
+  "summary": "持续任务已按停止请求结束",
+  "data": {
+    "stopped": true
+  },
+  "action_required": null,
+  "error": null,
+  "outputs": []
+}

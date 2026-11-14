@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-14T08:14:19.849Z",
+  "baseURL": "http://127.0.0.1:5174",
+  "checks": [
+    "Script Tools branding is consistent in the browser, navigation and API documentation",
+    "service search filters server-backed catalog",
+    "anonymous private API is rejected",
+    "private route redirects to login",
+    "login form establishes a server session and returns to the workspace",
+    "task scope tabs expose an honest empty state",
+    "RJSF blocks empty required publisher fields",
+    "output preview and file download work in prototype mode",
+    "consumer cannot call admin API",
+    "session mutation requires CSRF token",
+    "logout revokes server session",
+    "publisher editor accepts and validates editable manifest",
+    "admin dashboard renders in authorized workspace",
+    "implemented pages render without browser runtime exceptions"
+  ],
+  "screenshots": [
+    "GUEST-P02",
+    "GUEST-P07",
+    "USER-C01",
+    "USER-C08",
+    "USER-C07",
+    "USER-C10",
+    "USER-C12",
+    "PUBLISHER-S01",
+    "PUBLISHER-S03",
+    "ADMIN-O01"
+  ],
+  "consoleErrors": [],
+  "result": "PASS"
+}

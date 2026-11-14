@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-14T08:14:58.117Z",
+  "checks": [
+    "confirm terms and submit once creates a prototype order and opens cashier",
+    "payment query preserves pending state without a trusted receipt",
+    "cancelling unpaid preview order updates order list and closed filter",
+    "purchased entitlement filters and task navigation work",
+    "run detail keeps logs, outputs and notification states in their own tabs",
+    "new consumer pages render without browser exceptions"
+  ],
+  "screenshots": [
+    "USER-C02",
+    "USER-C03",
+    "USER-C04",
+    "USER-C05",
+    "USER-C06",
+    "USER-C11"
+  ],
+  "errors": [],
+  "result": "PASS"
+}

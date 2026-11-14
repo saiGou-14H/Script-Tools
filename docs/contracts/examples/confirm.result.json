@@ -1,0 +1,16 @@
+{
+  "protocol_version": "2.0",
+  "run_id": "run_batch_001",
+  "attempt_id": "attempt_batch_002",
+  "invocation_id": "inv_batch_002",
+  "action": "confirm_batch",
+  "outcome": "COMPLETED",
+  "summary": "脚本报告批次已完成",
+  "data": {
+    "batch_ref": "batch-demo-001",
+    "synced_count": 1
+  },
+  "action_required": null,
+  "error": null,
+  "outputs": []
+}

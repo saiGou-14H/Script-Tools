@@ -1,0 +1,113 @@
+[
+  {
+    "output_id": "out_cont_text_1",
+    "batch_key": "page.001",
+    "phase": "OUTPUT_HOOK",
+    "request": {
+      "protocol_version": "2.0",
+      "output_key": "summary",
+      "kind": "text",
+      "payload": {
+        "content": "第 1 批进度",
+        "media_type": "text/plain"
+      }
+    }
+  },
+  {
+    "output_id": "out_cont_message_1",
+    "batch_key": "page.001",
+    "phase": "OUTPUT_HOOK",
+    "request": {
+      "protocol_version": "2.0",
+      "output_key": "notice",
+      "kind": "message",
+      "payload": {
+        "title": "新批次",
+        "body": "第 1 批已产出",
+        "format": "text/plain",
+        "channel_binding_ids": [
+          "binding_owner_inbox"
+        ],
+        "attachments": [
+          {
+            "output_id": "out_cont_text_1"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "output_id": "out_cont_text_2",
+    "batch_key": "page.002",
+    "phase": "OUTPUT_HOOK",
+    "request": {
+      "protocol_version": "2.0",
+      "output_key": "summary",
+      "kind": "text",
+      "payload": {
+        "content": "第 2 批进度",
+        "media_type": "text/plain"
+      }
+    }
+  },
+  {
+    "output_id": "out_cont_message_2",
+    "batch_key": "page.002",
+    "phase": "OUTPUT_HOOK",
+    "request": {
+      "protocol_version": "2.0",
+      "output_key": "notice",
+      "kind": "message",
+      "payload": {
+        "title": "新批次",
+        "body": "第 2 批已产出",
+        "format": "text/plain",
+        "channel_binding_ids": [
+          "binding_owner_inbox"
+        ],
+        "attachments": [
+          {
+            "output_id": "out_cont_text_2"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "output_id": "out_cont_text_3",
+    "batch_key": "page.003",
+    "phase": "OUTPUT_HOOK",
+    "request": {
+      "protocol_version": "2.0",
+      "output_key": "summary",
+      "kind": "text",
+      "payload": {
+        "content": "第 3 批进度",
+        "media_type": "text/plain"
+      }
+    }
+  },
+  {
+    "output_id": "out_cont_message_3",
+    "batch_key": "page.003",
+    "phase": "OUTPUT_HOOK",
+    "request": {
+      "protocol_version": "2.0",
+      "output_key": "notice",
+      "kind": "message",
+      "payload": {
+        "title": "新批次",
+        "body": "第 3 批已产出",
+        "format": "text/plain",
+        "channel_binding_ids": [
+          "binding_owner_inbox"
+        ],
+        "attachments": [
+          {
+            "output_id": "out_cont_text_3"
+          }
+        ]
+      }
+    }
+  }
+]

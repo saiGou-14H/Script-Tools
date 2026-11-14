@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-11-13T17:11:22.915564+00:00",
+  "checks": [
+    {
+      "command": "python -X utf8 docs/checks/validate-docs.py",
+      "exit_code": 0,
+      "stdout": "PASS: 6 Markdown files, 40 JSON files, 99 tables; links/anchors, sections, examples and unique traceability.\nPASS: 114 old sections mapped; all 38 contract/example digests unchanged.\n{\"AC\": 52, \"ADP\": 10, \"AL\": 29, \"E2E\": 26, \"FLOW\": 13, \"INV\": 16, \"LONG\": 6, \"OBS\": 22, \"OUT\": 8, \"REQ\": 61, \"TX\": 10}\n",
+      "stderr": ""
+    },
+    {
+      "command": "python -X utf8 docs/checks/validate-role-design.py",
+      "exit_code": 0,
+      "stdout": "PASS: 2331 role, page, operation, commercial-boundary and document cross-checks.\nPASS: 4 workspaces; 66 page definitions; 102 guarded operations; 75 role-page deliverables; 16 commercial requirements; 24 acceptance scenarios.\nLIMIT: static design consistency only; no live payments, execution, authorization or image acceptance.\n",
+      "stderr": ""
+    }
+  ]
+}

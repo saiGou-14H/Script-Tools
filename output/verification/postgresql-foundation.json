@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-14T08:16:38.461Z",
+  "checks": [
+    "application connects to its independent database with a non-superuser role",
+    "two independent pooled connections initialize the travel search path so cross-table trigger references resolve consistently",
+    "all 145 tables and 1755 columns load from the design migration, with checksum verified on restart",
+    "DatabaseService commits a successful transaction on the PostgreSQL driver",
+    "failed DatabaseService transaction rolls back its changes",
+    "separate PostgreSQL connection cannot read another transaction uncommitted changes",
+    "two real connections serialize updates to the same row without losing increments",
+    "PostgreSQL primary-key constraint rejects a duplicate write",
+    "running API health confirms PostgreSQL mode and 145 application tables"
+  ],
+  "mode": "postgresql",
+  "database": "travel_tools",
+  "server_version": "PostgreSQL 18.7 on x86_64-windows, compiled by msvc-19.44.35229, 64-bit",
+  "application_role": "travel_tools_dev",
+  "tables": 145,
+  "columns": 1755,
+  "result": "PASS"
+}

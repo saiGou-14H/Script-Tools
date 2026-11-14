@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-14T08:15:56.960Z",
+  "checks": [
+    "all eight infrastructure and platform pages render within the reference viewport with complete navigation",
+    "rate and pool-drain previews preserve occupied capacity while pending work remains visible",
+    "node drain retains leases, cleanup checks active leases, and requesting image verification preserves its pending evidence state",
+    "controlled stop keeps its cleanup phase and scoped diagnostics validate resource, reason, fields and ticket",
+    "log filters, bounded silences and rule drafts operate independently from recorded recovery evidence",
+    "safe notification retries preserve logical receipt identifiers and attempt counts, and unknown deliveries remain pending original receipt reconciliation",
+    "platform protection and domain-policy previews persist across routes while deferred features retain their configured phase",
+    "grant previews retain the protected current manager and append auditable reasons for changes to another account",
+    "retention validates the total window and recovery registration remains distinct from actual execution and verification",
+    "infrastructure and platform workflows complete without browser runtime exceptions",
+    "read-only observation grants retain log visibility while management and sensitive-session controls require their separate capabilities",
+    "live-mode infrastructure uses the real node API and shows unavailable business modules without prototype records"
+  ],
+  "screenshots": [
+    "ADMIN-O13",
+    "ADMIN-O14",
+    "ADMIN-O15",
+    "ADMIN-O16",
+    "ADMIN-O17",
+    "ADMIN-O18",
+    "ADMIN-O19",
+    "ADMIN-O20"
+  ],
+  "layouts": [
+    {
+      "id": "O13",
+      "width": 1814,
+      "height": 868,
+      "helpBottom": 845.90625
+    },
+    {
+      "id": "O14",
+      "width": 1814,
+      "height": 868,
+      "helpBottom": 828.75
+    },
+    {
+      "id": "O15",
+      "width": 1814,
+      "height": 868,
+      "helpBottom": 855.90625
+    },
+    {
+      "id": "O16",
+      "width": 1814,
+      "height": 868,
+      "helpBottom": 841.90625
+    },
+    {
+      "id": "O17",
+      "width": 1814,
+      "height": 868,
+      "helpBottom": 847.90625
+    },
+    {
+      "id": "O18",
+      "width": 1814,
+      "height": 868,
+      "helpBottom": 853.90625
+    },
+    {
+      "id": "O19",
+      "width": 1814,
+      "height": 868,
+      "helpBottom": 826.90625
+    },
+    {
+      "id": "O20",
+      "width": 1814,
+      "height": 868,
+      "helpBottom": 851.90625
+    }
+  ],
+  "errors": [],
+  "result": "PASS"
+}

@@ -1,0 +1,32 @@
+{
+  "protocol_version": "2.0",
+  "batch_key": "hook",
+  "phase": "OUTPUT_HOOK",
+  "outputs": [
+    {
+      "output_id": "out_records"
+    },
+    {
+      "output_id": "out_csv"
+    },
+    {
+      "output_id": "out_pdf"
+    },
+    {
+      "output_id": "out_xlsx"
+    },
+    {
+      "output_id": "out_png"
+    },
+    {
+      "output_id": "out_binary"
+    },
+    {
+      "output_id": "out_notice"
+    }
+  ],
+  "producer_outcome": "COMPLETED",
+  "producer_error": null,
+  "output_series_id": "series_run_outputs_001",
+  "reason": "explicit"
+}

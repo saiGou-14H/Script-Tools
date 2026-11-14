@@ -1,0 +1,1206 @@
+{
+  "document_version": "V3.0",
+  "count": 75,
+  "pages": [
+    {
+      "key": "GUEST-P01",
+      "role": "GUEST",
+      "role_name": "游客",
+      "page_id": "P01",
+      "page_name": "平台首页",
+      "file": "01-游客/P01-平台首页.png",
+      "prompt_file": "prompts/GUEST-P01.txt",
+      "prompt_sha256": "97332f23f6309acec561f525eac47d2091910c21ed1eca5fd470b97e4e6eec62",
+      "prompt": "Use case: ui-mockup. Create ONE finished high-fidelity desktop website screenshot, landscape 1912×914 (about 2.09:1), flat front view, edge-to-edge app, no browser chrome, no perspective, no collage, no device mockup. Chinese text must be legible and correctly spelled.\nInput images are STYLE REFERENCES ONLY: preserve their compact enterprise-software visual language, not their business content. Layout: white 48px top header, 176px left sidebar with grouped 12–14px labels and thin outline icons, pale cool grey #F5F6FA content, white fine-border 8px-radius cards, strong blue #3568FF primary buttons and light blue selected navigation. Content starts at x188 with 16px padding; compact 20px title, 28–32px buttons, 12px gaps. Light blue/lavender dashboard banner only for home pages. No giant marketing text or oversized empty whitespace. Use restrained blue/purple accents, amber pending, red errors, green verified success. Readable content-dense tables/forms/cards consistent with the reference. Optional slim contextual right panel only where relevant.\nProduct is Travel Tools 通用脚本服务平台: a personal commercial script upload, deployment, sale and paid-use platform. Ticket reservation is ONE scenario among data/file/information tools. Header logo Travel Tools, global search 搜索脚本、服务或订单, workspace selector, messages, avatar. Never copy 党建/ERP/enterprise departments or approval queues. No AI assistant, subscriptions, wallet, ticket scalping, ticket payment, hidden renewal, guaranteed booking success. Prices and records are mock examples, tiny visible tag 示例数据. PER_USE means one complete logical service including continuation, not one HTTP request. Publisher chooses no-result refund policy, shown before purchase and frozen in order. Consumer does not choose technical runtime or deploy code. Purchased access is not source download.\n\nCURRENT WORKSPACE: 游客. Header shows that role. Role scope: 匿名浏览已上架公开服务和业务场景，购买使用需要登录. Sidebar menu exact groups/labels (use compact scroll area; current group visible): 发现 / 平台首页；发现 / 脚本市场；业务场景 / 城市与景点；公共 / 使用帮助；公共 / 登录与注册. Highlight 平台首页. Details use breadcrumb, not extra sidebar item. Footer 帮助 and 账户设置 as appropriate.\nCURRENT PAGE: 平台首页. Page definition ID P01 is metadata, do not display ID as title.\n平台首页。蓝紫浅色横幅：把重复工作交给脚本；副文案：发现服务，按次购买，获取结果。按钮浏览脚本、成为发布者。三项说明按次付费/部署就绪/规则透明。下方热门服务四卡：表格清洗 ¥6.00/次、文件批量处理 ¥3.00/次、公开数据整理 ¥5.00/次、免费景点预约 ¥8.00/次。下方三个步骤选择服务→确认规则并支付→配置使用与领取结果。右侧卡显示门票通常免费，支付的是脚本服务费。\nRequired page content: 脚本服务推荐；分类与业务场景；付费使用说明；上传发布入口。\nRender all prominent labels in simplified Chinese. Distinguish money status, execution status, business target and notification status. Show actual relevant controls and believable example rows with consistent numbers. Do not fill with repetitive placeholder lines. Do not print API endpoints, policy internals or documentation paragraphs in consumer UI.",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "GUEST-P02",
+      "role": "GUEST",
+      "role_name": "游客",
+      "page_id": "P02",
+      "page_name": "脚本市场",
+      "file": "01-游客/P02-脚本市场.png",
+      "prompt_file": "prompts/GUEST-P02.txt",
+      "prompt_sha256": "7fdc2e59661c5549c0baeb632ebfa0f83240b1fbd2db5077c1dfd9c9bcd750cf",
+      "prompt": "Use case: ui-mockup. Create ONE finished high-fidelity desktop website screenshot, landscape 1912×914 (about 2.09:1), flat front view, edge-to-edge app, no browser chrome, no perspective, no collage, no device mockup. Chinese text must be legible and correctly spelled.\nInput images are STYLE REFERENCES ONLY: preserve their compact enterprise-software visual language, not their business content. Layout: white 48px top header, 176px left sidebar with grouped 12–14px labels and thin outline icons, pale cool grey #F5F6FA content, white fine-border 8px-radius cards, strong blue #3568FF primary buttons and light blue selected navigation. Content starts at x188 with 16px padding; compact 20px title, 28–32px buttons, 12px gaps. Light blue/lavender dashboard banner only for home pages. No giant marketing text or oversized empty whitespace. Use restrained blue/purple accents, amber pending, red errors, green verified success. Readable content-dense tables/forms/cards consistent with the reference. Optional slim contextual right panel only where relevant.\nProduct is Travel Tools 通用脚本服务平台: a personal commercial script upload, deployment, sale and paid-use platform. Ticket reservation is ONE scenario among data/file/information tools. Header logo Travel Tools, global search 搜索脚本、服务或订单, workspace selector, messages, avatar. Never copy 党建/ERP/enterprise departments or approval queues. No AI assistant, subscriptions, wallet, ticket scalping, ticket payment, hidden renewal, guaranteed booking success. Prices and records are mock examples, tiny visible tag 示例数据. PER_USE means one complete logical service including continuation, not one HTTP request. Publisher chooses no-result refund policy, shown before purchase and frozen in order. Consumer does not choose technical runtime or deploy code. Purchased access is not source download.\n\nCURRENT WORKSPACE: 游客. Header shows that role. Role scope: 匿名浏览已上架公开服务和业务场景，购买使用需要登录. Sidebar menu exact groups/labels (use compact scroll area; current group visible): 发现 / 平台首页；发现 / 脚本市场；业务场景 / 城市与景点；公共 / 使用帮助；公共 / 登录与注册. Highlight 脚本市场. Details use breadcrumb, not extra sidebar item. Footer 帮助 and 账户设置 as appropriate.\nCURRENT PAGE: 脚本市场. Page definition ID P02 is metadata, do not display ID as title.\n脚本市场。搜索用途或服务，分类全部/数据处理/文件工具/信息整理/旅行预约，排序最近更新。四列两行真实服务卡，用小蓝紫图标与用途说明，显示按次价格、发布者、交付标准、退款规则标签及查看详情。示例表格清洗6元/次、文件批量处理3元/次、公开数据整理5元/次；旅行服务8元/次。不得写订阅或免费试用。\nRequired page content: 分类搜索；价格和计费单位；发布者；部署可用性；服务交付范围。\nRender all prominent labels in simplified Chinese. Distinguish money status, execution status, business target and notification status. Show actual relevant controls and believable example rows with consistent numbers. Do not fill with repetitive placeholder lines. Do not print API endpoints, policy internals or documentation paragraphs in consumer UI.\nHARD BUSINESS CONSTRAINTS: ONE purchase = ONE service use. Never draw 5次/10次/无限次/免费平台服务. Every purchase row has quantity 1 and a positive service fee; only attraction ticket price can be 0. Only use the services and numbers explicitly named above: 表格清洗6.00元, 文件批量处理3.00元, 公开数据整理5.00元, 免费景点预约8.00元. Do not turn all examples into travel tools. Brand Travel Tools is only the project name; general data/file services dominate general pages. Do not invent extra dashboard sections, metrics, business targets, refunds or table rows beyond this page specification. No decorative airplane/train/temple. Use small code/file icons instead. Date examples must be 2026-11-13. Arithmetic and counts must agree. 来源与同步 menu has a P1 small label and muted state. No repeated footer menu. Render specified content as actual UI; do not quote implementation instructions as UI prose.\nGUEST: No private orders, my account settings, notifications, recent purchases, or logged-in avatar. Header right is 登录 / 注册. Footer only 使用帮助. Public service examples only.",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "GUEST-P03",
+      "role": "GUEST",
+      "role_name": "游客",
+      "page_id": "P03",
+      "page_name": "脚本服务详情",
+      "file": "01-游客/P03-脚本服务详情.png",
+      "prompt_file": "prompts/GUEST-P03.txt",
+      "prompt_sha256": "46ff56939b90f173b700d22fc08b132bd47fb616d9b7e3f3355ae57e9dbcf230",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：游客。左菜单仅限以下项目：发现 / 平台首页；发现 / 脚本市场；业务场景 / 城市与景点；公共 / 使用帮助；公共 / 登录与注册。不得增加其他菜单。当前选中：脚本市场。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：脚本服务详情。\n页面具体内容：脚本服务详情，表格清洗。面包屑脚本市场 / 表格清洗。主卡标题、发布者林间工具、v1.2、已部署；Tabs服务介绍/输入与输出/购买规则。用法：上传CSV，选择去重字段，输出清洗文件与统计摘要；最大10MB、单次最长5分钟。右侧购买卡：¥6.00/次，包含一次完整服务及同次接续，目标未达成全退服务费，未执行可全退，按钮购买一次。参数示例和交付标准清晰，无源码下载。\n按指定价格和数据绘制，不改成旅行专用平台。日期统一2026-11-13。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。\n这是游客视图，顶部右侧只显示登录/注册；没有账号设置、私人订单、通知、发布者管理或来源同步菜单。只有上述公开菜单，严格保持。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "GUEST-P04",
+      "role": "GUEST",
+      "role_name": "游客",
+      "page_id": "P04",
+      "page_name": "城市与景点",
+      "file": "01-游客/P04-城市与景点.png",
+      "prompt_file": "prompts/GUEST-P04.txt",
+      "prompt_sha256": "fbb0e34b69002318819e5a735d41a8cbe47e753481fef0b1665bef99d03eef5d",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：游客。左菜单仅限以下项目：发现 / 平台首页；发现 / 脚本市场；业务场景 / 城市与景点；公共 / 使用帮助；公共 / 登录与注册。不得增加其他菜单。当前选中：城市与景点。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：城市与景点。\n页面具体内容：城市与景点。城市筛选全部/北京/杭州/苏州，日期选择，搜索景点。大卡列表：杭州·西湖博物馆（示例）、北京·城市历史馆（示例）、苏州·城市展览馆（示例）。每张明确门票¥0、脚本服务费¥8.00/次、查看服务。支持状态示例已接入/暂未开放；未开放不显示可购买。提示仅展示示例接入状态，开放以真实渠道验证为准。\n按指定价格和数据绘制，不改成旅行专用平台。日期统一2026-11-13。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。\n这是游客视图，顶部右侧只显示登录/注册；没有账号设置、私人订单、通知、发布者管理或来源同步菜单。只有上述公开菜单，严格保持。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "GUEST-P05",
+      "role": "GUEST",
+      "role_name": "游客",
+      "page_id": "P05",
+      "page_name": "景点代抢服务详情",
+      "file": "01-游客/P05-景点代抢服务详情.png",
+      "prompt_file": "prompts/GUEST-P05.txt",
+      "prompt_sha256": "41b754195a89f1754aa68bb5411668715280089b6d28e3d632f3c43d033b9fc4",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：游客。左菜单仅限以下项目：发现 / 平台首页；发现 / 脚本市场；业务场景 / 城市与景点；公共 / 使用帮助；公共 / 登录与注册。不得增加其他菜单。当前选中：城市与景点。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：景点代抢服务详情。\n页面具体内容：景点代抢服务详情。杭州·西湖博物馆预约（示例），票款¥0/人，脚本服务费¥8.00/次独立；日期11月20日、场次上午、1名出行人。主要卡预约规则/服务范围/退款规则/目标判定。右购买卡明确目标未达成全退服务费，核验期限及最长24小时服务窗口，不承诺成功，不提供票款支付。按钮确认预约服务。\n按指定价格和数据绘制，不改成旅行专用平台。日期统一2026-11-13。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。\n这是游客视图，顶部右侧只显示登录/注册；没有账号设置、私人订单、通知、发布者管理或来源同步菜单。只有上述公开菜单，严格保持。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "GUEST-P06",
+      "role": "GUEST",
+      "role_name": "游客",
+      "page_id": "P06",
+      "page_name": "使用帮助",
+      "file": "01-游客/P06-使用帮助.png",
+      "prompt_file": "prompts/GUEST-P06.txt",
+      "prompt_sha256": "eb1ea046d3d87abaee981077f6398a2175d59b8c462fedef68543df07e80ab31",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：游客。左菜单仅限以下项目：发现 / 平台首页；发现 / 脚本市场；业务场景 / 城市与景点；公共 / 使用帮助；公共 / 登录与注册。不得增加其他菜单。当前选中：使用帮助。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：使用帮助。\n页面具体内容：使用帮助。搜索帮助；左内容目录购买与付费/运行与结果/退款售后/发布与部署/账号安全。主卡FAQ分组：如何按次购买？门票免费为何收取服务费？未达成目标怎么退款？一次服务接续会重复收费吗？如何发布脚本？展开退款问题，写以购买前展示并固定的发布者规则为准。右侧入门三步与联系支持入口。\n按指定价格和数据绘制，不改成旅行专用平台。日期统一2026-11-13。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。\n这是游客视图，顶部右侧只显示登录/注册；没有账号设置、私人订单、通知、发布者管理或来源同步菜单。只有上述公开菜单，严格保持。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "GUEST-P07",
+      "role": "GUEST",
+      "role_name": "游客",
+      "page_id": "P07",
+      "page_name": "登录与注册",
+      "file": "01-游客/P07-登录与注册.png",
+      "prompt_file": "prompts/GUEST-P07.txt",
+      "prompt_sha256": "8f9a394917a99482a616ff1503a554a6e0620adbd96c5d6860b79f06bfe82023",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：游客。左菜单仅限以下项目：发现 / 平台首页；发现 / 脚本市场；业务场景 / 城市与景点；公共 / 使用帮助；公共 / 登录与注册。不得增加其他菜单。当前选中：登录与注册。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：登录与注册。\n页面具体内容：登录与注册。仍保留全局白顶栏和浅灰背景，左侧简洁产品说明，右侧居中白色表单卡，登录/注册Tabs；邮箱、验证码、获取验证码、蓝色登录按钮，服务条款勾选。文案：一个账号，既可购买服务，也可发布脚本。没有企业、部门、审批人字段。\n按指定价格和数据绘制，不改成旅行专用平台。日期统一2026-11-13。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。\n这是游客视图，顶部右侧只显示登录/注册；没有账号设置、私人订单、通知、发布者管理或来源同步菜单。只有上述公开菜单，严格保持。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C01",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C01",
+      "page_name": "我的首页",
+      "file": "02-消费者/C01-我的首页.png",
+      "prompt_file": "prompts/USER-C01.txt",
+      "prompt_sha256": "1871c6a52fa01024a1d207bc5c7ea7ec7aee59af1425aaea9e17b8844bfacb94",
+      "prompt": "Use case: ui-mockup. Create ONE finished high-fidelity desktop website screenshot, landscape 1912×914 (about 2.09:1), flat front view, edge-to-edge app, no browser chrome, no perspective, no collage, no device mockup. Chinese text must be legible and correctly spelled.\nInput images are STYLE REFERENCES ONLY: preserve their compact enterprise-software visual language, not their business content. Layout: white 48px top header, 176px left sidebar with grouped 12–14px labels and thin outline icons, pale cool grey #F5F6FA content, white fine-border 8px-radius cards, strong blue #3568FF primary buttons and light blue selected navigation. Content starts at x188 with 16px padding; compact 20px title, 28–32px buttons, 12px gaps. Light blue/lavender dashboard banner only for home pages. No giant marketing text or oversized empty whitespace. Use restrained blue/purple accents, amber pending, red errors, green verified success. Readable content-dense tables/forms/cards consistent with the reference. Optional slim contextual right panel only where relevant.\nProduct is Travel Tools 通用脚本服务平台: a personal commercial script upload, deployment, sale and paid-use platform. Ticket reservation is ONE scenario among data/file/information tools. Header logo Travel Tools, global search 搜索脚本、服务或订单, workspace selector, messages, avatar. Never copy 党建/ERP/enterprise departments or approval queues. No AI assistant, subscriptions, wallet, ticket scalping, ticket payment, hidden renewal, guaranteed booking success. Prices and records are mock examples, tiny visible tag 示例数据. PER_USE means one complete logical service including continuation, not one HTTP request. Publisher chooses no-result refund policy, shown before purchase and frozen in order. Consumer does not choose technical runtime or deploy code. Purchased access is not source download.\n\nCURRENT WORKSPACE: 消费者. Header shows that role. Role scope: 个人账号；购买服务、使用权益、管理本人任务结果与售后；任何有效用户可切换发布者工作区. Sidebar menu exact groups/labels (use compact scroll area; current group visible): 我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助. Highlight 我的首页. Details use breadcrumb, not extra sidebar item. Footer 帮助 and 账户设置 as appropriate.\nCURRENT PAGE: 我的首页. Page definition ID C01 is metadata, do not display ID as title.\n我的首页。蓝紫横幅欢迎回来，今天有2项服务待处理；按钮继续使用、浏览脚本。四统计已购待使用2/进行中1/待处理1/退款处理中1。下方三列我的服务、运行动态、待处理事项。表格清洗待使用按钮配置使用；免费景点预约执行中；公开数据整理需要更新凭据。右侧最近订单显示支付状态，提醒目标未达退款以原订单规则为准。\nRequired page content: 已购服务；进行中订单和任务；待处理；最近结果；发现服务与发布入口。\nRender all prominent labels in simplified Chinese. Distinguish money status, execution status, business target and notification status. Show actual relevant controls and believable example rows with consistent numbers. Do not fill with repetitive placeholder lines. Do not print API endpoints, policy internals or documentation paragraphs in consumer UI.",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-P02",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "P02",
+      "page_name": "脚本市场",
+      "file": "02-消费者/P02-脚本市场.png",
+      "prompt_file": "prompts/USER-P02.txt",
+      "prompt_sha256": "035389f5c72dd02e42e7a2aa47515720f03fcbd8662fef31dc605c91e12267ec",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：脚本市场。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：脚本市场。\n页面具体内容：脚本市场。搜索用途或服务，分类全部/数据处理/文件工具/信息整理/旅行预约，排序最近更新。四列两行真实服务卡，用小蓝紫图标与用途说明，显示按次价格、发布者、交付标准、退款规则标签及查看详情。示例表格清洗6元/次、文件批量处理3元/次、公开数据整理5元/次；旅行服务8元/次。不得写订阅或免费试用。\n按指定价格和数据绘制，不改成旅行专用平台。日期统一2026-11-13。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-P03",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "P03",
+      "page_name": "脚本服务详情",
+      "file": "02-消费者/P03-脚本服务详情.png",
+      "prompt_file": "prompts/USER-P03.txt",
+      "prompt_sha256": "97a3b4144af12af6245c4e3d8925c7c8f4249c0e0b8c4fa21fdb15ca810124f1",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：脚本市场。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：脚本服务详情。\n页面具体内容：脚本服务详情，表格清洗。面包屑脚本市场 / 表格清洗。主卡标题、发布者林间工具、v1.2、已部署；Tabs服务介绍/输入与输出/购买规则。用法：上传CSV，选择去重字段，输出清洗文件与统计摘要；最大10MB、单次最长5分钟。右侧购买卡：¥6.00/次，包含一次完整服务及同次接续，目标未达成全退服务费，未执行可全退，按钮购买一次。参数示例和交付标准清晰，无源码下载。\n按指定价格和数据绘制，不改成旅行专用平台。日期统一2026-11-13。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-P04",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "P04",
+      "page_name": "城市与景点",
+      "file": "02-消费者/P04-城市与景点.png",
+      "prompt_file": "prompts/USER-P04.txt",
+      "prompt_sha256": "b983e96d9eec191a4531ede8dcd6dc0bc476fa56f60c6b6b232096c22c9efd30",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：城市与景点。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：城市与景点。\n页面具体内容：城市与景点。城市筛选全部/北京/杭州/苏州，日期选择，搜索景点。大卡列表：杭州·西湖博物馆（示例）、北京·城市历史馆（示例）、苏州·城市展览馆（示例）。每张明确门票¥0、脚本服务费¥8.00/次、查看服务。支持状态示例已接入/暂未开放；未开放不显示可购买。提示仅展示示例接入状态，开放以真实渠道验证为准。\n按指定价格和数据绘制，不改成旅行专用平台。日期统一2026-11-13。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-P05",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "P05",
+      "page_name": "景点代抢服务详情",
+      "file": "02-消费者/P05-景点代抢服务详情.png",
+      "prompt_file": "prompts/USER-P05.txt",
+      "prompt_sha256": "83f342852c80e69a944799b8ac9dc963b8181ac7f70823606fd50df1a11adea8",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：城市与景点。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：景点代抢服务详情。\n页面具体内容：景点代抢服务详情。杭州·西湖博物馆预约（示例），票款¥0/人，脚本服务费¥8.00/次独立；日期11月20日、场次上午、1名出行人。主要卡预约规则/服务范围/退款规则/目标判定。右购买卡明确目标未达成全退服务费，核验期限及最长24小时服务窗口，不承诺成功，不提供票款支付。按钮确认预约服务。\n按指定价格和数据绘制，不改成旅行专用平台。日期统一2026-11-13。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C02",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C02",
+      "page_name": "确认订单",
+      "file": "02-消费者/C02-确认订单.png",
+      "prompt_file": "prompts/USER-C02.txt",
+      "prompt_sha256": "78459e7aa55355796d25161d8322989ebec829b67c8330e026d04d3082b31697",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：脚本服务详情。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：确认订单。\n页面具体内容：确认订单。购买表格清洗v1.2，步骤确认订单→支付→使用服务。输入摘要CSV样例、去重字段邮箱，参数预检通过。单次服务说明5分钟/一次完整执行/含同次接续；退款政策目标未达成全退、未执行全退。右结算卡数量1、服务费¥6.00、应付¥6.00，已阅读价格和退款规则勾选，按钮提交订单。示例价格小字，不出现余额抵扣。\n按指定价格和数据绘制，不改成旅行专用平台。日期统一2026-11-13。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C03",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C03",
+      "page_name": "收银台",
+      "file": "02-消费者/C03-收银台.png",
+      "prompt_file": "prompts/USER-C03.txt",
+      "prompt_sha256": "288843ea16da660ba5ca002531665747f7e0e8978d79b062bdaf5cced7db740a",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：我的订单。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：收银台。\n页面具体内容：收银台。订单TT202611130018，表格清洗，应付¥6.00。白卡显示示例支付渠道、模拟二维码示意块（不要真实可扫支付码）、倒计时09:42、状态等待支付。侧边订单概要和退款规则。操作查看支付状态、取消订单。提示支付确认后开通一次使用权益，浏览器跳转不能代表支付成功。没有已完成运行。\n按指定价格和数据绘制，不改成旅行专用平台。日期统一2026-11-13。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C04",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C04",
+      "page_name": "我的订单",
+      "file": "02-消费者/C04-我的订单.png",
+      "prompt_file": "prompts/USER-C04.txt",
+      "prompt_sha256": "5a367e1bcec898929517436909cf3b4d12083df58ea20280470f4f239d529e8f",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：我的订单。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：我的订单。\n页面具体内容：我的订单。Tabs全部/待支付/待使用/履约中/已完成/已关闭。表格列订单编号、服务、金额、支付状态、履约状态、退款状态、操作。三行表格清洗6元已支付待使用/景点预约8元已支付执行中/文件处理3元未支付待付款；操作详情、去支付、取消。\n按指定价格和数据绘制，不改成旅行专用平台。日期统一2026-11-13。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C05",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C05",
+      "page_name": "订单详情",
+      "file": "02-消费者/C05-订单详情.png",
+      "prompt_file": "prompts/USER-C05.txt",
+      "prompt_sha256": "aca6079f4f7b89d68f963c753e09cc579d0efeff5fc047e466b9715650be3518",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：我的订单。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：订单详情。\n页面具体内容：订单详情。表格清洗TT202611130018，¥6.00已支付，权益可使用，履约待开始；三个独立状态卡。合同快照版本1.2、目标未达全退、最长5分钟、购买时间与有效期限。右侧配置使用和取消并退款。下方支付记录、退款记录、关联任务。无运行时不显示结果成功。\n按指定价格和数据绘制，不改成旅行专用平台。日期统一2026-11-13。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C06",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C06",
+      "page_name": "已购服务",
+      "file": "02-消费者/C06-已购服务.png",
+      "prompt_file": "prompts/USER-C06.txt",
+      "prompt_sha256": "d852e5a26edae470e42224c7ef2e487251a47ef36d5beafb69dcbeb6b308521c",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：已购服务。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：已购服务。\n页面具体内容：已购服务。待使用/使用中/已使用/已到期标签；卡片表格清洗剩余1次、有效至11月20日、版本1.2、配置使用；免费景点预约进行中、已占用本次权益、查看任务；文件处理已使用、再次购买。部署暂不可用卡显示等待恢复或退款。\n按指定价格和数据绘制，不改成旅行专用平台。当前示例日期2026-11-13，未来的预约日期、有效期限、服务窗口必须保留各页指定值。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C07",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C07",
+      "page_name": "配置与使用服务",
+      "file": "02-消费者/C07-配置与使用服务.png",
+      "prompt_file": "prompts/USER-C07.txt",
+      "prompt_sha256": "fc6a9b3ec27140e87bce38a8b5735631f1ce3b4cf166bfc5093682475ad27287",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：已购服务。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：配置与使用服务。\n页面具体内容：配置与使用服务。表格清洗v1.2，已支付/可用1次。表单上传CSV（已选sample.csv）、去重字段邮箱、输出格式CSV；计划立即执行/指定时间，无Cron。授权预览：仅访问本次上传文件。右摘要订单6元、固定退款规则、最长5分钟，按钮预览配置、开始使用。无需消费者选择容器或部署脚本。\n按指定价格和数据绘制，不改成旅行专用平台。当前示例日期2026-11-13，未来的预约日期、有效期限、服务窗口必须保留各页指定值。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C08",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C08",
+      "page_name": "我的任务",
+      "file": "02-消费者/C08-我的任务.png",
+      "prompt_file": "prompts/USER-C08.txt",
+      "prompt_sha256": "6676b118bad4bc2670cd1f518a138c81228d25b0f40fbfd1032ec8097085cc66",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：我的任务。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：我的任务。\n页面具体内容：我的任务。表格列任务、服务订单、计划、使用状态、当前进度、操作。表格清洗一次执行已用1次已完成查看；景点预约指定时段本次进行中查看/暂停后续；公开数据整理等待用户补充。显示每次新使用需新购，接续原任务不重复计费。\n按指定价格和数据绘制，不改成旅行专用平台。当前示例日期2026-11-13，未来的预约日期、有效期限、服务窗口必须保留各页指定值。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C09",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C09",
+      "page_name": "任务详情",
+      "file": "02-消费者/C09-任务详情.png",
+      "prompt_file": "prompts/USER-C09.txt",
+      "prompt_sha256": "a6eb5da83ed9dd4b1407f9e9b2a12e55035a3c71644afc23e665b48d09731b8f",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：我的任务。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：任务详情。\n页面具体内容：任务详情。免费景点预约，本次服务进行中，固定版本1.0、服务窗口11月13日至14日、关联已支付订单8元，权益已消耗但原运行可继续。左流程与计划，右摘要目标待达成/退款目标未达全退。操作查看当前运行、暂停后续；复制配置标注需重新购买。运行历史只一条逻辑使用。\n按指定价格和数据绘制，不改成旅行专用平台。当前示例日期2026-11-13，未来的预约日期、有效期限、服务窗口必须保留各页指定值。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C10",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C10",
+      "page_name": "运行记录",
+      "file": "02-消费者/C10-运行记录.png",
+      "prompt_file": "prompts/USER-C10.txt",
+      "prompt_sha256": "ad1e26079bc090a01f9d2b0c1392db1c94c7ac2adadb47b68b13d4927b82b9ff",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：运行记录。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：运行记录。\n页面具体内容：运行记录。筛选日期/服务/状态。表格列运行编号、服务、开始时间、执行状态、目标结果、费用关联、详情。RUN081表格清洗执行结束目标达成6元；RUN082景点预约执行中待确认8元；RUN083数据整理待补充同次接续。执行和目标分列。\n按指定价格和数据绘制，不改成旅行专用平台。当前示例日期2026-11-13，未来的预约日期、有效期限、服务窗口必须保留各页指定值。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C11",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C11",
+      "page_name": "运行详情",
+      "file": "02-消费者/C11-运行详情.png",
+      "prompt_file": "prompts/USER-C11.txt",
+      "prompt_sha256": "73b71e5e4285145c5380fb73e19d9c507c18a318c78f5c48cacbf99cea0f3f81",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：运行记录。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：运行详情。\n页面具体内容：运行详情。表格清洗Run081，执行已结束、目标达成、费用¥6.00。上方阶段条校验→执行→产物生成→交付。Tabs概览/脱敏日志/产物/通知。主卡清洗1200行，去重86条，文件READY可下载；右订单快照和同次接续不额外收费。日志只示例安全信息，没有凭据。\n按指定价格和数据绘制，不改成旅行专用平台。当前示例日期2026-11-13，未来的预约日期、有效期限、服务窗口必须保留各页指定值。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C12",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C12",
+      "page_name": "结果与产物",
+      "file": "02-消费者/C12-结果与产物.png",
+      "prompt_file": "prompts/USER-C12.txt",
+      "prompt_sha256": "42588fd2195860625e0ea043b316aaa98aea08daa1c5dff05ba34d566a8f273d",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：结果与产物。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：结果与产物。\n页面具体内容：结果与产物。文本/JSON/文件Tabs，表格清洗结果cleaned.csv 142KB可下载、summary.json可预览、数据整理batch02.csv生成中不可下载。列关联运行、批次、生成时间、保留至、通知状态。按钮安全预览、下载、重投通知；提示重投通知不会重新运行或扣费。\n按指定价格和数据绘制，不改成旅行专用平台。当前示例日期2026-11-13，未来的预约日期、有效期限、服务窗口必须保留各页指定值。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C13",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C13",
+      "page_name": "待处理事项",
+      "file": "02-消费者/C13-待处理事项.png",
+      "prompt_file": "prompts/USER-C13.txt",
+      "prompt_sha256": "be7920356ad219d264e60b939d2e09459ef47a4557d3ec0e99ff80c833049638",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：待处理事项。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：待处理事项。\n页面具体内容：待处理事项。Tabs待补充/待核验/已解决。数据整理凭据已过期：更新凭据后继续本次服务；景点预约外部结果待核验：按钮核验原预约，不能重新下单重抢；补充截止时间展示。右卡同一次服务接续不重复收费，退款处理不解除预约防重。\n按指定价格和数据绘制，不改成旅行专用平台。当前示例日期2026-11-13，未来的预约日期、有效期限、服务窗口必须保留各页指定值。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C14",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C14",
+      "page_name": "凭据管理",
+      "file": "02-消费者/C14-凭据管理.png",
+      "prompt_file": "prompts/USER-C14.txt",
+      "prompt_sha256": "ba6e9d00b9d49b704db0aa4b8c1d425ce1efad717e69baee4a5a561affbf6320",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：凭据管理。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：凭据管理。\n页面具体内容：凭据管理。新增凭据按钮，列表名称/类型/掩码/版本/最近验证/绑定任务/操作。邮箱服务token••••8A12、预约渠道账号•••5821。查看绑定、更新、验证、撤销。右说明凭据只归本人，发布者不可查看明文；不显示实际token或密码。\n按指定价格和数据绘制，不改成旅行专用平台。当前示例日期2026-11-13，未来的预约日期、有效期限、服务窗口必须保留各页指定值。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C15",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C15",
+      "page_name": "出行人资料",
+      "file": "02-消费者/C15-出行人资料.png",
+      "prompt_file": "prompts/USER-C15.txt",
+      "prompt_sha256": "590523d77c6a5aa27d9bf61095f5bd9670e863b5020cbde3b8594e71c2198f8e",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务：面向个人的通用脚本上传、部署、按次付费使用平台，数据/文件工具与景点预约并列。每单只有一次完整服务，同次接续不额外收费。门票0元不等于脚本服务免费。未达目标的退款规则由发布者选择、购买前展示、成交固定。不要增加审批、企业部门、钱包、订阅、多次套餐或无限次。非旅行页不用飞机火车风景图。只画下述页面内容，不新增无关统计、订单或功能。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：出行人资料。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：出行人资料。\n页面具体内容：出行人资料。新建出行人，三张紧凑卡姓名张*、手机号138****5201、证件3301**********1234；默认联系人、编辑删除。右侧说明下单时生成授权快照，修改资料不覆盖既有预约。展示一张添加资料的侧栏表单而非额外弹窗页面。\n按指定价格和数据绘制，不改成旅行专用平台。当前示例日期2026-11-13，未来的预约日期、有效期限、服务窗口必须保留各页指定值。金额、状态、计数保持一致；支付、执行、目标结果独立。不要把说明指令或API字段印成页面内容。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C16",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C16",
+      "page_name": "消息中心",
+      "file": "02-消费者/C16-消息中心.png",
+      "prompt_file": "prompts/USER-C16.txt",
+      "prompt_sha256": "c2e74520a3e856717d411f24b1c2b7b8a2115cfcf14cc4abb08fb7ed16e5d30b",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：消息中心。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：消息中心。\n页面具体内容：消息中心。全部/交易/运行/退款/系统。消息：表格清洗结果已可领取；订单付款已确认；退款¥8.00渠道处理中；预约结果待核验。未读蓝点，查看订单/查看结果/标为已读。右摘要未读5和通知设置入口。不要退款处理中显示到账。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C17",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C17",
+      "page_name": "通知设置",
+      "file": "02-消费者/C17-通知设置.png",
+      "prompt_file": "prompts/USER-C17.txt",
+      "prompt_sha256": "21c25b175766bceb09de00d1d44e24f8a5da70712cb17b518b2c6735cd97bd41",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：通知设置。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：通知设置。\n页面具体内容：通知设置。邮件已验证m***@example.com，修改/发送测试；事件开关支付确认、运行完成、待补充、退款到账。站内通知始终保留。Webhook模块灰色标记后续功能未启用。底部最近测试投递成功，保存设置。事件订阅不是收费套餐。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C18",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C18",
+      "page_name": "支付与账单",
+      "file": "02-消费者/C18-支付与账单.png",
+      "prompt_file": "prompts/USER-C18.txt",
+      "prompt_sha256": "2d61a5c989bbdde24fbe8506aabc3f627fe502a2a18396046ecddce44163ab21",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：支付与账单。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：支付与账单。\n页面具体内容：支付与账单。总实付17元、已退款8元、退款处理中0元。列表表格清洗6元/文件处理3元/景点预约8元；交易支付渠道回执掩码。详情列服务费8元、门票0元、退服务费8元。时间筛选、导出本人账单。没有充值钱包余额。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C19",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C19",
+      "page_name": "退款与售后",
+      "file": "02-消费者/C19-退款与售后.png",
+      "prompt_file": "prompts/USER-C19.txt",
+      "prompt_sha256": "93962198ca2d33301536fce8cb1255cb88c9f0d024393e801c5462ad608776f7",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：退款与售后。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：退款与售后。\n页面具体内容：退款与售后。表格订单、服务、原因、申请金额、状态、时间、详情。景点预约8元目标未达退款处理中；文件处理3元未使用已退款。右侧申请卡选择订单，展示成交规则和可退金额，原因与说明，提交退款。不得有审核通过/驳回按钮。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C20",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C20",
+      "page_name": "退款详情",
+      "file": "02-消费者/C20-退款详情.png",
+      "prompt_file": "prompts/USER-C20.txt",
+      "prompt_sha256": "a09ed192891021532e520bba3a54c5a8af3ae38b923846fc8b21d36568f607a9",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：退款与售后。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：退款详情。\n页面具体内容：退款详情。REF018景点预约¥8.00，状态渠道退款处理中。步骤提交申请→规则匹配→退款请求已发送→等待渠道确认；最后到账节点灰色。已固定规则目标未达全退，执行已结束/目标未达，关联原订单。原路退回，尚未到账说明，查询进度，不展示再次使用权益。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C21",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C21",
+      "page_name": "账户设置",
+      "file": "02-消费者/C21-账户设置.png",
+      "prompt_file": "prompts/USER-C21.txt",
+      "prompt_sha256": "ff56b6c83c3bb1d7d89708236f7e4f10c2b751037b971003f2f185de0ae937fc",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：账户设置。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：账户设置。\n页面具体内容：账户设置。资料/账号安全/会话/账号注销四Tabs。昵称林间用户、邮箱掩码、登录设备当前Windows；退出其他会话。下方工作区切换消费者/脚本发布者，用户可直接启用发布能力；注销提示还有1笔售后和1笔结算，受限保留处理。没有组织或审批字段。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-C22",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "C22",
+      "page_name": "预约凭证与票款",
+      "file": "02-消费者/C22-预约凭证与票款.png",
+      "prompt_file": "prompts/USER-C22.txt",
+      "prompt_sha256": "3699c48b3ab692b171ddfff448e3d9ed1a284018c99a6c0219487c7fb3471f78",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：预约凭证与票款。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：预约凭证与票款。\n页面具体内容：预约凭证与票款。表格景点、日期场次、预约状态、官方凭证、门票款、平台服务订单。一行城市展览馆已核验预约成功凭证掩码BK•••582门票¥0无需支付；另一行博物馆结果待核验无凭证。右侧明确门票款¥0，脚本服务费另见订单；操作查看凭证、核验原预约，无付票款按钮。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "USER-P06",
+      "role": "USER",
+      "role_name": "消费者",
+      "page_id": "P06",
+      "page_name": "使用帮助",
+      "file": "02-消费者/P06-使用帮助.png",
+      "prompt_file": "prompts/USER-P06.txt",
+      "prompt_sha256": "5a68f9ef65a092f9c12019875379a5f99b2ee13103419287d7d6dd1f6babd4a9",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：消费者。左菜单仅限以下项目：我的服务 / 我的首页；发现 / 脚本市场；业务场景 / 城市与景点；我的服务 / 我的订单；我的服务 / 已购服务；执行与结果 / 我的任务；执行与结果 / 运行记录；执行与结果 / 结果与产物；执行与结果 / 待处理事项；个人 / 凭据管理；个人 / 出行人资料；个人 / 消息中心；个人 / 通知设置；个人 / 支付与账单；个人 / 退款与售后；个人 / 账户设置；我的服务 / 预约凭证与票款；公共 / 使用帮助。不得增加其他菜单。当前选中：使用帮助。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：使用帮助。\n页面具体内容：使用帮助。搜索帮助；左内容目录购买与付费/运行与结果/退款售后/发布与部署/账号安全。主卡FAQ分组：如何按次购买？门票免费为何收取服务费？未达成目标怎么退款？一次服务接续会重复收费吗？如何发布脚本？展开退款问题，写以购买前展示并固定的发布者规则为准。右侧入门三步与联系支持入口。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S01",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S01",
+      "page_name": "发布者工作台",
+      "file": "03-脚本发布者/S01-发布者工作台.png",
+      "prompt_file": "prompts/PUBLISHER-S01.txt",
+      "prompt_sha256": "538811bd260a1fc912b61c91eed49579e3b52efedc0233428cef47a4d2b79a23",
+      "prompt": "Use case: ui-mockup. Create ONE finished high-fidelity desktop website screenshot, landscape 1912×914 (about 2.09:1), flat front view, edge-to-edge app, no browser chrome, no perspective, no collage, no device mockup. Chinese text must be legible and correctly spelled.\nInput images are STYLE REFERENCES ONLY: preserve their compact enterprise-software visual language, not their business content. Layout: white 48px top header, 176px left sidebar with grouped 12–14px labels and thin outline icons, pale cool grey #F5F6FA content, white fine-border 8px-radius cards, strong blue #3568FF primary buttons and light blue selected navigation. Content starts at x188 with 16px padding; compact 20px title, 28–32px buttons, 12px gaps. Light blue/lavender dashboard banner only for home pages. No giant marketing text or oversized empty whitespace. Use restrained blue/purple accents, amber pending, red errors, green verified success. Readable content-dense tables/forms/cards consistent with the reference. Optional slim contextual right panel only where relevant.\nProduct is Travel Tools 通用脚本服务平台: a personal commercial script upload, deployment, sale and paid-use platform. Ticket reservation is ONE scenario among data/file/information tools. Header logo Travel Tools, global search 搜索脚本、服务或订单, workspace selector, messages, avatar. Never copy 党建/ERP/enterprise departments or approval queues. No AI assistant, subscriptions, wallet, ticket scalping, ticket payment, hidden renewal, guaranteed booking success. Prices and records are mock examples, tiny visible tag 示例数据. PER_USE means one complete logical service including continuation, not one HTTP request. Publisher chooses no-result refund policy, shown before purchase and frozen in order. Consumer does not choose technical runtime or deploy code. Purchased access is not source download.\n\nCURRENT WORKSPACE: 脚本发布者. Header shows that role. Role scope: 同一用户的创作经营视图，无人工入驻或发布审核；消费功能切换消费者视图使用. Sidebar menu exact groups/labels (use compact scroll area; current group visible): 发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助. Highlight 发布者工作台. Details use breadcrumb, not extra sidebar item. Footer 帮助 and 账户设置 as appropriate.\nCURRENT PAGE: 发布者工作台. Page definition ID S01 is metadata, do not display ID as title.\n发布者工作台。浅蓝紫横幅管理你的脚本服务，上传脚本和创建服务按钮。四指标在售服务4/今日成交12/待结算¥68.00/部署异常1。主体左脚本到服务流程上传→校验测试→部署→本人上架；中服务销量表格；右部署告警、退款提醒、收益摘要。没有审核待办和组织人员。\nRequired page content: 本人脚本服务；部署告警；销售退款；收益摘要。\nRender all prominent labels in simplified Chinese. Distinguish money status, execution status, business target and notification status. Show actual relevant controls and believable example rows with consistent numbers. Do not fill with repetitive placeholder lines. Do not print API endpoints, policy internals or documentation paragraphs in consumer UI.",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S02",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S02",
+      "page_name": "我的脚本",
+      "file": "03-脚本发布者/S02-我的脚本.png",
+      "prompt_file": "prompts/PUBLISHER-S02.txt",
+      "prompt_sha256": "55dd472980cdf5e7686d6cf026062767197510ad6828b5c1e41443e54556f860",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：我的脚本。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：我的脚本。\n页面具体内容：我的脚本。上传脚本、新建脚本。表格名称/用途/最新版本/内容状态/构建状态/部署/操作。表格清洗v1.2 READY构建成功部署可用；文件处理v0.4 SEALED构建失败；景点预约v1.0 READY。操作编辑、版本测试、部署、创建服务、自用测试。无审批状态。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S03",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S03",
+      "page_name": "脚本编辑",
+      "file": "03-脚本发布者/S03-脚本编辑.png",
+      "prompt_file": "prompts/PUBLISHER-S03.txt",
+      "prompt_sha256": "185c959f419e8415faff1b449a858192dc938f8a93b081a8c2070b2bac7618c4",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：我的脚本。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：脚本编辑。\n页面具体内容：脚本编辑。表格清洗草稿v1.3。左文件树main.py、requirements.txt、manifest.json；中代码编辑器示例安全的def run(input): return {\"rows\":1200}；右配置入口main.py、Python、动作clean、输入输出Schema和网络权限无外部访问。顶部保存草稿/校验/封存版本。底部校验成功摘要，封存后不可改内容。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S04",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S04",
+      "page_name": "版本与测试",
+      "file": "03-脚本发布者/S04-版本与测试.png",
+      "prompt_file": "prompts/PUBLISHER-S04.txt",
+      "prompt_sha256": "e5875d1f61fce82302681897c93c12d9036e2ec76c6f07e94644facd0c006d30",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：我的脚本。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：版本与测试。\n页面具体内容：版本与测试。表格清洗v1.2，内容READY、构建成功，摘要sha256掩码。Tabs版本/测试/本人自用/影响；当前本人自用。左表单固定本人版本、输入sample.csv、去重字段邮箱、计划立即/指定时间/周期、本人授权；按钮预览、自用启用。开发配额执行，不生成付款订单。右卡最近测试通过，1200行去重86条，按钮运行测试。下方本人自用任务摘要和查看我的任务入口（切换个人视图）；去部署、创建服务；停用影响2个未使用权益。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S05",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S05",
+      "page_name": "构建与测试记录",
+      "file": "03-脚本发布者/S05-构建与测试记录.png",
+      "prompt_file": "prompts/PUBLISHER-S05.txt",
+      "prompt_sha256": "501fc9a795edf308ba6cdcd52e785ff3933bd9df0d5bd95cc768b87426439bc2",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：构建与测试记录。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：构建与测试记录。\n页面具体内容：构建与测试记录。构建与试运行Tabs，筛选脚本/版本/状态。构建B031表格清洗v1.2成功1m20s，B032文件处理失败依赖锁缺失，B033预约v1.1排队中。详情选中失败行展示脱敏错误、修复建议、重新构建；排队可取消。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S06",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S06",
+      "page_name": "部署管理",
+      "file": "03-脚本发布者/S06-部署管理.png",
+      "prompt_file": "prompts/PUBLISHER-S06.txt",
+      "prompt_sha256": "a8be9b86f2f08b5dad255a67255768487be65966f2150409839baeffa9ad759e",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：部署管理。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：部署管理。\n页面具体内容：部署管理。创建部署，表格脚本版本/镜像摘要/运行模式/资源/状态/服务/操作。表格清洗Docker READY 1CPU 512MB，文件处理Docker FAILED，预约适配KVM READY；TCG仅显式允许。侧栏部署详情和资源限额、日志、重试；停用说明将影响新售卖及存量履约补偿。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S07",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S07",
+      "page_name": "服务商品",
+      "file": "03-脚本发布者/S07-服务商品.png",
+      "prompt_file": "prompts/PUBLISHER-S07.txt",
+      "prompt_sha256": "c50df314bb999a1919d204e55d5fe064ed34a1c6de17c883f184cacc17537359",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：服务商品。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：服务商品。\n页面具体内容：服务商品。在售/草稿/停销/已下架Tabs。卡片表格清洗在售6元/次部署就绪，景点预约在售8元/次，文件工具草稿待配置价格。按钮创建服务、编辑、停销、查看消费者页面。停销只停止新购买，已有订单继续履约或退款。不要上架审核。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S08",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S08",
+      "page_name": "编辑与上架服务",
+      "file": "03-脚本发布者/S08-编辑与上架服务.png",
+      "prompt_file": "prompts/PUBLISHER-S08.txt",
+      "prompt_sha256": "8c053ad19dd2aee7231d8b8cce957da5b7700511cbb14e739e0fa08d4633cce0",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：服务商品。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：编辑与上架服务。\n页面具体内容：编辑与上架服务。表格清洗，左表单名称/分类/说明/输入Schema展示/交付标准；绑定版本v1.2、部署READY、价格方案6元/次；退款选项目标未达全退。右发布检查清单版本固定、部署可用、价格规则完整、收款资料有效全通过。按钮保存草稿、发布上架。无提交审核。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S09",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S09",
+      "page_name": "价格方案",
+      "file": "03-脚本发布者/S09-价格方案.png",
+      "prompt_file": "prompts/PUBLISHER-S09.txt",
+      "prompt_sha256": "6f73bc4ff2e5c03ba706e3b6c20d5e9088d9003017d84b54db41f1b37bafd582",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：价格方案。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：价格方案。\n页面具体内容：价格方案。左历史方案v3，6元/次，旧订单保持原方案。右表单：计费方式按次固定、服务费6.00元、一次完整执行含同次接续、最长5分钟、可启动有效期7天。退款规则两个互斥单选：按约交付但目标未达不退服务费；目标未达全退服务费（选中）。目标判定为生成符合约定CSV；目标核验截止为执行结束后1小时；用户启动前取消全退。平台保障小条：未执行或技术故障未交付全退，不可关闭。下方消费者购买前公示预览，保存新版本按钮。不增收费方式。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S10",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S10",
+      "page_name": "销售订单",
+      "file": "03-脚本发布者/S10-销售订单.png",
+      "prompt_file": "prompts/PUBLISHER-S10.txt",
+      "prompt_sha256": "c56e73d53d618d60bcd7005ee07a964406657cbab63de0b79203c442d8b5c31b",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：销售订单。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：销售订单。\n页面具体内容：销售订单。顶部标签示例数据，筛选服务/日期/履约状态。表格严格两行：TT202611130018 表格清洗 张** 实付6元 执行完成 无退款 待结算；TT202611130027 景点预约 李** 实付8元 目标未达 退款处理中 冻结。统计订单2、实付14元、退款处理中8元。仅查看脱敏履约摘要与结算关联；不提供用户输入、凭据、日志正文或产物入口。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S11",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S11",
+      "page_name": "使用统计",
+      "file": "03-脚本发布者/S11-使用统计.png",
+      "prompt_file": "prompts/PUBLISHER-S11.txt",
+      "prompt_sha256": "c0fff4846bd54da53010eaef2709b064765829a2b9a88c3815f4e6ad246d158d",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：使用统计。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：使用统计。\n页面具体内容：使用统计。时间7天、服务与版本筛选。4指标有效使用128/执行交付率96%/目标达成率82%/技术故障4。折线使用趋势、柱形失败分类，目标未达与技术故障分开。下方版本质量表和退款影响。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S12",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S12",
+      "page_name": "故障诊断",
+      "file": "03-脚本发布者/S12-故障诊断.png",
+      "prompt_file": "prompts/PUBLISHER-S12.txt",
+      "prompt_sha256": "67f9cb312310584a7ebfabb63591c1bda746e99c0fa82208b3377a2b30c5a80f",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：故障诊断。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：故障诊断。\n页面具体内容：故障诊断。列表文件工具依赖缺失、表格清洗超时、预约渠道待核验。左诊断仅本人构建部署日志；右消费者侧仅脱敏错误分类和次数，无法读取凭据与原始输入。操作打开源码、创建修复版本、查看构建，无直接编辑既有成交版本。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S13",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S13",
+      "page_name": "收益与结算",
+      "file": "03-脚本发布者/S13-收益与结算.png",
+      "prompt_file": "prompts/PUBLISHER-S13.txt",
+      "prompt_sha256": "dfe80fac51bfcd584e1f3cb11d19fb7fe8cdd70bfc40db674a711c5e99eb3018",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：收益与结算。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：收益与结算。\n页面具体内容：收益与结算。总收入680元、退款80元、平台及渠道费60元、净收益540元。净收益分布待结算300元、可结算200元、已到账40元、冻结0元，数字严格一致。下方账本列表含原单收入、费用、退款冲正与净额；示例费用配置标记。按钮申请打款、查看结算详情。无充值钱包。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S14",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S14",
+      "page_name": "结算详情",
+      "file": "03-脚本发布者/S14-结算详情.png",
+      "prompt_file": "prompts/PUBLISHER-S14.txt",
+      "prompt_sha256": "cd87d003421461121a553d1b872238532fb56cf6468e96743d843169beb99524",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：收益与结算。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：结算详情。\n页面具体内容：结算详情。批次SET018，打款PO018处理中，待渠道回执；金额200元，收款账户****1234使用发起时快照。表格两行：TT202611130101收入150/退款0/费用15/净额135；TT202611130102收入80/退款10/费用5/净额65；合计230/10/20/200元。步骤可结算→资金预占→渠道受理→等待回执，末节点未完成。主按钮查询原请求；不可重复打款，无到账成功勾。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S15",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S15",
+      "page_name": "发布者设置",
+      "file": "03-脚本发布者/S15-发布者设置.png",
+      "prompt_file": "prompts/PUBLISHER-S15.txt",
+      "prompt_sha256": "fcdadb1c7747b915a375e31bb07be6809b86d8f8ff8d46b06964d737ab5a6a46",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：发布者设置。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：发布者设置。\n页面具体内容：发布者设置。公开昵称林间工具、服务简介、联系邮箱；收款账户掩码、技术验证已通过、更新收款资料。说明变更仅作用于新打款，在途使用原快照。直接开启发布工作区，不设置入驻审批。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-S16",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "S16",
+      "page_name": "来源与同步",
+      "file": "03-脚本发布者/S16-来源与同步.png",
+      "prompt_file": "prompts/PUBLISHER-S16.txt",
+      "prompt_sha256": "73aa603d6b711fa4a34742296b1495d8ca977e478f2d55604d8b4e252e7accd5",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：来源与同步。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：来源与同步。\n页面具体内容：来源与同步。顶部浅灰提示P1规划功能，当前未启用，启用需配置来源能力。预览Git/URL来源列表、固定提交快照、差异检查，生成草稿按钮禁用。同步不会直接覆盖在售服务版本。保留上传本地脚本入口可用。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-C21",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "C21",
+      "page_name": "账户设置",
+      "file": "03-脚本发布者/C21-账户设置.png",
+      "prompt_file": "prompts/PUBLISHER-C21.txt",
+      "prompt_sha256": "b537fffcea90d01e4c366d24425089a02c9ebd8b89afdbd2ac6d50d1347822a0",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：账户设置。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：账户设置。\n页面具体内容：账户设置。资料/账号安全/会话/账号注销四Tabs。昵称林间用户、邮箱掩码、当前Windows登录设备，退出其他会话。工作区：消费者、脚本发布者（已启用），按钮切换工作区。下方账号注销卡显示尚有1笔售后和1笔结算，按钮申请注销可用；说明申请后进入关闭中，停止新购买和新发布，保留售后及结算入口，待未结事项处理完再按保留规则完成注销。没有组织或审批字段，不写必须先结清才能申请。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "PUBLISHER-P06",
+      "role": "PUBLISHER",
+      "role_name": "脚本发布者",
+      "page_id": "P06",
+      "page_name": "使用帮助",
+      "file": "03-脚本发布者/P06-使用帮助.png",
+      "prompt_file": "prompts/PUBLISHER-P06.txt",
+      "prompt_sha256": "3e891f7d955a10f8d33be2ac07bb96b895b1aeba43d102fc954341300d920d3d",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：脚本发布者。左菜单仅限以下项目：发布经营 / 发布者工作台；脚本与部署 / 我的脚本；脚本与部署 / 构建与测试记录；脚本与部署 / 部署管理；发布经营 / 服务商品；发布经营 / 价格方案；发布经营 / 销售订单；质量与诊断 / 使用统计；质量与诊断 / 故障诊断；收益 / 收益与结算；收益 / 发布者设置；脚本与部署 / 来源与同步；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：使用帮助。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：使用帮助。\n页面具体内容：使用帮助。搜索帮助；左内容目录购买与付费/运行与结果/退款售后/发布与部署/账号安全。主卡FAQ分组：如何按次购买？门票免费为何收取服务费？未达成目标怎么退款？一次服务接续会重复收费吗？如何发布脚本？展开退款问题，写以购买前展示并固定的发布者规则为准。右侧入门三步与联系支持入口。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。\n来源与同步为P1后续功能，菜单灰色并标P1。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O01",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O01",
+      "page_name": "运营总览",
+      "file": "04-平台管理员/O01-运营总览.png",
+      "prompt_file": "prompts/ADMIN-O01.txt",
+      "prompt_sha256": "f7989df34b3a028887382f81e84a5228339e730d53ada739abafe81c5f0b0da6",
+      "prompt": "Use case: ui-mockup. Create ONE finished high-fidelity desktop website screenshot, landscape 1912×914 (about 2.09:1), flat front view, edge-to-edge app, no browser chrome, no perspective, no collage, no device mockup. Chinese text must be legible and correctly spelled.\nInput images are STYLE REFERENCES ONLY: preserve their compact enterprise-software visual language, not their business content. Layout: white 48px top header, 176px left sidebar with grouped 12–14px labels and thin outline icons, pale cool grey #F5F6FA content, white fine-border 8px-radius cards, strong blue #3568FF primary buttons and light blue selected navigation. Content starts at x188 with 16px padding; compact 20px title, 28–32px buttons, 12px gaps. Light blue/lavender dashboard banner only for home pages. No giant marketing text or oversized empty whitespace. Use restrained blue/purple accents, amber pending, red errors, green verified success. Readable content-dense tables/forms/cards consistent with the reference. Optional slim contextual right panel only where relevant.\nProduct is Travel Tools 通用脚本服务平台: a personal commercial script upload, deployment, sale and paid-use platform. Ticket reservation is ONE scenario among data/file/information tools. Header logo Travel Tools, global search 搜索脚本、服务或订单, workspace selector, messages, avatar. Never copy 党建/ERP/enterprise departments or approval queues. No AI assistant, subscriptions, wallet, ticket scalping, ticket payment, hidden renewal, guaranteed booking success. Prices and records are mock examples, tiny visible tag 示例数据. PER_USE means one complete logical service including continuation, not one HTTP request. Publisher chooses no-result refund policy, shown before purchase and frozen in order. Consumer does not choose technical runtime or deploy code. Purchased access is not source download.\n\nCURRENT WORKSPACE: 平台管理员. Header shows that role. Role scope: 独立后台授权；运营、交易、基础设施以能力限制，不增加审核员或企业组织角色. Sidebar menu exact groups/labels (use compact scroll area; current group visible): 运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助. Highlight 运营总览. Details use breadcrumb, not extra sidebar item. Footer 帮助 and 账户设置 as appropriate.\nCURRENT PAGE: 运营总览. Page definition ID O01 is metadata, do not display ID as title.\n运营总览。蓝紫摘要条今日服务成交¥860、退款¥80、有效使用128、运行节点8。三列交易趋势、服务可用性、待处理异常；支付待核对2/退款未知1/部署故障1。商业指标与技术指标分开。快捷入口对账、结算、运行排障，无审核队列。\nRequired page content: 交易额退款额净收益；服务可用性；执行容量；商业和技术指标分开。\nRender all prominent labels in simplified Chinese. Distinguish money status, execution status, business target and notification status. Show actual relevant controls and believable example rows with consistent numbers. Do not fill with repetitive placeholder lines. Do not print API endpoints, policy internals or documentation paragraphs in consumer UI.",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O02",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O02",
+      "page_name": "用户与发布者",
+      "file": "04-平台管理员/O02-用户与发布者.png",
+      "prompt_file": "prompts/ADMIN-O02.txt",
+      "prompt_sha256": "0f89c01879bed04fc104b4f5c859c344c8654e505f8e2109de3c7243f0bb4531",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：用户与发布者。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：用户与发布者。\n页面具体内容：用户与发布者。用户昵称/账号掩码/消费者能力/发布能力/状态/配额/未结订单。张**消费者+发布者正常，李**仅消费者。操作查看摘要、调整配额、限制新业务；冻结说明保护已有退款和结算。无组织租户部门。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O03",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O03",
+      "page_name": "服务与脚本",
+      "file": "04-平台管理员/O03-服务与脚本.png",
+      "prompt_file": "prompts/ADMIN-O03.txt",
+      "prompt_sha256": "ea8de98d20f86d216a94009dc6555d0b433043e31e0857c0f9129ae6e6531fe3",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：服务与脚本。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：服务与脚本。\n页面具体内容：服务与脚本。服务商品/脚本版本Tabs。列服务、发布者、部署、在售状态、风险提示、存量权益。表格清洗ACTIVE、文件工具PAUSED。操作风险停销、核查恢复、查看影响；无批准或驳回发布。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O04",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O04",
+      "page_name": "城市与景点",
+      "file": "04-平台管理员/O04-城市与景点.png",
+      "prompt_file": "prompts/ADMIN-O04.txt",
+      "prompt_sha256": "5eb756840692243556628093986e1d23c89b5d5941d228d253c336dac863c552",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：城市与景点。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：城市与景点。\n页面具体内容：城市与景点。城市树杭州/北京/苏州；右表格景点、票种、票款0元、规则来源日期、关联服务、支持状态。新增景点与编辑。示例渠道未验证的景点标记未开放，不能售卖；右侧规则来源字段。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O05",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O05",
+      "page_name": "渠道与适配",
+      "file": "04-平台管理员/O05-渠道与适配.png",
+      "prompt_file": "prompts/ADMIN-O05.txt",
+      "prompt_sha256": "263da427c58b7e012febe8176ed0d29b2131cccad0b3dd42d238ff7ccc06c757",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：渠道与适配。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：渠道与适配。\n页面具体内容：渠道与适配。渠道列表版本、适配器、验证时间、证据、状态。示例渠道A已验证，渠道B未验证，渠道C降级；按钮查看验证记录、禁用新提交、更新规则。保留未决预约查询，不混成商品审批。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O06",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O06",
+      "page_name": "服务订单",
+      "file": "04-平台管理员/O06-服务订单.png",
+      "prompt_file": "prompts/ADMIN-O06.txt",
+      "prompt_sha256": "5dc3e0accde5a3d80dad4bab96f313cfae5dba83c15f92a6b897b48c1d9de865",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：服务订单。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：服务订单。\n页面具体内容：服务订单。订单号/用户/服务/日期筛选。表格三行：TT202611130018 表格清洗6元 已支付 待使用 无退款 未结算；TT202611130082 景点预约8元 已支付 履约中 无退款 冻结；TT202611130027 景点预约8元 已支付 目标未达 退款处理中 冻结。付款、履约、退款、结算四列分别展示。详情按钮，第三行有异常处理入口。关联预约编号是另一字段，不替代服务单。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O07",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O07",
+      "page_name": "服务订单详情",
+      "file": "04-平台管理员/O07-服务订单详情.png",
+      "prompt_file": "prompts/ADMIN-O07.txt",
+      "prompt_sha256": "93f325232ce2f2e15b48bbf98de85983624cc5ae9d3375fd9aaa7e1bd810cc00",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：服务订单。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：服务订单详情。\n页面具体内容：服务订单详情。服务单TT202611130027、已支付8元、景点预约固定v1.0，门票0元。四状态卡：支付已支付、执行已结束、目标未达成、退款处理中。权益已消耗，退款不会恢复一次使用。Tabs合同快照/支付事件/退款事件/履约链路/账本。退款REF018金额8元原路退回待回执；原支付PAY018。右侧按范围排障入口，填写理由、字段范围、30分钟期限，无审批按钮和明文私密资料。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O08",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O08",
+      "page_name": "支付与退款",
+      "file": "04-平台管理员/O08-支付与退款.png",
+      "prompt_file": "prompts/ADMIN-O08.txt",
+      "prompt_sha256": "4dcc82983181ee521f79b68612b6593d85baa6f18e0ed01ce603971e58962aeb",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：支付与退款。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：支付与退款。\n页面具体内容：支付与退款。收款/退款Tabs，当前退款。三行：REF019 原支付PAY019 金额8.00 CNY 渠道请求RF••019 UNKNOWN 待核对 操作查询原退款；REF018 PAY018 8.00 CNY RF••018 PROCESSING 处理中 查询进度；REF017 PAY017 3.00 CNY RF••017 SUCCEEDED 已核对 查看回执。未知退款不能点击重新退款。顶端待核对1、处理中1、已到账1。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O09",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O09",
+      "page_name": "退款异常处理",
+      "file": "04-平台管理员/O09-退款异常处理.png",
+      "prompt_file": "prompts/ADMIN-O09.txt",
+      "prompt_sha256": "32dc0f140663ce3af283edb6d2346de0e24bf8fb503a8f280c0a2ffec8e0d336",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：支付与退款。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：退款异常处理。\n页面具体内容：退款异常处理。退款REF019渠道UNKNOWN，¥8.00，上次请求13:05，成交目标未达全退。展示规则、原支付、已退0/预占8/剩余可退0、证据与处理记录；操作查询原退款、记录处置理由，禁止直接标记到账和再次发起。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O10",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O10",
+      "page_name": "对账中心",
+      "file": "04-平台管理员/O10-对账中心.png",
+      "prompt_file": "prompts/ADMIN-O10.txt",
+      "prompt_sha256": "4128bfe4965a8cd750958b03d29b1b9588664d9cb43088ab996504fde895dc0c",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：对账中心。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：对账中心。\n页面具体内容：对账中心。日期/示例渠道A筛选，收款差异2、退款差异1、打款差异0。三行差异：PAY021订单取消后晚到成功 已原路退款 已解决；PAY022同一订单第二笔真实收款 额外款已退款 已解决；REF019渠道结果未知 原退款待查询 待处理。按钮启动对账、查看核对记录、查询原退款。资金操作不能用重放或重复扣款处理。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O11",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O11",
+      "page_name": "发布者结算",
+      "file": "04-平台管理员/O11-发布者结算.png",
+      "prompt_file": "prompts/ADMIN-O11.txt",
+      "prompt_sha256": "686619a94d933853a2d298dc324e201782cbedcc72899bfed900222671b6046a",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：发布者结算。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：发布者结算。\n页面具体内容：发布者结算。批次SET018，发布者林**；待结算300元、可结算200元、退款冻结0元。列表另含SET017打款PO017已到账40元，SET018打款PO018处理中200元。操作生成批次、查看账本、查询原回执。在途批次不提供重复打款。明细净额示例230收入-20费用-10退款=200元；退款冲正追加记录，不修改历史账。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O12",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O12",
+      "page_name": "费用与结算规则",
+      "file": "04-平台管理员/O12-费用与结算规则.png",
+      "prompt_file": "prompts/ADMIN-O12.txt",
+      "prompt_sha256": "f2daab7f03bf000ba07b6e77ef0b107623e121bbe2a578b565797c0053229eb3",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：费用与结算规则。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：费用与结算规则。\n页面具体内容：费用与结算规则。版本列表当前v3、下个生效v4。表单币种CNY、平台费率5%（示例）、渠道费承担方、结算等待7天（示例）、退款处理期限；明确配置样例非确定费率。右影响预览只影响新报价，旧订单按快照；保存新版本。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O13",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O13",
+      "page_name": "调度与容量",
+      "file": "04-平台管理员/O13-调度与容量.png",
+      "prompt_file": "prompts/ADMIN-O13.txt",
+      "prompt_sha256": "ca4d55b9e97e7de75c0960f672d39336f98665b7c3ad39d55478b4fd5ecd9517",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：调度与容量。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：调度与容量。\n页面具体内容：调度与容量。资源池Docker/KVM/TCG、队列待运行12、活跃32、预约等待8。容量小图与已购履约优先级，配额表、租约健康；操作限流/排空，不新增按资源消费计费。TCG显式允许。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O14",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O14",
+      "page_name": "节点与镜像",
+      "file": "04-平台管理员/O14-节点与镜像.png",
+      "prompt_file": "prompts/ADMIN-O14.txt",
+      "prompt_sha256": "269360b22c9895b5c99ccc491d43db0e24518d7a11efa8bd4e02186ad061c2df",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：节点与镜像。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：节点与镜像。\n页面具体内容：节点与镜像。节点/镜像Tabs，节点docker01健康、kvm02排空中、tcg03停用。CPU内存租约、镜像摘要sha256掩码、环境清理证明；操作排空、停用、镜像验证。清理不能视为执行成功。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O15",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O15",
+      "page_name": "运行与排障",
+      "file": "04-平台管理员/O15-运行与排障.png",
+      "prompt_file": "prompts/ADMIN-O15.txt",
+      "prompt_sha256": "e8ab2b55afc38a8b0251b1530305c28070746c0ab137ce65b40ed9c6b7a05c12",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：运行与排障。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：运行与排障。\n页面具体内容：运行与排障。全站运行元数据表，Run081已结束、Run082待核验、Run083运行中。右受控排障面板对象ID、读取字段范围、理由、有效期30分钟、开启限时会话；需data.diagnose能力，密钥不可见。受控停止显示停止中待清理，外部效果核验独立。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O16",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O16",
+      "page_name": "日志与告警",
+      "file": "04-平台管理员/O16-日志与告警.png",
+      "prompt_file": "prompts/ADMIN-O16.txt",
+      "prompt_sha256": "997295a1e0c1cf4513c3d97f3e1cfc1de493cb6c89fdbbc7c02e6bfc57b9e99e",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：日志与告警。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：日志与告警。\n页面具体内容：日志与告警。脱敏日志/告警Tabs，时间筛选与服务关联。日志无个人秘密，告警支付回调积压、节点租约过期、通知失败；严重级别、发生、恢复证据。操作有限时静默、规则设置，不将静默当恢复。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O17",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O17",
+      "page_name": "通知投递",
+      "file": "04-平台管理员/O17-通知投递.png",
+      "prompt_file": "prompts/ADMIN-O17.txt",
+      "prompt_sha256": "b4142b6558c1ea1e1bae91d74d10c69b762f6a019942244339a69a8da9f7acc4",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：通知投递。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：通知投递。\n页面具体内容：通知投递。消息类型支付/运行/退款，渠道站内/邮件，状态成功/失败/待核对，回执掩码与次数。行失败可重投，UNKNOWN先核验。侧提示仅重新投递消息，不重新运行服务或产生新费用。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O18",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O18",
+      "page_name": "平台设置",
+      "file": "04-平台管理员/O18-平台设置.png",
+      "prompt_file": "prompts/ADMIN-O18.txt",
+      "prompt_sha256": "c0d724bf824a8f6f5868d722767c67e375c93f889d767de6e60f6a54495347f4",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：平台设置。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：平台设置。\n页面具体内容：平台设置。基本/能力开关/网络策略/销售保护Tabs。通用按次商业开启，旅行示例待渠道验证，远程来源P1关闭，WebhookP1关闭，个人API P2关闭。三个独立开关暂停新销售/暂停新运行/暂停资金发送，历史查询回调对账保留。网络白名单自动策略，不出现域名审批。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O19",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O19",
+      "page_name": "权限与操作审计",
+      "file": "04-平台管理员/O19-权限与操作审计.png",
+      "prompt_file": "prompts/ADMIN-O19.txt",
+      "prompt_sha256": "8d5afed991899333b5b56e81350c14008f86d43614b757a09231c15197a1333d",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：权限与操作审计。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：权限与操作审计。\n页面具体内容：权限与操作审计。ADMIN能力矩阵commerce.manage/catalog.manage/runtime.manage/access.manage/data.diagnose，账号掩码、授权到期；最后有效权限管理员不可移除。操作审计列对象、动作、理由、结果，限时排障会话30分钟。禁止本人自提权，授权不走审核员流程。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O20",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O20",
+      "page_name": "备份与清理",
+      "file": "04-平台管理员/O20-备份与清理.png",
+      "prompt_file": "prompts/ADMIN-O20.txt",
+      "prompt_sha256": "6f1b6c3ec61bbf5bd839cd6b154f029a228098b16015fc44c7bee5261cb0bf99",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：备份与清理。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：备份与清理。\n页面具体内容：备份与清理。最近备份成功、恢复演练未执行标签独立。保留策略表订单账本/未决预约/运行日志/文件，未结事实不可提前删除。备份包含权益去重及撤权墓碑；按钮创建备份、恢复预检，演练步骤先核对资金和未决预约，不重放资金或预约写入。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-O21",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "O21",
+      "page_name": "异常预约",
+      "file": "04-平台管理员/O21-异常预约.png",
+      "prompt_file": "prompts/ADMIN-O21.txt",
+      "prompt_sha256": "29d1fc8e2bdbd1ee66c3e48a0beebe86f845654044ad332653560092fe8db252",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：异常预约。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：异常预约。\n页面具体内容：异常预约。表格外部预约BK082、关联服务订单TT202611130082、示例博物馆、UNKNOWN、待核验2小时、服务费8元待判定。右详情展示原提交请求、最近渠道查询未知、核验截止2026年11月14日21:00；按钮查询原预约、记录核验结论。门票0元无需支付。提示退款不解除外部防重；没有重抢按钮；没有虚构凭证或确认成功标记。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-C21",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "C21",
+      "page_name": "账户设置",
+      "file": "04-平台管理员/C21-账户设置.png",
+      "prompt_file": "prompts/ADMIN-C21.txt",
+      "prompt_sha256": "72f3b24ec1e457ca8899ef2c6c8c6910411ebaae0c1be8f489be93205b154dad",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：账户设置。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：账户设置。\n页面具体内容：账户设置。资料/账号安全/会话/账号注销四Tabs。昵称林间用户、邮箱掩码、当前Windows登录设备，退出其他会话。工作区：消费者、脚本发布者（已启用），按钮切换工作区。下方账号注销卡显示尚有1笔售后和1笔结算，按钮申请注销可用；说明申请后进入关闭中，停止新购买和新发布，保留售后及结算入口，待未结事项处理完再按保留规则完成注销。没有组织或审批字段，不写必须先结清才能申请。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    },
+    {
+      "key": "ADMIN-P06",
+      "role": "ADMIN",
+      "role_name": "平台管理员",
+      "page_id": "P06",
+      "page_name": "使用帮助",
+      "file": "04-平台管理员/P06-使用帮助.png",
+      "prompt_file": "prompts/ADMIN-P06.txt",
+      "prompt_sha256": "47a489ca89754f359ec531012dea9123a8d6e3650a1d5ecd3b52b2d46828473d",
+      "prompt": "生成一张中文高保真前端页面原型图片。单页完整截图，1912×914横向，平面视角，无浏览器外框，无设备模型，无拼图。参考图只提供布局样式和配色，绝不复制其党建业务文字。\n视觉：白色48px顶栏、176px分组左菜单、浅灰#F5F6FA背景、白色细边框8px圆角卡片、主蓝#3568FF、浅蓝菜单选中态；12–14px正文、20px页标题、30px按钮、16px内容边距，信息紧凑清晰。首页可有浅蓝紫横幅，其他页是功能表单/列表。标题Logo只用文字Travel Tools与小蓝色代码图标，副标题通用脚本服务平台。顶栏搜索框，右侧当前工作区。示例数据小标签。中文文字准确。\n业务背景仅用于理解，不要印成页内横幅：这是个人通用脚本平台，按次收费，景点预约是一个场景；无企业组织或人工审批。顶栏只用Logo、搜索、当前工作区、通知和头像，不添加助手。非旅行页不用旅游装饰。\n\n当前工作区：平台管理员。左菜单仅限以下项目：运营 / 运营总览；运营 / 用户与发布者；运营 / 服务与脚本；业务场景 / 城市与景点；业务场景 / 渠道与适配；交易与财务 / 服务订单；交易与财务 / 支付与退款；交易与财务 / 对账中心；交易与财务 / 发布者结算；交易与财务 / 费用与结算规则；基础设施 / 调度与容量；基础设施 / 节点与镜像；基础设施 / 运行与排障；基础设施 / 日志与告警；基础设施 / 通知投递；平台 / 平台设置；平台 / 权限与操作审计；平台 / 备份与清理；业务场景 / 异常预约；个人 / 账户设置；公共 / 使用帮助。不得增加其他菜单。当前选中：使用帮助。详情页用面包屑，不能增添菜单。菜单较长可滚动但当前项可见，不重复底部菜单。\n页面标题：使用帮助。\n页面具体内容：使用帮助。搜索帮助；左内容目录购买与付费/运行与结果/退款售后/发布与部署/账号安全。主卡FAQ分组：如何按次购买？门票免费为何收取服务费？未达成目标怎么退款？一次服务接续会重复收费吗？如何发布脚本？展开退款问题，写以购买前展示并固定的发布者规则为准。右侧入门三步与联系支持入口。\n以上是封闭内容清单：不要补充未列出的日期字段、统计指标、服务或控件。数量和金额核对一致。不把生成指令写入界面。",
+      "reference_paths": [
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-01.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-02.png",
+        "C:\\Users\\Administrator\\Desktop\\travel-tools\\output\\prototypes\\2026-11-13-v5-commercial\\references\\reference-03.png"
+      ]
+    }
+  ]
+}

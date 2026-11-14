@@ -1,0 +1,74 @@
+{
+  "schema_version": "2.0",
+  "script_id": "mapped-report",
+  "version": "1.0.0",
+  "language": "python",
+  "entrypoint": "report.py",
+  "integration_mode": "legacy",
+  "default_action": "execute",
+  "actions": {
+    "execute": {
+      "side_effects": "unknown"
+    }
+  },
+  "hooks": {},
+  "dependencies_lock": "requirements.lock",
+  "credential_requirements": [
+    {
+      "name": "source_token",
+      "kind": "api_key",
+      "required": true
+    }
+  ],
+  "network_requirements": {
+    "mode": "HTTP",
+    "domains": [
+      "api.example.invalid"
+    ],
+    "methods": [
+      "GET"
+    ]
+  },
+  "supported_execution_modes": [
+    "docker",
+    "qemu_kvm",
+    "qemu_tcg"
+  ],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "source_url": {
+        "type": "string",
+        "format": "uri"
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1000
+      },
+      "label": {
+        "type": "string"
+      },
+      "options": {
+        "type": "object",
+        "properties": {
+          "compact": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "compact"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "source_url",
+      "limit",
+      "options"
+    ],
+    "additionalProperties": false
+  },
+  "events": {},
+  "extensions": []
+}

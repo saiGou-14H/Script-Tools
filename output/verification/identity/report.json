@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-14T08:15:56.491Z",
+  "checks": [
+    "registration requires the accepted terms version, creates an unverified account and keeps challenge secrets and pending registration data protected",
+    "verification binds its own registration password, commits a failed-attempt count, activates once under concurrency and invalidates sibling challenges while erasing consumed payloads",
+    "password recovery uses a uniform accepted response, rejects invalid new passwords and atomically consumes its token while revoking previous sessions",
+    "challenge attempt budgets, challenge expiry and the session idle window are enforced against persisted state",
+    "a fresh identity service decrypts a pending registration with the persisted development key, and production mode requires configured message delivery",
+    "the sign-in page restores the reference introduction, service rules and two-column form layout within the reference viewport",
+    "registration, explicit terms consent, email verification and password sign-in complete through the real UI and database",
+    "password recovery validates confirmation fields, revokes the browser session and returns to explicit sign-in through the real UI",
+    "sign-in uses the public workspace and returns consumers to an accessible local page when a requested administrator or external destination is unavailable",
+    "an authorized publisher or administrator without an explicit return target enters the requested workspace home"
+  ],
+  "screenshots": [
+    "GUEST-P07"
+  ],
+  "errors": [],
+  "layout": {
+    "width": 1814,
+    "height": 868,
+    "card": {
+      "x": 1135.96875,
+      "y": 206,
+      "width": 646.03125,
+      "height": 604,
+      "top": 206,
+      "right": 1782,
+      "bottom": 810,
+      "left": 1135.96875
+    }
+  },
+  "result": "PASS"
+}

@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-14T08:16:40.171Z",
+  "checks": [
+    "profile reads and writes require a verified session, CSRF and an idempotency key, reject owner overrides and enforce current terms and field limits",
+    "concurrent retries create one profile, audit event and outbox event, refresh the current session's publisher role and preserve account isolation and management capabilities",
+    "same-key different-body requests conflict, updates enforce If-Match, and replay returns the original snapshot and status before stale revision checks",
+    "encrypted receipts conceal profile text, remain readable by a fresh service and fail closed when ciphertext authentication fails",
+    "expired receipts retire encrypted payloads while profile uniqueness persists, and a disabled publisher cannot reactivate through replay or a fresh command",
+    "PostgreSQL executes profile creation and trigger-based revisions, and an injected receipt failure rolls back profile, audit and outbox changes together inside a rolled-back verification transaction",
+    "anonymous publisher intent survives password login, requires an explicit unchecked consent and can return to the consumer workspace without creating a profile",
+    "explicit profile creation refreshes publisher access and the full original route, and settings saves public fields durably without inventing a contact-email database field",
+    "a stale settings form displays revision conflict recovery and loads the newer profile without overwriting it",
+    "the live publisher home renders empty counters and pending integration states without preview refunds or deployment alerts",
+    "the publisher home fits its reference viewport with complete sidebar access and routes upload and service creation to their normal entry points",
+    "the production-built publisher onboarding and profile workflow completes without browser exceptions"
+  ],
+  "screenshots": [
+    "PUBLISHER-S01"
+  ],
+  "errors": [],
+  "scope": "Isolated PGlite HTTP and production-built UI, plus rolled-back PostgreSQL transactions",
+  "layout": {
+    "width": 1814,
+    "height": 868,
+    "helpBottom": 868
+  },
+  "result": "PASS"
+}

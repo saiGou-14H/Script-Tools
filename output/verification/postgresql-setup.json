@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-14T00:53:48.645Z",
+  "server_version": "PostgreSQL 18.7 on x86_64-windows, compiled by msvc-19.44.35229, 64-bit",
+  "host": "127.0.0.1",
+  "port": 5432,
+  "database": "travel_tools",
+  "application_role": "travel_tools_dev",
+  "configuration": ".env",
+  "migration_status": "applied",
+  "verification": "postgresql-foundation.json"
+}

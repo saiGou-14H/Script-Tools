@@ -1,0 +1,42 @@
+[
+  {
+    "id": "report",
+    "manifest": "report.manifest.json",
+    "invocation": "report.invocation.json",
+    "result": "report.result.json",
+    "event": "report.event.json"
+  },
+  {
+    "id": "batch",
+    "manifest": "batch.manifest.json",
+    "invocation": "batch.invocation.json",
+    "result": "batch.result.json"
+  },
+  {
+    "id": "confirm",
+    "manifest": "batch.manifest.json",
+    "invocation": "confirm.invocation.json",
+    "result": "confirm.result.json"
+  },
+  {
+    "id": "legacy",
+    "manifest": "legacy.manifest.json"
+  },
+  {
+    "id": "outputs",
+    "manifest": "outputs.manifest.json",
+    "invocation": "outputs.invocation.json",
+    "result": "outputs.result.json",
+    "output_items": "outputs.items.json",
+    "output_uploads": "outputs.uploads.json",
+    "output_batch": "outputs.batch.json"
+  },
+  {
+    "id": "continuous",
+    "manifest": "continuous.manifest.json",
+    "invocation": "continuous.invocation.json",
+    "result": "continuous.result.json",
+    "output_items": "continuous.items.json",
+    "output_batches": "continuous.batches.json"
+  }
+]

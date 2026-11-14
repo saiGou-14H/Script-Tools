@@ -1,0 +1,6 @@
+{
+ "ADMIN-O07":{"pass":true,"source_filename":"exec-1fa67fe4-5e0c-42c4-ac35-de1d755ea430.png","observed":"排障对象、理由、字段范围、访问有效期与限时会话按钮明确；data.diagnose及密钥不可读，未承诺30分钟完成处理。四种业务状态与退款原单一致。"},
+ "ADMIN-O08":{"pass":true,"source_filename":"exec-ce2a1d60-271c-488d-8d8e-0fe36555ccf9.png","observed":"待核对、处理中、已到账各1条与汇总一致；未决退款只能查询原请求，到账记录查看回执。"},
+ "PUBLISHER-S11":{"pass":true,"source_filename":"exec-1301d00a-4564-4c0c-b01c-6aade213c399.png","observed":"128次、124次交付、105次目标达成与4次技术故障对应；趋势、版本分组与退款合计可核对，通用脚本及预约场景并列。"},
+ "PUBLISHER-S12":{"pass":true,"source_filename":"exec-80ddcc7a-6b61-43d0-8a87-822873103c4c.png","observed":"必要依赖缺失导致构建失败、无部署镜像；消费者侧仅脱敏错误分类，待核验预约不得重复提交，发布者只能查看本人构建日志。"}
+}

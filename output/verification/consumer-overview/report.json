@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-14T08:14:22.098Z",
+  "checks": [
+    "personal overview requires authentication, returns its effective window and as_of, preserves integer counts and rejects owner selection and invalid dates",
+    "current running counters retain a continuous run created before the history window, while history totals respect the window and another owner's task stays excluded",
+    "output metadata queries expose only the current owner's committed batches while the process runs, retain independent availability and delivery facts and hide storage references and uncommitted or deleted records",
+    "signed output cursors bind the owner and normalized filters, retain deterministic timestamp and UUID pagination, and reject malformed filters, dates and tampering",
+    "a running continuous process exposes successive action and output-hook batches as they commit, while open batches, expired or deleted outputs and quarantined files stay excluded and private storage references stay absent",
+    "owned funded entitlements respect expiry and revocation, and per-currency service fee and confirmed-refund aggregates preserve signed 64-bit minor-unit precision using rolled-back financial fixtures",
+    "pending totals exclude expired requests, bounded lists remain deterministic, and historical filters retain current-state counters with all synthetic database changes rolled back",
+    "consumer home restores the reference regions within 1814 by 868, derives preview counts, links each order to its own detail, downloads the selected existing file and opens the corresponding entitlement filter",
+    "checkout keeps the reference viewport and a newly cancelled preview order immediately updates the home summary without fabricating a payment confirmation",
+    "live home reads the authenticated overview and shows actual empty records while checkout requires explicit terms consent and renders the publisher form",
+    "overview errors expose a working retry, and counters above Number.MAX_SAFE_INTEGER retain their exact text",
+    "a changed publisher schema invalidates the old example, opens an editable form, blocks missing required fields and accepts corrected parameters through the normal purchase entry"
+  ],
+  "screenshots": [
+    "USER-C01",
+    "USER-C02"
+  ],
+  "errors": [],
+  "layouts": {
+    "USER-C01": {
+      "x": 202,
+      "y": 97,
+      "width": 1604,
+      "height": 754.921875,
+      "documentWidth": 1814,
+      "documentHeight": 868
+    },
+    "USER-C02": {
+      "x": 260,
+      "y": 107.5625,
+      "width": 1528,
+      "height": 750.6875,
+      "documentWidth": 1814,
+      "documentHeight": 868
+    }
+  },
+  "result": "PASS"
+}

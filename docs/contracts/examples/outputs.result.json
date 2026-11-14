@@ -1,0 +1,25 @@
+{
+  "protocol_version": "2.0",
+  "run_id": "run_outputs_001",
+  "attempt_id": "attempt_outputs_001",
+  "invocation_id": "inv_outputs_001",
+  "action": "summarize_records",
+  "outcome": "COMPLETED",
+  "summary": "已汇总 1 条记录",
+  "data": {
+    "item_count": 1,
+    "records": [
+      {
+        "id": "record_demo",
+        "status": "active"
+      }
+    ]
+  },
+  "action_required": null,
+  "error": null,
+  "outputs": [
+    {
+      "output_id": "out_summary"
+    }
+  ]
+}

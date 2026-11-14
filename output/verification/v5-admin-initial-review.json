@@ -1,0 +1,7 @@
+{
+ "ADMIN-O03":{"pass":false,"source_filename":"exec-b2361ee4-c584-4507-9a90-08681a48c798.png","observed":"部署列错误使用商品ACTIVE/PAUSED状态；需拆清部署READY与商品在售/停销，并按当前状态禁用恢复或停销按钮。"},
+ "ADMIN-O04":{"pass":false,"source_filename":"exec-95ca30fc-edb1-466d-b72a-a733029e7549.png","observed":"擅自列出多个真实景点为0元且可售，缺少示例限制，应改为虚构示例景点与待验证未开放状态。"},
+ "ADMIN-O05":{"pass":true,"source_filename":"exec-392ef858-e276-4f08-b1c7-86a5298489e3.png","observed":"渠道已验证、未验证与降级分开，有验证记录与禁用新提交入口；保留未决预约原查询，无人工商品审批。"},
+ "ADMIN-O06":{"pass":false,"source_filename":"exec-a61f9fd0-2cc0-45c7-94e0-71772c2793c4.png","observed":"付款、履约、退款、结算已分列，但表格清洗不应关联外部预约号，需清空第一行关联预约。"},
+ "ADMIN-O07":{"pass":false,"source_filename":"exec-1fb2e8fa-ab3c-4fab-a75e-74d74dfe1f0f.png","observed":"支付、执行、目标、退款状态正确，但排障有效期被写成30分钟内处理完的承诺，且缺少开启会话按钮，需改为限时访问有效期。"}
+}

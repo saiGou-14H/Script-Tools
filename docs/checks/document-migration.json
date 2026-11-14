@@ -1,0 +1,990 @@
+{
+  "version": "V2.4",
+  "date": "2026-11-13",
+  "sources": [
+    {
+      "path": "项目需求分析.md",
+      "sha256": "caa53984867be8c6286377745bd75794bef9c530e8c81909275c7c52e4213dc1",
+      "sections": [
+        {
+          "section": 1,
+          "title": "已确认的项目决策",
+          "target": "01-产品需求与功能设计.md#decisions",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 2,
+          "title": "项目背景与问题",
+          "target": "01-产品需求与功能设计.md#background",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 3,
+          "title": "建设目标与成功标准",
+          "target": "01-产品需求与功能设计.md#background",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 4,
+          "title": "用户角色与权限边界",
+          "target": "01-产品需求与功能设计.md#roles",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 5,
+          "title": "业务范围",
+          "target": "01-产品需求与功能设计.md#scope",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 6,
+          "title": "典型使用场景",
+          "target": "01-产品需求与功能设计.md#scenarios",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 7,
+          "title": "核心需求清单",
+          "target": "01-产品需求与功能设计.md#requirements",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 8,
+          "title": "关键业务规则",
+          "target": "01-产品需求与功能设计.md#rules",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 9,
+          "title": "非功能需求与建议验收目标",
+          "target": "01-产品需求与功能设计.md#quality",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 10,
+          "title": "分期交付建议",
+          "target": "01-产品需求与功能设计.md#delivery-scope",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 11,
+          "title": "首期验收矩阵",
+          "target": "05-测试验收与验证记录.md#acceptance",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 12,
+          "title": "待验证事项",
+          "target": "05-测试验收与验证记录.md#unverified",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 13,
+          "title": "参考资料",
+          "target": "02-系统架构与详细设计.md#references",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        }
+      ]
+    },
+    {
+      "path": "项目功能分析.md",
+      "sha256": "d3da6fa083d9f30bcf075d50c5e61790426ebbad4c9d6b1ca0f4a36dc6df0b79",
+      "sections": [
+        {
+          "section": 1,
+          "title": "功能划分与业务对象",
+          "target": "01-产品需求与功能设计.md#modules",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 2,
+          "title": "页面与导航设计",
+          "target": "01-产品需求与功能设计.md#navigation",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 3,
+          "title": "F01：账户与个人资料",
+          "target": "01-产品需求与功能设计.md#accounts",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 4,
+          "title": "F02：脚本目录及旅行扩展目录",
+          "target": "01-产品需求与功能设计.md#travel",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 5,
+          "title": "F03：脚本中心",
+          "target": "01-产品需求与功能设计.md#scripts",
+          "secondary_targets": [
+            "03-接口协议与脚本开发规范.md#manifest",
+            "03-接口协议与脚本开发规范.md#hooks"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 6,
+          "title": "F04：通用凭据与可选旅行资料",
+          "target": "01-产品需求与功能设计.md#accounts",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 7,
+          "title": "F05：任务中心",
+          "target": "01-产品需求与功能设计.md#tasks",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 8,
+          "title": "F06：执行方式与资源",
+          "target": "01-产品需求与功能设计.md#runtime",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 9,
+          "title": "F07：自定义结果与旅行库存扩展",
+          "target": "01-产品需求与功能设计.md#outputs",
+          "secondary_targets": [
+            "01-产品需求与功能设计.md#travel"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 10,
+          "title": "F08：通用人工接续与旅行预约扩展",
+          "target": "01-产品需求与功能设计.md#interaction",
+          "secondary_targets": [
+            "01-产品需求与功能设计.md#travel",
+            "02-系统架构与详细设计.md#continuations"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 11,
+          "title": "状态机与异常处理",
+          "target": "02-系统架构与详细设计.md#run-states",
+          "secondary_targets": [
+            "01-产品需求与功能设计.md#interaction"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 12,
+          "title": "F09：通知中心",
+          "target": "01-产品需求与功能设计.md#outputs",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 13,
+          "title": "F10～F13、F15：日志、资源和监控运维",
+          "target": "01-产品需求与功能设计.md#operations-ui",
+          "secondary_targets": [
+            "02-系统架构与详细设计.md#boundaries",
+            "04-部署运维与监控手册.md#capacity"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 14,
+          "title": "接口能力清单",
+          "target": "03-接口协议与脚本开发规范.md#core-api",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 15,
+          "title": "功能验收与需求追踪",
+          "target": "05-测试验收与验证记录.md#traceability",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        }
+      ]
+    },
+    {
+      "path": "项目系统架构设计.md",
+      "sha256": "fb89706525725649963adac6e942937f4410e0e6c35797102a1919f57d8c6efc",
+      "sections": [
+        {
+          "section": 1,
+          "title": "架构目标与决策摘要",
+          "target": "02-系统架构与详细设计.md#decisions",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 2,
+          "title": "vm2api 参考依据与复用边界",
+          "target": "02-系统架构与详细设计.md#references",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 3,
+          "title": "总体架构",
+          "target": "02-系统架构与详细设计.md#overview",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 4,
+          "title": "服务边界与信任边界",
+          "target": "02-系统架构与详细设计.md#boundaries",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 5,
+          "title": "三种执行方式的配置模型",
+          "target": "02-系统架构与详细设计.md#runtime",
+          "secondary_targets": [
+            "03-接口协议与脚本开发规范.md#runtime-adapter"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 6,
+          "title": "Docker 后端",
+          "target": "02-系统架构与详细设计.md#docker",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 7,
+          "title": "QEMU 后端：KVM 与 TCG",
+          "target": "02-系统架构与详细设计.md#qemu",
+          "secondary_targets": [
+            "03-接口协议与脚本开发规范.md#agent"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 8,
+          "title": "调度、队列、租约与时钟",
+          "target": "02-系统架构与详细设计.md#tasks",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 9,
+          "title": "脚本、构建和输入输出协议",
+          "target": "03-接口协议与脚本开发规范.md#manifest",
+          "secondary_targets": [
+            "02-系统架构与详细设计.md#publishing",
+            "03-接口协议与脚本开发规范.md#invocation",
+            "03-接口协议与脚本开发规范.md#hooks",
+            "05-测试验收与验证记录.md#script-tests"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 10,
+          "title": "通用 HTTP 出口、凭据与可选连接器",
+          "target": "02-系统架构与详细设计.md#network",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 11,
+          "title": "可选旅行扩展：预约一致性与不确定结果",
+          "target": "02-系统架构与详细设计.md#travel",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 12,
+          "title": "数据模型",
+          "target": "02-系统架构与详细设计.md#database",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 13,
+          "title": "通知与事件一致性",
+          "target": "02-系统架构与详细设计.md#notifications",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 14,
+          "title": "故障恢复与回收",
+          "target": "02-系统架构与详细设计.md#recovery",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 15,
+          "title": "部署建议",
+          "target": "04-部署运维与监控手册.md#deployment",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 16,
+          "title": "可观测性与容量",
+          "target": "04-部署运维与监控手册.md#metrics",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 17,
+          "title": "安全与隐私工程要求",
+          "target": "02-系统架构与详细设计.md#security",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 18,
+          "title": "实施顺序与验证计划",
+          "target": "05-测试验收与验证记录.md#delivery",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 19,
+          "title": "架构验收清单",
+          "target": "05-测试验收与验证记录.md#architecture-checks",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 20,
+          "title": "参考资料与实现边界",
+          "target": "02-系统架构与详细设计.md#references",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        }
+      ]
+    },
+    {
+      "path": "全系统逻辑闭环与开发契约.md",
+      "sha256": "9132b4c73a8337421fa6603f8e80707a56bca56eef4c1a169a1444241d6c894e",
+      "sections": [
+        {
+          "section": 1,
+          "title": "全系统不变量",
+          "target": "02-系统架构与详细设计.md#invariants",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 2,
+          "title": "从入口到结束的业务闭环",
+          "target": "02-系统架构与详细设计.md#flows",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 3,
+          "title": "脚本版本、构建与共享审核",
+          "target": "02-系统架构与详细设计.md#publishing",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 4,
+          "title": "输入、输出、Hook 与 Schema 边界",
+          "target": "03-接口协议与脚本开发规范.md#results",
+          "secondary_targets": [
+            "03-接口协议与脚本开发规范.md#manifest",
+            "03-接口协议与脚本开发规范.md#hooks",
+            "02-系统架构与详细设计.md#effects"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 5,
+          "title": "任务、调度与阻塞",
+          "target": "02-系统架构与详细设计.md#tasks",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 6,
+          "title": "Run、Attempt 与结束判定",
+          "target": "02-系统架构与详细设计.md#run-states",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 7,
+          "title": "人工接续、撤权与并发竞态",
+          "target": "02-系统架构与详细设计.md#continuations",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 8,
+          "title": "接口公共契约",
+          "target": "03-接口协议与脚本开发规范.md#http",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 9,
+          "title": "事务、事件与幂等边界",
+          "target": "02-系统架构与详细设计.md#transactions",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 10,
+          "title": "数据结构与数据库约束",
+          "target": "02-系统架构与详细设计.md#database",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 11,
+          "title": "账号与凭据生命周期",
+          "target": "02-系统架构与详细设计.md#accounts",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 12,
+          "title": "保留、删除与备份恢复",
+          "target": "04-部署运维与监控手册.md#retention",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 13,
+          "title": "节点、Guest Agent 与配置契约",
+          "target": "03-接口协议与脚本开发规范.md#agent",
+          "secondary_targets": [
+            "04-部署运维与监控手册.md#configuration"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 14,
+          "title": "通知、观测与用户反馈闭环",
+          "target": "01-产品需求与功能设计.md#interaction",
+          "secondary_targets": [
+            "02-系统架构与详细设计.md#notifications"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 15,
+          "title": "可执行验收场景",
+          "target": "05-测试验收与验证记录.md#e2e",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 16,
+          "title": "实施顺序与完成判定",
+          "target": "05-测试验收与验证记录.md#delivery",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        }
+      ]
+    },
+    {
+      "path": "项目日志监控设计.md",
+      "sha256": "03131d3b54b07bbfdd685a8265a3ad4bd9666735830a5450c2b50d7786f1b831",
+      "sections": [
+        {
+          "section": 1,
+          "title": "目标与边界",
+          "target": "04-部署运维与监控手册.md#logging",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 2,
+          "title": "技术方案与组件职责",
+          "target": "04-部署运维与监控手册.md#logging",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 3,
+          "title": "日志分类与统一数据模型",
+          "target": "03-接口协议与脚本开发规范.md#log-model",
+          "secondary_targets": [
+            "04-部署运维与监控手册.md#collection"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 4,
+          "title": "Docker、KVM、TCG 的采集设计",
+          "target": "04-部署运维与监控手册.md#collection",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 5,
+          "title": "脱敏、限额与数据暴露控制",
+          "target": "04-部署运维与监控手册.md#redaction",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 6,
+          "title": "持久化、确认、重放与故障降级",
+          "target": "04-部署运维与监控手册.md#log-durability",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 7,
+          "title": "查询、实时订阅与用户权限",
+          "target": "03-接口协议与脚本开发规范.md#log-api",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 8,
+          "title": "指标体系与统计口径",
+          "target": "04-部署运维与监控手册.md#metrics",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 9,
+          "title": "关联标识与分布式追踪",
+          "target": "04-部署运维与监控手册.md#tracing",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 10,
+          "title": "看板与产品页面",
+          "target": "01-产品需求与功能设计.md#operations-ui",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 11,
+          "title": "告警规则与通知闭环",
+          "target": "04-部署运维与监控手册.md#alerts",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 12,
+          "title": "接口与数据表",
+          "target": "03-接口协议与脚本开发规范.md#log-api",
+          "secondary_targets": [
+            "02-系统架构与详细设计.md#database"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 13,
+          "title": "保留、删除、审计与备份",
+          "target": "04-部署运维与监控手册.md#retention",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 14,
+          "title": "容量、性能与部署",
+          "target": "04-部署运维与监控手册.md#capacity",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 15,
+          "title": "自监控与排障手册",
+          "target": "04-部署运维与监控手册.md#runbooks",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 16,
+          "title": "验收与故障演练",
+          "target": "05-测试验收与验证记录.md#observability",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 17,
+          "title": "交付顺序与完成条件",
+          "target": "05-测试验收与验证记录.md#delivery",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 18,
+          "title": "技术依据与待验证边界",
+          "target": "05-测试验收与验证记录.md#unverified",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        }
+      ]
+    },
+    {
+      "path": "脚本产物与通知Hook设计.md",
+      "sha256": "930e63d71e1448e3ab6ef55dd03d1935147370d16bfb9d756691e9c056762a4f",
+      "sections": [
+        {
+          "section": 1,
+          "title": "功能与责任",
+          "target": "01-产品需求与功能设计.md#outputs",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 2,
+          "title": "Hook 与公共方法",
+          "target": "03-接口协议与脚本开发规范.md#outputs",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 3,
+          "title": "文件格式、展示与限额",
+          "target": "03-接口协议与脚本开发规范.md#output-formats",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 4,
+          "title": "阶段与状态闭环",
+          "target": "02-系统架构与详细设计.md#output-states",
+          "secondary_targets": [
+            "03-接口协议与脚本开发规范.md#output-contract"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 5,
+          "title": "通知推送与附件",
+          "target": "02-系统架构与详细设计.md#notifications",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 6,
+          "title": "API、事务与数据库",
+          "target": "03-接口协议与脚本开发规范.md#output-api",
+          "secondary_targets": [
+            "02-系统架构与详细设计.md#transactions",
+            "02-系统架构与详细设计.md#database"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 7,
+          "title": "错误、取消与清理",
+          "target": "03-接口协议与脚本开发规范.md#output-errors",
+          "secondary_targets": [
+            "04-部署运维与监控手册.md#retention"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 8,
+          "title": "开发者示例",
+          "target": "03-接口协议与脚本开发规范.md#output-example",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 9,
+          "title": "页面与观测",
+          "target": "01-产品需求与功能设计.md#outputs",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 10,
+          "title": "验收与实现边界",
+          "target": "05-测试验收与验证记录.md#output-tests",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 11,
+          "title": "兼容脚本的产物入口",
+          "target": "03-接口协议与脚本开发规范.md#legacy",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        }
+      ]
+    },
+    {
+      "path": "持续运行与产物批次设计.md",
+      "sha256": "748c33abcc72fbb7c7013cd2668d91d4245afd15f359997cc9fba678008d4819",
+      "sections": [
+        {
+          "section": 1,
+          "title": "执行模型",
+          "target": "02-系统架构与详细设计.md#continuous",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 2,
+          "title": "租约、心跳与资源",
+          "target": "02-系统架构与详细设计.md#continuous",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 3,
+          "title": "多次产出及去重",
+          "target": "02-系统架构与详细设计.md#batches",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 4,
+          "title": "检查点与产物的原子交接",
+          "target": "02-系统架构与详细设计.md#checkpoints",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 5,
+          "title": "停止、暂停与状态",
+          "target": "02-系统架构与详细设计.md#continuous",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 6,
+          "title": "故障、恢复与升级",
+          "target": "02-系统架构与详细设计.md#continuous",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 7,
+          "title": "配置、数据与观测",
+          "target": "03-接口协议与脚本开发规范.md#continuous-config",
+          "secondary_targets": [
+            "02-系统架构与详细设计.md#database",
+            "04-部署运维与监控手册.md#metrics"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 8,
+          "title": "验收场景",
+          "target": "05-测试验收与验证记录.md#long-tests",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 9,
+          "title": "长期兼容脚本",
+          "target": "03-接口协议与脚本开发规范.md#legacy",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        }
+      ]
+    },
+    {
+      "path": "青龙能力借鉴与脚本接入设计.md",
+      "sha256": "5d2030cdaf41eee39cb26c72f7b169d7942063a85a884a802119024869e9baca",
+      "sections": [
+        {
+          "section": 1,
+          "title": "吸收的能力与适用范围",
+          "target": "02-系统架构与详细设计.md#references",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 2,
+          "title": "脚本导入、编辑、构建与试运行",
+          "target": "02-系统架构与详细设计.md#publishing",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 3,
+          "title": "兼容适配契约与能力展示",
+          "target": "03-接口协议与脚本开发规范.md#legacy",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 4,
+          "title": "参数、环境与依赖边界",
+          "target": "03-接口协议与脚本开发规范.md#legacy",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 5,
+          "title": "Hook、旧通知与多次产物",
+          "target": "03-接口协议与脚本开发规范.md#legacy",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 6,
+          "title": "任务体验与运行诊断",
+          "target": "01-产品需求与功能设计.md#tasks",
+          "secondary_targets": [
+            "04-部署运维与监控手册.md#timing"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 7,
+          "title": "接口、持久化与异常闭环",
+          "target": "03-接口协议与脚本开发规范.md#import-api",
+          "secondary_targets": [
+            "02-系统架构与详细设计.md#imports",
+            "02-系统架构与详细设计.md#database"
+          ],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 8,
+          "title": "验收与静态检查范围",
+          "target": "05-测试验收与验证记录.md#adapter-tests",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        },
+        {
+          "section": 9,
+          "title": "官方参考与工程落地",
+          "target": "02-系统架构与详细设计.md#references",
+          "secondary_targets": [],
+          "treatment": "按类型迁移或与目标章节同义规则合并；删除重复转述，保留原编号和独有约束"
+        }
+      ]
+    },
+    {
+      "path": "README.md",
+      "sha256": "bc0bc6ba523fd22f77078c05d55edb29e5dae2607526aabeb3c534e73ef4f9e3",
+      "sections": [
+        {
+          "section": 0,
+          "title": "全文",
+          "target": "README.md",
+          "secondary_targets": [],
+          "treatment": "导航/协议索引/历史验证记录分别归并"
+        }
+      ]
+    },
+    {
+      "path": "contracts/README.md",
+      "sha256": "60fbd45e958641aac9a468654ddb47115e92811a675a545d57d952ad20472a65",
+      "sections": [
+        {
+          "section": 0,
+          "title": "全文",
+          "target": "03-接口协议与脚本开发规范.md#schemas",
+          "secondary_targets": [],
+          "treatment": "导航/协议索引/历史验证记录分别归并"
+        }
+      ]
+    },
+    {
+      "path": "文档校验记录.md",
+      "sha256": "e30d00324a5bce71896a0b141baa308a186d172a4a4af90ac4d4ba3e95b17683",
+      "sections": [
+        {
+          "section": 0,
+          "title": "全文",
+          "target": "05-测试验收与验证记录.md#results",
+          "secondary_targets": [],
+          "treatment": "导航/协议索引/历史验证记录分别归并"
+        }
+      ]
+    }
+  ],
+  "assets": {
+    "contracts/invocation.schema.json": "faa8754335f31f709767d9939cbb03dafce19656e15f97a675fabf8f34004a6b",
+    "contracts/legacy-adapter.schema.json": "85599bcdb4978eb0a3577a944e8ad48c24449a886bb34d044e8e60c2d01100f5",
+    "contracts/legacy-emission.schema.json": "1292c09388b667eafd50fd64eca302303550e48cffb9b1960c561907bd8bd0c8",
+    "contracts/manifest.schema.json": "7c4e9f7f86d8674f317c39604434f36337fea4779771a49a8d9d20a99a7ded5f",
+    "contracts/output-batch.schema.json": "8b4e5bf250ae1f2eb893bdb027039686b7fd65baed711cead8356410cc72dad9",
+    "contracts/output.schema.json": "d7dbf54ddcef11c94a8955d4ec168ee40eb78e26052bb0082778d9cb0401c15c",
+    "contracts/result.schema.json": "dbddc3f8ff6c1fb0ffd6e40a88e3ca39b653e1dbbe9ad022f2a5b5b8745e8bfe",
+    "contracts/script-event.schema.json": "dff3ad6c8240cbe4297b8a888f1cec841f758501072a739781c4fc2a331bb885",
+    "contracts/examples/batch.invocation.json": "de4a3ab5d9f7b865a719c795cc523e658d5dac14ef9c5c18301fc014cfcb971a",
+    "contracts/examples/batch.manifest.json": "9672ba075758633e25cf17ce44efe43087c45b490a845e8e5e99f94a43e68f5c",
+    "contracts/examples/batch.result.json": "cec67a0d6ee27d0c44046223fc4daf4144d40b9b0710cb28ecaa699de59dd6a9",
+    "contracts/examples/cases.json": "23c6886b34f7542c0f3b7198aa75deca84d9b198038ecf632578667b2a486b5f",
+    "contracts/examples/confirm.invocation.json": "9e42cf05eb429882d09a19cb059051552cefffa1412bf21619ea68432ffea50b",
+    "contracts/examples/confirm.result.json": "05dd06bf4eeee39154967a7e7c4a374e763ec503685190830f68cda219a50870",
+    "contracts/examples/continuous.batches.json": "29e83c0c937bf3954a90165f1ff5aebb895bdeef1e52b054a69061c86cc9df43",
+    "contracts/examples/continuous.invocation.json": "c36c818ea72f190b9a1ce903caad5c3b7817a21164a46e668837367dd69a2b2a",
+    "contracts/examples/continuous.items.json": "a53d3edf27f54f76224400cb59ffa140b00290b59e26264ff892c41aaf4562b0",
+    "contracts/examples/continuous.manifest.json": "d688b8920ea9e5c107c428f02efe24d83c5906a564cff3d1eeff81d130314def",
+    "contracts/examples/continuous.result.json": "5fdeedb3b038497069fd096dcc47da6b9bfa31e07604501bb5c1d42f95a96cbe",
+    "contracts/examples/legacy.manifest.json": "362865992398b4b12a8b716f6bc903766a24b73c82d0b9c05c9ee7ea0d4b7246",
+    "contracts/examples/mapped.adapter.json": "3bb4be8e7c2edee079efd56c91761b8afc5515bfcda62dcdca8f0ea998ae30cc",
+    "contracts/examples/mapped.emission.json": "8caa3443bd1758a33e6803b6904c5c710f5f14dfaa5abb7fae216763151d0403",
+    "contracts/examples/mapped.input.json": "1e1e90b3d843886a3d55f1994664c071dab3765f0e2e7b04123ebaae9ebbffd2",
+    "contracts/examples/mapped.manifest.json": "b80bb29197599078ad067acfbb831c2aa2e54c29b1ad988697f0c11838ae3dc2",
+    "contracts/examples/outputs.batch.json": "13457867a29c79055c0c5f1135fa8d9553720a6cbbef2e167fd7b75d1ab5fb88",
+    "contracts/examples/outputs.invocation.json": "d41090560741090538e33a203f429495e558f9a077ecb26773abbe844380f319",
+    "contracts/examples/outputs.items.json": "bae285825579a5e1a46b0420da7ccc23ab21f391a26a537831cbc9f74f76e7c1",
+    "contracts/examples/outputs.manifest.json": "d051c360f8446500a8b8777116fe7540e179f915719db75ad698f3d1d69cf752",
+    "contracts/examples/outputs.result.json": "abb26ed3b68c9ce8f81f210f555439dc1a36fce8aa43d77bf3810a494f6acb22",
+    "contracts/examples/outputs.uploads.json": "b7f4ffb32301cad7ea0a20eece97b0cd4d07a3c7503b57174c2d6b115dcb7602",
+    "contracts/examples/report.event.json": "9a0a7abf73c9806c95e3bf91eaddc092b2fb77fe6b36152c60884299589fa6b1",
+    "contracts/examples/report.invocation.json": "0fe38fbe1a293a4c9150f5063901f2891fca6880b80a293f4cc50f205dc19def",
+    "contracts/examples/report.manifest.json": "fbf03a3c6d1f7c8912c92e38a26a924a3a38f209f79944f2c52461aeb6e5d2e2",
+    "contracts/examples/report.result.json": "7d1023c46f54c753a2fb7adbfabd51a0690735c5333ed029d9caba9ad41574b5",
+    "contracts/v1.0/invocation.schema.json": "6c2a03f42216f8bd5cb7d3c7261eb491037615526a470e8ecb3e3ab4ac78bfc4",
+    "contracts/v1.0/manifest.schema.json": "122872c5023dd3643896384e9ed7fe1f4af0541848b11b29b32791014ae0a708",
+    "contracts/v1.0/result.schema.json": "34f2cb0e0db743cd58cb0aed955cea12fd83d225c3ffb08cdf7eecb3ab370f39",
+    "contracts/v1.0/script-event.schema.json": "900042c28d850747603b469aca04bd7688be4554a92c6c8ae306676415ea1bad"
+  },
+  "traceability": {
+    "REQ": 61,
+    "AC": 52,
+    "AL": 29,
+    "OBS": 22,
+    "E2E": 26,
+    "INV": 16,
+    "FLOW": 13,
+    "TX": 10,
+    "OUT": 8,
+    "LONG": 6,
+    "ADP": 10
+  },
+  "editorial_corrections": [
+    "保留节点状态、凭据校验和渠道详情入口、产物分片表名及主要索引。",
+    "移除重复清单说明；side_effects 草稿预填与封存必填区分；声明的执行模式与实际测试证据区分。"
+  ],
+  "branding_title_changes": {
+    "contracts/invocation.schema.json": "4e9c1b52014c273833cc1859b121820864d1f13de6a37d5fc808d836e8289518",
+    "contracts/legacy-adapter.schema.json": "26b3d1b0a8d4f18755062c6c6201dcd7df804b83265700992495a6ac1b3bf487",
+    "contracts/legacy-emission.schema.json": "b8f5617afadcdba5a0d7b5333399565a9c0aeba9ec83edd375bf217fab855580",
+    "contracts/manifest.schema.json": "74340bb72c6b192a06dd80b847e65c693ee6431c734900b716c033f7ad7a6d78",
+    "contracts/output-batch.schema.json": "2113b63786274b8635c410c5138675e0b55a6ca88c36090654c31306fece69bf",
+    "contracts/output.schema.json": "8f730cf462afd3910a0c7945d42496434a2e00415b105c1756d68b234c71adb6",
+    "contracts/result.schema.json": "5639ddfe88a8a069563cc7c4b055b3d7d26b0dc3c079f6b9d7f05821a824a783",
+    "contracts/script-event.schema.json": "a396af2d936aec698a551048b4b22689490a35baafea70d9373ff5296779889b",
+    "contracts/v1.0/invocation.schema.json": "ace75f9599df71c4c2db8f98b5a8ba226ab9b770ea03f58117c02b9154573a2b",
+    "contracts/v1.0/manifest.schema.json": "ea028956f02f31e03aa9d8498a85440e609347b8f3044f12cb7f770fef1d47ce",
+    "contracts/v1.0/result.schema.json": "3d9d2d16e93becb42f9ae2bd6b0e28c5526a04c4eef31a83d8cf20db46e63e65",
+    "contracts/v1.0/script-event.schema.json": "3fcd8bf889ea300ddee346e1453ed827f0246766ba654efdb7271084afa774a3"
+  }
+}

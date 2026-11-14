@@ -1,0 +1,56 @@
+{
+  "date": "2026-11-13",
+  "scope": "Static documentation and contracts only",
+  "checks": [
+    {
+      "command": "pwsh -NoProfile -File docs/checks/validate-contracts.ps1",
+      "result": {
+        "chunk_id": "c25484",
+        "wall_time_seconds": 1.0587965,
+        "exit_code": 0,
+        "original_token_count": 32,
+        "output": "PASS: 174 contract checks; 6 core example cases plus adapter examples. No business action, upload or notification executed.\r\n"
+      }
+    },
+    {
+      "command": "python -X utf8 docs/checks/validate-adapter-contracts.py",
+      "result": {
+        "chunk_id": "0198b0",
+        "wall_time_seconds": 0.3520313,
+        "exit_code": 0,
+        "original_token_count": 26,
+        "output": "PASS: 42 adapter mapping and relation model checks; no process, file upload or notification executed.\r\n"
+      }
+    },
+    {
+      "command": "python -X utf8 docs/checks/validate-output-contracts.py",
+      "result": {
+        "chunk_id": "19fdc4",
+        "wall_time_seconds": 0.2772708,
+        "exit_code": 0,
+        "original_token_count": 26,
+        "output": "PASS: 16 output relationship and batch/checkpoint model checks. No live service or file bytes tested.\r\n"
+      }
+    },
+    {
+      "command": "python -X utf8 docs/checks/validate-docs.py",
+      "result": {
+        "chunk_id": "1a5a41",
+        "wall_time_seconds": 0.8739897,
+        "exit_code": 0,
+        "original_token_count": 77,
+        "output": "PASS: 6 Markdown files, 40 JSON files, 98 tables; links/anchors, sections, examples and unique traceability.\r\nPASS: 114 old sections mapped; all 38 contract/example digests unchanged.\r\n{\"AC\": 52, \"ADP\": 10, \"AL\": 29, \"E2E\": 26, \"FLOW\": 13, \"INV\": 16, \"LONG\": 6, \"OBS\": 22, \"OUT\": 8, \"REQ\": 61, \"TX\": 10}\r\n"
+      }
+    },
+    {
+      "command": "python -X utf8 docs/checks/validate-role-design.py",
+      "result": {
+        "chunk_id": "981bd0",
+        "wall_time_seconds": 0.2803778,
+        "exit_code": 0,
+        "original_token_count": 83,
+        "output": "PASS: 2323 role, page, operation, commercial-boundary and document cross-checks.\r\nPASS: 4 workspaces; 66 page definitions; 102 guarded operations; 75 role-page deliverables; 16 commercial requirements; 24 acceptance scenarios.\r\nLIMIT: static design consistency only; no live payments, execution, authorization or image acceptance.\r\n"
+      }
+    }
+  ]
+}

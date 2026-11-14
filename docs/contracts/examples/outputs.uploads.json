@@ -1,0 +1,67 @@
+[
+  {
+    "upload_id": "upload_csv",
+    "file_name": "report.csv",
+    "media_type": "text/csv",
+    "size_bytes": 1024,
+    "sha256": "a8d25884e1b4389340e0fd52d79c058210677e1ce09b3450b091e58c55dbe7b2",
+    "invocation_id": "inv_outputs_001",
+    "owner_user_id": "user_outputs_demo",
+    "phase": "OUTPUT_HOOK",
+    "state": "UPLOADED",
+    "batch_key": "hook",
+    "output_series_id": "series_run_outputs_001"
+  },
+  {
+    "upload_id": "upload_pdf",
+    "file_name": "report.pdf",
+    "media_type": "application/pdf",
+    "size_bytes": 1024,
+    "sha256": "6b909c8ebfdbb8c08f846c58db92219f3f0ea99a408a8d069d73354bbaf328d3",
+    "invocation_id": "inv_outputs_001",
+    "owner_user_id": "user_outputs_demo",
+    "phase": "OUTPUT_HOOK",
+    "state": "UPLOADED",
+    "batch_key": "hook",
+    "output_series_id": "series_run_outputs_001"
+  },
+  {
+    "upload_id": "upload_xlsx",
+    "file_name": "report.xlsx",
+    "media_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "size_bytes": 1024,
+    "sha256": "b017a3c2e60b4a6dcc315858cd96aac1654bc02ac58d58ea0542c4bcfb9b7b45",
+    "invocation_id": "inv_outputs_001",
+    "owner_user_id": "user_outputs_demo",
+    "phase": "OUTPUT_HOOK",
+    "state": "UPLOADED",
+    "batch_key": "hook",
+    "output_series_id": "series_run_outputs_001"
+  },
+  {
+    "upload_id": "upload_png",
+    "file_name": "report.png",
+    "media_type": "image/png",
+    "size_bytes": 1024,
+    "sha256": "46e9ce0cc1021bcfcf63e242a25e47f8ce3c46d1661c529cb967231e079d5e2a",
+    "invocation_id": "inv_outputs_001",
+    "owner_user_id": "user_outputs_demo",
+    "phase": "OUTPUT_HOOK",
+    "state": "UPLOADED",
+    "batch_key": "hook",
+    "output_series_id": "series_run_outputs_001"
+  },
+  {
+    "upload_id": "upload_binary",
+    "file_name": "report.custom",
+    "media_type": "application/octet-stream",
+    "size_bytes": 1024,
+    "sha256": "1dba33b81ba9ee971a16e08995d759abdada04dc1923d64873f36798f84a9b08",
+    "invocation_id": "inv_outputs_001",
+    "owner_user_id": "user_outputs_demo",
+    "phase": "OUTPUT_HOOK",
+    "state": "UPLOADED",
+    "batch_key": "hook",
+    "output_series_id": "series_run_outputs_001"
+  }
+]

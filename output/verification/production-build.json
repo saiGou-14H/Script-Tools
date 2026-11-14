@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-14T08:14:19.849Z",
+  "checks": [
+    "minified production entry, icon and public-page chunks load through the built application",
+    "production consumer home downloads its existing preview file, and general and travel service detail chunks load in both public and consumer workspaces with enabled local-preview purchase entry points",
+    "production route splitting loads the consumer configuration page and RJSF schema form",
+    "production administrator chunks load the authorized observation tables",
+    "the production build keeps every JavaScript chunk below the default 500 kB warning threshold"
+  ],
+  "screenshots": [],
+  "errors": [],
+  "largest_js": {
+    "file": "index-FEqAR-Ph.js",
+    "bytes": 368574
+  },
+  "result": "PASS"
+}

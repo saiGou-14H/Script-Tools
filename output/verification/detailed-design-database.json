@@ -1,0 +1,263 @@
+{
+  "date": "2026-11-14",
+  "scope": "Embedded PostgreSQL DDL and single-connection constraint tests; not deployment or concurrent-service verification",
+  "blocks": 15,
+  "checks": [
+    {
+      "name": "cross-owner private payload rejected",
+      "result": "PASS",
+      "expected": "23503"
+    },
+    {
+      "name": "sealed source cannot be overwritten",
+      "result": "PASS",
+      "expected": "SEALED_VERSION_IMMUTABLE"
+    },
+    {
+      "name": "sealed version cannot revert to draft",
+      "result": "PASS",
+      "expected": "INVALID_VERSION_TRANSITION"
+    },
+    {
+      "name": "schema action projection is append-only",
+      "result": "PASS",
+      "expected": "APPEND_ONLY"
+    },
+    {
+      "name": "same task cannot have second active Run",
+      "result": "PASS",
+      "expected": "23505"
+    },
+    {
+      "name": "same trigger cannot duplicate after terminal",
+      "result": "PASS",
+      "expected": "23505"
+    },
+    {
+      "name": "unknown effect cannot become normal failure",
+      "result": "PASS",
+      "expected": "23514"
+    },
+    {
+      "name": "closed unresolved preserves unknown effect",
+      "result": "PASS",
+      "expected": "accepted"
+    },
+    {
+      "name": "lease cannot bind another Run attempt",
+      "result": "PASS",
+      "expected": "23503"
+    },
+    {
+      "name": "one invocation cannot hold BUSINESS and OUTPUT simultaneously",
+      "result": "PASS",
+      "expected": "23505"
+    },
+    {
+      "name": "same-batch message attachment accepted",
+      "result": "PASS",
+      "expected": "accepted"
+    },
+    {
+      "name": "cross-series attachment rejected",
+      "result": "PASS",
+      "expected": "ATTACHMENT_SERIES_MISMATCH"
+    },
+    {
+      "name": "message cannot attach a message",
+      "result": "PASS",
+      "expected": "INVALID_ATTACHMENT_KIND"
+    },
+    {
+      "name": "invalid protocol producer outcome rejected",
+      "result": "PASS",
+      "expected": "23514"
+    },
+    {
+      "name": "checkpoint CAS conflict rolls back head and batch writes",
+      "result": "PASS",
+      "expected": "CHECKPOINT_CONFLICT"
+    },
+    {
+      "name": "committed batch cannot be replaced",
+      "result": "PASS",
+      "expected": "COMMITTED_BATCH_IMMUTABLE"
+    },
+    {
+      "name": "published output body cannot change",
+      "result": "PASS",
+      "expected": "PUBLISHED_OUTPUT_IMMUTABLE"
+    },
+    {
+      "name": "accepted result cannot be overwritten",
+      "result": "PASS",
+      "expected": "APPEND_ONLY"
+    },
+    {
+      "name": "one final result per invocation",
+      "result": "PASS",
+      "expected": "23505"
+    },
+    {
+      "name": "balanced journal accepted at deferred check",
+      "result": "PASS",
+      "expected": "accepted"
+    },
+    {
+      "name": "unbalanced journal rejected at transaction end",
+      "result": "PASS",
+      "expected": "UNBALANCED_LEDGER"
+    },
+    {
+      "name": "empty journal header rejected",
+      "result": "PASS",
+      "expected": "UNBALANCED_LEDGER"
+    },
+    {
+      "name": "cross-currency account rejected",
+      "result": "PASS",
+      "expected": "23503"
+    },
+    {
+      "name": "journal entries immutable",
+      "result": "PASS",
+      "expected": "APPEND_ONLY"
+    },
+    {
+      "name": "journal source event cannot post twice",
+      "result": "PASS",
+      "expected": "23505"
+    },
+    {
+      "name": "payload can be erased while references survive",
+      "result": "PASS",
+      "expected": "accepted"
+    },
+    {
+      "name": "deleted payload cannot retain ciphertext",
+      "result": "PASS",
+      "expected": "23514"
+    },
+    {
+      "name": "private owner cannot be transferred",
+      "result": "PASS",
+      "expected": "IMMUTABLE_OWNER"
+    },
+    {
+      "name": "stale API revision CAS does not update",
+      "result": "PASS",
+      "expected": "accepted"
+    },
+    {
+      "name": "publisher reference is not consumer ownership",
+      "result": "PASS",
+      "expected": "accepted"
+    },
+    {
+      "name": "client cannot substitute quote price",
+      "result": "PASS",
+      "expected": "QUOTE_PRICE_MISMATCH"
+    },
+    {
+      "name": "payment amount must equal order",
+      "result": "PASS",
+      "expected": "PAYMENT_ORDER_MISMATCH"
+    },
+    {
+      "name": "actual channel transaction is permanently unique",
+      "result": "PASS",
+      "expected": "23505"
+    },
+    {
+      "name": "payment retry request id cannot be replaced",
+      "result": "PASS",
+      "expected": "IMMUTABLE_FIELD"
+    },
+    {
+      "name": "only one funding transaction per order",
+      "result": "PASS",
+      "expected": "23505"
+    },
+    {
+      "name": "extra real collection retained without extra funding",
+      "result": "PASS",
+      "expected": "accepted"
+    },
+    {
+      "name": "duplicate provider event rejected",
+      "result": "PASS",
+      "expected": "23505"
+    },
+    {
+      "name": "refund success plus reservation cannot exceed real receipt",
+      "result": "PASS",
+      "expected": "23514"
+    },
+    {
+      "name": "one entitlement per order",
+      "result": "PASS",
+      "expected": "23505"
+    },
+    {
+      "name": "reserved and consumed cannot exceed one",
+      "result": "PASS",
+      "expected": "23514"
+    },
+    {
+      "name": "consume once cannot reset used count",
+      "result": "PASS",
+      "expected": "CONSUMED_USAGE_IMMUTABLE"
+    },
+    {
+      "name": "Run reservation binds its entitlement",
+      "result": "PASS",
+      "expected": "accepted"
+    },
+    {
+      "name": "committed use cannot be released after claim",
+      "result": "PASS",
+      "expected": "COMMITTED_USAGE_IMMUTABLE"
+    },
+    {
+      "name": "refund source and currency must match",
+      "result": "PASS",
+      "expected": "REFUND_SOURCE_MISMATCH"
+    },
+    {
+      "name": "paid configuration cannot omit entitlement",
+      "result": "PASS",
+      "expected": "RUN_ENTITLEMENT_MISMATCH"
+    }
+  ],
+  "engine": "PostgreSQL 18.6 (PGlite 0.5.16) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 6.0.13 (e13ee988ce3d87a738dd8f3661d02223308c412a), 32-bit",
+  "tables": 145,
+  "fields": 1755,
+  "constraints": [
+    {
+      "contype": "c",
+      "n": 426
+    },
+    {
+      "contype": "f",
+      "n": 401
+    },
+    {
+      "contype": "n",
+      "n": 1488
+    },
+    {
+      "contype": "p",
+      "n": 145
+    },
+    {
+      "contype": "t",
+      "n": 2
+    },
+    {
+      "contype": "u",
+      "n": 242
+    }
+  ],
+  "indexes": 961,
+  "triggers": 195
+}

@@ -1,0 +1,149 @@
+[
+  {
+    "output_id": "out_summary",
+    "phase": "ACTION",
+    "request": {
+      "protocol_version": "2.0",
+      "output_key": "summary",
+      "kind": "text",
+      "payload": {
+        "content": "本次汇总完成，共 1 条记录。",
+        "media_type": "text/plain"
+      }
+    },
+    "batch_key": "action"
+  },
+  {
+    "output_id": "out_records",
+    "phase": "OUTPUT_HOOK",
+    "request": {
+      "protocol_version": "2.0",
+      "output_key": "records",
+      "kind": "json",
+      "payload": {
+        "data": {
+          "item_count": 1,
+          "records": [
+            {
+              "id": "record_demo",
+              "status": "active"
+            }
+          ]
+        }
+      }
+    },
+    "batch_key": "hook"
+  },
+  {
+    "output_id": "out_csv",
+    "phase": "OUTPUT_HOOK",
+    "request": {
+      "protocol_version": "2.0",
+      "output_key": "csv_report",
+      "kind": "file",
+      "payload": {
+        "upload_id": "upload_csv",
+        "file_name": "report.csv",
+        "media_type": "text/csv",
+        "size_bytes": 1024,
+        "sha256": "a8d25884e1b4389340e0fd52d79c058210677e1ce09b3450b091e58c55dbe7b2"
+      }
+    },
+    "batch_key": "hook"
+  },
+  {
+    "output_id": "out_pdf",
+    "phase": "OUTPUT_HOOK",
+    "request": {
+      "protocol_version": "2.0",
+      "output_key": "pdf_report",
+      "kind": "file",
+      "payload": {
+        "upload_id": "upload_pdf",
+        "file_name": "report.pdf",
+        "media_type": "application/pdf",
+        "size_bytes": 1024,
+        "sha256": "6b909c8ebfdbb8c08f846c58db92219f3f0ea99a408a8d069d73354bbaf328d3"
+      }
+    },
+    "batch_key": "hook"
+  },
+  {
+    "output_id": "out_xlsx",
+    "phase": "OUTPUT_HOOK",
+    "request": {
+      "protocol_version": "2.0",
+      "output_key": "xlsx_report",
+      "kind": "file",
+      "payload": {
+        "upload_id": "upload_xlsx",
+        "file_name": "report.xlsx",
+        "media_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "size_bytes": 1024,
+        "sha256": "b017a3c2e60b4a6dcc315858cd96aac1654bc02ac58d58ea0542c4bcfb9b7b45"
+      }
+    },
+    "batch_key": "hook"
+  },
+  {
+    "output_id": "out_png",
+    "phase": "OUTPUT_HOOK",
+    "request": {
+      "protocol_version": "2.0",
+      "output_key": "png_report",
+      "kind": "file",
+      "payload": {
+        "upload_id": "upload_png",
+        "file_name": "report.png",
+        "media_type": "image/png",
+        "size_bytes": 1024,
+        "sha256": "46e9ce0cc1021bcfcf63e242a25e47f8ce3c46d1661c529cb967231e079d5e2a"
+      }
+    },
+    "batch_key": "hook"
+  },
+  {
+    "output_id": "out_binary",
+    "phase": "OUTPUT_HOOK",
+    "request": {
+      "protocol_version": "2.0",
+      "output_key": "binary_report",
+      "kind": "file",
+      "payload": {
+        "upload_id": "upload_binary",
+        "file_name": "report.custom",
+        "media_type": "application/octet-stream",
+        "size_bytes": 1024,
+        "sha256": "1dba33b81ba9ee971a16e08995d759abdada04dc1923d64873f36798f84a9b08"
+      }
+    },
+    "batch_key": "hook"
+  },
+  {
+    "output_id": "out_notice",
+    "phase": "OUTPUT_HOOK",
+    "request": {
+      "protocol_version": "2.0",
+      "output_key": "report_notice",
+      "kind": "message",
+      "payload": {
+        "title": "报告已生成",
+        "body": "请登录平台查看报告和结构化数据。",
+        "format": "text/plain",
+        "channel_binding_ids": [
+          "binding_owner_inbox",
+          "binding_owner_email"
+        ],
+        "attachments": [
+          {
+            "output_id": "out_records"
+          },
+          {
+            "output_id": "out_csv"
+          }
+        ]
+      }
+    },
+    "batch_key": "hook"
+  }
+]

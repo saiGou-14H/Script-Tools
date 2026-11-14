@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-14T08:15:20.313Z",
+  "checks": [
+    "public home retains the reference columns, recommendations, categories, workflow and purchase guidance within the reference viewport",
+    "home categories filter the market, repeated global searches refresh the current route, and publishing opens the publisher sign-in entry",
+    "GUEST shared pages retain the requested workspace on a direct page load",
+    "unknown resources do not substitute another service and paid orders cannot be cancelled as unpaid",
+    "USER shared pages retain the requested workspace on a direct page load",
+    "PUBLISHER shared pages retain the requested workspace on a direct page load",
+    "ADMIN shared pages retain the requested workspace on a direct page load"
+  ],
+  "screenshots": [
+    "GUEST-P01",
+    "GUEST-P03",
+    "GUEST-P04",
+    "GUEST-P05",
+    "GUEST-P06",
+    "USER-P02",
+    "USER-P03",
+    "USER-P05",
+    "USER-C09",
+    "PUBLISHER-C21",
+    "PUBLISHER-P06",
+    "ADMIN-C21",
+    "ADMIN-P06"
+  ],
+  "errors": [],
+  "homeLayout": {
+    "width": 1814,
+    "height": 868,
+    "helpBottom": 823
+  },
+  "result": "PASS"
+}

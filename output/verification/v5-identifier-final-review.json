@@ -1,0 +1,4 @@
+{
+ "ADMIN-O16":{"pass":true,"source_filename":"exec-c2bc393f-dafc-414b-97f2-3c39dc165168.png","observed":"支付日志以服务订单尾号0082清晰关联，示例日期统一；脱敏日志、告警恢复证据、限时静默与规则设置保持。"},
+ "ADMIN-O21":{"pass":true,"source_filename":"exec-4cf6527f-a1a1-4ab3-894e-ce0a0cb9f70d.png","observed":"BK082关联掩码服务单TT•••0082，预约11月21日下午，核验期限早于参观；票款0与服务费8分开，UNKNOWN仅查原预约，退款不解除外部防重。"}
+}

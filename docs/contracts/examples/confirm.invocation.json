@@ -1,0 +1,23 @@
+{
+  "protocol_version": "2.0",
+  "run_id": "run_batch_001",
+  "attempt_id": "attempt_batch_002",
+  "invocation_id": "inv_batch_002",
+  "script_version_id": "sv_batch_001_v2",
+  "action": "confirm_batch",
+  "context": {},
+  "input": {
+    "batch_ref": "batch-demo-001"
+  },
+  "runtime": {
+    "requested_execution_mode": "docker",
+    "actual_execution_mode": "docker",
+    "deadline": "2026-11-14T12:00:00Z",
+    "output_deadline": "2026-11-14T12:00:30Z",
+    "run_mode": "finite",
+    "output_series_id": "series_run_batch_001",
+    "lease_expires_at": "2026-11-14T12:00:00Z"
+  },
+  "credential_bindings": [],
+  "output_path": "/work/results/inv_batch_002.json"
+}

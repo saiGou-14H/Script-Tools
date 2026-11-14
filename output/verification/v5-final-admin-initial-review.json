@@ -1,0 +1,47 @@
+{
+  "ADMIN-O09": {
+    "pass": true,
+    "source_filename": "exec-894847ab-ea7c-40b6-b727-66357e76f805.png",
+    "observed": "原支付PAY019渠道与退款UNKNOWN分清；原退款预占8元，已退0、剩余0；按成交规则及渠道核验证据处理，不能重复退款或手填到账。"
+  },
+  "ADMIN-O10": {
+    "pass": true,
+    "source_filename": "exec-df6b43e9-4af0-482d-b83a-2c12f0f1326c.png",
+    "observed": "日期已统一；晚到成功与重复真实收款分别原路退款，UNKNOWN退款查询原请求，无重放支付入口。"
+  },
+  "ADMIN-O11": {
+    "pass": true,
+    "source_filename": "exec-d32c6d29-e0a4-4e79-98ab-baeaee127ce8.png",
+    "observed": "在途200元与可结算区分，三条账目230-20-10=200一致，退款追加冲正，无重复打款入口。"
+  },
+  "ADMIN-O12": {
+    "pass": true,
+    "source_filename": "exec-7e571dc3-cf0c-4cb5-bdbd-ccc9b145740a.png",
+    "observed": "v4草稿与编辑选中一致，平台承担渠道费与样例一致，新报价规则不改旧订单，退款期限为核验处理并以真实回执判定到账。"
+  },
+  "ADMIN-O19": {
+    "pass": false,
+    "source_filename": "exec-cd181010-0b18-4dac-b6de-806afbde2d0a.png",
+    "observed": "权限保护与禁止自提权明确，但有效能力示例日期已过期，commerce与catalog描述有越界歧义，需改。"
+  },
+  "ADMIN-O20": {
+    "pass": false,
+    "source_filename": "exec-e489abd7-5f0f-49dc-8975-bd580ff32e5b.png",
+    "observed": "备份与恢复验证分开正确，但日志90天、文件180天与文档默认30天不符，未决数据不可无限保留完整内容。"
+  },
+  "ADMIN-O21": {
+    "pass": false,
+    "source_filename": "exec-bf3a12af-e1a1-4217-a85f-afe879d66cde.png",
+    "observed": "退款不解除防重与查询原预约正确，但服务订单号缺位，预约日期需与消费者同笔订单对应。"
+  },
+  "ADMIN-C21": {
+    "pass": false,
+    "source_filename": "exec-f4843192-5a0e-43dc-bc90-576f719bb9d4.png",
+    "observed": "未结售后与结算可进入关闭中正确；当前管理员未列入工作区，需标明当前身份与最后权限管理员保护。"
+  },
+  "ADMIN-P06": {
+    "pass": true,
+    "source_filename": "exec-6fe51020-2fa1-4780-81a0-a079f0e6a8ba.png",
+    "observed": "FAQ覆盖购买、收费、结果、退款、发布、安全；目标未达按购买前固定的发布者规则解释，保留后台导航。"
+  }
+}

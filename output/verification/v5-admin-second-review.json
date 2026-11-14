@@ -1,0 +1,52 @@
+{
+  "PUBLISHER-S16": {
+    "pass": true,
+    "source_filename": "exec-d61fae93-09bd-4a03-96bc-de5fe85fe09e.png",
+    "observed": "P1来源预览已明确未启用；固定快照不可关闭，差异和生成草稿均禁用，本地上传仍可用。"
+  },
+  "ADMIN-O03": {
+    "pass": true,
+    "source_filename": "exec-8b75c911-cc57-4289-8008-cf5e5f48b2b7.png",
+    "observed": "部署READY与商品在售/停销分列，恢复与停销按状态可用，无人工发布审核。"
+  },
+  "ADMIN-O04": {
+    "pass": true,
+    "source_filename": "exec-2ae48029-2c1e-46a9-8e4d-4eea401f5f50.png",
+    "observed": "三条虚构景点均标示例，未核验景点未开放，未声称真实景点已接入。"
+  },
+  "ADMIN-O06": {
+    "pass": true,
+    "source_filename": "exec-941f185e-019f-4e4d-b550-6f4a50239eb1.png",
+    "observed": "通用表格清洗无外部预约关联；景点服务关联BK082/BK027，支付履约退款结算分列。"
+  },
+  "ADMIN-O02": {
+    "pass": true,
+    "source_filename": "exec-f07aab62-135b-42b3-b5d1-cb4ec42041cf.png",
+    "observed": "个人账号同时具有消费者与发布者能力；脱敏账户、摘要、配额与新业务限制，既有退款结算不受影响。"
+  },
+  "ADMIN-O08": {
+    "pass": false,
+    "source_filename": "exec-00bac75f-b626-45ca-950e-cbb67807ec62.png",
+    "observed": "退款查询操作正确，但顶部已到账与末行已核对用词不一致，需统一到账状态。"
+  },
+  "ADMIN-O09": {
+    "pass": false,
+    "source_filename": "exec-030b645b-58f0-4825-af79-5ca5338d639b.png",
+    "observed": "UNKNOWN仅查询原退款正确，但原支付渠道被误填UNKNOWN，退款规则未明确成交快照；需要修正。"
+  },
+  "ADMIN-O10": {
+    "pass": false,
+    "source_filename": "exec-29668ddb-7697-4c81-8280-813605b55989.png",
+    "observed": "晚到和额外真实收款原路退回、未知退款查询正确；示例日期误写1月，改11月13日。"
+  },
+  "ADMIN-O11": {
+    "pass": false,
+    "source_filename": "exec-88323b5f-bfb8-4434-8554-f06cb4bcade1.png",
+    "observed": "批次200元算式与多出+10元冲正明细不一致，且在途200元不应标为可结算。"
+  },
+  "ADMIN-O12": {
+    "pass": false,
+    "source_filename": "exec-2bc8e504-40d4-4ad2-8913-257ddac942b0.png",
+    "observed": "新版费用不影响旧快照正确；承担方样例与当前选择不一致，退款期限文案误承诺到账，需统一。"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "date": "2026-11-14T08:16:37.609Z",
+  "checks": [
+    "public catalog returns unique published services with immutable release content, version, schemas, integer price and duration strings, timestamps and purchase availability",
+    "an unpublished title edit cannot replace release content, and multiple active price versions resolve to one latest plan without duplicate service cards",
+    "publisher disablement, revoked script, stopped deployment and production-mode development fixtures all prevent purchasing, with verification changes rolled back",
+    "GUEST market and service pages render their role-specific regions, published rules and schema examples, preserve travel context through purchase or authentication, and reject closed or invalid attractions",
+    "USER market and service pages render their role-specific regions, published rules and schema examples, preserve travel context through purchase or authentication, and reject closed or invalid attractions",
+    "a browser-only eight-record catalog fixture verifies the consumer reference four-column two-row layout while persisted catalog content stays unchanged",
+    "prices above Number.MAX_SAFE_INTEGER sort and display exactly as integer minor units",
+    "purchase availability disables detail and direct checkout entry points consistently"
+  ],
+  "screenshots": [
+    "GUEST-P02",
+    "GUEST-P03",
+    "GUEST-P05",
+    "USER-P02",
+    "USER-P03",
+    "USER-P05",
+    "USER-P02-eight-record-layout"
+  ],
+  "errors": [],
+  "layouts": {
+    "GUEST-P02": {
+      "x": 252,
+      "y": 111.421875,
+      "width": 1542,
+      "height": 463.984375,
+      "documentWidth": 1814,
+      "documentHeight": 868
+    },
+    "GUEST-P03": {
+      "x": 265,
+      "y": 88,
+      "width": 1529,
+      "height": 764.484375,
+      "documentWidth": 1814,
+      "documentHeight": 868
+    },
+    "GUEST-P05": {
+      "x": 257,
+      "y": 87,
+      "width": 1538,
+      "height": 738.796875,
+      "documentWidth": 1814,
+      "documentHeight": 868
+    },
+    "USER-P02": {
+      "x": 238,
+      "y": 74,
+      "width": 1556,
+      "height": 521.015625,
+      "documentWidth": 1814,
+      "documentHeight": 868
+    },
+    "USER-P03": {
+      "x": 238,
+      "y": 72,
+      "width": 1556,
+      "height": 790.046875,
+      "documentWidth": 1814,
+      "documentHeight": 868
+    },
+    "USER-P05": {
+      "x": 254,
+      "y": 82,
+      "width": 1538,
+      "height": 757.515625,
+      "documentWidth": 1814,
+      "documentHeight": 868
+    },
+    "USER-P02-eight-record-layout": {
+      "x": 238,
+      "y": 74,
+      "width": 1556,
+      "height": 774.84375,
+      "documentWidth": 1814,
+      "documentHeight": 868
+    }
+  },
+  "result": "PASS"
+}

@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-14T08:16:38.600Z",
+  "checks": [
+    "initial migration creates 145 design tables",
+    "outside query waits for rollback and cannot read uncommitted data",
+    "successful transaction commits",
+    "reopening an already migrated PGlite database restores the travel search path"
+  ],
+  "mode": "pglite",
+  "result": "PASS"
+}

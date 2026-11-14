@@ -1,0 +1,308 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Script Tools legacy adapter 1.0",
+  "type": "object",
+  "properties": {
+    "adapter_protocol_version": {
+      "const": "1.0"
+    },
+    "action": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_.-]{0,127}$"
+    },
+    "argv": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "literal": {
+                "type": "string",
+                "maxLength": 4096,
+                "pattern": "^[^\\u0000]*$"
+              }
+            },
+            "required": [
+              "literal"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "input_pointer": {
+                "type": "string",
+                "maxLength": 512,
+                "pattern": "^(?:/(?:[^~\\u0000-\\u001f]|~[01])*)*$"
+              },
+              "encoding": {
+                "enum": [
+                  "string",
+                  "json"
+                ]
+              },
+              "on_missing": {
+                "enum": [
+                  "omit",
+                  "error"
+                ]
+              },
+              "flag": {
+                "type": "string",
+                "pattern": "^--?[A-Za-z][A-Za-z0-9_-]{0,63}$"
+              }
+            },
+            "required": [
+              "input_pointer",
+              "encoding",
+              "on_missing"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "maxItems": 64
+    },
+    "env": {
+      "type": "object",
+      "maxProperties": 64,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^(?!(?:PATH|HOME|TMPDIR|PYTHONPATH|PYTHONHOME|PYTHONSTARTUP|NODE_OPTIONS|NODE_PATH)$)(?!(?:LD_|DYLD_|TT_))[A-Z_][A-Z0-9_]{0,63}$"
+      },
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "input_pointer": {
+                "type": "string",
+                "maxLength": 512,
+                "pattern": "^(?:/(?:[^~\\u0000-\\u001f]|~[01])*)*$"
+              },
+              "encoding": {
+                "enum": [
+                  "string",
+                  "json"
+                ]
+              },
+              "on_missing": {
+                "enum": [
+                  "omit",
+                  "error"
+                ]
+              }
+            },
+            "required": [
+              "input_pointer",
+              "encoding",
+              "on_missing"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "credential_alias": {
+                "type": "string",
+                "pattern": "^[A-Za-z_][A-Za-z0-9_.-]{0,127}$"
+              },
+              "on_missing": {
+                "enum": [
+                  "omit",
+                  "error"
+                ]
+              }
+            },
+            "required": [
+              "credential_alias",
+              "on_missing"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "config_files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))[^/\\\\:\\u0000-\\u001f]+(?:/[^/\\\\:\\u0000-\\u001f]+)*$"
+          },
+          "input_pointer": {
+            "type": "string",
+            "maxLength": 512,
+            "pattern": "^(?:/(?:[^~\\u0000-\\u001f]|~[01])*)*$"
+          },
+          "on_missing": {
+            "enum": [
+              "omit",
+              "error"
+            ]
+          }
+        },
+        "required": [
+          "path",
+          "input_pointer",
+          "on_missing"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 16
+    },
+    "outputs": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "enum": [
+                "none"
+              ]
+            }
+          },
+          "required": [
+            "mode"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "enum": [
+                "final"
+              ]
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "output_key": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z_][A-Za-z0-9_.-]{0,127}$"
+                  },
+                  "path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256,
+                    "pattern": "^(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))[^/\\\\:\\u0000-\\u001f]+(?:/[^/\\\\:\\u0000-\\u001f]+)*$"
+                  },
+                  "media_type": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  }
+                },
+                "required": [
+                  "output_key",
+                  "path",
+                  "media_type"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 100,
+              "minItems": 1
+            }
+          },
+          "required": [
+            "mode",
+            "files"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "enum": [
+                "manifest"
+              ]
+            },
+            "manifest_dir": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))[^/\\\\:\\u0000-\\u001f]+(?:/[^/\\\\:\\u0000-\\u001f]+)*$"
+            }
+          },
+          "required": [
+            "mode",
+            "manifest_dir"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "notification_bridge": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "enum": [
+                "disabled"
+              ]
+            }
+          },
+          "required": [
+            "mode"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "enum": [
+                "qinglong_subset"
+              ]
+            },
+            "apis": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "js.sendNotify.send",
+                  "python.notify.send",
+                  "js.QLAPI.systemNotify",
+                  "python.QLAPI.systemNotify"
+                ]
+              },
+              "maxItems": 4,
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "channel_policy": {
+              "enum": [
+                "task_bindings"
+              ]
+            }
+          },
+          "required": [
+            "mode",
+            "apis",
+            "channel_policy"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": [
+    "adapter_protocol_version",
+    "action",
+    "argv",
+    "env",
+    "config_files",
+    "outputs",
+    "notification_bridge"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Script Tools script event 1.0",
+  "type": "object",
+  "properties": {
+    "protocol_version": {
+      "const": "1.0"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "attempt_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "invocation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "script_version_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "event_name": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_.-]{0,127}$"
+    },
+    "event_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "data": {}
+  },
+  "required": [
+    "protocol_version",
+    "run_id",
+    "attempt_id",
+    "invocation_id",
+    "script_version_id",
+    "event_name",
+    "event_key",
+    "data"
+  ],
+  "additionalProperties": false
+}

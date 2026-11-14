@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Script Tools invocation 2.0",
+  "type": "object",
+  "properties": {
+    "protocol_version": {
+      "const": "2.0"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "attempt_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "invocation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "script_version_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "action": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_.-]{0,127}$"
+    },
+    "context": {
+      "type": "object"
+    },
+    "input": {},
+    "runtime": {
+      "type": "object",
+      "properties": {
+        "requested_execution_mode": {
+          "enum": [
+            "docker",
+            "qemu_kvm",
+            "qemu_tcg"
+          ]
+        },
+        "actual_execution_mode": {
+          "enum": [
+            "docker",
+            "qemu_kvm",
+            "qemu_tcg"
+          ]
+        },
+        "deadline": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "output_deadline": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "run_mode": {
+          "enum": [
+            "finite",
+            "continuous"
+          ]
+        },
+        "lease_expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "output_series_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "requested_execution_mode",
+        "actual_execution_mode",
+        "deadline",
+        "output_deadline",
+        "run_mode",
+        "lease_expires_at",
+        "output_series_id"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "run_mode": {
+                "const": "finite"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "deadline": {
+                "type": "string"
+              },
+              "output_deadline": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "credential_bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "requirement": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "credential_version_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "requirement",
+          "credential_version_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "output_path": {
+      "type": "string",
+      "pattern": "^/work/results/[A-Za-z0-9_.-]+\\.json$"
+    },
+    "resume_from": {
+      "type": "object",
+      "properties": {
+        "checkpoint_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "schema_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "checkpoint_id",
+        "revision",
+        "schema_digest"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "protocol_version",
+    "run_id",
+    "attempt_id",
+    "invocation_id",
+    "script_version_id",
+    "action",
+    "context",
+    "input",
+    "runtime",
+    "credential_bindings",
+    "output_path"
+  ],
+  "additionalProperties": false
+}

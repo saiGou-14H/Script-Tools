@@ -1,0 +1,3940 @@
+{
+  "schema_version": "2.0",
+  "document_version": "V3.0",
+  "date": "2026-11-13",
+  "description": "商业化通用脚本平台：发布部署、服务售卖、购买使用、交易履约及业务场景；角色为页面视图，非企业组织。无人工审核角色。",
+  "features": {
+    "core": {
+      "phase": "P0",
+      "default": true
+    },
+    "commerce": {
+      "phase": "P0",
+      "default": true
+    },
+    "travel": {
+      "phase": "场景P0",
+      "default": false
+    },
+    "remote_imports": {
+      "phase": "P1",
+      "default": false
+    },
+    "webhook": {
+      "phase": "P1",
+      "default": false
+    },
+    "tracing": {
+      "phase": "P1",
+      "default": false
+    },
+    "personal_api": {
+      "phase": "P2",
+      "default": false
+    }
+  },
+  "sources": [
+    "01-产品需求与功能设计.md#roles",
+    "01-产品需求与功能设计.md#navigation",
+    "02-系统架构与详细设计.md#role-access",
+    "03-接口协议与脚本开发规范.md#role-ui-api"
+  ],
+  "roles": [
+    {
+      "id": "GUEST",
+      "name": "游客",
+      "folder": "01-游客",
+      "home": "P01",
+      "pages": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ],
+      "grant": "匿名浏览已上架公开服务和业务场景，购买使用需要登录"
+    },
+    {
+      "id": "USER",
+      "name": "消费者",
+      "folder": "02-消费者",
+      "home": "C01",
+      "pages": [
+        "C01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "C14",
+        "C15",
+        "C16",
+        "C17",
+        "C18",
+        "C19",
+        "C20",
+        "C21",
+        "C22",
+        "P06"
+      ],
+      "grant": "个人账号；购买服务、使用权益、管理本人任务结果与售后；任何有效用户可切换发布者工作区"
+    },
+    {
+      "id": "PUBLISHER",
+      "name": "脚本发布者",
+      "folder": "03-脚本发布者",
+      "home": "S01",
+      "pages": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "C21",
+        "P06"
+      ],
+      "grant": "同一用户的创作经营视图，无人工入驻或发布审核；消费功能切换消费者视图使用"
+    },
+    {
+      "id": "ADMIN",
+      "name": "平台管理员",
+      "folder": "04-平台管理员",
+      "home": "O01",
+      "pages": [
+        "O01",
+        "O02",
+        "O03",
+        "O04",
+        "O05",
+        "O06",
+        "O07",
+        "O08",
+        "O09",
+        "O10",
+        "O11",
+        "O12",
+        "O13",
+        "O14",
+        "O15",
+        "O16",
+        "O17",
+        "O18",
+        "O19",
+        "O20",
+        "O21",
+        "C21",
+        "P06"
+      ],
+      "grant": "独立后台授权；运营、交易、基础设施以能力限制，不增加审核员或企业组织角色"
+    }
+  ],
+  "pages": {
+    "P01": {
+      "id": "P01",
+      "title": "平台首页",
+      "route": "/",
+      "group": "发现",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "public.read",
+        "catalog.read"
+      ],
+      "content": [
+        "脚本服务推荐",
+        "分类与业务场景",
+        "付费使用说明",
+        "上传发布入口"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "P02": {
+      "id": "P02",
+      "title": "脚本市场",
+      "route": "/market",
+      "group": "发现",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "catalog.read"
+      ],
+      "content": [
+        "分类搜索",
+        "价格和计费单位",
+        "发布者",
+        "部署可用性",
+        "服务交付范围"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "P03": {
+      "id": "P03",
+      "title": "脚本服务详情",
+      "route": "/services/:id",
+      "group": "发现",
+      "kind": "detail",
+      "parent": "P02",
+      "feature": "core",
+      "actions": [
+        "catalog.read"
+      ],
+      "content": [
+        "用途版本",
+        "动态参数说明",
+        "价格方案",
+        "交付退款规则",
+        "购买入口",
+        "不默认提供源码"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "P04": {
+      "id": "P04",
+      "title": "城市与景点",
+      "route": "/travel",
+      "group": "业务场景",
+      "kind": "menu",
+      "parent": null,
+      "feature": "travel",
+      "actions": [
+        "scene.read"
+      ],
+      "content": [
+        "城市选择",
+        "景点检索",
+        "票种开放规则",
+        "可用代抢服务"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "P05": {
+      "id": "P05",
+      "title": "景点代抢服务详情",
+      "route": "/travel/attractions/:id",
+      "group": "业务场景",
+      "kind": "detail",
+      "parent": "P04",
+      "feature": "travel",
+      "actions": [
+        "scene.read",
+        "catalog.read"
+      ],
+      "content": [
+        "景点日期票种时段",
+        "脚本服务与发布者",
+        "免费预约景点为主",
+        "门票0元与脚本服务费分开",
+        "支持渠道及验证",
+        "下单入口"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "P06": {
+      "id": "P06",
+      "title": "使用帮助",
+      "route": "/help",
+      "group": "公共",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "public.read"
+      ],
+      "content": [
+        "购买使用",
+        "脚本发布",
+        "费用退款",
+        "执行结果",
+        "门票场景常见问题"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "P07": {
+      "id": "P07",
+      "title": "登录与注册",
+      "route": "/auth",
+      "group": "公共",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "auth.enter"
+      ],
+      "content": [
+        "登录注册找回",
+        "邮箱验证",
+        "成功返回可访问目标"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C01": {
+      "id": "C01",
+      "title": "我的首页",
+      "route": "/me/home",
+      "group": "我的服务",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "overview.read",
+        "purchase.read",
+        "entitlement.read"
+      ],
+      "content": [
+        "已购服务",
+        "进行中订单和任务",
+        "待处理",
+        "最近结果",
+        "发现服务与发布入口"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C02": {
+      "id": "C02",
+      "title": "确认订单",
+      "route": "/checkout",
+      "group": "购买",
+      "kind": "detail",
+      "parent": "P03",
+      "feature": "core",
+      "actions": [
+        "quote.create",
+        "purchase.create"
+      ],
+      "content": [
+        "选择价格方案",
+        "动态业务参数",
+        "凭据授权",
+        "服务费明细",
+        "交付退款快照",
+        "确认购买"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C03": {
+      "id": "C03",
+      "title": "收银台",
+      "route": "/checkout/:orderId/pay",
+      "group": "购买",
+      "kind": "detail",
+      "parent": "C04",
+      "feature": "core",
+      "actions": [
+        "purchase.read",
+        "payment.start"
+      ],
+      "content": [
+        "订单应付",
+        "支付方式",
+        "支付期限",
+        "支付处理中未知失败",
+        "查回执"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C04": {
+      "id": "C04",
+      "title": "我的订单",
+      "route": "/me/orders",
+      "group": "我的服务",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "purchase.read",
+        "purchase.cancel"
+      ],
+      "content": [
+        "待支付进行中已完成已关闭",
+        "服务与金额",
+        "交易履约分列",
+        "查看取消"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C05": {
+      "id": "C05",
+      "title": "订单详情",
+      "route": "/me/orders/:id",
+      "group": "我的服务",
+      "kind": "detail",
+      "parent": "C04",
+      "feature": "core",
+      "actions": [
+        "purchase.read",
+        "purchase.cancel",
+        "payment.start",
+        "refund.request"
+      ],
+      "content": [
+        "交易快照",
+        "支付退款",
+        "权益任务运行",
+        "结果与售后",
+        "票务订单关联"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C06": {
+      "id": "C06",
+      "title": "已购服务",
+      "route": "/me/services",
+      "group": "我的服务",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "entitlement.read"
+      ],
+      "content": [
+        "已购单次权益",
+        "使用期限",
+        "预占或已使用",
+        "部署可用性",
+        "配置使用",
+        "再次购买"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C07": {
+      "id": "C07",
+      "title": "配置与使用服务",
+      "route": "/me/services/:id/use",
+      "group": "我的服务",
+      "kind": "detail",
+      "parent": "C06",
+      "feature": "core",
+      "actions": [
+        "entitlement.read",
+        "task.configure",
+        "task.preview",
+        "task.activate",
+        "booking.authorize"
+      ],
+      "content": [
+        "固定服务版本",
+        "Schema表单",
+        "计划与配额",
+        "授权预览",
+        "权益校验",
+        "场景字段按类型显示",
+        "不要求消费者部署代码"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C08": {
+      "id": "C08",
+      "title": "我的任务",
+      "route": "/me/tasks",
+      "group": "执行与结果",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "task.read",
+        "task.pause",
+        "task.resume",
+        "task.run",
+        "task.copy",
+        "task.archive",
+        "task.preferences"
+      ],
+      "content": [
+        "付费服务与本人自用筛选",
+        "服务订单或自用标识",
+        "计划",
+        "当前运行",
+        "可用次数",
+        "暂停后续与查看当前运行"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C09": {
+      "id": "C09",
+      "title": "任务详情",
+      "route": "/me/tasks/:id",
+      "group": "执行与结果",
+      "kind": "detail",
+      "parent": "C08",
+      "feature": "core",
+      "actions": [
+        "task.read",
+        "task.pause",
+        "task.resume",
+        "task.run",
+        "task.copy",
+        "task.archive"
+      ],
+      "content": [
+        "固定版本",
+        "使用权益",
+        "计划和运行历史",
+        "阻塞",
+        "复制需重绑权益授权"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C10": {
+      "id": "C10",
+      "title": "运行记录",
+      "route": "/me/runs",
+      "group": "执行与结果",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "run.read",
+        "logs.read"
+      ],
+      "content": [
+        "逻辑使用与Run/Attempt",
+        "状态结果来源",
+        "费用关联",
+        "进入详情"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C11": {
+      "id": "C11",
+      "title": "运行详情",
+      "route": "/me/runs/:id",
+      "group": "执行与结果",
+      "kind": "detail",
+      "parent": "C10",
+      "feature": "core",
+      "actions": [
+        "run.read",
+        "run.stop",
+        "run.cancel",
+        "logs.read",
+        "logs.export",
+        "outputs.read"
+      ],
+      "content": [
+        "进度结果日志产物",
+        "使用额度",
+        "停止和取消",
+        "业务核验",
+        "通知清理独立"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C12": {
+      "id": "C12",
+      "title": "结果与产物",
+      "route": "/me/outputs",
+      "group": "执行与结果",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "outputs.read",
+        "outputs.delete",
+        "outputs.retry_delivery"
+      ],
+      "content": [
+        "批次文本JSON文件",
+        "安全预览下载",
+        "期限",
+        "投递状态",
+        "不重跑主动作"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C13": {
+      "id": "C13",
+      "title": "待处理事项",
+      "route": "/me/pending",
+      "group": "执行与结果",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "pending.read",
+        "pending.resume",
+        "pending.reconcile",
+        "pending.resolve"
+      ],
+      "content": [
+        "补充参数与验证",
+        "外部结果未知",
+        "核验",
+        "人工结论",
+        "接续不重复扣次"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C14": {
+      "id": "C14",
+      "title": "凭据管理",
+      "route": "/me/credentials",
+      "group": "个人",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "credentials.read",
+        "credentials.manage",
+        "credentials.validate"
+      ],
+      "content": [
+        "本人凭据掩码",
+        "授权绑定",
+        "版本更新撤销",
+        "发布者无明文读取权限"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C15": {
+      "id": "C15",
+      "title": "出行人资料",
+      "route": "/me/travelers",
+      "group": "个人",
+      "kind": "menu",
+      "parent": null,
+      "feature": "travel",
+      "actions": [
+        "travelers.manage"
+      ],
+      "content": [
+        "本人实名资料掩码",
+        "编辑删除",
+        "订单引用快照"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C16": {
+      "id": "C16",
+      "title": "消息中心",
+      "route": "/me/notifications",
+      "group": "个人",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "notifications.read"
+      ],
+      "content": [
+        "支付订单执行退款到账通知",
+        "未读筛选",
+        "关联订单跳转",
+        "已读与交付事实分开"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C17": {
+      "id": "C17",
+      "title": "通知设置",
+      "route": "/me/settings/notifications",
+      "group": "个人",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "notifications.configure"
+      ],
+      "content": [
+        "邮件验证",
+        "事件订阅",
+        "P1 Webhook",
+        "投递失败反馈"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C18": {
+      "id": "C18",
+      "title": "支付与账单",
+      "route": "/me/bills",
+      "group": "个人",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "billing.read"
+      ],
+      "content": [
+        "订单实付退款",
+        "服务费与外部票款分列",
+        "支付状态",
+        "不提供充值钱包"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C19": {
+      "id": "C19",
+      "title": "退款与售后",
+      "route": "/me/refunds",
+      "group": "个人",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "refund.request"
+      ],
+      "content": [
+        "退款规则",
+        "可退金额",
+        "申请原因",
+        "处理进度",
+        "关联订单"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C20": {
+      "id": "C20",
+      "title": "退款详情",
+      "route": "/me/refunds/:id",
+      "group": "个人",
+      "kind": "detail",
+      "parent": "C19",
+      "feature": "core",
+      "actions": [
+        "refund.request",
+        "purchase.read"
+      ],
+      "content": [
+        "退款快照",
+        "额度停止或恢复",
+        "渠道退款回执",
+        "异常补充材料"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C21": {
+      "id": "C21",
+      "title": "账户设置",
+      "route": "/me/settings/account",
+      "group": "个人",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "account.read",
+        "account.update",
+        "account.logout",
+        "account.close",
+        "data.delete",
+        "publisher.enter"
+      ],
+      "content": [
+        "资料会话",
+        "账号安全",
+        "发布者入口",
+        "注销前未结订单和收益",
+        "保留说明"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "C22": {
+      "id": "C22",
+      "title": "预约凭证与票款",
+      "route": "/me/bookings",
+      "group": "我的服务",
+      "kind": "menu",
+      "parent": null,
+      "feature": "travel",
+      "actions": [
+        "orders.read",
+        "orders.reconcile"
+      ],
+      "content": [
+        "外部预约记录",
+        "核验状态",
+        "免费预约NOT_REQUIRED",
+        "预约凭证",
+        "与平台服务订单关联"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S01": {
+      "id": "S01",
+      "title": "发布者工作台",
+      "route": "/publisher",
+      "group": "发布经营",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "publisher.overview"
+      ],
+      "content": [
+        "本人脚本服务",
+        "部署告警",
+        "销售退款",
+        "收益摘要"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S02": {
+      "id": "S02",
+      "title": "我的脚本",
+      "route": "/publisher/scripts",
+      "group": "脚本与部署",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "script.read",
+        "script.edit"
+      ],
+      "content": [
+        "上传脚本",
+        "用途不限定",
+        "版本内容构建",
+        "私有自用与服务发布"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S03": {
+      "id": "S03",
+      "title": "脚本编辑",
+      "route": "/publisher/scripts/:id/edit",
+      "group": "脚本与部署",
+      "kind": "detail",
+      "parent": "S02",
+      "feature": "core",
+      "actions": [
+        "script.read",
+        "script.edit",
+        "script.seal",
+        "adapter.preview"
+      ],
+      "content": [
+        "代码入口依赖",
+        "动作Schema",
+        "权限声明",
+        "校验封存",
+        "不设人工审核"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S04": {
+      "id": "S04",
+      "title": "版本与测试",
+      "route": "/publisher/versions/:id",
+      "group": "脚本与部署",
+      "kind": "detail",
+      "parent": "S02",
+      "feature": "core",
+      "actions": [
+        "script.read",
+        "build.read",
+        "build.start",
+        "script.test",
+        "task.configure",
+        "task.preview",
+        "task.activate",
+        "task.read",
+        "script.retire",
+        "script.revoke"
+      ],
+      "content": [
+        "版本与测试及本人自用Tabs",
+        "内容构建分列",
+        "固定版本与测试证据",
+        "本人自用参数计划授权",
+        "自用任务及运行入口",
+        "影响预览",
+        "去部署或创建服务"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S05": {
+      "id": "S05",
+      "title": "构建与测试记录",
+      "route": "/publisher/builds",
+      "group": "脚本与部署",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "build.read",
+        "build.start",
+        "build.cancel"
+      ],
+      "content": [
+        "构建过程和诊断",
+        "错误定位",
+        "测试Run",
+        "开发配额"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S06": {
+      "id": "S06",
+      "title": "部署管理",
+      "route": "/publisher/deployments",
+      "group": "脚本与部署",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "deployment.manage"
+      ],
+      "content": [
+        "版本制品",
+        "部署环境",
+        "模式资源",
+        "可用性",
+        "故障重试",
+        "停用存量影响"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S07": {
+      "id": "S07",
+      "title": "服务商品",
+      "route": "/publisher/services",
+      "group": "发布经营",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "service.manage",
+        "service.publish"
+      ],
+      "content": [
+        "草稿在售停销下架",
+        "脚本版本与部署",
+        "公开介绍",
+        "消费者权益影响"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S08": {
+      "id": "S08",
+      "title": "编辑与上架服务",
+      "route": "/publisher/services/:id/edit",
+      "group": "发布经营",
+      "kind": "detail",
+      "parent": "S07",
+      "feature": "core",
+      "actions": [
+        "service.manage",
+        "service.publish"
+      ],
+      "content": [
+        "服务用途和场景",
+        "输入展示",
+        "交付标准",
+        "绑定部署价格",
+        "自动检查后本人发布"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S09": {
+      "id": "S09",
+      "title": "价格方案",
+      "route": "/publisher/pricing",
+      "group": "发布经营",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "pricing.manage"
+      ],
+      "content": [
+        "仅按次PER_USE",
+        "一次服务范围与最大时长",
+        "服务费期限",
+        "退款和平台费快照",
+        "新版本不改历史"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S10": {
+      "id": "S10",
+      "title": "销售订单",
+      "route": "/publisher/orders",
+      "group": "发布经营",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "sales.read"
+      ],
+      "content": [
+        "本人服务销售",
+        "购买者掩码",
+        "履约退款摘要",
+        "不看消费者秘密"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S11": {
+      "id": "S11",
+      "title": "使用统计",
+      "route": "/publisher/metrics",
+      "group": "质量与诊断",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "publisher.metrics"
+      ],
+      "content": [
+        "使用量与交付率",
+        "版本部署",
+        "错误分类",
+        "不把无票当平台故障"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S12": {
+      "id": "S12",
+      "title": "故障诊断",
+      "route": "/publisher/diagnostics",
+      "group": "质量与诊断",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "publisher.metrics",
+        "build.read"
+      ],
+      "content": [
+        "本人代码构建部署诊断",
+        "消费者运行仅脱敏分类摘要",
+        "修复新版本"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S13": {
+      "id": "S13",
+      "title": "收益与结算",
+      "route": "/publisher/earnings",
+      "group": "收益",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "earnings.read",
+        "payout.request"
+      ],
+      "content": [
+        "销售收入退款平台费净收益",
+        "待结算冻结可结算已到账",
+        "打款回执"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S14": {
+      "id": "S14",
+      "title": "结算详情",
+      "route": "/publisher/settlements/:id",
+      "group": "收益",
+      "kind": "detail",
+      "parent": "S13",
+      "feature": "core",
+      "actions": [
+        "earnings.read"
+      ],
+      "content": [
+        "逐笔账本来源",
+        "成交分成快照",
+        "退款冲正",
+        "结算批次和渠道回执"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S15": {
+      "id": "S15",
+      "title": "发布者设置",
+      "route": "/publisher/settings",
+      "group": "收益",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "publisher.enter",
+        "payout.configure"
+      ],
+      "content": [
+        "公开资料",
+        "收款账户掩码与验证",
+        "联系说明",
+        "收款变更不改在途快照"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "S16": {
+      "id": "S16",
+      "title": "来源与同步",
+      "route": "/publisher/imports",
+      "group": "脚本与部署",
+      "kind": "menu",
+      "parent": null,
+      "feature": "remote_imports",
+      "actions": [
+        "imports.manage"
+      ],
+      "content": [
+        "P1 Git或URL",
+        "固定快照",
+        "差异检查",
+        "显式生成草稿"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O01": {
+      "id": "O01",
+      "title": "运营总览",
+      "route": "/admin",
+      "group": "运营",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "ops.overview",
+        "admin.commerce"
+      ],
+      "content": [
+        "交易额退款额净收益",
+        "服务可用性",
+        "执行容量",
+        "商业和技术指标分开"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O02": {
+      "id": "O02",
+      "title": "用户与发布者",
+      "route": "/admin/users",
+      "group": "运营",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "ops.users",
+        "ops.user_status",
+        "ops.quotas"
+      ],
+      "content": [
+        "个人账号与发布者能力",
+        "状态配额",
+        "冻结存量订单影响",
+        "无组织租户"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O03": {
+      "id": "O03",
+      "title": "服务与脚本",
+      "route": "/admin/services",
+      "group": "运营",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "admin.catalog",
+        "ops.script_revoke"
+      ],
+      "content": [
+        "在售服务和部署",
+        "风险停销",
+        "修复恢复",
+        "不设发布审核队列"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O04": {
+      "id": "O04",
+      "title": "城市与景点",
+      "route": "/admin/travel/catalog",
+      "group": "业务场景",
+      "kind": "menu",
+      "parent": null,
+      "feature": "travel",
+      "actions": [
+        "ops.travel"
+      ],
+      "content": [
+        "城市景点票种",
+        "规则来源",
+        "关联服务",
+        "支持状态"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O05": {
+      "id": "O05",
+      "title": "渠道与适配",
+      "route": "/admin/travel/channels",
+      "group": "业务场景",
+      "kind": "menu",
+      "parent": null,
+      "feature": "travel",
+      "actions": [
+        "ops.travel"
+      ],
+      "content": [
+        "渠道规则",
+        "验证证据",
+        "未验证或降级",
+        "未决预约保留"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O06": {
+      "id": "O06",
+      "title": "服务订单",
+      "route": "/admin/orders",
+      "group": "交易与财务",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "admin.commerce"
+      ],
+      "content": [
+        "支付履约退款分列",
+        "订单搜索",
+        "异常处理入口"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O07": {
+      "id": "O07",
+      "title": "服务订单详情",
+      "route": "/admin/orders/:id",
+      "group": "交易与财务",
+      "kind": "detail",
+      "parent": "O06",
+      "feature": "core",
+      "actions": [
+        "admin.commerce",
+        "ops.data_request"
+      ],
+      "content": [
+        "成交快照",
+        "权益执行",
+        "支付退款",
+        "外部结果",
+        "受限敏感排障"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O08": {
+      "id": "O08",
+      "title": "支付与退款",
+      "route": "/admin/payments",
+      "group": "交易与财务",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "admin.refunds",
+        "admin.reconcile"
+      ],
+      "content": [
+        "交易退款台账",
+        "渠道状态",
+        "待核验异常",
+        "自动规则处理结果"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O09": {
+      "id": "O09",
+      "title": "退款异常处理",
+      "route": "/admin/refunds/:id",
+      "group": "交易与财务",
+      "kind": "detail",
+      "parent": "O08",
+      "feature": "core",
+      "actions": [
+        "admin.refunds",
+        "admin.reconcile"
+      ],
+      "content": [
+        "成交规则和可退金额",
+        "事实证据",
+        "有理由处置",
+        "不得标记虚假到账"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O10": {
+      "id": "O10",
+      "title": "对账中心",
+      "route": "/admin/reconciliation",
+      "group": "交易与财务",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "admin.reconcile"
+      ],
+      "content": [
+        "收款退款打款对账",
+        "差异类型",
+        "幂等核对",
+        "UNKNOWN不重复资金动作"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O11": {
+      "id": "O11",
+      "title": "发布者结算",
+      "route": "/admin/settlements",
+      "group": "交易与财务",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "admin.settlements"
+      ],
+      "content": [
+        "结算账本",
+        "成熟窗口",
+        "退款冻结",
+        "批次和打款回执"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O12": {
+      "id": "O12",
+      "title": "费用与结算规则",
+      "route": "/admin/commerce-policies",
+      "group": "交易与财务",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "admin.fees"
+      ],
+      "content": [
+        "版本费率币种",
+        "退款窗口",
+        "结算周期",
+        "渠道成本归属",
+        "只影响新报价"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O13": {
+      "id": "O13",
+      "title": "调度与容量",
+      "route": "/admin/scheduling",
+      "group": "基础设施",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "ops.overview",
+        "ops.settings"
+      ],
+      "content": [
+        "队列容量",
+        "已购服务履约",
+        "资源池",
+        "配额与模式"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O14": {
+      "id": "O14",
+      "title": "节点与镜像",
+      "route": "/admin/infrastructure",
+      "group": "基础设施",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "ops.nodes",
+        "ops.node_action",
+        "ops.images"
+      ],
+      "content": [
+        "节点健康排空",
+        "镜像摘要",
+        "Docker/KVM/TCG",
+        "清理证据"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O15": {
+      "id": "O15",
+      "title": "运行与排障",
+      "route": "/admin/runs",
+      "group": "基础设施",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "ops.runs",
+        "ops.run_action",
+        "ops.run_content",
+        "ops.logs",
+        "ops.data_request"
+      ],
+      "content": [
+        "全站运行元数据",
+        "受控停止",
+        "短时限定排障",
+        "外部效果核验"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O16": {
+      "id": "O16",
+      "title": "日志与告警",
+      "route": "/admin/observability",
+      "group": "基础设施",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "ops.logs",
+        "ops.alerts",
+        "ops.rules"
+      ],
+      "content": [
+        "脱敏日志",
+        "告警规则",
+        "有限静默",
+        "真实恢复证据"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O17": {
+      "id": "O17",
+      "title": "通知投递",
+      "route": "/admin/deliveries",
+      "group": "基础设施",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "ops.deliveries",
+        "ops.delivery_retry"
+      ],
+      "content": [
+        "交易执行退款消息",
+        "回执",
+        "UNKNOWN核对",
+        "安全重试只重投"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O18": {
+      "id": "O18",
+      "title": "平台设置",
+      "route": "/admin/settings",
+      "group": "平台",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "ops.settings",
+        "ops.network"
+      ],
+      "content": [
+        "支付能力及分期",
+        "资源网络",
+        "场景开放",
+        "暂停销售不抹除存量权益"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O19": {
+      "id": "O19",
+      "title": "权限与操作审计",
+      "route": "/admin/access",
+      "group": "平台",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "ops.access",
+        "ops.audit",
+        "ops.data_request"
+      ],
+      "content": [
+        "ADMIN细分能力",
+        "最后管理员保护",
+        "短时排障记录",
+        "无人工审批流"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O20": {
+      "id": "O20",
+      "title": "备份与清理",
+      "route": "/admin/recovery",
+      "group": "平台",
+      "kind": "menu",
+      "parent": null,
+      "feature": "core",
+      "actions": [
+        "ops.retention",
+        "ops.recovery"
+      ],
+      "content": [
+        "保留策略",
+        "商业账本和未决记录",
+        "恢复演练",
+        "不重放资金或预约操作"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    },
+    "O21": {
+      "id": "O21",
+      "title": "异常预约",
+      "route": "/admin/travel/unresolved",
+      "group": "业务场景",
+      "kind": "menu",
+      "parent": null,
+      "feature": "travel",
+      "actions": [
+        "ops.bookings",
+        "ops.data_request"
+      ],
+      "content": [
+        "未知结果",
+        "独立只读核验",
+        "订单关联",
+        "票款与服务费分开"
+      ],
+      "states": [
+        "加载中",
+        "正常",
+        "空数据",
+        "无匹配",
+        "无权限或已失效",
+        "提交中",
+        "字段错误",
+        "冲突或业务阻塞",
+        "失败及回执核对"
+      ]
+    }
+  },
+  "actions": {
+    "public.read": {
+      "id": "public.read",
+      "label": "浏览平台说明与帮助",
+      "roles": [
+        "GUEST",
+        "USER",
+        "PUBLISHER",
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/public/overview",
+        "GET /api/v1/public/help"
+      ],
+      "scope": "PUBLIC",
+      "guard": "只返回公开服务说明；商业与运行状态均如实展示",
+      "success": "展示脚本发布部署、付费使用与业务场景入口",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "catalog.read": {
+      "id": "catalog.read",
+      "label": "查找服务与查看详情",
+      "roles": [
+        "GUEST",
+        "USER",
+        "PUBLISHER",
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/services",
+        "GET /api/v1/services/{id}",
+        "GET /api/v1/services/{id}/plans"
+      ],
+      "scope": "PUBLIC",
+      "guard": "公开已上架服务及价格、交付标准、部署可用性；不公开代码和使用者数据",
+      "success": "返回服务版本、参数表单、按次价格、一次服务范围、退款规则及使用入口",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "auth.enter": {
+      "id": "auth.enter",
+      "label": "注册、验证、登录与找回",
+      "roles": [
+        "GUEST",
+        "USER",
+        "PUBLISHER",
+        "ADMIN"
+      ],
+      "endpoints": [
+        "POST /api/v1/auth/register",
+        "POST /api/v1/auth/verify-email",
+        "POST /api/v1/auth/login",
+        "POST /api/v1/auth/password-reset-requests",
+        "POST /api/v1/auth/password-resets"
+      ],
+      "scope": "AUTH_CHALLENGE",
+      "guard": "单次挑战、限流；邮箱存在与否统一反馈",
+      "success": "注册待验证、验证激活或建立会话；登录后回到可访问的原页面",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "account.read": {
+      "id": "account.read",
+      "label": "查看账号与会话",
+      "roles": [
+        "USER",
+        "PUBLISHER",
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/me",
+        "GET /api/v1/me/sessions",
+        "GET /api/v1/me/closure"
+      ],
+      "scope": "OWN",
+      "guard": "本人会话；关闭后仅注销进度回执",
+      "success": "返回个人资料、状态、会话及注销进度",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "account.update": {
+      "id": "account.update",
+      "label": "修改资料与邮箱",
+      "roles": [
+        "USER",
+        "PUBLISHER",
+        "ADMIN"
+      ],
+      "endpoints": [
+        "PATCH /api/v1/me",
+        "POST /api/v1/me/email-change-requests",
+        "POST /api/v1/me/email-changes"
+      ],
+      "scope": "OWN",
+      "guard": "资料白名单；邮箱变更最近认证及双向验证",
+      "success": "保存修订；改绑成功撤销旧会话",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "account.logout": {
+      "id": "account.logout",
+      "label": "退出或撤销会话",
+      "roles": [
+        "USER",
+        "PUBLISHER",
+        "ADMIN"
+      ],
+      "endpoints": [
+        "POST /api/v1/auth/logout",
+        "DELETE /api/v1/me/sessions/{id}"
+      ],
+      "scope": "OWN",
+      "guard": "仅本人会话；安全事件审计",
+      "success": "会话失效并结束订阅，回登录页",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "account.close": {
+      "id": "account.close",
+      "label": "申请注销与查看清理进度",
+      "roles": [
+        "USER",
+        "PUBLISHER",
+        "ADMIN"
+      ],
+      "endpoints": [
+        "POST /api/v1/me/closure"
+      ],
+      "scope": "OWN",
+      "guard": "最近认证、明确确认、最后管理员保护；允许申请并在CLOSING处理未完成订单退款结算及受限保留",
+      "success": "202 CLOSING；停止新购买/发布，保留受限售后回执与依法/业务必需保留说明",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "data.delete": {
+      "id": "data.delete",
+      "label": "申请删除本人数据",
+      "roles": [
+        "USER",
+        "PUBLISHER",
+        "ADMIN"
+      ],
+      "endpoints": [
+        "POST /api/v1/data-deletions",
+        "GET /api/v1/data-deletions/{id}"
+      ],
+      "scope": "OWN",
+      "guard": "预览范围和保留例外；必要审计和未决证据不得越权删除",
+      "success": "202先限制查询，再显示逐存储清理进度",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "overview.read": {
+      "id": "overview.read",
+      "label": "查看个人概况",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/monitoring/overview"
+      ],
+      "scope": "OWN",
+      "guard": "仅汇总当前登录账号的业务数据，不能指定其他owner",
+      "success": "返回任务、待处理、运行和产物概况",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "script.read": {
+      "id": "script.read",
+      "label": "查看本人脚本与固定版本",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/me/scripts",
+        "GET /api/v1/scripts/{id}/versions",
+        "GET /api/v1/script-versions/{id}",
+        "GET /api/v1/script-versions/{id}/source"
+      ],
+      "scope": "OWN",
+      "guard": "仅作者读取代码；购买服务只获得使用权，不自动获得源码或修改权",
+      "success": "内容、构建、部署、上架四个维度分别返回",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "script.edit": {
+      "id": "script.edit",
+      "label": "创建、上传和编辑草稿",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/script-uploads",
+        "POST /api/v1/script-uploads/{id}/complete",
+        "POST /api/v1/scripts",
+        "POST /api/v1/scripts/{id}/versions",
+        "PATCH /api/v1/script-versions/{id}"
+      ],
+      "scope": "OWN",
+      "guard": "上传归属/摘要/限额；仅DRAFT可编辑；封存版修改或回退创建新草稿",
+      "success": "保存草稿和修订；完整校验前不执行；本人可进入作者视图",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "script.seal": {
+      "id": "script.seal",
+      "label": "校验并封存版本",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/script-versions/{id}/seal"
+      ],
+      "scope": "OWN",
+      "guard": "有效Schema、动作、依赖锁、网络/凭据声明及适配检查全部通过",
+      "success": "DRAFT到SEALED，代码和清单摘要固定",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "build.read": {
+      "id": "build.read",
+      "label": "查看构建与诊断",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/script-versions/{id}/builds",
+        "GET /api/v1/builds/{id}",
+        "GET /api/v1/builds/{id}/logs"
+      ],
+      "scope": "OWN",
+      "guard": "按脚本归属校验本人构建，日志读取前脱敏",
+      "success": "返回构建阶段、诊断、制品摘要和日志",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "build.start": {
+      "id": "build.start",
+      "label": "构建或重建封存版本",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/script-versions/{id}/builds"
+      ],
+      "scope": "OWN",
+      "guard": "内容已封存、配额和版本策略有效；不覆盖成功制品引用",
+      "success": "202创建Build；成功并协议合格才READY",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "build.cancel": {
+      "id": "build.cancel",
+      "label": "取消未完成构建",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/builds/{id}/cancel"
+      ],
+      "scope": "OWN",
+      "guard": "仅QUEUED/RUNNING；修订检查",
+      "success": "202显示取消中，确认结束后CANCELLED，保留日志",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "script.test": {
+      "id": "script.test",
+      "label": "授权后试运行",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/script-versions/{id}/test-runs"
+      ],
+      "scope": "OWN",
+      "guard": "本人READY版本、完整输入、本人凭据和授权；测试使用开发配额，不创建消费者收费订单",
+      "success": "202创建一次性手动测试Task和Run，跳到准确的运行详情",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "script.retire": {
+      "id": "script.retire",
+      "label": "下架本人版本",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/script-versions/{id}/retire"
+      ],
+      "scope": "OWN",
+      "guard": "本人固定版本、影响预览、原因与修订；列出在售服务和存量购买权益",
+      "success": "禁止新增绑定和新售卖；有效存量按合同继续履行，不能履行则走补偿退款",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "script.revoke": {
+      "id": "script.revoke",
+      "label": "撤销本人版本执行",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/script-versions/{id}/revoke"
+      ],
+      "scope": "OWN",
+      "guard": "影响预览、原因和二次确认；内容未撤销",
+      "success": "阻断新调用；在途外部效果核验；受影响已付款订单进入补偿或退款，不抹除订单",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "adapter.preview": {
+      "id": "adapter.preview",
+      "label": "校验动作与兼容映射",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/script-versions/{id}/validation",
+        "POST /api/v1/script-versions/{id}/adapter-preview"
+      ],
+      "scope": "OWN",
+      "guard": "草稿或本人可读固定版本；仅静态校验不运行",
+      "success": "显示字段错误、参数映射和逐项兼容能力，不回显凭据",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "imports.manage": {
+      "id": "imports.manage",
+      "label": "检查来源、预览差异并生成草稿",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/script-imports",
+        "GET /api/v1/script-imports",
+        "GET /api/v1/script-imports/{id}",
+        "POST /api/v1/script-imports/{id}/materialize",
+        "POST /api/v1/script-imports/{id}/cancel"
+      ],
+      "scope": "OWN",
+      "guard": "仅git/url新获取要求P1；upload导入属P0；来源凭据本人绑定，固定快照",
+      "success": "候选检查后显式物化草稿；不自动发布或替换任务",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "task.read": {
+      "id": "task.read",
+      "label": "搜索筛选与查看任务",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/tasks",
+        "GET /api/v1/tasks/{id}",
+        "GET /api/v1/tasks/{id}/config-versions"
+      ],
+      "scope": "OWN",
+      "guard": "本人对象；参数快照另行鉴权和脱敏",
+      "success": "返回配置、下次触发、阻塞及运行历史",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "task.configure": {
+      "id": "task.configure",
+      "label": "保存草稿、创建或编辑任务",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/tasks",
+        "PATCH /api/v1/tasks/{id}",
+        "POST /api/v1/execution-authorizations"
+      ],
+      "scope": "OWN",
+      "guard": "服务使用绑定本人有效entitlement和固定service_release；本人脚本走自用配额。服务端派生脚本版本/模式/资源，不接收消费者越权覆盖；启用前参数和授权齐备",
+      "success": "保存草稿或新config_version；不声明已执行",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "task.preview": {
+      "id": "task.preview",
+      "label": "预览计划与执行授权",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/tasks/preview",
+        "POST /api/v1/tasks/schedule-preview"
+      ],
+      "scope": "OWN",
+      "guard": "与调度器共用计划规则；不调用外部业务",
+      "success": "返回参数错误、域名、凭据掩码、模式、资源；finite未来5次，continuous一次启动",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "task.activate": {
+      "id": "task.activate",
+      "label": "启用任务",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/tasks/{id}/activate"
+      ],
+      "scope": "OWN",
+      "guard": "账号、版本、部署、参数及授权有效；付费服务必须有效权益；实际创建Run时原子预占一次额度，manual/once仅启用计划不提前预占，重复操作不重复扣次",
+      "success": "ACTIVE；service一次创建Run，其余按计划，不自动代表成功",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "task.pause": {
+      "id": "task.pause",
+      "label": "暂停后续启动",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/tasks/{id}/pause"
+      ],
+      "scope": "OWN",
+      "guard": "非终态任务；明确不停止已领取运行",
+      "success": "PAUSED并取消未领取计划Run；当前运行保留",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "task.resume": {
+      "id": "task.resume",
+      "label": "恢复后续计划",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/tasks/{id}/resume"
+      ],
+      "scope": "OWN",
+      "guard": "PAUSED、重新有效授权且无阻塞；付费后续计划只允许尚未消耗权益，已消耗仅原Run接续；不自动重新扣款",
+      "success": "恢复未执行的有效计划，不补过期触发；已付服务不得自动产生第二次有效Run",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "task.run": {
+      "id": "task.run",
+      "label": "手动运行",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/tasks/{id}/runs"
+      ],
+      "scope": "OWN",
+      "guard": "本人任务完整有效、无并发/未知效果阻塞；付费服务原子校验并预占权益，Attempt重试/continuation不重复扣次",
+      "success": "201返回本次Run；跳运行详情，不重复建运行",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "task.copy": {
+      "id": "task.copy",
+      "label": "复制为新草稿",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/tasks/{id}/copies"
+      ],
+      "scope": "OWN",
+      "guard": "仅复制非秘密配置；不复制授权、密钥和历史",
+      "success": "201新DRAFT，重新绑定凭据/渠道和授权",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "task.archive": {
+      "id": "task.archive",
+      "label": "归档任务",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/tasks/{id}/archive"
+      ],
+      "scope": "OWN",
+      "guard": "展示当前运行与未决事项；归档不抹除历史",
+      "success": "停止后续，保留在途和待处理入口，当前停止需独立操作",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "task.preferences": {
+      "id": "task.preferences",
+      "label": "设置标签、置顶与显示偏好",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "PATCH /api/v1/tasks/{id}/preferences"
+      ],
+      "scope": "OWN",
+      "guard": "本人偏好，标签上限，不能进入业务input",
+      "success": "保存显示偏好，不产生config_version或运行",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "run.read": {
+      "id": "run.read",
+      "label": "查看运行与结果",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/runs",
+        "GET /api/v1/runs/{id}",
+        "GET /api/v1/runs/{id}/result",
+        "GET /api/v1/runs/{id}/results",
+        "GET /api/v1/runs/{id}/checkpoints"
+      ],
+      "scope": "OWN",
+      "guard": "本人归属；结果来源和验证程度独立",
+      "success": "返回阶段、模式、结果、效果、检查点、通知与清理状态",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "run.stop": {
+      "id": "run.stop",
+      "label": "受控停止当前运行",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/runs/{id}/stop"
+      ],
+      "scope": "OWN",
+      "guard": "非终态且仍在执行；确认停止及有限宽限期",
+      "success": "202 STOPPING；默认暂停后续启动；未知效果进入核验",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "run.cancel": {
+      "id": "run.cancel",
+      "label": "尽快取消当前运行",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/runs/{id}/cancel"
+      ],
+      "scope": "OWN",
+      "guard": "非终态；明确不承诺末尾Hook与外部撤回",
+      "success": "202撤销新请求许可；最终状态按效果判断",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "logs.read": {
+      "id": "logs.read",
+      "label": "筛选与实时查看本人日志",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/logs",
+        "GET /api/v1/runs/{id}/events",
+        "POST /api/v1/log-queries",
+        "GET /api/v1/log-queries/{id}"
+      ],
+      "scope": "OWN",
+      "guard": "本人范围、时间预算、订阅复核；禁止任意查询语句",
+      "success": "实时/归档结果显示缺口、截断、索引延迟及保留期",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "logs.export": {
+      "id": "logs.export",
+      "label": "导出和管理本人脱敏日志",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/log-exports",
+        "GET /api/v1/log-exports/{id}",
+        "GET /api/v1/log-exports/{id}/download",
+        "DELETE /api/v1/log-exports/{id}"
+      ],
+      "scope": "OWN",
+      "guard": "生成与领取再次鉴权；下载未过期；不导出密钥",
+      "success": "202导出任务或鉴权下载，显示大小和失效时间",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "outputs.read": {
+      "id": "outputs.read",
+      "label": "筛选、预览和下载产物",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/outputs",
+        "GET /api/v1/runs/{id}/outputs",
+        "GET /api/v1/runs/{id}/output-batches",
+        "GET /api/v1/outputs/{id}",
+        "GET /api/v1/outputs/{id}/content",
+        "GET /api/v1/outputs/{id}/download"
+      ],
+      "scope": "OWN",
+      "guard": "本人归属、当前可用性和保留期限；不执行HTML/JS",
+      "success": "返回批次、格式、生成与可用状态；READY才允许下载",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "outputs.retry_delivery": {
+      "id": "outputs.retry_delivery",
+      "label": "重试允许重试的消息投递",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/outputs/{id}/deliveries/{delivery_id}/retry"
+      ],
+      "scope": "OWN",
+      "guard": "本人消息；明确可安全重试、原渠道和附件有效；UNKNOWN先核对服务商回执",
+      "success": "只创建投递处理，不重新生成产物或执行脚本",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "outputs.delete": {
+      "id": "outputs.delete",
+      "label": "删除本人产物",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "DELETE /api/v1/outputs/{id}"
+      ],
+      "scope": "OWN",
+      "guard": "原因/确认、保留例外及修订；不得删除他人或未决必需证据",
+      "success": "202限制下载并显示清理进度，关联附件失效可见",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "pending.read": {
+      "id": "pending.read",
+      "label": "查看本人待处理事项",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/pending-actions",
+        "GET /api/v1/pending-actions/{id}"
+      ],
+      "scope": "OWN",
+      "guard": "按归属；场景停用仍可访问历史待处理",
+      "success": "返回原因、期限、阻塞和允许动作",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "pending.resume": {
+      "id": "pending.resume",
+      "label": "补充信息并接续",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/runs/{id}/resume"
+      ],
+      "scope": "OWN",
+      "guard": "OPEN、未过期、允许动作、完整输入与有效授权/权益；同一逻辑履约接续不另扣次数",
+      "success": "202原子消费待处理项，创建continuation，保持原始快照",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "pending.reconcile": {
+      "id": "pending.reconcile",
+      "label": "请求独立核验",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/runs/{id}/reconcile"
+      ],
+      "scope": "OWN",
+      "guard": "已授权的只读核验绑定和期限；不执行原写动作",
+      "success": "202 RECONCILING，显示核验进度或无核验能力提示",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "pending.resolve": {
+      "id": "pending.resolve",
+      "label": "提交人工结论或关闭未知",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/runs/{id}/resolutions"
+      ],
+      "scope": "OWN",
+      "guard": "reason和证据；明确结论须confirm_resolution；关闭未知不解除阻塞",
+      "success": "记录USER_REPORTED；明确结论暂停可恢复任务，未知结案保留UNKNOWN",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "credentials.read": {
+      "id": "credentials.read",
+      "label": "查看凭据掩码与绑定",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/credentials",
+        "GET /api/v1/credentials/{id}"
+      ],
+      "scope": "OWN",
+      "guard": "只返回掩码和版本，不返回明文",
+      "success": "显示状态、更新时间、绑定任务和授权范围",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "credentials.manage": {
+      "id": "credentials.manage",
+      "label": "新增、更新或撤销凭据",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/credentials",
+        "POST /api/v1/credentials/{id}/versions",
+        "POST /api/v1/credentials/{id}/revoke"
+      ],
+      "scope": "OWN",
+      "guard": "输入不回显；更新新版本；撤销确认影响",
+      "success": "创建版本或撤权；任务需显式重绑，不静默采用新秘密",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "credentials.validate": {
+      "id": "credentials.validate",
+      "label": "受控校验凭据",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/credentials/{id}/validate"
+      ],
+      "scope": "OWN",
+      "guard": "选择校验动作、完整input和有效授权",
+      "success": "202受控Run；查看实际校验结果，不在API服务执行脚本",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "notifications.read": {
+      "id": "notifications.read",
+      "label": "查看与标记通知",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/notifications",
+        "POST /api/v1/notifications/{id}/read",
+        "GET /api/v1/notifications/{id}/deliveries"
+      ],
+      "scope": "OWN",
+      "guard": "本人通知；附件下载单独鉴权",
+      "success": "显示已读与投递分离；已读不确认外部业务",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "notifications.configure": {
+      "id": "notifications.configure",
+      "label": "绑定渠道与订阅事件",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/me/notification-bindings",
+        "POST /api/v1/me/notification-bindings",
+        "POST /api/v1/me/notification-bindings/{id}/verify",
+        "PATCH /api/v1/me/notification-bindings/{id}",
+        "DELETE /api/v1/me/notification-bindings/{id}",
+        "GET /api/v1/me/subscriptions",
+        "PUT /api/v1/me/subscriptions"
+      ],
+      "scope": "OWN",
+      "guard": "收件人所有权验证；首期站内/邮件；Webhook需P1策略检查",
+      "success": "绑定验证、订阅保存或渠道停用；既有投递不偷偷更换目标",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "travelers.manage": {
+      "id": "travelers.manage",
+      "label": "维护本人出行人",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/travelers",
+        "POST /api/v1/travelers",
+        "PATCH /api/v1/travelers/{id}",
+        "DELETE /api/v1/travelers/{id}"
+      ],
+      "scope": "OWN",
+      "guard": "场景开放允许新增；敏感字段掩码；已授权快照不变",
+      "success": "保存本人资料版本；删除受引用/保留约束",
+      "feature": "travel",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "booking.authorize": {
+      "id": "booking.authorize",
+      "label": "管理预约授权",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/booking-authorizations",
+        "POST /api/v1/booking-authorizations",
+        "POST /api/v1/booking-authorizations/{id}/revoke"
+      ],
+      "scope": "OWN",
+      "guard": "仅门票场景；明确景点日期时段票种人员和免费票款，授权期限及替代条件；其他服务不展示该操作",
+      "success": "固定授权快照；撤销不等于取消外部订单",
+      "feature": "travel",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "orders.read": {
+      "id": "orders.read",
+      "label": "查看外部预约订单与票款状态",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/booking-orders",
+        "GET /api/v1/booking-orders/{id}"
+      ],
+      "scope": "OWN",
+      "guard": "本人外部业务记录；与service_order交易订单严格区分；场景停用仍可查看历史",
+      "success": "分开展示提交、核验及支付事实，提供经校验官方入口",
+      "feature": "travel",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "orders.reconcile": {
+      "id": "orders.reconcile",
+      "label": "核验本人预约结果",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/booking-operations/{id}/reconcile"
+      ],
+      "scope": "OWN",
+      "guard": "有效独立只读核验授权；不能重提原预约",
+      "success": "202查询核验；无授权转本人待处理",
+      "feature": "travel",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.overview": {
+      "id": "ops.overview",
+      "label": "查看平台与调度指标",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/observability/overview",
+        "GET /api/v1/admin/scheduling"
+      ],
+      "scope": "ADMIN_METADATA",
+      "guard": "管理角色；仅必要脱敏聚合",
+      "success": "按模式展示容量、排队、错误、时延及数据新鲜度",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.users": {
+      "id": "ops.users",
+      "label": "查询账号与配额",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/users",
+        "GET /api/v1/admin/users/{id}/quotas"
+      ],
+      "scope": "ADMIN_METADATA",
+      "guard": "必要账号摘要；不返回密码或用户凭据",
+      "success": "返回账号状态、用量和限制",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.user_status": {
+      "id": "ops.user_status",
+      "label": "冻结或解冻账号",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "POST /api/v1/admin/users/{id}/freeze",
+        "POST /api/v1/admin/users/{id}/unfreeze"
+      ],
+      "scope": "ADMIN_METADATA",
+      "guard": "原因、影响预览、确认；禁止冻结自己或最后有效权限管理员",
+      "success": "冻结撤权/停新触发；解冻不补跑旧任务",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.quotas": {
+      "id": "ops.quotas",
+      "label": "修改账号资源配额",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "PATCH /api/v1/admin/users/{id}/quotas"
+      ],
+      "scope": "ADMIN_METADATA",
+      "guard": "限额范围校验、预览和修订；降额不得盲目重跑或丢弃未决业务",
+      "success": "新策略版本生效并展示对后续和在途的明确影响",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.nodes": {
+      "id": "ops.nodes",
+      "label": "查询与登记节点",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/nodes",
+        "GET /api/v1/admin/nodes/{id}",
+        "POST /api/v1/admin/nodes"
+      ],
+      "scope": "INFRA",
+      "guard": "登记签发限定用途bootstrap，令牌仅一次展示；不下发任意命令",
+      "success": "REGISTERING，身份/能力/健康校验后ONLINE",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.node_action": {
+      "id": "ops.node_action",
+      "label": "排空、隔离或恢复节点",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "POST /api/v1/admin/nodes/{id}/drain",
+        "POST /api/v1/admin/nodes/{id}/quarantine",
+        "POST /api/v1/admin/nodes/{id}/recover",
+        "POST /api/v1/admin/nodes/{id}/cleanup"
+      ],
+      "scope": "INFRA",
+      "guard": "受控命令枚举、原因和影响预览；恢复需实际清理与健康证据",
+      "success": "202返回操作任务；旧租约不复活，清理失败保留隔离",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.images": {
+      "id": "ops.images",
+      "label": "管理固定镜像版本",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/images",
+        "POST /api/v1/admin/images",
+        "POST /api/v1/admin/images/{id}/publish",
+        "POST /api/v1/admin/images/{id}/retire"
+      ],
+      "scope": "INFRA",
+      "guard": "摘要固定、来源校验和对应模式验证证据；已使用镜像不原地修改",
+      "success": "登记/验证/发布或下架，升级排空节点，既有Attempt固定镜像",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.runs": {
+      "id": "ops.runs",
+      "label": "查询运行诊断摘要",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/runs",
+        "GET /api/v1/admin/runs/{id}"
+      ],
+      "scope": "ADMIN_METADATA",
+      "guard": "脱敏控制面元数据；业务输入/结果/正文需有效敏感访问授权",
+      "success": "返回租约、节点、阶段、效果、清理和关联告警",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.run_content": {
+      "id": "ops.run_content",
+      "label": "读取授权运行正文",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/runs/{id}/input",
+        "GET /api/v1/admin/runs/{id}/result"
+      ],
+      "scope": "SENSITIVE_CAPABILITY",
+      "guard": "有效对象/字段/动作/期限授权及事由；仍脱敏且永不提供密钥明文",
+      "success": "返回授权字段并记录访问审计；无授权返回403，不降级泄露",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.run_action": {
+      "id": "ops.run_action",
+      "label": "受控停止或隔离异常执行",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "POST /api/v1/admin/runs/{id}/stop",
+        "POST /api/v1/admin/runs/{id}/isolate"
+      ],
+      "scope": "INFRA",
+      "guard": "影响范围、原因、修订；不能把UNKNOWN改成已核验或重放业务",
+      "success": "202受控处理；保留核验/人工事项，审计并通知所有者",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.script_revoke": {
+      "id": "ops.script_revoke",
+      "label": "紧急撤销问题版本执行",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "POST /api/v1/admin/script-versions/{id}/revoke"
+      ],
+      "scope": "ADMIN_METADATA",
+      "guard": "风险证据、影响预览和确认；不得替发布者改代码",
+      "success": "内容REVOKED，阻止新调用，通知作者与受影响用户",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.network": {
+      "id": "ops.network",
+      "label": "维护网络访问策略",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/network-policies",
+        "POST /api/v1/admin/network-policies",
+        "PATCH /api/v1/admin/network-policies/{id}"
+      ],
+      "scope": "INFRA",
+      "guard": "域名/协议/预算白名单，拒绝私网绕过和任意宿主参数",
+      "success": "策略版本生效，撤权影响后续请求，在途事实保留",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.deliveries": {
+      "id": "ops.deliveries",
+      "label": "查看通知投递与回执",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/notification-deliveries",
+        "GET /api/v1/admin/notification-deliveries/{id}"
+      ],
+      "scope": "ADMIN_METADATA",
+      "guard": "收件地址掩码，消息正文需额外授权",
+      "success": "区分排队、附件等待、接受、失败、未知与已读",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.delivery_retry": {
+      "id": "ops.delivery_retry",
+      "label": "核对或重试安全失败的投递",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "POST /api/v1/admin/notification-deliveries/{id}/reconcile",
+        "POST /api/v1/admin/notification-deliveries/{id}/retry"
+      ],
+      "scope": "ADMIN_METADATA",
+      "guard": "UNKNOWN先查回执；仅明确未送达且渠道/附件有效可重试，沿用逻辑投递键",
+      "success": "创建投递处理任务；不运行原脚本、不更换收件人",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.logs": {
+      "id": "ops.logs",
+      "label": "查询和导出管理诊断日志",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/observability/logs",
+        "POST /api/v1/admin/observability/log-exports",
+        "GET /api/v1/admin/observability/log-exports/{id}",
+        "GET /api/v1/admin/observability/log-exports/{id}/download"
+      ],
+      "scope": "SENSITIVE_CAPABILITY",
+      "guard": "平台日志限runtime.observe；用户正文需data.diagnose与当前对象/动作/字段/期限凭证；导出另列且下载复核",
+      "success": "返回脱敏日志或导出任务；全程访问审计，不含密钥",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.alerts": {
+      "id": "ops.alerts",
+      "label": "查看告警并记录处置",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/observability/alerts",
+        "POST /api/v1/admin/observability/alerts/{id}/ack",
+        "POST /api/v1/admin/observability/alerts/{id}/actions"
+      ],
+      "scope": "ADMIN_METADATA",
+      "guard": "操作者和备注；不允许凭手动关闭伪造恢复",
+      "success": "确认/处置事件持久化；恢复由实际正常证据驱动",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.rules": {
+      "id": "ops.rules",
+      "label": "维护告警规则和限时静默",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/observability/rules",
+        "POST /api/v1/admin/observability/rules",
+        "PATCH /api/v1/admin/observability/rules/{id}",
+        "POST /api/v1/admin/observability/silences",
+        "DELETE /api/v1/admin/observability/silences/{id}"
+      ],
+      "scope": "INFRA",
+      "guard": "规则语法/样本验证，静默必须范围、原因、期限；不屏蔽业务待处理",
+      "success": "版本和同步状态可见；静默失败不得显示已生效",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.audit": {
+      "id": "ops.audit",
+      "label": "查询审计事件",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/audit-events"
+      ],
+      "scope": "ADMIN_METADATA",
+      "guard": "按授权范围只读；不可修改或手工删除必要审计",
+      "success": "展示操作者、时间、对象、修订、原因与关联请求",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.settings": {
+      "id": "ops.settings",
+      "label": "维护平台资源和能力策略",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/runtime-policies",
+        "PATCH /api/v1/admin/runtime-policies",
+        "GET /api/v1/admin/resource-profiles",
+        "POST /api/v1/admin/resource-profiles",
+        "PATCH /api/v1/admin/resource-profiles/{id}",
+        "GET /api/v1/admin/features",
+        "PATCH /api/v1/admin/features/{key}"
+      ],
+      "scope": "INFRA",
+      "guard": "修订、影响预览和确认；功能开放须对应部署/验收证据；TCG须双重许可",
+      "success": "策略版本生效；商业化为核心能力，暂停销售保留存量履约/退款；场景停用保留历史",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.access": {
+      "id": "ops.access",
+      "label": "配置后台权限与查询操作审计",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/role-grants",
+        "POST /api/v1/admin/role-grants",
+        "POST /api/v1/admin/role-grants/{id}/revoke"
+      ],
+      "scope": "ACCESS_MANAGER",
+      "guard": "access.manage；只有ADMIN角色及细分能力；禁止自提权；至少一名有效权限管理员",
+      "success": "更新授权并撤销失效会话/订阅；记录不可变操作审计，无人工审核角色",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "ops.retention": {
+      "id": "ops.retention",
+      "label": "管理保留、删除和存储清理",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/observability/policies",
+        "PATCH /api/v1/admin/observability/policies",
+        "GET /api/v1/admin/cleanup-jobs",
+        "POST /api/v1/admin/cleanup-jobs/{id}/retry"
+      ],
+      "scope": "INFRA",
+      "guard": "保留例外、查询墓碑及对象归属；失败重试不能恢复下载入口",
+      "success": "返回策略版本和逐存储任务进度，失败原因可追踪",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.recovery": {
+      "id": "ops.recovery",
+      "label": "查看备份及登记恢复演练",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/backups",
+        "GET /api/v1/admin/recovery-drills",
+        "POST /api/v1/admin/recovery-drills"
+      ],
+      "scope": "INFRA",
+      "guard": "登记仅创建演练计划和证据要求；生产恢复由受控运维手册执行",
+      "success": "计划/执行记录/验证结果可查；页面不提供任意命令或一键覆盖生产",
+      "feature": "core",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.travel": {
+      "id": "ops.travel",
+      "label": "管理城市景点与预约渠道",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/cities",
+        "POST /api/v1/admin/cities",
+        "PATCH /api/v1/admin/cities/{id}",
+        "GET /api/v1/admin/attractions",
+        "POST /api/v1/admin/attractions",
+        "PATCH /api/v1/admin/attractions/{id}",
+        "GET /api/v1/admin/channels",
+        "POST /api/v1/admin/channels",
+        "PATCH /api/v1/admin/channels/{id}"
+      ],
+      "scope": "INFRA",
+      "guard": "catalog.manage；城市景点票种、渠道规则来源和验证证据完整；停用影响预览；不代表真实门票可售",
+      "success": "规则版本及适配状态保存；未验证不得标成支持预约",
+      "feature": "travel",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "ops.bookings": {
+      "id": "ops.bookings",
+      "label": "查看未决预约诊断",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/unresolved-bookings",
+        "POST /api/v1/admin/booking-operations/{id}/reconcile"
+      ],
+      "scope": "SENSITIVE_CAPABILITY",
+      "guard": "本人之外信息需排障授权；核验还需现有有效只读业务授权",
+      "success": "受控核验或通知本人处理；管理员不能手工改VERIFIED/PAID",
+      "feature": "travel",
+      "errors": "401重新登录；403说明权限或能力限制；对象越权404；409展示阻塞；412刷新差异；422定位字段；超时按request_id或幂等键查回执，禁止盲目重提。"
+    },
+    "scene.read": {
+      "id": "scene.read",
+      "label": "浏览城市景点与代抢服务",
+      "roles": [
+        "GUEST",
+        "USER",
+        "PUBLISHER",
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/cities",
+        "GET /api/v1/attractions",
+        "GET /api/v1/attractions/{id}",
+        "GET /api/v1/attractions/{id}/services"
+      ],
+      "scope": "PUBLIC",
+      "guard": "只显示已开放景点和渠道能力；未验证标明未验证",
+      "success": "城市→景点→日期票种说明→可购买代抢服务，库存不保证预约成功",
+      "feature": "travel",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "publisher.enter": {
+      "id": "publisher.enter",
+      "label": "开通或切换发布者工作区",
+      "roles": [
+        "USER",
+        "PUBLISHER",
+        "ADMIN"
+      ],
+      "endpoints": [
+        "POST /api/v1/me/publisher-profile",
+        "GET /api/v1/me/publisher-profile"
+      ],
+      "scope": "OWN",
+      "guard": "已验证个人账号；保存公开昵称、联系说明和服务约定；无需人工审批",
+      "success": "同一账号进入发布者视图，仍保留消费者能力；不能获得后台管理权限",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "publisher.overview": {
+      "id": "publisher.overview",
+      "label": "查看发布者经营概况",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/publisher/overview"
+      ],
+      "scope": "OWN_SUPPLY",
+      "guard": "只汇总本人脚本、服务、销售和收益；不包含购买者私密正文",
+      "success": "返回部署可用率、销售额、退款和待结算金额，注明统计窗口",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "deployment.manage": {
+      "id": "deployment.manage",
+      "label": "创建部署、查看诊断和受控停用",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/deployments",
+        "GET /api/v1/deployments",
+        "GET /api/v1/deployments/{id}",
+        "POST /api/v1/deployments/{id}/stop",
+        "POST /api/v1/deployments/{id}/retry"
+      ],
+      "scope": "OWN",
+      "guard": "本人READY版本、资源模板和配额；重试只处理部署不重放消费者业务；停用预览存量订单",
+      "success": "202部署作业；实际健康与能力检查后READY；停用阻止新购买并触发存量履约处理",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "service.manage": {
+      "id": "service.manage",
+      "label": "编辑服务商品与固定发布版本",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/publisher/services",
+        "POST /api/v1/publisher/services",
+        "PATCH /api/v1/publisher/services/{id}",
+        "POST /api/v1/publisher/services/{id}/releases"
+      ],
+      "scope": "OWN_SUPPLY",
+      "guard": "本人脚本及部署；填写用途、输入表单、交付标准、支持场景、服务期限与退款规则；快照不可覆盖",
+      "success": "保存DRAFT或创建不可变service_release；改版不静默迁移已购订单",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "service.publish": {
+      "id": "service.publish",
+      "label": "发布上架、暂停销售与下架",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/publisher/services/{id}/publish",
+        "POST /api/v1/publisher/services/{id}/pause-sales",
+        "POST /api/v1/publisher/services/{id}/retire"
+      ],
+      "scope": "OWN_SUPPLY",
+      "guard": "自动检查版本/部署/参数/定价/结算配置；本人显式发布，无人工审核；停销须影响预览",
+      "success": "ACTIVE/PAUSED/RETIRED；停销不抹除已购权益；不能履约进入补偿退款",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "pricing.manage": {
+      "id": "pricing.manage",
+      "label": "维护价格方案与销售规则",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/publisher/services/{id}/plans",
+        "POST /api/v1/publisher/services/{id}/plans",
+        "POST /api/v1/publisher/plans/{id}/retire"
+      ],
+      "scope": "OWN_SUPPLY",
+      "guard": "首期仅PER_USE；每单一次完整逻辑服务执行；服务费金额大于0且用最小币种单位，期限/时长/目标判定与发布者所选退款规则完整并提前公示；不改已成交快照",
+      "success": "生成新price_plan版本；报价和订单固定原版本；不默认自动续费",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "quote.create": {
+      "id": "quote.create",
+      "label": "校验参数并获取结算报价",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/quotes"
+      ],
+      "scope": "OWN",
+      "guard": "service_release及price_plan有效、部署可售、参数/场景/凭据授权有效；服务端算价",
+      "success": "返回限时报价、费用明细、交付及退款快照；无支付或业务执行副作用",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "purchase.create": {
+      "id": "purchase.create",
+      "label": "确认购买并创建服务订单",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/service-orders"
+      ],
+      "scope": "OWN",
+      "guard": "本人未过期quote、明确接受费用与交付/退款规则、参数摘要；防双击幂等",
+      "success": "201 AWAITING_PAYMENT；固定买家、发布者、服务/部署/价格快照；不直接运行脚本",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "payment.start": {
+      "id": "payment.start",
+      "label": "发起支付或查询支付回执",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/service-orders/{id}/payments",
+        "GET /api/v1/payments/{id}"
+      ],
+      "scope": "OWN",
+      "guard": "本人待支付订单、报价期限和渠道有效；服务端金额；同订单支付尝试串行，未知先对账",
+      "success": "返回支付渠道受理信息或当前回执；只由可信支付事实标PAID",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "purchase.read": {
+      "id": "purchase.read",
+      "label": "查看服务订单与履约进度",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/service-orders",
+        "GET /api/v1/service-orders/{id}",
+        "GET /api/v1/service-orders/{id}/events"
+      ],
+      "scope": "OWN",
+      "guard": "只能读取本人购买订单；交易、执行、退款、外部结果分别授权和展示",
+      "success": "返回订单明细、支付、权益、任务、交付、退款及支持入口",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "purchase.cancel": {
+      "id": "purchase.cancel",
+      "label": "取消未支付订单或停止未完成服务",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/service-orders/{id}/cancel"
+      ],
+      "scope": "OWN",
+      "guard": "展示当前支付及履约影响；已支付走停止与退款策略；未知支付/外部效果先核验",
+      "success": "取消未支付订单或202受控停止；不声称外部预约/支付已撤回",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "entitlement.read": {
+      "id": "entitlement.read",
+      "label": "查看已购服务、次数与有效期",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/entitlements",
+        "GET /api/v1/entitlements/{id}"
+      ],
+      "scope": "OWN",
+      "guard": "当前账号的已购权益；服务下架仍保留历史和存量入口",
+      "success": "可用次数、预占次数、消耗次数、期限、并发限制及配置入口分别返回",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "refund.request": {
+      "id": "refund.request",
+      "label": "申请退款并查看处理进度",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/service-orders/{id}/refunds",
+        "GET /api/v1/refunds",
+        "GET /api/v1/refunds/{id}"
+      ],
+      "scope": "OWN",
+      "guard": "按成交规则和已交付量计算可退金额；退款预占与发起执行互斥；未决效果先核验",
+      "success": "规则自动受理或进入售后异常处理；渠道回执确认后REFUNDED，未知不重复退款",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "billing.read": {
+      "id": "billing.read",
+      "label": "查看本人支付和退款账单",
+      "roles": [
+        "USER",
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/me/bills",
+        "GET /api/v1/me/bills/{id}"
+      ],
+      "scope": "OWN",
+      "guard": "本人交易；服务费与第三方票款分列；不暴露支付密钥或他人账单",
+      "success": "关联订单、实付、退款、状态与渠道回执摘要；不是充值钱包",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "sales.read": {
+      "id": "sales.read",
+      "label": "查看本人服务销售订单",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/publisher/orders",
+        "GET /api/v1/publisher/orders/{id}"
+      ],
+      "scope": "OWN_SUPPLY",
+      "guard": "仅本人服务销售及履约摘要；买家信息掩码；不返回买家凭据、输入正文或产物",
+      "success": "销售、退款、交付进度与收益关联，不允许改支付或外部结果",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "publisher.metrics": {
+      "id": "publisher.metrics",
+      "label": "查看服务用量与故障摘要",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/publisher/metrics",
+        "GET /api/v1/publisher/diagnostics"
+      ],
+      "scope": "OWN_SUPPLY",
+      "guard": "聚合本人服务的版本、部署和故障类型；不访问消费者私密日志",
+      "success": "运行质量、交付口径和不可用时段可追踪；不能将退出码当成功代抢",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "earnings.read": {
+      "id": "earnings.read",
+      "label": "查看收益、结算和回款",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/publisher/earnings",
+        "GET /api/v1/publisher/settlements",
+        "GET /api/v1/publisher/settlements/{id}"
+      ],
+      "scope": "OWN_SUPPLY",
+      "guard": "仅本人账本；按成交分成/手续费/退款规则和结算窗口计算",
+      "success": "待结算、可结算、冻结、已支付分别显示；无回执不显示已到账",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "payout.configure": {
+      "id": "payout.configure",
+      "label": "维护发布者收款资料",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "GET /api/v1/publisher/payout-profile",
+        "PUT /api/v1/publisher/payout-profile"
+      ],
+      "scope": "OWN_SUPPLY",
+      "guard": "最近认证、渠道要求的账户验证；只存令牌和掩码；已发出结算固定旧收款快照",
+      "success": "资料验证状态可查；不通过不开放付费售卖或打款；无需平台人工审批",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "payout.request": {
+      "id": "payout.request",
+      "label": "发起可结算收益打款",
+      "roles": [
+        "PUBLISHER"
+      ],
+      "endpoints": [
+        "POST /api/v1/publisher/payouts",
+        "GET /api/v1/publisher/payouts/{id}"
+      ],
+      "scope": "OWN_SUPPLY",
+      "guard": "到期可结算金额、有效收款资料、无退款争议冻结；原子预占且同键幂等",
+      "success": "202待打款；支付渠道查询确认后PAID；UNKNOWN先对账",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "admin.commerce": {
+      "id": "admin.commerce",
+      "label": "查看平台订单和处理履约异常",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/service-orders",
+        "GET /api/v1/admin/service-orders/{id}",
+        "POST /api/v1/admin/service-orders/{id}/actions"
+      ],
+      "scope": "COMMERCE",
+      "guard": "commerce.manage；理由、影响和修订；按规则发起补偿，不允许手写PAID或外部成功",
+      "success": "记录处置作业和回执；执行、交易与外部事实独立",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "admin.refunds": {
+      "id": "admin.refunds",
+      "label": "查看退款并处理规则异常",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/refunds",
+        "GET /api/v1/admin/refunds/{id}",
+        "POST /api/v1/admin/refunds/{id}/resolve"
+      ],
+      "scope": "COMMERCE",
+      "guard": "commerce.manage；仅异常售后处理，正常退款自动按成交规则；金额不超过未退实付额",
+      "success": "记录有理由的处理结论或发起渠道退款；受理不表示已退到账",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "admin.reconcile": {
+      "id": "admin.reconcile",
+      "label": "查看支付对账差异并重查渠道",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/reconciliations",
+        "POST /api/v1/admin/payments/{id}/reconcile",
+        "POST /api/v1/admin/refunds/{id}/reconcile",
+        "POST /api/v1/admin/payouts/{id}/reconcile"
+      ],
+      "scope": "COMMERCE",
+      "guard": "按原交易号只读核验；UNKNOWN不得另起扣款、退款或打款",
+      "success": "状态与账本按可信回执原子更新；保留差异和幂等事件",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "admin.settlements": {
+      "id": "admin.settlements",
+      "label": "生成结算批次与查看打款",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/settlements",
+        "POST /api/v1/admin/settlement-batches",
+        "GET /api/v1/admin/payouts"
+      ],
+      "scope": "COMMERCE",
+      "guard": "到期账本、退款/争议窗口、冻结金额及收款资料有效；结算行不能重复纳入批次",
+      "success": "202结算批次；打款结果独立核验，失败不双重记账",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "admin.fees": {
+      "id": "admin.fees",
+      "label": "维护平台费用和结算规则",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/commerce-policies",
+        "POST /api/v1/admin/commerce-policies"
+      ],
+      "scope": "COMMERCE",
+      "guard": "版本、币种、平台费率、渠道成本归属、结算周期及退款窗口明确；不追溯改成交价格",
+      "success": "新规则只影响新报价；历史订单及账本保留快照",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "admin.catalog": {
+      "id": "admin.catalog",
+      "label": "管理服务展示与风险停用",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "GET /api/v1/admin/services",
+        "POST /api/v1/admin/services/{id}/block",
+        "POST /api/v1/admin/services/{id}/restore"
+      ],
+      "scope": "ADMIN_METADATA",
+      "guard": "catalog.manage；风险理由和影响预览；非发布前人工审批，无批准上架队列",
+      "success": "限制新售卖或恢复通过自动检查的服务；受影响存量履约补偿可追踪",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    },
+    "ops.data_request": {
+      "id": "ops.data_request",
+      "label": "声明排障范围并取得短时访问凭证",
+      "roles": [
+        "ADMIN"
+      ],
+      "endpoints": [
+        "POST /api/v1/admin/data-access-sessions",
+        "GET /api/v1/admin/data-access-sessions",
+        "POST /api/v1/admin/data-access-sessions/{id}/revoke"
+      ],
+      "scope": "SENSITIVE_CAPABILITY",
+      "guard": "具有data.diagnose能力；具体资源/字段/动作/事由/工单，最长1小时，服务器自动校验范围；不读取密钥",
+      "success": "签发短时范围凭证并审计每次访问，无双人审批工作流",
+      "feature": "core",
+      "errors": "401重新登录；403拒绝无权限；对象越权404；409显示业务阻塞；412刷新修订；422定位字段；超时查询幂等回执，禁止重复扣款或重复外部提交。"
+    }
+  }
+}

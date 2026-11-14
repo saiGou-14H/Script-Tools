@@ -1,0 +1,18 @@
+{
+  "protocol_version": "2.0",
+  "run_id": "run_batch_001",
+  "attempt_id": "attempt_batch_001",
+  "invocation_id": "inv_batch_001",
+  "action": "publish_batch",
+  "outcome": "ACTION_REQUIRED",
+  "summary": "批次已提交，等待用户确认查询参数",
+  "data": null,
+  "action_required": {
+    "reason": "INPUT_UPDATE",
+    "instructions": "填写服务返回的批次编号后查询结果。",
+    "expires_at": "2026-11-14T12:00:00Z",
+    "resume_action": "confirm_batch"
+  },
+  "error": null,
+  "outputs": []
+}

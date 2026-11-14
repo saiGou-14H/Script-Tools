@@ -1,0 +1,47 @@
+{
+  "adapter_protocol_version": "1.0",
+  "action": "execute",
+  "argv": [
+    {
+      "flag": "--limit",
+      "input_pointer": "/limit",
+      "encoding": "json",
+      "on_missing": "error"
+    }
+  ],
+  "env": {
+    "SOURCE_URL": {
+      "input_pointer": "/source_url",
+      "encoding": "string",
+      "on_missing": "error"
+    },
+    "REPORT_LABEL": {
+      "input_pointer": "/label",
+      "encoding": "string",
+      "on_missing": "omit"
+    },
+    "SOURCE_TOKEN": {
+      "credential_alias": "source_token",
+      "on_missing": "error"
+    }
+  },
+  "config_files": [
+    {
+      "path": "report.json",
+      "input_pointer": "/options",
+      "on_missing": "error"
+    }
+  ],
+  "outputs": {
+    "mode": "manifest",
+    "manifest_dir": "ready"
+  },
+  "notification_bridge": {
+    "mode": "qinglong_subset",
+    "apis": [
+      "python.notify.send",
+      "python.QLAPI.systemNotify"
+    ],
+    "channel_policy": "task_bindings"
+  }
+}

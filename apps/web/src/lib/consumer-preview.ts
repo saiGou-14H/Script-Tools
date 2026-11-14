@@ -1,0 +1,190 @@
+export const purchaseFixtures = [
+  {
+    id: "clean",
+    title: "表格清洗",
+    icon: "table",
+    status: "待使用",
+    category: "待使用",
+    tone: "blue" as const,
+    description: "对表格数据进行清洗与规范，输出可用结果文件",
+    columns: [
+      ["剩余次数", "1 次"],
+      ["有效至", "11月20日"],
+      ["版本", "1.2"],
+    ],
+    action: "配置使用",
+  },
+  {
+    id: "booking",
+    title: "免费景点预约",
+    icon: "travel",
+    status: "使用中",
+    category: "使用中",
+    tone: "green" as const,
+    description: "协助完成指定景点的预约操作",
+    columns: [
+      ["状态", "进行中"],
+      ["权益占用", "已占用本次权益"],
+      ["预约日期", "2026-11-20"],
+    ],
+    action: "查看任务",
+  },
+  {
+    id: "files",
+    title: "文件处理",
+    icon: "file",
+    status: "已使用",
+    category: "已使用",
+    tone: "gray" as const,
+    description: "对提交的文件进行处理并输出目标结果",
+    columns: [
+      ["执行状态", "已使用"],
+      ["结果", "已完成并生成产物"],
+      ["执行时间", "2026-11-12"],
+    ],
+    action: "再次购买",
+  },
+  {
+    id: "data",
+    title: "公开数据整理",
+    icon: "database",
+    status: "服务暂不可用",
+    category: "待使用",
+    tone: "red" as const,
+    description: "本次服务暂不可用，可等待恢复或取消退款",
+    columns: [
+      ["当前状态", "暂不可用"],
+      ["说明", "本次服务暂不可用，可等待恢复或取消退款"],
+    ],
+    action: "",
+  },
+];
+
+export const pendingFixtures = [
+  {
+    id: "credential",
+    title: "数据整理凭据已过期",
+    category: "待补充",
+    service: "数据整理与文件处理",
+    description: "需要更新访问凭据后，继续完成本次服务。",
+    deadline: "补充截止时间　2026-11-13 18:00",
+    icon: "database",
+    action: "更新凭据",
+  },
+  {
+    id: "booking",
+    title: "景点预约外部结果待核验",
+    category: "待核验",
+    service: "景点预约",
+    description:
+      "检测到外部平台已有预约结果，请核验原预约信息，不能重新下单或重抢。",
+    deadline: "核验截止时间　2026-11-14 21:00",
+    icon: "gift",
+    action: "核验原预约",
+  },
+];
+
+export interface PreviewOutput {
+  key: string;
+  task: string;
+  goal: string;
+  name: string;
+  size: string;
+  run: string;
+  runId: string;
+  batch: string;
+  created: string;
+  expires: string;
+  ready: boolean;
+  content: string;
+  kind: "file" | "text" | "json" | "message";
+  mediaType: string;
+  deliveryStatus: "SENT" | "NOT_TRIGGERED";
+}
+export const outputFixtures: PreviewOutput[] = [
+  {
+    key: "csv",
+    kind: "file",
+    mediaType: "text/csv;charset=utf-8",
+    deliveryStatus: "SENT",
+    runId: "clean",
+    task: "表格清洗",
+    goal: "清洗并整理表格数据",
+    name: "cleaned.csv",
+    size: "142 KB",
+    run: "运行-20261113-001",
+    batch: "批次 02",
+    created: "2026-11-13 10:00",
+    expires: "2026-11-30",
+    ready: true,
+    content:
+      "name,email\n张三,zhang@example.invalid\n李四,li@example.invalid\n",
+  },
+  {
+    key: "json",
+    kind: "file",
+    mediaType: "application/json;charset=utf-8",
+    deliveryStatus: "SENT",
+    runId: "clean",
+    task: "表格清洗",
+    goal: "清洗并整理表格数据",
+    name: "summary.json",
+    size: "28 KB",
+    run: "运行-20261113-001",
+    batch: "批次 02",
+    created: "2026-11-13 10:45",
+    expires: "2026-11-30",
+    ready: true,
+    content: JSON.stringify(
+      { rows: 1200, duplicates_removed: 36, status: "completed" },
+      null,
+      2,
+    ),
+  },
+  {
+    key: "pending",
+    kind: "file",
+    mediaType: "text/csv;charset=utf-8",
+    deliveryStatus: "NOT_TRIGGERED",
+    runId: "booking",
+    task: "免费景点预约",
+    goal: "提交景点预约申请",
+    name: "batch02.csv",
+    size: "—",
+    run: "运行-20261113-002",
+    batch: "批次 01",
+    created: "2026-11-13 13:30",
+    expires: "2026-11-30",
+    ready: false,
+    content: "",
+  },
+];
+export const inlineOutputFixtures: PreviewOutput[] = [
+  {
+    ...outputFixtures[1],
+    key: "summary-data",
+    kind: "json",
+    name: "清洗统计.json",
+  },
+  {
+    ...outputFixtures[0],
+    key: "summary-text",
+    kind: "text",
+    name: "结果说明.txt",
+    mediaType: "text/plain;charset=utf-8",
+    content: "表格清洗完成，已生成 cleaned.csv 与 summary.json。",
+  },
+];
+
+export function downloadPreviewOutput(output: PreviewOutput) {
+  const objectURL = URL.createObjectURL(
+    new Blob([output.content], {
+      type: output.mediaType,
+    }),
+  );
+  const anchor = document.createElement("a");
+  anchor.href = objectURL;
+  anchor.download = output.name;
+  anchor.click();
+  setTimeout(() => URL.revokeObjectURL(objectURL), 1000);
+}

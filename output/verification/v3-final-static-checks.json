@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "started_at": "2026-11-13T19:03:23.273984+00:00",
+  "checked_at": "2026-11-13T19:03:24.263903+00:00",
+  "checks": [
+    {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "docs/checks/validate-contracts.ps1"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS: 174 contract checks; 6 core example cases plus adapter examples. No business action, upload or notification executed.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "D:\\ProgramData\\miniconda3\\python.exe",
+        "-X",
+        "utf8",
+        "docs/checks/validate-adapter-contracts.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS: 42 adapter mapping and relation model checks; no process, file upload or notification executed.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "D:\\ProgramData\\miniconda3\\python.exe",
+        "-X",
+        "utf8",
+        "docs/checks/validate-output-contracts.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS: 16 output relationship and batch/checkpoint model checks. No live service or file bytes tested.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "D:\\ProgramData\\miniconda3\\python.exe",
+        "-X",
+        "utf8",
+        "docs/checks/validate-docs.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS: 6 Markdown files, 40 JSON files, 99 tables; links/anchors, sections, examples and unique traceability.\nPASS: 114 old sections mapped; all 38 contract/example digests unchanged.\n{\"AC\": 52, \"ADP\": 10, \"AL\": 29, \"E2E\": 26, \"FLOW\": 13, \"INV\": 16, \"LONG\": 6, \"OBS\": 22, \"OUT\": 8, \"REQ\": 61, \"TX\": 10}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "D:\\ProgramData\\miniconda3\\python.exe",
+        "-X",
+        "utf8",
+        "docs/checks/validate-role-design.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS: 2331 role, page, operation, commercial-boundary and document cross-checks.\nPASS: 4 workspaces; 66 page definitions; 102 guarded operations; 75 role-page deliverables; 16 commercial requirements; 24 acceptance scenarios.\nLIMIT: static design consistency only; no live payments, execution, authorization or image acceptance.\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "六份当前设计文档、静态契约、角色页面与操作矩阵；不包含运行系统或真实支付预约测试。"
+}

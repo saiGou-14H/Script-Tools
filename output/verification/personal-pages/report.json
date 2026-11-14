@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-14T08:14:58.106Z",
+  "checks": [
+    "consumer personal and public pages render at all 12 routes",
+    "credential required validation, masking, route persistence and revocation work",
+    "traveler form stores masked preview and preserves exactly one selected default",
+    "read state, saved event preferences and unverified masked email survive navigation",
+    "bill selection changes the transaction detail and exports masked CSV",
+    "refund preview records one application per original order without advancing channel state",
+    "pending booking keeps voucher disabled and verified voucher opens masked detail",
+    "attraction city and text filters and searchable help work",
+    "unknown order and refund IDs render unavailable state",
+    "new personal pages complete checks without browser exceptions"
+  ],
+  "screenshots": [
+    "USER-C13",
+    "USER-C14",
+    "USER-C15",
+    "USER-C16",
+    "USER-C17",
+    "USER-C18",
+    "USER-C19",
+    "USER-C20",
+    "USER-C21",
+    "USER-C22",
+    "USER-P04",
+    "USER-P06"
+  ],
+  "errors": [],
+  "result": "PASS"
+}

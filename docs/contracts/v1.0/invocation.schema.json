@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Script Tools invocation 1.0",
+  "type": "object",
+  "properties": {
+    "protocol_version": {
+      "const": "1.0"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "attempt_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "invocation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "script_version_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "action": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_.-]{0,127}$"
+    },
+    "context": {
+      "type": "object"
+    },
+    "input": {},
+    "runtime": {
+      "type": "object",
+      "properties": {
+        "requested_execution_mode": {
+          "enum": [
+            "docker",
+            "qemu_kvm",
+            "qemu_tcg"
+          ]
+        },
+        "actual_execution_mode": {
+          "enum": [
+            "docker",
+            "qemu_kvm",
+            "qemu_tcg"
+          ]
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "requested_execution_mode",
+        "actual_execution_mode",
+        "deadline"
+      ],
+      "additionalProperties": false
+    },
+    "credential_bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "requirement": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "credential_version_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "requirement",
+          "credential_version_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "output_path": {
+      "type": "string",
+      "pattern": "^/work/results/[A-Za-z0-9_.-]+\\.json$"
+    }
+  },
+  "required": [
+    "protocol_version",
+    "run_id",
+    "attempt_id",
+    "invocation_id",
+    "script_version_id",
+    "action",
+    "context",
+    "input",
+    "runtime",
+    "credential_bindings",
+    "output_path"
+  ],
+  "additionalProperties": false
+}

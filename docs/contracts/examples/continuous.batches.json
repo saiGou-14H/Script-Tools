@@ -1,0 +1,71 @@
+[
+  {
+    "protocol_version": "2.0",
+    "output_series_id": "series_continuous_v2",
+    "batch_key": "page.001",
+    "phase": "OUTPUT_HOOK",
+    "outputs": [
+      {
+        "output_id": "out_cont_text_1"
+      },
+      {
+        "output_id": "out_cont_message_1"
+      }
+    ],
+    "producer_outcome": "COMPLETED",
+    "producer_error": null,
+    "checkpoint": {
+      "value": {
+        "cursor": 1
+      },
+      "expected_revision": 0
+    },
+    "reason": "checkpoint"
+  },
+  {
+    "protocol_version": "2.0",
+    "output_series_id": "series_continuous_v2",
+    "batch_key": "page.002",
+    "phase": "OUTPUT_HOOK",
+    "outputs": [
+      {
+        "output_id": "out_cont_text_2"
+      },
+      {
+        "output_id": "out_cont_message_2"
+      }
+    ],
+    "producer_outcome": "COMPLETED",
+    "producer_error": null,
+    "checkpoint": {
+      "value": {
+        "cursor": 2
+      },
+      "expected_revision": 1
+    },
+    "reason": "checkpoint"
+  },
+  {
+    "protocol_version": "2.0",
+    "output_series_id": "series_continuous_v2",
+    "batch_key": "page.003",
+    "phase": "OUTPUT_HOOK",
+    "outputs": [
+      {
+        "output_id": "out_cont_text_3"
+      },
+      {
+        "output_id": "out_cont_message_3"
+      }
+    ],
+    "producer_outcome": "COMPLETED",
+    "producer_error": null,
+    "checkpoint": {
+      "value": {
+        "cursor": 3
+      },
+      "expected_revision": 2
+    },
+    "reason": "checkpoint"
+  }
+]

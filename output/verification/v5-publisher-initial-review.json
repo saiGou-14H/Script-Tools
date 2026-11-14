@@ -1,0 +1,19 @@
+{
+ "PUBLISHER-S02":{"pass":true,"source_filename":"exec-fece6761-605b-4ecc-b312-7f95a8254885.png","observed":"脚本列表区分内容、构建和部署状态，提供上传、编辑、版本、部署、创建服务及测试入口，无审核队列。"},
+ "PUBLISHER-S03":{"pass":false,"source_filename":"exec-820abc08-4a26-4690-9976-cdff2dde7d28.png","observed":"草稿、校验、封存流程明确，但输出Schema示例不是规范JSON Schema，需修正。"},
+ "PUBLISHER-S04":{"pass":true,"source_filename":"exec-10bef8b5-334f-448f-8dae-c49b352ac051.png","observed":"本人自用与开发测试分开；自用计划、输入、授权、开发配额和进入个人任务入口完整，不产生付款订单。"},
+ "PUBLISHER-S05":{"pass":false,"source_filename":"exec-08e50289-96b0-4b7c-895f-19b809e18dba.png","observed":"失败构建B032需补充关联版本v0.4，确保构建可追溯；排队取消与失败重建入口已有。"},
+ "PUBLISHER-S06":{"pass":false,"source_filename":"exec-870621c9-0800-46e2-9bb4-ca7f536c9ccf.png","observed":"TCG被误写为关联服务；READY部署不应显示可重试，需更正关联服务列和状态按钮。"},
+ "PUBLISHER-S07":{"pass":false,"source_filename":"exec-55b85bb1-4185-4df5-a1e7-130eabd718b0.png","observed":"在售筛选下显示草稿、部署列显示待配置价格，需增加全部筛选并更正部署状态；表格清洗名称误含卡片。"},
+ "PUBLISHER-S08":{"pass":false,"source_filename":"exec-3182e0da-81e4-4e11-957b-1bf0e6651f1c.png","observed":"应是表格清洗示例却生成景点预约字段，需恢复通用文件处理服务内容，保留自动检查和本人直接上架。"},
+ "PUBLISHER-S09":{"pass":true,"source_filename":"exec-6b773ba3-14fe-469a-9357-1f0fbb189a58.png","observed":"两种未达目标退款选项清楚；平台未执行/故障未交付保障、7天启动期限、5分钟执行与1小时核验期限分开，并有购买前公示预览。"},
+ "PUBLISHER-S10":{"pass":true,"source_filename":"exec-5c5f8aa7-84a1-4b85-80b9-11b1636fb8b5.png","observed":"两笔订单实付6+8=14元；退款中8元冻结结算，买家掩码，无消费者私密数据入口。"},
+ "PUBLISHER-S11":{"pass":false,"source_filename":"exec-e0462033-211d-43c9-8f28-402f111c3290.png","observed":"趋势128次一致，但交付率与版本表合计不一致，失败分类全为旅行，需用通用服务分类与一致统计。"},
+ "PUBLISHER-S12":{"pass":false,"source_filename":"exec-8b51067f-5fcc-49ad-83f1-5357913b23b8.png","observed":"依赖缺失日志却继续构建部署成功，需阻断并提示修复版本；预约结果未知应与渠道未接入区分。"},
+ "PUBLISHER-S13":{"pass":true,"source_filename":"exec-0e974a07-1e55-4233-bdcb-04f9ab8d18db.png","observed":"收入680-退款80-费用60=净540；待结300+可结200+到账40=540；四行账本对应一致。"},
+ "PUBLISHER-S14":{"pass":true,"source_filename":"exec-ee4110e6-a337-4098-831d-d19ad583f6dd.png","observed":"SET018与打款PO018区分；两行230收入-10退款-20费用=200净额，等待回执未显示到账，仅查询原请求。"},
+ "PUBLISHER-S15":{"pass":true,"source_filename":"exec-6da03c0c-602f-4776-8c90-f5274e5c5b35.png","observed":"发布资料、收款技术验证、更新资料入口完整；变更只影响新打款，在途保留原快照。"},
+ "PUBLISHER-S16":{"pass":false,"source_filename":"exec-f22a8b20-2ca4-4522-b088-c9d87e937fb3.png","observed":"P1未启用提示已有，但固定提交快照不能设计为可关闭开关；Git筛选混入URL，需用全部来源预览及固定摘要。"},
+ "PUBLISHER-C21":{"pass":true,"source_filename":"exec-a2cdeb06-7982-4543-864e-fe4de6844953.png","observed":"发布者已启用与消费者共用账号，申请注销后进入关闭中并保留售后结算，不阻止发起注销。"},
+ "PUBLISHER-P06":{"pass":true,"source_filename":"exec-c83f3a6a-21fc-495f-a52a-e8f14a723354.png","observed":"帮助分类与发布者菜单一致，退款回答遵守购买前公示并固定的发布者规则。"}
+}

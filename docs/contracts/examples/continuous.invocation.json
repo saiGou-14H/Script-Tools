@@ -1,0 +1,23 @@
+{
+  "protocol_version": "2.0",
+  "run_id": "run_continuous_001",
+  "attempt_id": "attempt_continuous_001",
+  "invocation_id": "inv_continuous_001",
+  "script_version_id": "sv_continuous_v2",
+  "action": "watch_records",
+  "context": {},
+  "input": {
+    "source_url": "https://api.example.invalid/feed"
+  },
+  "runtime": {
+    "requested_execution_mode": "docker",
+    "actual_execution_mode": "docker",
+    "deadline": null,
+    "output_deadline": null,
+    "run_mode": "continuous",
+    "output_series_id": "series_continuous_v2",
+    "lease_expires_at": "2026-11-13T12:00:30Z"
+  },
+  "credential_bindings": [],
+  "output_path": "/work/results/inv_continuous_001.json"
+}

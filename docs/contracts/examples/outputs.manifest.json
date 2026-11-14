@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0",
+  "script_id": "multi-output-demo",
+  "version": "2.0.0",
+  "language": "python",
+  "entrypoint": "main.py",
+  "integration_mode": "hooks",
+  "hook_protocol_version": "2.0",
+  "default_action": "summarize_records",
+  "actions": {
+    "summarize_records": {
+      "title": "汇总接口记录",
+      "handler": "summarize_records",
+      "side_effects": "read_only",
+      "output_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "required": [
+          "item_count",
+          "records"
+        ],
+        "properties": {
+          "item_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_contract": {
+        "required_keys": [],
+        "allowed_kinds": [
+          "text",
+          "json",
+          "file",
+          "message"
+        ],
+        "max_items": 100,
+        "required_scope": "batch"
+      }
+    }
+  },
+  "hooks": {
+    "on_cleanup": "cleanup",
+    "on_outputs": "produce_report"
+  },
+  "dependencies_lock": "requirements.lock",
+  "credential_requirements": [],
+  "network_requirements": {
+    "mode": "HTTP",
+    "domains": [
+      "api.example.invalid"
+    ],
+    "methods": [
+      "GET"
+    ]
+  },
+  "supported_execution_modes": [
+    "docker",
+    "qemu_kvm",
+    "qemu_tcg"
+  ],
+  "input_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "required": [
+      "source_url"
+    ],
+    "properties": {
+      "source_url": {
+        "type": "string",
+        "format": "uri",
+        "title": "数据地址"
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100,
+        "title": "记录上限"
+      }
+    },
+    "additionalProperties": false
+  },
+  "events": {
+    "report_ready": {
+      "data_schema": {
+        "type": "object",
+        "required": [
+          "item_count"
+        ],
+        "properties": {
+          "item_count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "extensions": []
+}

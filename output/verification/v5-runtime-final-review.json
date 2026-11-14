@@ -1,0 +1,42 @@
+{
+  "ADMIN-O13": {
+    "pass": true,
+    "source_filename": "exec-cde921e7-0061-4dc2-87fe-f5c7981ba7c4.png",
+    "observed": "履约截止与等待公平调度、开发自用配额区分；未引入购买优先权，容量以资源单位与任务数分清。"
+  },
+  "ADMIN-O14": {
+    "pass": true,
+    "source_filename": "exec-452969a7-7ba6-4560-9e04-a9793219b4e5.png",
+    "observed": "活动租约数量、最近清理证明与镜像验证分列；排空中等待租约归零，停用按钮按状态禁用。"
+  },
+  "ADMIN-O16": {
+    "pass": false,
+    "source_filename": "exec-f9f131d8-01bb-40af-9095-e06b1be0e1cf.png",
+    "observed": "日期、日志与告警均正确；长示例订单号仍有缺位，改用明确的订单尾号展示避免误关联。"
+  },
+  "ADMIN-O18": {
+    "pass": true,
+    "source_filename": "exec-4cf232f2-d23f-451e-a02a-597bab5e3a5d.png",
+    "observed": "远程来源仅导入草稿后测试部署，Webhook为外发事件，P1/P2关闭；出站白名单与销售运行资金保护独立。"
+  },
+  "ADMIN-O19": {
+    "pass": true,
+    "source_filename": "exec-8d8e7814-d4b9-4797-bcf4-12653285feb3.png",
+    "observed": "能力说明不越界、授权日期有效；禁止自提权及最后权限管理员保护，诊断限对象字段与期限且不读密钥。"
+  },
+  "ADMIN-O20": {
+    "pass": true,
+    "source_filename": "exec-070dc3ff-6d03-445b-bd42-a037f740fc4d.png",
+    "observed": "普通日志热7天总30天、普通产物30天与文档一致；未决证据有界延期，备份与恢复演练状态分离。"
+  },
+  "ADMIN-O21": {
+    "pass": false,
+    "source_filename": "exec-590a8d17-e832-41bd-8ff6-489cff6d711b.png",
+    "observed": "预约日期已与消费者11月21日下午对应，费用防重核验正确；长订单号仍缺位，改用尾号掩码清晰关联。"
+  },
+  "ADMIN-C21": {
+    "pass": true,
+    "source_filename": "exec-a0679ce8-78af-4047-a9e7-dc3567d2c55d.png",
+    "observed": "当前管理员工作区已标明，消费者与发布者可切换；最后权限管理员保护与未结售后受限处理同时明确。"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-14T08:14:58.117Z",
+  "checks": [
+    "version self-use form previews publisher-defined fields and requires explicit owner authorization",
+    "version, self-use and impact tabs switch without mixing published facts and new drafts",
+    "build filters and trial-run tabs update records and the matching selected detail",
+    "deployment detail respects state-specific actions and requires explicit TCG opt-in",
+    "arbitrary-purpose scripts create drafts, preserve edited files across routes and validate against manifest 2.0",
+    "local source-file upload opens the supplied content with a matching generated entrypoint",
+    "JavaScript, ES module and CommonJS uploads retain their source and generate matching Node.js manifests and dependency locks",
+    "publisher script and execution pages render without browser exceptions"
+  ],
+  "screenshots": [
+    "PUBLISHER-S02",
+    "PUBLISHER-S04",
+    "PUBLISHER-S05",
+    "PUBLISHER-S06"
+  ],
+  "errors": [],
+  "result": "PASS"
+}

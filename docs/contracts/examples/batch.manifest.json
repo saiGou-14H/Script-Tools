@@ -1,0 +1,133 @@
+{
+  "schema_version": "2.0",
+  "script_id": "batch-sync-demo",
+  "version": "2.0.0",
+  "language": "python",
+  "entrypoint": "main.py",
+  "integration_mode": "hooks",
+  "hook_protocol_version": "2.0",
+  "default_action": "publish_batch",
+  "actions": {
+    "publish_batch": {
+      "title": "提交同步批次",
+      "handler": "publish_batch",
+      "side_effects": "external_write",
+      "output_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "batch_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "synced_count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "batch_ref",
+          "synced_count"
+        ],
+        "additionalProperties": false
+      },
+      "resume_actions": [
+        "confirm_batch"
+      ]
+    },
+    "confirm_batch": {
+      "title": "确认批次结果",
+      "handler": "confirm_batch",
+      "side_effects": "read_only",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "batch_ref": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "batch_ref"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "batch_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "synced_count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "batch_ref",
+          "synced_count"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "hooks": {},
+  "dependencies_lock": "requirements.lock",
+  "credential_requirements": [],
+  "network_requirements": {
+    "mode": "HTTP",
+    "domains": [
+      "sync.example.invalid"
+    ],
+    "methods": [
+      "POST",
+      "GET"
+    ]
+  },
+  "supported_execution_modes": [
+    "docker",
+    "qemu_kvm",
+    "qemu_tcg"
+  ],
+  "input_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "rows": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "minLength": 1
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "key",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        "minItems": 1,
+        "maxItems": 100
+      },
+      "dry_run": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "rows",
+      "dry_run"
+    ],
+    "additionalProperties": false
+  },
+  "events": {},
+  "extensions": []
+}

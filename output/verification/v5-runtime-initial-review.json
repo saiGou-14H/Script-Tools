@@ -1,0 +1,32 @@
+{
+  "ADMIN-O13": {
+    "pass": false,
+    "source_filename": "exec-7cca23ca-98a2-4a57-bff7-fa35c3024632.png",
+    "observed": "队列和容量展示清晰，但错误引入购买高优先级资源；需改为履约期限与公平调度，不额外售卖优先权。"
+  },
+  "ADMIN-O14": {
+    "pass": false,
+    "source_filename": "exec-b4783168-67ea-405a-b13e-7356c84496a6.png",
+    "observed": "节点租约错误显示为按次，镜像验证与环境清理证明混淆，停用节点仍提供停用按钮；需纠正概念和状态。"
+  },
+  "ADMIN-O15": {
+    "pass": true,
+    "source_filename": "exec-dd63a814-3804-4f53-b6ce-c6739b963552.png",
+    "observed": "运行元数据与受控限时排障分开，需对象、范围、理由与权限；停止中待清理和外部效果核验独立。"
+  },
+  "ADMIN-O16": {
+    "pass": false,
+    "source_filename": "exec-4ee5733f-199e-41fb-a526-e1a220204182.png",
+    "observed": "脱敏日志、告警恢复证据和限时静默操作明确，日期误为1月，需统一当前示例日期。"
+  },
+  "ADMIN-O17": {
+    "pass": true,
+    "source_filename": "exec-c6ee6509-e758-42fc-9735-c1cd5cf0e94d.png",
+    "observed": "失败消息可重投，UNKNOWN先核验；明确只重投通知，不重跑服务和不新增费用。"
+  },
+  "ADMIN-O18": {
+    "pass": false,
+    "source_filename": "exec-e047f321-9429-4cf3-a6fd-10a17d6aa632.png",
+    "observed": "三个销售/运行/资金保护开关独立，回调查询保留；远程来源说明误导为直接执行、Webhook方向和出站白名单语义需纠正。"
+  }
+}

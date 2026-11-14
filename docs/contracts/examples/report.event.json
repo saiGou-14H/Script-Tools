@@ -1,0 +1,12 @@
+{
+  "protocol_version": "2.0",
+  "run_id": "run_demo_001",
+  "attempt_id": "attempt_demo_001",
+  "invocation_id": "inv_demo_001",
+  "script_version_id": "sv_demo_001_v2",
+  "event_name": "report_ready",
+  "event_key": "report-demo-001",
+  "data": {
+    "item_count": 1
+  }
+}

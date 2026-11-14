@@ -1,0 +1,26 @@
+{
+  "name": "script-tools",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:web": "npm run dev --workspace @script-tools/web",
+    "dev:api": "npm run dev --workspace @script-tools/control-api",
+    "build": "npm run build --workspace @script-tools/control-api && npm run build --workspace @script-tools/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "db:prepare": "node scripts/prepare-contracts.mjs",
+    "verify:docs": "python -X utf8 docs/checks/validate-docs.py"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.3"
+  }
+}

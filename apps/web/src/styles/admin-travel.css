@@ -1,0 +1,401 @@
+.admin-workspace.page-O04 {
+  --sidebar-width: 230px;
+  --header-height: 54px;
+}
+.page-O04 .main-content {
+  padding: 73px 15px 18px 25px;
+}
+.page-O04 .breadcrumb {
+  margin-bottom: 16px;
+}
+.page-O04 .page-heading {
+  margin-bottom: 20px;
+}
+.page-O04 .page-heading p {
+  font-size: 14px;
+}
+.admin-travel-banner {
+  min-height: 94px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 16px 27px;
+  border-radius: 12px;
+  margin-bottom: 18px;
+  background: linear-gradient(110deg, #e8f3ff, #e5e2ff);
+}
+.admin-travel-banner .tile-icon {
+  height: 60px;
+  width: 60px;
+  background: linear-gradient(145deg, #d3e9ff, #5d90ff);
+  color: white;
+  font-size: 31px;
+  border-radius: 15px;
+  box-shadow: 0 5px 5px #3c5ac326;
+}
+.admin-travel-banner h3 {
+  font-size: 19px;
+  margin-bottom: 4px;
+}
+.admin-travel-banner p {
+  font-size: 14px;
+}
+.admin-attraction-columns {
+  display: grid;
+  grid-template-columns: 293px 1fr;
+  gap: 12px;
+}
+.admin-attraction-columns > .panel {
+  min-height: 525px;
+  margin-bottom: 0;
+}
+.admin-attraction-columns .panel-heading {
+  border: 0;
+  padding: 16px 17px;
+  min-height: 72px;
+}
+.admin-attraction-columns .panel-heading h2 {
+  font-size: 21px;
+}
+.admin-attraction-columns .panel-heading .ant-btn {
+  min-width: 91px;
+  height: 39px;
+}
+.admin-attraction-columns .panel-heading .ant-btn-primary {
+  min-width: 113px;
+}
+.admin-attraction-columns .panel-body {
+  padding: 0 15px 20px;
+}
+.admin-city-list .panel-heading {
+  padding-left: 20px;
+}
+.admin-city-list .panel-body {
+  padding: 0 20px;
+}
+.admin-city-list button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 0;
+  width: 100%;
+  height: 38px;
+  border-radius: 6px;
+  background: transparent;
+  text-align: left;
+  padding: 0 11px;
+  font-size: 17px;
+  cursor: pointer;
+}
+.admin-city-list button.selected {
+  background: linear-gradient(100deg, #e5efff, #d8e6ff);
+}
+.admin-city-list button > span:first-child {
+  font-size: 21px;
+}
+.admin-city-list small {
+  font-size: 17px;
+}
+.admin-attraction-columns .ant-table-thead > tr > th {
+  height: 43px;
+  padding: 8px 14px;
+  font-size: 15px;
+}
+.admin-attraction-columns .ant-table-tbody > tr > td {
+  height: 48px;
+  padding: 8px 14px;
+  font-size: 15px;
+}
+.admin-attraction-columns .ant-table .ant-btn {
+  padding: 0;
+  height: 28px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.admin-attraction-columns .status {
+  font-size: 13px;
+  padding: 0 10px;
+  line-height: 23px;
+}
+.admin-attraction-columns .selected-row > td,
+.unresolved-booking-table .selected-row > td {
+  background: #e9f1ff !important;
+}
+.admin-workspace.page-O05 {
+  --sidebar-width: 213px;
+  --header-height: 51px;
+}
+.page-O05 .main-content {
+  padding: 69px 22px 18px 23px;
+}
+.page-O05 .breadcrumb {
+  margin-bottom: 19px;
+}
+.page-O05 .page-heading {
+  margin-bottom: 19px;
+}
+.admin-channel-main {
+  margin-bottom: 20px !important;
+}
+.admin-channel-main .panel-body {
+  padding: 20px 20px 9px;
+}
+.admin-channel-main .ant-form-inline {
+  align-items: center;
+  gap: 60px;
+  border-bottom: 1px solid #e4ebf5;
+  padding-bottom: 17px;
+}
+.admin-channel-main .ant-form-item {
+  margin: 0;
+}
+.admin-channel-main .ant-input-affix-wrapper {
+  width: 332px;
+  height: 36px;
+}
+.admin-channel-main .ant-select {
+  width: 288px;
+  height: 36px;
+}
+.admin-channel-main .row-actions,
+.channel-unresolved .ant-form-inline .row-actions {
+  margin-left: auto;
+  gap: 15px;
+}
+.admin-channel-main .ant-form-inline .ant-btn,
+.channel-unresolved .ant-form-inline .ant-btn {
+  height: 38px;
+  min-width: 91px;
+}
+.channel-toolbar {
+  display: flex;
+  gap: 17px;
+  margin: 20px 0;
+}
+.channel-toolbar .ant-btn {
+  height: 39px;
+  min-width: 141px;
+  font-size: 15px;
+}
+.channel-toolbar .ant-btn-primary {
+  min-width: 166px;
+}
+.admin-channel-main .ant-table-thead > tr > th {
+  height: 38px;
+  padding: 7px 17px;
+  font-size: 14px;
+}
+.admin-channel-main .ant-table-tbody > tr > td {
+  height: 46px;
+  padding: 6px 17px;
+  font-size: 14px;
+}
+.admin-channel-main .ant-table .ant-btn-link {
+  height: 28px;
+}
+.admin-channel-main .status {
+  font-size: 13px;
+  line-height: 24px;
+}
+.channel-unresolved {
+  margin-bottom: 0 !important;
+}
+.channel-unresolved .panel-heading {
+  padding: 13px 20px 2px;
+  border: 0;
+}
+.channel-unresolved .panel-body {
+  padding: 0 20px 20px;
+}
+.channel-unresolved .panel-body > p {
+  font-size: 13px;
+  margin-bottom: 13px;
+}
+.channel-unresolved .ant-form-inline {
+  margin-bottom: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.channel-unresolved .ant-form-item {
+  margin: 0;
+}
+.channel-unresolved .ant-input {
+  width: 332px;
+  height: 35px;
+}
+.channel-unresolved .ant-input-affix-wrapper {
+  width: 332px;
+  height: 35px;
+}
+.channel-unresolved .ant-input-affix-wrapper .ant-input {
+  width: auto;
+  height: auto;
+}
+.channel-unresolved .ant-select {
+  width: 248px;
+  height: 35px;
+}
+.channel-unresolved .ant-table-thead > tr > th {
+  height: 31px;
+  padding: 5px 18px;
+  font-size: 13px;
+}
+.channel-unresolved .ant-table-tbody > tr > td {
+  height: 35px;
+  padding: 4px 18px;
+  font-size: 13px;
+}
+.channel-unresolved .status {
+  font-size: 12px;
+  line-height: 20px;
+  padding: 0 10px;
+  border-radius: 15px;
+}
+.admin-workspace.page-O21 {
+  --sidebar-width: 224px;
+  --header-height: 55px;
+}
+.page-O21 .main-content {
+  padding: 74px 23px 18px 25px;
+}
+.page-O21 .breadcrumb {
+  margin-bottom: 17px;
+}
+.page-O21 h1 {
+  font-size: 29px;
+}
+.page-O21 .page-heading {
+  margin-bottom: 17px;
+}
+.admin-unresolved-columns {
+  display: grid;
+  grid-template-columns: 1.48fr 1fr;
+  gap: 15px;
+}
+.admin-unresolved-columns > .panel {
+  min-height: 652px;
+  margin-bottom: 0;
+}
+.unresolved-booking-table .panel-body {
+  padding: 20px 19px;
+}
+.unresolved-booking-table .ant-table-thead > tr > th {
+  height: 46px;
+  padding: 10px 16px;
+  font-size: 15px;
+}
+.unresolved-booking-table .ant-table-tbody > tr > td {
+  height: 55px;
+  padding: 12px 16px;
+  font-size: 15px;
+}
+.unresolved-booking-table .ant-table .status {
+  font-size: 13px;
+  line-height: 24px;
+}
+.blue-text {
+  color: #1555ff;
+}
+.unresolved-booking-detail .panel-heading {
+  min-height: 59px;
+  padding: 14px 20px;
+}
+.unresolved-booking-detail .panel-body {
+  padding: 16px 21px 24px;
+}
+.unresolved-booking-detail h3 {
+  font-size: 16px;
+  margin: 0 0 4px;
+}
+.unresolved-booking-detail pre {
+  background: #f1f4fa;
+  border-radius: 11px;
+  padding: 12px 18px;
+  font-size: 14px;
+  color: #0d192e;
+  line-height: 1.45;
+  margin: 0 0 21px;
+}
+.unresolved-booking-detail dl {
+  display: grid;
+  grid-template-columns: 175px 1fr;
+  margin: 0 0 18px;
+}
+.unresolved-booking-detail dt,
+.unresolved-booking-detail dd {
+  border-bottom: 1px solid #e8edf6;
+  margin: 0;
+  min-height: 49px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+.unresolved-booking-detail dt {
+  font-weight: 600;
+}
+.unresolved-booking-detail .notice {
+  height: 53px;
+  padding: 14px 18px;
+  margin-bottom: 28px;
+  color: #101a2c;
+  font-size: 15px;
+}
+.unresolved-booking-detail .row-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+}
+.unresolved-booking-detail .ant-btn {
+  height: 47px;
+  font-size: 17px;
+}
+.unresolved-booking-detail details {
+  margin-top: 20px;
+  font-size: 13px;
+}
+@media (max-width: 1450px) {
+  .admin-attraction-columns {
+    grid-template-columns: 230px 1fr;
+  }
+  .admin-channel-main .ant-form-inline {
+    gap: 20px;
+  }
+  .admin-channel-main .ant-input-affix-wrapper {
+    width: 260px;
+  }
+  .admin-channel-main .ant-select {
+    width: 240px;
+  }
+  .channel-unresolved .ant-input {
+    width: 240px;
+  }
+  .channel-unresolved .ant-select {
+    width: 190px;
+  }
+  .admin-unresolved-columns {
+    grid-template-columns: 1.3fr 1fr;
+  }
+  .unresolved-booking-detail dl {
+    grid-template-columns: 140px 1fr;
+  }
+  .unresolved-booking-detail dt,
+  .unresolved-booking-detail dd {
+    font-size: 14px;
+  }
+}
+@media (max-width: 1100px) {
+  .admin-attraction-columns,
+  .admin-unresolved-columns {
+    grid-template-columns: 1fr;
+  }
+  .admin-attraction-columns > .panel,
+  .admin-unresolved-columns > .panel {
+    min-height: 200px;
+  }
+  .admin-channel-main .ant-form-inline,
+  .channel-unresolved .ant-form-inline {
+    flex-wrap: wrap;
+  }
+}

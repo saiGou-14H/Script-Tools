@@ -1,0 +1,7 @@
+{
+ "PUBLISHER-S03":{"pass":true,"source_filename":"exec-76d5cc4d-b263-4a33-b438-6c72026cb992.png","observed":"输出Schema已改为object、properties.rows.integer与required结构，草稿校验及封存状态保持正确。"},
+ "PUBLISHER-S05":{"pass":true,"source_filename":"exec-d6d8fb08-1782-467a-b61c-38e2a2ece935.png","observed":"B032列表和详情均关联v0.4；依赖锁缺失失败与排队取消、修复后重建操作明确。"},
+ "PUBLISHER-S06":{"pass":true,"source_filename":"exec-c9466956-aae9-4386-b1b6-00df54b777b2.png","observed":"运行模式与关联服务已分列；只有FAILED部署可重试，READY重试禁用；停用仍提示存量权益影响。"},
+ "PUBLISHER-S07":{"pass":true,"source_filename":"exec-70cdf4b7-b261-4f28-a2f9-2bf7f04feb45.png","observed":"全部3条选中，在售2/草稿1数量一致；草稿未定价未部署，预览草稿与公开消费者页面区分。"},
+ "PUBLISHER-S08":{"pass":true,"source_filename":"exec-aa120ba8-51c6-413d-90c0-0572c81932b7.png","observed":"已恢复表格清洗的文件输入、去重字段、CSV输出与交付标准；自动检查通过后发布者本人直接上架，无人工审核。"}
+}
