@@ -18,6 +18,7 @@ import { AccountController } from "./account/account.controller";
 import { AccountService } from "./account/account.service";
 import { AdminMetadataController } from "./admin/admin-metadata.controller";
 import { AdminMetadataService } from "./admin/admin-metadata.service";
+import { PublicTravelService } from "./public-travel.service";
 
 @Module({
   controllers: [
@@ -40,6 +41,7 @@ import { AdminMetadataService } from "./admin/admin-metadata.service";
     OutputQueryService,
     AccountService,
     AdminMetadataService,
+    PublicTravelService,
     { provide: APP_GUARD, useClass: AuthGuard },
   ],
 })

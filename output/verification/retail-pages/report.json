@@ -1,5 +1,6 @@
 {
-  "date": "2026-11-14T09:50:57.056Z",
+  "date": "2026-11-14T20:39:27.506Z",
+  "baseURL": "http://127.0.0.1:5174",
   "checks": [
     "public catalog returns unique published services with immutable release content, version, schemas, integer price and duration strings, timestamps and purchase availability",
     "an unpublished title edit cannot replace release content, and multiple active price versions resolve to one latest plan without duplicate service cards",

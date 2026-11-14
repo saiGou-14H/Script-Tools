@@ -18,6 +18,7 @@ delivery_targets = {
     (root.parent/'output/verification'/name).resolve()
     for name in ('v5-prototype-delivery.json','v3-final-static-checks.json','detailed-design-database.json','detailed-design-coverage.json','postgresql-foundation.json','persistence-foundation.json','frontend-implementation-progress.json','admin-operations/report.json','admin-travel/report.json','identity/report.json','production-build.json','retail-pages/report.json','consumer-overview/report.json','publisher-profile/report.json','output-pages/report.json','account-pages/report.json','notification-pages/report.json')
 }
+delivery_targets.add((root.parent/'output/verification/public-travel-pages/asset-provenance.json').resolve())
 expected_files = {
     'README.md', '01-产品需求与功能设计.md', '02-系统架构与详细设计.md',
     '03-接口协议与脚本开发规范.md', '04-部署运维与监控手册.md',

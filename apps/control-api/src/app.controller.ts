@@ -23,6 +23,7 @@ import { AuthChallengeService } from "./auth/auth-challenge.service";
 import { AccountService } from "./account/account.service";
 import { AdminMetadataService } from "./admin/admin-metadata.service";
 import { publicHelp } from "./public-help";
+import { PublicTravelService } from "./public-travel.service";
 
 @Controller("api/v1")
 export class AppController {
@@ -32,7 +33,60 @@ export class AppController {
     private readonly challenges: AuthChallengeService,
     private readonly accounts: AccountService,
     private readonly adminMetadata: AdminMetadataService,
+    private readonly publicTravel: PublicTravelService,
   ) {}
+
+  @Public()
+  @Get("cities")
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  publicCities(
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.publicTravel.cities(query);
+  }
+
+  @Public()
+  @Get("attractions")
+  @ApiQuery({ name: "city_id", required: false, type: String })
+  @ApiQuery({ name: "date", required: false, type: String, description: "预约日期，仅传递条件" })
+  @ApiQuery({ name: "q", required: false, type: String })
+  @ApiQuery({ name: "limit", required: false, type: Number })
+  @ApiQuery({ name: "cursor", required: false, type: String })
+  async publicAttractions(
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.publicTravel.attractions(query, await this.services());
+  }
+
+  @Public()
+  @Get("attractions/:id")
+  @ApiQuery({ name: "date", required: false, type: String, description: "预约日期，仅传递条件" })
+  async publicAttraction(
+    @Param("id") id: string,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.publicTravel.attraction(id, query, await this.services());
+  }
+
+  @Public()
+  @Get("attractions/:id/services")
+  @ApiQuery({ name: "date", required: false, type: String, description: "预约日期，仅传递条件" })
+  async attractionServices(
+    @Param("id") id: string,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.publicTravel.services(id, query, await this.services());
+  }
 
   @Public()
   @Get("public/help")
@@ -197,11 +251,12 @@ export class AppController {
           WHEN COALESCE(r.delivery_policy->'development_fixture'='true'::jsonb,false) AND NOT $1::boolean THEN '开发样例服务'
           ELSE NULL END) AS availability
       FROM travel.services s JOIN travel.service_categories c ON c.id=s.category_id
-      JOIN travel.service_releases r ON r.id=s.current_release_id
-      JOIN LATERAL (SELECT * FROM travel.price_plans WHERE service_release_id=r.id AND retired_at IS NULL ORDER BY version DESC,created_at DESC,id DESC LIMIT 1) p ON true
-      JOIN travel.deployments d ON d.id=r.deployment_id JOIN travel.script_versions sv ON sv.id=r.script_version_id
+      JOIN travel.service_releases r ON r.id=s.current_release_id AND r.service_id=s.id AND r.owner_user_id=s.owner_user_id
+      JOIN LATERAL (SELECT * FROM travel.price_plans WHERE service_release_id=r.id AND owner_user_id=r.owner_user_id AND retired_at IS NULL ORDER BY version DESC,created_at DESC,id DESC LIMIT 1) p ON true
+      JOIN travel.deployments d ON d.id=r.deployment_id AND d.owner_user_id=r.owner_user_id AND d.script_version_id=r.script_version_id
+      JOIN travel.script_versions sv ON sv.id=r.script_version_id AND sv.owner_user_id=r.owner_user_id
       JOIN travel.users u ON u.id=s.owner_user_id LEFT JOIN travel.publisher_profiles pp ON pp.owner_user_id=u.id
-      JOIN travel.script_actions sa ON sa.script_version_id=r.script_version_id AND sa.name=r.action
+      JOIN travel.script_actions sa ON sa.script_version_id=r.script_version_id AND sa.owner_user_id=r.owner_user_id AND sa.name=r.action
       WHERE s.status='ACTIVE' AND p.retired_at IS NULL ORDER BY p.unit_amount_minor DESC`,
       [allowDevelopmentFixtures],
     );

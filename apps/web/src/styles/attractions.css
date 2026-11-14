@@ -1,0 +1,461 @@
+.role-GUEST.page-P04 {
+  --sidebar-width: 258px;
+  --header-height: 64px;
+}
+.page-P04 .main-content {
+  padding: 82px 30px 14px 34px;
+}
+.page-P04 .breadcrumb {
+  font-size: 16px;
+  line-height: 22px;
+  margin-bottom: 16px;
+}
+.page-P04 h1 {
+  font-size: 32px;
+  line-height: 45px;
+}
+.page-P04 .page-heading {
+  margin-bottom: 22px;
+}
+.page-P04 .page-heading p {
+  font-size: 15px;
+  line-height: 25px;
+}
+.page-P04 .global-search {
+  left: 32.8%;
+  width: 32.6%;
+  font-size: 16px;
+  height: 40px;
+}
+.page-P04 .sidebar {
+  padding: 12px 16px;
+}
+.page-P04 .nav-group {
+  margin-bottom: 22px;
+}
+.page-P04 .nav-group-label {
+  font-size: 16px;
+  padding: 10px 18px 9px;
+}
+.page-P04 .nav-item {
+  height: 47px;
+  gap: 17px;
+  font-size: 18px;
+  padding: 0 18px;
+}
+.page-P04 .nav-item > .anticon {
+  font-size: 21px;
+}
+.attractions-banner {
+  height: 115px;
+  margin: 0 0 16px;
+  padding: 18px 35px;
+  background: linear-gradient(110deg, #e2edff, #dfdcff 65%, #beb1ff);
+}
+.attractions-banner h2 {
+  font-size: 27px;
+  line-height: 38px;
+}
+.attractions-banner p {
+  font-size: 20px;
+  line-height: 30px;
+}
+.attractions-banner::after {
+  width: 440px;
+  height: 150px;
+  right: -50px;
+  top: 30px;
+  background: #ffffff25;
+}
+.attraction-filters {
+  min-height: 77px;
+  flex-wrap: wrap;
+}
+.attraction-filters > b {
+  flex-shrink: 0;
+}
+.guest-attractions .attraction-filters > b {
+  width: 80px;
+}
+.attraction-filters > div:first-of-type {
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.attraction-filters .filter-divider {
+  margin-inline: 20px;
+  height: 36px;
+}
+.attraction-filters .ant-picker input {
+  font-size: 18px;
+}
+.attraction-filters .ant-picker-prefix {
+  font-size: 18px;
+  margin-inline-end: 12px;
+}
+.attraction-filters > .ant-input-affix-wrapper {
+  flex: 1;
+  min-width: 200px;
+}
+.page-P04 .ant-input::placeholder {
+  color: #6f7b90;
+  opacity: 1;
+}
+.attractions-page > .notice {
+  min-height: 47px;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+}
+.attraction-card {
+  margin-bottom: 0;
+}
+.attraction-card .panel-body {
+  padding: 16px 18px;
+}
+.guest-attractions .attraction-card {
+  min-height: 347px;
+}
+.attraction-card-heading {
+  align-items: center;
+  gap: 10px;
+}
+.attraction-card-heading h2 {
+  margin: 0;
+  font-size: 23px;
+  line-height: 31px;
+}
+.attraction-card-heading .status {
+  flex-shrink: 0;
+  font-size: 15px;
+  line-height: 24px;
+  padding: 2px 14px;
+}
+.attraction-summary > p {
+  margin: 4px 0 10px;
+  font-size: 15px;
+  line-height: 24px;
+  color: #46536b;
+}
+.attraction-fees {
+  padding: 10px 18px;
+  margin-bottom: 12px;
+  min-height: 80px;
+}
+.attraction-fees > div + div {
+  padding-left: 42px;
+}
+.attraction-fees strong {
+  line-height: 34px;
+  font-size: 25px;
+  white-space: nowrap;
+}
+.attraction-rules {
+  min-height: 94px;
+  padding: 8px 16px;
+  margin-bottom: 12px;
+}
+.attraction-rules p {
+  line-height: 25px;
+  margin: 0;
+  font-size: 15px;
+}
+.attraction-action .ant-btn {
+  height: 40px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.role-USER.page-P04 {
+  --sidebar-width: 230px;
+  --header-height: 56px;
+}
+.role-USER.page-P04 .main-content {
+  padding: 80px 22px 14px 30px;
+}
+.role-USER.page-P04 h1 {
+  font-size: 28px;
+  line-height: 40px;
+}
+.role-USER.page-P04 .page-heading {
+  margin-bottom: 17px;
+}
+.role-USER.page-P04 .sidebar {
+  padding: 10px 12px;
+}
+.role-USER.page-P04 .nav-group {
+  margin-bottom: 5px;
+}
+.role-USER.page-P04 .nav-group-label {
+  font-size: 13px;
+  line-height: 20px;
+  padding: 4px 18px 3px;
+}
+.role-USER.page-P04 .nav-item {
+  height: 30px;
+  font-size: 15px;
+  gap: 14px;
+  padding: 0 20px;
+}
+.role-USER.page-P04 .nav-item > .anticon {
+  font-size: 18px;
+}
+.role-USER.page-P04 .global-search {
+  left: 34.7%;
+  width: 31.9%;
+  height: 38px;
+}
+.member-attractions .attractions-banner {
+  height: 111px;
+  padding: 18px 25px;
+  margin-bottom: 20px;
+}
+.member-attractions .attractions-banner h2 {
+  font-size: 27px;
+}
+.member-attractions .attractions-banner h2 span {
+  color: #1555ff;
+}
+.member-attractions .attractions-banner p {
+  font-size: 16px;
+  line-height: 26px;
+}
+.member-attractions .attraction-filters {
+  min-height: 78px;
+  gap: 14px;
+  border: 1px solid #e0e7f3;
+  margin-bottom: 20px;
+}
+.member-attractions .attraction-filters > div:first-of-type {
+  gap: 8px;
+}
+.member-attractions .attraction-filters .ant-btn {
+  height: 40px;
+  min-width: 80px;
+}
+.member-attractions .attraction-filters .ant-picker {
+  height: 40px;
+  width: 288px;
+}
+.member-attractions .attraction-filters > .ant-input-affix-wrapper {
+  height: 40px;
+  max-width: 490px;
+  border: 0;
+  background: #f0f3fa;
+}
+.attraction-list {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.attraction-list .panel-body {
+  display: grid;
+  grid-template-columns: 296px minmax(0, 1fr) 300px 136px;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 20px;
+  min-height: 132px;
+}
+.attraction-image {
+  width: 296px;
+  height: 104px;
+  display: block;
+  object-fit: cover;
+  border-radius: 12px;
+}
+.attraction-image-empty {
+  display: grid;
+  place-items: center;
+  background: #eef3fc;
+}
+.attraction-image-empty .tile-icon {
+  width: 64px;
+  height: 64px;
+  font-size: 40px;
+}
+.attraction-list .attraction-summary {
+  min-width: 0;
+}
+.attraction-list .attraction-card-heading {
+  justify-content: flex-start;
+  gap: 20px;
+}
+.attraction-list .attraction-card-heading h2 {
+  font-size: 21px;
+  line-height: 30px;
+}
+.attraction-list .attraction-card-heading .status {
+  font-size: 14px;
+  padding: 1px 12px;
+}
+.attraction-list .attraction-summary > p {
+  margin: 5px 0 8px;
+  line-height: 24px;
+}
+.attraction-tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.attraction-tags .status {
+  margin: 0;
+  font-size: 13px;
+  padding: 2px 12px;
+}
+.attraction-list .attraction-fees {
+  grid-template-columns: 105px minmax(0, 1fr);
+  min-height: 80px;
+  margin: 0;
+  border-radius: 0;
+  border-left: 1px solid #dce4f0;
+  background: transparent;
+  padding: 4px 0 4px 50px;
+  align-content: center;
+}
+.attraction-list .attraction-fees > div + div {
+  padding-left: 0;
+  border-left: 0;
+}
+.attraction-list .attraction-fees strong {
+  font-size: 24px;
+  color: #10162b;
+}
+.attraction-list .attraction-fees > div:first-child strong {
+  color: #e5354e;
+}
+.member-attractions > .notice {
+  min-height: 42px;
+  margin: 0;
+  padding: 8px 18px;
+}
+.attraction-service-choice {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+  border-bottom: 1px solid #e4eaf4;
+}
+.attraction-service-choice > b {
+  flex: 1;
+}
+@media (max-width: 1500px) {
+  .attraction-filters .filter-divider {
+    display: none;
+  }
+  .attraction-list .panel-body {
+    grid-template-columns: 240px minmax(0, 1fr) 230px;
+  }
+  .attraction-image {
+    width: 240px;
+  }
+  .attraction-list .attraction-fees {
+    padding-left: 20px;
+    grid-template-columns: 80px minmax(0, 1fr);
+  }
+  .attraction-list .attraction-action {
+    grid-column: 2 / 4;
+  }
+}
+@media (max-width: 1000px) {
+  .attraction-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .attraction-list .panel-body {
+    grid-template-columns: 180px minmax(0, 1fr);
+  }
+  .attraction-image {
+    width: 180px;
+  }
+  .attraction-list .attraction-fees,
+  .attraction-list .attraction-action {
+    grid-column: 1 / 3;
+  }
+}
+@media (max-width: 760px) {
+  .app-shell.page-P04 {
+    --sidebar-width: 0px;
+  }
+  .app-shell.page-P04 .main-content {
+    padding: calc(var(--header-height) + 22px) 16px 24px;
+  }
+  .page-P04 .brand {
+    min-width: 0;
+  }
+  .page-P04 .brand strong {
+    font-size: 17px;
+  }
+  .page-P04 .topbar {
+    padding-inline: 16px;
+  }
+  .page-P04 .workspace-button {
+    font-size: 0;
+    gap: 6px;
+    padding-inline: 8px;
+  }
+  .page-P04 .workspace-button b,
+  .page-P04 .workspace-button .anticon {
+    font-size: 12px;
+  }
+  .role-GUEST.page-P04 .workspace-button {
+    display: none;
+  }
+  .page-P04 .topbar-actions {
+    gap: 6px;
+  }
+  .attractions-page .attractions-banner {
+    height: auto;
+    padding: 20px;
+  }
+  .attractions-banner h2 {
+    font-size: 23px;
+    line-height: 32px;
+  }
+  .attractions-banner p {
+    font-size: 15px;
+    line-height: 25px;
+  }
+  .attraction-filters > div:first-of-type {
+    width: 100%;
+  }
+  .attractions-page .attraction-filters {
+    padding: 16px;
+    gap: 12px;
+  }
+  .attraction-filters .ant-btn {
+    min-width: 62px;
+    font-size: 15px;
+  }
+  .attraction-filters > .ant-input-affix-wrapper {
+    width: 100%;
+    flex-basis: 100%;
+  }
+  .attractions-page .attraction-filters .ant-picker {
+    width: 220px;
+    max-width: 100%;
+  }
+  .attraction-list .panel-body {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px;
+    gap: 14px;
+  }
+  .attraction-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2.8;
+  }
+  .attraction-list .attraction-fees,
+  .attraction-list .attraction-action {
+    grid-column: auto;
+  }
+  .attraction-list .attraction-fees {
+    padding: 10px 16px;
+    background: #f3f6fb;
+    border-left: 0;
+    grid-template-columns: 1fr 1.5fr;
+  }
+  .attraction-card-heading h2 {
+    font-size: 20px;
+  }
+  .attraction-list .attraction-card-heading {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}

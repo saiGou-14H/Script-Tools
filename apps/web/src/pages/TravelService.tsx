@@ -7,10 +7,11 @@ import {
 } from "@ant-design/icons";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useWorkspace } from "../context";
+import { ApiError } from "../api";
 import { Icon } from "../components/Icon";
 import { Status } from "../components/ui";
 import { ServicePurchaseButton } from "../components/ServicePurchaseButton";
-import { readTravelContext } from "../lib/public-travel";
+import { readTravelContext, usePublicAttraction } from "../lib/public-travel";
 import { serviceAvailable, serviceDuration } from "../lib/service-display";
 import { currency, useServices } from "./Market";
 
@@ -21,13 +22,32 @@ export function TravelServicePage() {
   const { data = [], isPending, error, refetch } = useServices();
   const prototype = bootstrap.data_mode === "prototype";
   const guest = role === "GUEST";
+  const selection = readTravelContext(params, prototype);
+  const publicAttraction = usePublicAttraction(
+    params.get("attraction") || undefined,
+    selection.date,
+    !prototype && !selection.invalid,
+  );
   const service =
     data.find((item) => item.id === id && item.scene_key === "travel") ||
     (id === "demo" && prototype
       ? data.find((item) => item.scene_key === "travel")
       : undefined);
-  const { attraction, date, slot, partySize, context, invalid } =
-    readTravelContext(params, prototype);
+  const { date, slot, partySize, context, invalid } = selection;
+  const linkedService = publicAttraction.data?.services.find(
+    (item) => item.id === service?.id,
+  );
+  const attraction = prototype
+    ? selection.attraction
+    : publicAttraction.data
+      ? {
+          id: publicAttraction.data.id,
+          city: publicAttraction.data.city_name,
+          title: publicAttraction.data.name,
+          ticketMinor: publicAttraction.data.ticket_price_minor,
+          open: linkedService?.availability?.can_purchase === true,
+        }
+      : undefined;
   if (isPending) return <Skeleton active />;
   if (error)
     return (
@@ -42,10 +62,35 @@ export function TravelServicePage() {
   if (!service) return <Empty description="服务不存在或已失效" />;
   if (invalid)
     return <Empty description="景点或预约条件无效，请返回城市与景点重新选择" />;
+  if (!prototype && params.get("attraction")) {
+    if (publicAttraction.isPending) return <Skeleton active />;
+    if (publicAttraction.isError) {
+      if (
+        publicAttraction.error instanceof ApiError &&
+        publicAttraction.error.status === 404
+      )
+        return <Empty description="景点不存在或暂未开放" />;
+      return (
+        <Alert
+          type="error"
+          title="景点详情加载失败"
+          action={
+            <Button onClick={() => void publicAttraction.refetch()}>
+              重试景点详情
+            </Button>
+          }
+        />
+      );
+    }
+    if (!linkedService) return <Empty description="该景点未关联此服务" />;
+  }
+  const back = params.get("returnTo");
+  const backPath =
+    back === "/travel" || back?.startsWith("/travel?") ? back : "/travel";
   const available =
     serviceAvailable(service) && (!attraction || attraction.open);
   const name = attraction
-    ? `${attraction.city} · ${attraction.title}预约${guest ? "" : "（示例）"}`
+    ? `${attraction.city} · ${attraction.title}预约${!guest && prototype ? "（示例）" : ""}`
     : service.title;
   const ticket = attraction
     ? currency(attraction.ticketMinor)
@@ -112,7 +157,7 @@ export function TravelServicePage() {
     >
       <div className="travel-service-heading">
         <div className="retail-breadcrumb">
-          <Link to="/travel">城市与景点</Link>
+          <Link to={backPath}>城市与景点</Link>
           <span>/</span>
           <span>
             {attraction

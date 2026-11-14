@@ -1,0 +1,24 @@
+{
+  "tool": "built-in image_gen",
+  "purpose": "Fictional example venue thumbnails for the consumer travel directory prototype",
+  "assets": [
+    {
+      "path": "apps/web/src/assets/travel/westlake-example.png",
+      "prompt": "Use case photorealistic-natural. Website thumbnail for a fictional example museum in a Chinese city. A low modern museum facade of pale grey stone, one floor, dark glass entrance, flat roof extending across the frame, fresh green deciduous trees along the left edge and a paved forecourt. Architectural travel photography in natural bright spring daylight, realistic texture, subtle shadows. Very wide landscape composition around 2.8:1 aspect ratio, entrance facade occupying the lower two thirds, tree canopy and a little pale sky above. No people, cars, branding, logos, lettering, signs, watermarks, captions, collage, borders or interface. This is an illustrative fictional venue asset for a demo, not a photograph of a named real museum.",
+      "source_file": "exec-545eb2e1-b0df-4582-99be-8ca2fc848c51.png",
+      "sha256": "f3eef5175e68bab4ee9e9e65378515fe279abea754eb33fcd8c23199f1f5a320"
+    },
+    {
+      "path": "apps/web/src/assets/travel/history-example.png",
+      "prompt": "Use case photorealistic-natural. Website thumbnail for a fictional example city history museum in China. A long formal pale cream sandstone museum facade with tall square classical columns and a broad flat entablature, photographed obliquely from the front left, a few green leafy trees framing the lower left and right. Architectural travel photography, bright natural spring daylight, realistic fine texture and blue sky. Very wide landscape composition around 2.8:1 aspect ratio, columns and facade fill the lower two thirds with enough sky and foliage above. No people, vehicles, branding, logos, lettering, signs, watermarks, captions, collage, borders or interface. Illustrative fictional venue asset for a demo, not a photograph of any named real museum.",
+      "source_file": "exec-1a73d3ad-114e-4da8-841b-3b2b6dc65884.png",
+      "sha256": "b2fcb189708682dc19ad426d45224abe67d967b34c1544e8e7658405803d9e8b"
+    },
+    {
+      "path": "apps/web/src/assets/travel/exhibition-example.png",
+      "prompt": "Use case photorealistic-natural. Website thumbnail for a fictional example city exhibition hall in China. A contemporary exhibition building with a charcoal grey metal roof, broad dark glass windows and pale stone walls, photographed obliquely from the front left, a small fresh green deciduous tree in the foreground right and tidy shrubbery in front. Architectural travel photography in bright natural spring daylight, realistic texture, calm pale blue sky. Very wide landscape composition around 2.8:1 aspect ratio, architecture in the lower two thirds. No people, vehicles, branding, logos, lettering, signs, watermarks, captions, collage, borders or interface. Illustrative fictional venue asset for a demo, not a photograph of any named real exhibition hall.",
+      "source_file": "exec-2090f36a-ba89-4b2b-b312-159a9d97e45b.png",
+      "sha256": "08aed21b50153da141ac98ec761cc0b37c404ea9ad2df3741a8dacbd33032ff9"
+    }
+  ]
+}

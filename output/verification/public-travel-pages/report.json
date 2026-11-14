@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-14T20:45:04.646Z",
+  "checks": [
+    "GUEST travel directory restores its own reference layout, keeps city/date/search state through reload and service-detail return, preserves exact attraction identity and uses full-width 390px content",
+    "USER travel directory restores its own reference layout, keeps city/date/search state through reload and service-detail return, preserves exact attraction identity and uses full-width 390px content",
+    "Anonymous directory queries expose enabled cities/attractions, independently stored channel capabilities and current rule bindings, exact fee strings and only owner-consistent linked published travel services, while request dates retain NOT_QUERIED inventory state and malformed release bindings stay outside the public catalog",
+    "Public query contracts reject malformed, repeated and unknown filters, preserve literal wildcard searches and bind signed keyset cursors to resource, date, filters and page size",
+    "PostgreSQL 18 verifies public catalog binding, association projections, exact signed-64-bit prices and microsecond keyset pagination inside a fully rolled-back transaction",
+    "LIVE directory pages paginate cities and attractions, restore exact multi-service dialogs, preserve minor-unit price precision and take the selected attraction/date through linked service details and back while unknown bindings remain unavailable",
+    "Failed public directory reads expose retryable errors without prototype substitution, and real metadata layouts retain internal width at 390px"
+  ],
+  "screenshots": [
+    "GUEST-P04",
+    "GUEST-P04-mobile",
+    "USER-P04",
+    "USER-P04-mobile",
+    "GUEST-P04-live",
+    "USER-P05-live",
+    "GUEST-P04-live-mobile"
+  ],
+  "layouts": {
+    "GUEST": {
+      "width": 1814,
+      "height": 868,
+      "helpBottom": 440.421875
+    },
+    "USER": {
+      "width": 1814,
+      "height": 868,
+      "helpBottom": 825
+    }
+  },
+  "errors": [],
+  "result": "PASS"
+}

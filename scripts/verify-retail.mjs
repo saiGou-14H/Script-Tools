@@ -8,7 +8,7 @@ import path from "node:path";
 import { Pool } from "pg";
 import { chromium, expect } from "@playwright/test";
 
-loadEnvFile(".env");
+loadEnvFile(path.resolve(process.argv[2] || ".env"));
 const output = path.resolve("output/verification/retail-pages");
 await mkdir(output, { recursive: true });
 const base = "http://127.0.0.1:5174";
@@ -16,6 +16,7 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const browser = await chromium.launch();
 const report = {
   date: new Date().toISOString(),
+  baseURL: base,
   checks: [],
   screenshots: [],
   errors: [],

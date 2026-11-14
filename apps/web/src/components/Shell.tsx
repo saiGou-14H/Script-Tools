@@ -23,6 +23,16 @@ import { usePrototype } from "../prototype";
 
 const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
   {
+    P04: {
+      C04: "file",
+      C06: "layers",
+      C22: "ticket",
+      C10: "file",
+      C12: "chart",
+      C13: "clock",
+      C16: "message",
+      C19: "shield",
+    },
     P06: {
       C06: "layers",
       C22: "ticket",
@@ -276,7 +286,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
   const navigate = useNavigate();
   const location = useLocation();
   const searchRef = useRef<InputRef>(null);
-  const quickSearch = [
+  const quickSearch = (pageId === "P04" && role === "USER") || [
     "C05",
     "C06",
     "C08",
@@ -630,6 +640,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
           pageId !== "S13" &&
           pageId !== "P03" &&
           pageId !== "P05" &&
+          !(pageId === "P04" && role === "USER") &&
           !(pageId === "P06" && role === "USER") &&
           !(pageId === "P02" && role !== "GUEST") && (
             <div className="breadcrumb">
