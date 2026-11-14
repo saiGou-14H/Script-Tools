@@ -23,6 +23,30 @@ import { usePrototype } from "../prototype";
 
 const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
   {
+    O06: {
+      O01: "chart", O02: "user", O03: "layers", O05: "laptop",
+      O06: "file", O08: "payment", O10: "database", O12: "sliders",
+      O13: "layers", O14: "server", O15: "warning", O19: "shield",
+      O20: "database", C21: "user",
+    },
+    O07: {
+      O01: "home", O02: "team", O03: "layers", O05: "market",
+      O06: "file", O08: "payment", O10: "database", O12: "settings",
+      O13: "server", O14: "box", O15: "warning", O19: "shield",
+      O20: "database", C21: "user",
+    },
+    O08: {
+      O01: "chart", O02: "team", O03: "box", O05: "layers",
+      O06: "file", O08: "payment", O10: "sync", O12: "file",
+      O13: "team", O14: "server", O15: "warning", O19: "shield",
+      O20: "database", C21: "user",
+    },
+    O09: {
+      O01: "home", O02: "team", O03: "box", O04: "chart", O05: "sync",
+      O06: "file", O08: "payment", O10: "money", O12: "file",
+      O13: "box", O14: "box", O15: "sync", O19: "lock",
+      O20: "box", C21: "user",
+    },
     S07: {
       S01: "home", S07: "order", S09: "lock", S10: "file",
       S05: "layers", S06: "server", S11: "chart", S12: "warning",

@@ -13,130 +13,164 @@ import {
 } from "antd";
 import { BookOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
-import { useAdminPreview, type AdminRefund } from "../admin-preview";
+import { useAdminPreview } from "../admin-preview";
+import {
+  paymentLabels,
+  refundBalance,
+  refundLabels,
+  refundTones,
+} from "../lib/admin-commerce-preview";
 import { formatMinorUnits } from "../lib/money";
 
-const refundLabels = {
-  UNKNOWN: "待核对",
-  PROCESSING: "处理中",
-  SUCCEEDED: "已到账",
-};
-const refundTones = {
-  UNKNOWN: "orange",
-  PROCESSING: "blue",
-  SUCCEEDED: "green",
-} as const;
-
 export function AdminPaymentsPage() {
-  const { refunds } = useAdminPreview();
-  const [tab, setTab] = useState("refunds");
+  const { payments, refunds, enabled } = useAdminPreview();
+  const [params, setParams] = useSearchParams();
+  const tab = params.get("tab") === "payments" ? "payments" : "refunds";
   const { message, modal } = App.useApp();
   const isRefund = tab === "refunds";
+  const paymentId = params.get("payment");
+  const refundId = isRefund ? params.get("refund") : null;
+  const rows = (isRefund
+    ? refunds.map((refund) => {
+        const payment = payments.find((item) => item.id === refund.paymentId);
+        return {
+          ...refund,
+          channel: payment?.channel || "待载入",
+          orderId: payment?.orderId,
+        };
+      })
+    : payments.map((payment) => ({ ...payment, paymentId: payment.id }))
+  ).filter((row) =>
+    (!paymentId || row.paymentId === paymentId) && (!refundId || row.id === refundId),
+  );
   return (
     <div className="admin-page admin-payments-page">
-      <PageHeading title="支付与退款" />
+      <PageHeading
+        title="支付与退款"
+        extra={<Status tone="gray">{enabled ? "本地示例" : "支付服务待接入"}</Status>}
+      />
+      {!enabled && (
+        <Notice>支付与退款查询服务待接入，当前计数及记录暂不可用。</Notice>
+      )}
+      {(paymentId || refundId) && (
+        <Notice>
+          当前记录范围　{refundId || paymentId}
+          <Button
+            type="link"
+            onClick={() => {
+              const next = new URLSearchParams(params);
+              next.delete("payment");
+              next.delete("refund");
+              setParams(next);
+            }}
+          >
+            查看全部记录
+          </Button>
+        </Notice>
+      )}
       <Panel className="admin-payment-summary">
         <Tabs
           activeKey={tab}
-          onChange={setTab}
+          onChange={(value) => {
+            const next = new URLSearchParams(params);
+            next.set("tab", value);
+            setParams(next);
+          }}
           items={[
             { key: "payments", label: "收款" },
             { key: "refunds", label: "退款" },
           ]}
         />
         <div className="admin-finance-stats">
-          {(["UNKNOWN", "PROCESSING", "SUCCEEDED"] as const).map(
-            (status, index) => (
-              <article key={status} className={`finance-stat-${index}`}>
-                <h3>
-                  {isRefund
-                    ? refundLabels[status]
-                    : ["待核对", "处理中", "已收款"][index]}
-                </h3>
-                <strong>
-                  {isRefund
-                    ? refunds.filter((item) => item.status === status).length
-                    : status === "SUCCEEDED"
-                      ? refunds.length
-                      : 0}
-                </strong>
-              </article>
-            ),
-          )}
+          {(["UNKNOWN", "PROCESSING", "SUCCEEDED"] as const).map((status, index) => (
+            <article key={status} className={`finance-stat-${index}`}>
+              <h3>{isRefund ? refundLabels[status] : ["待核对", "处理中", "已收款"][index]}</h3>
+              <strong>{enabled ? rows.filter((row) => row.status === status).length : "—"}</strong>
+            </article>
+          ))}
         </div>
       </Panel>
       <Panel className="admin-payment-table">
-        <Table<AdminRefund>
+        <Table
           rowKey="id"
-          dataSource={refunds}
+          dataSource={rows}
           pagination={false}
+          scroll={{ x: 1100 }}
           columns={[
-            {
-              title: isRefund ? "退款编号" : "支付编号",
-              render: (_, row) => (isRefund ? row.id : row.paymentId),
-            },
-            {
-              title: isRefund ? "原支付编号" : "渠道",
-              render: (_, row) => (isRefund ? row.paymentId : "示例渠道A"),
-            },
-            {
-              title: "金额",
-              dataIndex: "amountMinor",
-              render: (value) => `${formatMinorUnits(value)} CNY`,
-            },
-            {
-              title: "渠道请求",
-              render: (_, row) =>
-                `${isRefund ? "RF" : "PAY"}••${row.id.slice(-3)}`,
-            },
-            {
-              title: "状态",
-              render: (_, row) => (
-                <Status tone={isRefund ? refundTones[row.status] : "green"}>
-                  {isRefund ? refundLabels[row.status] : "已收款"}
-                </Status>
-              ),
-            },
-            {
-              title: "操作",
-              render: (_, row) => (
-                <Button
-                  type="link"
-                  onClick={() => {
-                    if (!isRefund || row.status === "SUCCEEDED") {
-                      modal.info({
-                        title: "示例渠道回执",
-                        content: (
-                          <div>
-                            <p>
-                              {isRefund ? row.id : row.paymentId} ·{" "}
-                              {formatMinorUnits(row.amountMinor)} CNY
-                            </p>
-                            <p>状态 · {isRefund ? "退款已到账" : "支付成功"}</p>
-                            <small>本地原型回执，用于页面验证。</small>
-                          </div>
-                        ),
-                        okText: "关闭",
-                      });
-                    } else
-                      void message.info(
-                        `渠道查询接口尚未接入，${row.id}仍待原回执核验`,
-                      );
-                  }}
-                >
-                  {isRefund
-                    ? row.status === "UNKNOWN"
-                      ? "查询原退款"
-                      : row.status === "PROCESSING"
-                        ? "查询进度"
-                        : "查看回执"
-                    : "查看回执"}
-                </Button>
-              ),
-            },
-          ]}
+          {
+            title: isRefund ? "退款编号" : "支付编号",
+            width: "16.4%",
+            render: (_, row) =>
+              isRefund ? (
+                <Link to={`/admin/refunds/${row.id}`}>{row.id}</Link>
+              ) : row.orderId ? (
+                <Link to={`/admin/orders/${row.orderId}`}>{row.id}</Link>
+              ) : row.id,
+          },
+          {
+            title: isRefund ? "原支付编号" : "渠道",
+            width: "17%",
+            render: (_, row) =>
+              isRefund ? (
+                <Link to={`/admin/payments?tab=payments&payment=${row.paymentId}`}>
+                  {row.paymentId}
+                </Link>
+              ) : row.channel,
+          },
+          {
+            title: "金额",
+            width: "16.8%",
+            dataIndex: "amountMinor",
+            render: (value) => `${formatMinorUnits(value)} CNY`,
+          },
+          { title: "渠道请求", dataIndex: "requestMask", width: "15.6%" },
+          {
+            title: "状态",
+            width: "15.8%",
+            render: (_, row) => (
+              <Status tone={refundTones[row.status]}>
+                {isRefund
+                  ? refundLabels[row.status]
+                  : row.status === "SUCCEEDED"
+                    ? "已收款"
+                    : paymentLabels[row.status]}
+              </Status>
+            ),
+          },
+          {
+            title: "操作",
+            render: (_, row) => (
+              <Button
+                type="link"
+                onClick={() => {
+                  if (row.status === "SUCCEEDED") {
+                    modal.info({
+                      title: "示例渠道回执",
+                      content: (
+                        <div>
+                          <p>{row.id} · {formatMinorUnits(row.amountMinor)} CNY</p>
+                          <p>状态 · {isRefund ? "退款已到账" : "支付成功"}</p>
+                          <small>本地原型回执，用于页面验证。</small>
+                        </div>
+                      ),
+                      okText: "关闭",
+                    });
+                  } else {
+                    void message.info(`渠道查询接口尚未接入，${row.id}仍待原回执核验`);
+                  }
+                }}
+              >
+                {row.status === "SUCCEEDED"
+                  ? "查看回执"
+                  : row.status === "PROCESSING"
+                    ? "查询进度"
+                    : isRefund ? "查询原退款" : "查询原支付"}
+              </Button>
+            ),
+          },
+        ]}
         />
       </Panel>
     </div>
@@ -145,8 +179,13 @@ export function AdminPaymentsPage() {
 
 export function AdminRefundExceptionPage() {
   const { id } = useParams();
-  const { refunds, notes, recordNote } = useAdminPreview();
-  const [tab, setTab] = useState("evidence");
+  return <AdminRefundException key={id} id={id} />;
+}
+
+function AdminRefundException({ id }: { id?: string }) {
+  const { refunds, payments, enabled, notes, recordNote } = useAdminPreview();
+  const [params, setParams] = useSearchParams();
+  const tab = params.get("tab") === "records" ? "records" : "evidence";
   const [editing, setEditing] = useState(false);
   const requestKey = useRef(crypto.randomUUID());
   const [form] = Form.useForm();
@@ -156,17 +195,19 @@ export function AdminRefundExceptionPage() {
   );
   if (!refund)
     return (
-      <Empty description="退款记录不存在或已失效">
+      <Empty description={enabled ? "退款记录不存在或已失效" : "退款详情服务待接入，当前记录暂不可用"}>
         <Link to="/admin/payments">
           <Button>返回支付与退款</Button>
         </Link>
       </Empty>
     );
   const completed = refund.status === "SUCCEEDED";
+  const payment = payments.find((item) => item.id === refund.paymentId);
+  const balance = refundBalance(payment, refunds);
   const recordRows = notes.filter((item) => item.resourceId === refund.id);
   return (
     <div className="admin-page admin-refund-exception-page">
-      <PageHeading title="退款异常处理" />
+      <PageHeading title="退款异常处理" extra={<Status tone="gray">本地示例</Status>} />
       <Panel className="admin-refund-hero">
         <div>
           <TileIcon name="refund" />
@@ -174,7 +215,7 @@ export function AdminRefundExceptionPage() {
             <h2>
               退款 {refund.id} 渠道 {refund.status}
             </h2>
-            <p>上次请求 · {refund.requestedAt}　•　成交目标未达全退</p>
+            <p>上次请求 · {refund.requestedAt}　•　{refund.ruleLabel}</p>
           </span>
           <div>
             <strong>¥{formatMinorUnits(refund.amountMinor)}</strong>
@@ -199,7 +240,7 @@ export function AdminRefundExceptionPage() {
       <div className="admin-refund-content">
         <Panel title="退款规则" className="admin-refund-rules">
           <ul>
-            <li>成交规则 · 目标未达成全退服务费（订单快照）</li>
+            <li>成交规则 · {refund.ruleLabel}（订单快照）</li>
             <li>仅退还实际支付金额，按照原支付渠道原路退回。</li>
             <li>退款金额不得超过原支付金额。</li>
             <li>预占金额用于处理中的退款，剩余可退为实际可发起的金额。</li>
@@ -208,30 +249,37 @@ export function AdminRefundExceptionPage() {
         <Panel title="退款金额状态" className="admin-refund-balances">
           <div>
             {[
-              ["已退", completed ? refund.amountMinor : "0"],
-              ["预占", completed ? "0" : refund.amountMinor],
-              ["剩余可退", "0"],
+              ["已退", balance?.returned],
+              ["预占", balance?.reserved],
+              ["剩余可退", balance?.remaining],
             ].map(([label, amount]) => (
               <article key={label}>
                 {label}
-                <strong>¥{formatMinorUnits(amount)}</strong>
+                <strong>{amount === undefined ? "—" : `¥${formatMinorUnits(amount)}`}</strong>
               </article>
             ))}
           </div>
+          {!balance && <Notice>支付与退款事实待核对，额度暂不可用。</Notice>}
         </Panel>
         <Panel title="原支付信息" className="admin-refund-payment">
           <dl>
             <dt>支付渠道</dt>
             <dd>
-              <Status>示例渠道A</Status>
+              <Status>{payment?.channel || "待载入"}</Status>
             </dd>
             <dt>支付编号</dt>
-            <dd>{refund.paymentId}</dd>
+            <dd>
+              <Link to={`/admin/payments?tab=payments&payment=${refund.paymentId}`}>
+                {refund.paymentId}
+              </Link>
+            </dd>
             <dt>支付金额</dt>
-            <dd>¥{formatMinorUnits(refund.amountMinor)}</dd>
+            <dd>{payment ? `¥${formatMinorUnits(payment.amountMinor)}` : "待载入"}</dd>
             <dt>支付状态</dt>
             <dd>
-              <Status tone="green">支付成功</Status>
+              <Status tone={payment?.status === "SUCCEEDED" ? "green" : "orange"}>
+                {payment ? payment.status === "SUCCEEDED" ? "支付成功" : paymentLabels[payment.status] : "待载入"}
+              </Status>
             </dd>
           </dl>
         </Panel>
@@ -271,7 +319,11 @@ export function AdminRefundExceptionPage() {
         <Tabs
           type="card"
           activeKey={tab}
-          onChange={setTab}
+          onChange={(value) => {
+            const next = new URLSearchParams(params);
+            next.set("tab", value);
+            setParams(next);
+          }}
           items={[
             {
               key: "evidence",
@@ -283,14 +335,11 @@ export function AdminRefundExceptionPage() {
                   dataSource={[{ id: "1" }]}
                   columns={[
                     { title: "序号", dataIndex: "id", width: 100 },
-                    { title: "材料名称", render: () => "渠道核验记录" },
-                    { title: "类型", render: () => <Status>核验记录</Status> },
+                    { title: "材料名称", width: 477, render: () => "渠道核验记录" },
+                    { title: "类型", width: 260, render: () => <Status>核验记录</Status> },
                     {
                       title: "说明",
-                      render: () =>
-                        completed
-                          ? "已保存示例退款到账回执。"
-                          : "外部查询已确认目标未达成；退款结果仍待查询。",
+                      render: () => refund.evidence,
                     },
                   ]}
                 />
@@ -333,7 +382,9 @@ export function AdminRefundExceptionPage() {
           onFinish={(values) => {
             recordNote(refund.id, values.reason, requestKey.current);
             setEditing(false);
-            setTab("records");
+            const next = new URLSearchParams(params);
+            next.set("tab", "records");
+            setParams(next);
             void message.success("处理理由预览已保存");
           }}
         >

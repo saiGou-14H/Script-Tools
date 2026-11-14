@@ -1,6 +1,7 @@
 import { chromium, expect } from "@playwright/test";
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { preview } from "vite";
 
 const output = path.resolve("output/verification/admin-commerce");
 await mkdir(output, { recursive: true });
@@ -9,7 +10,18 @@ const context = await browser.newContext({
   viewport: { width: 1814, height: 868 },
 });
 const page = await context.newPage();
-const base = "http://127.0.0.1:5174";
+const root = path.resolve("apps/web");
+const server = await preview({
+  root,
+  configFile: path.join(root, "vite.config.ts"),
+  preview: {
+    host: "127.0.0.1", port: 0, strictPort: true,
+    proxy: { "/api": { target: "http://127.0.0.1:3001" } },
+  },
+});
+const address = server.httpServer.address();
+if (!address || typeof address !== "object") throw new Error("Preview address is unavailable");
+const base = `http://127.0.0.1:${address.port}`;
 const report = {
   date: new Date().toISOString(),
   checks: [],
@@ -69,7 +81,7 @@ try {
   await menu("服务订单");
   await page.getByLabel("关联预约编号", { exact: true }).fill("BK082");
   await page.getByRole("button", { name: "查询", exact: true }).click();
-  await expect(page.locator(".admin-order-table tbody tr")).toHaveCount(1);
+  await expect(page.locator(".admin-order-table .ant-table-row")).toHaveCount(1);
   await expect(page.locator(".admin-order-table")).toContainText("已支付");
   await expect(page.locator(".admin-order-table")).toContainText("履约中");
   await expect(page.locator(".admin-order-table")).toContainText("冻结");
@@ -87,7 +99,7 @@ try {
 
   await page.locator(".global-search input").fill("TT202611130027");
   await page.locator(".global-search input").press("Enter");
-  await expect(page.locator(".admin-order-table tbody tr")).toHaveCount(1);
+  await expect(page.locator(".admin-order-table .ant-table-row")).toHaveCount(1);
   await page.getByRole("button", { name: "详情", exact: true }).click();
   await page.getByRole("button", { name: "开启限时会话", exact: true }).click();
   await expect(page.getByText("请填写排障理由", { exact: true })).toBeVisible();
@@ -135,7 +147,7 @@ try {
   );
 
   await menu("支付与退款");
-  await expect(page.locator(".admin-payment-table tbody tr")).toHaveCount(3);
+  await expect(page.locator(".admin-payment-table .ant-table-row")).toHaveCount(3);
   await page.getByRole("tab", { name: "收款", exact: true }).click();
   await expect(page.locator(".admin-payment-table")).toContainText("PAY019");
   await expect(page.locator(".admin-finance-stats")).toContainText("已收款");
@@ -236,7 +248,7 @@ try {
   ).toBeDisabled();
   await menu("服务订单");
   await page
-    .locator(".admin-order-table tbody tr")
+    .locator(".admin-order-table .ant-table-row")
     .filter({ hasText: "TT202611130027" })
     .getByRole("button", { name: "详情", exact: true })
     .click();
@@ -408,6 +420,7 @@ try {
   });
 } finally {
   await browser.close();
+  await new Promise((resolve) => server.httpServer.close(resolve));
   if (report.result === "PASS")
     await rm(path.join(output, "failure.png"), { force: true });
   await writeFile(

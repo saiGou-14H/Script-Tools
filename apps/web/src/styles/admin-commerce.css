@@ -1,0 +1,212 @@
+.app-shell:is(.page-O06, .page-O08, .page-O09) .nav-item {
+  font-size: 14px;
+}
+.page-O06 h1 {
+  font-size: 30px;
+}
+.page-O06 .admin-order-filters .ant-input,
+.page-O06 .admin-order-filters .ant-picker-input > input,
+.page-O06 .admin-order-filters .ant-select {
+  font-size: 16px;
+}
+.page-O06 .admin-order-table .ant-table-cell {
+  font-size: 16px;
+}
+.page-O06 .admin-order-table .ant-btn {
+  font-size: 15px;
+}
+.page-O06 .admin-order-filters .ant-select {
+  height: 40px;
+}
+.page-O06 .admin-order-table .ant-table-thead > tr > th {
+  height: 43px;
+  padding: 10px 16px;
+}
+.page-O06 .admin-order-table .ant-table-row > td {
+  height: 57px;
+  padding: 12px 16px;
+}
+.page-O06 .admin-order-table .ant-btn:not(.ant-btn-primary) {
+  color: #1555ff;
+  border-color: #1555ff;
+}
+.page-O07 .admin-order-hero > .tile-icon {
+  background: linear-gradient(135deg, #6cc6ff, #255aff);
+  color: white;
+}
+.page-O07 .admin-order-hero h2 {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.page-O07 .admin-order-detail-grid > div {
+  min-width: 0;
+}
+.page-O07 .admin-order-events .ant-tabs-tab {
+  padding-inline: 11px;
+  font-size: 16px;
+}
+.page-O07 .admin-order-events .ant-tabs-tab-btn {
+  font-size: 16px;
+}
+.page-O07 .admin-order-stages .notice,
+.page-O07 .admin-refund-event p {
+  font-size: 16px;
+}
+.page-O07 .main-content {
+  padding-bottom: 14px;
+}
+.page-O07 .admin-order-stages .notice {
+  min-height: 47px;
+  padding-block: 11px;
+}
+.page-O07 .admin-diagnosis-form .ant-input,
+.page-O07 .admin-diagnosis-form .ant-select {
+  font-size: 16px;
+}
+.page-O07 .admin-diagnosis-form .ant-input[readonly] {
+  background: #f1f3f7;
+}
+.page-O07 .admin-order-hero .tile-icon .anticon {
+  font-size: 35px;
+}
+.page-O07 .admin-refund-event .tile-icon .anticon {
+  font-size: 30px;
+}
+.page-O07 .admin-refund-event > p .tile-icon .anticon {
+  font-size: 20px;
+}
+.page-O07 .admin-diagnosis-form .ant-select {
+  height: 40px;
+}
+.page-O07 .admin-refund-event + .admin-refund-event {
+  margin-top: 14px;
+}
+.page-O07 .admin-contract-snapshot dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.page-O08 .admin-payment-summary .ant-tabs-tab {
+  font-size: 18px;
+}
+.page-O08 .admin-payment-summary .ant-tabs-tab-btn {
+  font-size: 18px;
+}
+.page-O08 .admin-payment-table .ant-table-cell {
+  padding-inline: 30px;
+  font-size: 16px;
+}
+.page-O08 .admin-payment-table .ant-table-row > td:nth-child(-n + 2) a {
+  color: inherit;
+}
+.page-O08 .admin-payment-table .ant-table-row > td:nth-child(-n + 2) a:hover {
+  color: #1555ff;
+}
+.page-O08 .admin-payment-table .ant-table-row > td {
+  height: 55px;
+  padding-block: 13px;
+}
+.page-O09 .admin-refund-hero .tile-icon .anticon {
+  font-size: 33px;
+}
+.page-O09 .admin-refund-balances strong,
+.page-O09 .admin-refund-payment dd {
+  overflow-wrap: anywhere;
+}
+.page-O09 .admin-refund-balances article {
+  min-width: 0;
+}
+.page-O09 .admin-refund-evidence .ant-table-thead > tr > th,
+.page-O09 .admin-refund-evidence .ant-table-row > td {
+  height: 35px;
+  padding: 5px 30px;
+  font-size: 13px;
+}
+.page-O09 .admin-refund-actions .ant-btn {
+  font-size: 15px;
+}
+.page-O09 .admin-refund-actions .ant-btn:not(.ant-btn-primary) {
+  color: #1555ff;
+  border-color: #1555ff;
+}
+@media (max-width: 1400px) {
+  .page-O07 .admin-order-stages .panel-body > div:first-child {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .page-O07 .admin-order-hero {
+    height: auto;
+    flex-wrap: wrap;
+  }
+  .page-O07 .admin-order-hero > div:not(.order-hero-amount) {
+    flex: 1;
+    min-width: 0;
+  }
+}
+@media (max-width: 700px) {
+  .app-shell.admin-workspace:is(.page-O06, .page-O07, .page-O08, .page-O09) {
+    --sidebar-width: 0px;
+  }
+  .app-shell:is(.page-O06, .page-O07, .page-O08, .page-O09) .main-content {
+    padding-inline: 14px;
+  }
+  .page-O06 .admin-order-filters form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page-O06 .admin-order-filters .panel-body {
+    padding-inline: 14px;
+  }
+  .page-O07 .admin-order-detail-grid,
+  .page-O09 .admin-refund-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page-O07 .admin-order-hero p {
+    flex-wrap: wrap;
+  }
+  .page-O07 .admin-order-stages article {
+    padding: 12px;
+    gap: 10px;
+  }
+  .page-O07 .admin-order-stages article > .anticon {
+    font-size: 26px;
+  }
+  .page-O07 .admin-refund-event {
+    padding-inline: 12px;
+  }
+  .page-O07 .admin-refund-event > p {
+    flex-wrap: wrap;
+  }
+  .page-O07 .admin-contract-snapshot dl {
+    grid-template-columns: 95px minmax(0, 1fr);
+  }
+  .page-O08 .admin-finance-stats {
+    gap: 8px;
+  }
+  .page-O08 .admin-finance-stats article {
+    padding: 14px;
+  }
+  .page-O09 .admin-refund-hero {
+    height: auto;
+  }
+  .page-O09 .admin-refund-hero .panel-body > div {
+    height: auto;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .page-O09 .admin-refund-hero .panel-body > div > span:not(.tile-icon) {
+    min-width: 0;
+    flex: 1;
+  }
+  .page-O09 .admin-refund-hero h2 {
+    font-size: 18px;
+    overflow-wrap: anywhere;
+  }
+  .page-O09 .admin-refund-balances article {
+    padding: 0 8px;
+  }
+  .page-O09 .admin-refund-balances strong {
+    font-size: 21px;
+  }
+  .page-O09 .admin-refund-payment dl {
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+}

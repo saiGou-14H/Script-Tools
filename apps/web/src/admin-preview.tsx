@@ -1,83 +1,23 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { useWorkspace } from "./context";
 
-export interface AdminOrder {
-  id: string;
-  bookingId?: string;
-  buyer: string;
-  service: string;
-  amountMinor: string;
-  fulfillment: "AVAILABLE" | "RUNNING" | "UNMET";
-  refundId?: string;
-  settlement: "UNSETTLED" | "FROZEN";
-  version: string;
-  date: string;
-}
-export const adminOrderFixtures: AdminOrder[] = [
-  {
-    id: "TT202611130018",
-    buyer: "用户A",
-    service: "表格清洗",
-    amountMinor: "600",
-    fulfillment: "AVAILABLE",
-    settlement: "UNSETTLED",
-    version: "v1.2",
-    date: "2026-11-13",
-  },
-  {
-    id: "TT202611130082",
-    bookingId: "BK082",
-    buyer: "用户B",
-    service: "景点预约",
-    amountMinor: "800",
-    fulfillment: "RUNNING",
-    settlement: "FROZEN",
-    version: "v1.0",
-    date: "2026-11-13",
-  },
-  {
-    id: "TT202611130027",
-    bookingId: "BK027",
-    buyer: "用户C",
-    service: "景点预约",
-    amountMinor: "800",
-    fulfillment: "UNMET",
-    refundId: "REF018",
-    settlement: "FROZEN",
-    version: "v1.0",
-    date: "2026-11-13",
-  },
-];
-export interface AdminRefund {
-  id: string;
-  paymentId: string;
-  amountMinor: string;
-  status: "UNKNOWN" | "PROCESSING" | "SUCCEEDED";
-  requestedAt: string;
-}
-export const adminRefundFixtures: AdminRefund[] = [
-  {
-    id: "REF019",
-    paymentId: "PAY019",
-    amountMinor: "800",
-    status: "UNKNOWN",
-    requestedAt: "13:05",
-  },
-  {
-    id: "REF018",
-    paymentId: "PAY018",
-    amountMinor: "800",
-    status: "PROCESSING",
-    requestedAt: "14:20",
-  },
-  {
-    id: "REF017",
-    paymentId: "PAY017",
-    amountMinor: "300",
-    status: "SUCCEEDED",
-    requestedAt: "13:10",
-  },
-];
+import {
+  adminOrderFixtures,
+  adminPaymentFixtures,
+  adminRefundFixtures,
+  type AdminOrder,
+  type AdminPayment,
+  type AdminRefund,
+} from "./lib/admin-commerce-preview";
+export {
+  adminOrderFixtures,
+  adminPaymentFixtures,
+  adminRefundFixtures,
+  type AdminOrder,
+  type AdminPayment,
+  type AdminRefund,
+} from "./lib/admin-commerce-preview";
+
 export interface AdminAccount {
   id: string;
   name: string;
@@ -118,6 +58,7 @@ export interface AdminNote {
 const AdminPreviewContext = createContext<{
   enabled: boolean;
   orders: AdminOrder[];
+  payments: AdminPayment[];
   refunds: AdminRefund[];
   accounts: AdminAccount[];
   services: AdminService[];
@@ -314,6 +255,7 @@ export function AdminPreviewProvider({ children }: { children: ReactNode }) {
       value={{
         enabled,
         orders: enabled ? adminOrderFixtures : [],
+        payments: enabled ? adminPaymentFixtures : [],
         refunds: enabled ? adminRefundFixtures : [],
         accounts,
         services,

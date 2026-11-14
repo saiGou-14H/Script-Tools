@@ -1,0 +1,90 @@
+{
+  "date": "2026-11-14T15:09:41.795Z",
+  "checks": [
+    "four transaction reference regions and sidebar help fit 1814 by 868",
+    "orders and refunds reference distinct original payments and the unknown refund retains its reserved balance",
+    "applied order, buyer, booking and date filters survive reload, clearing search preserves them, and invalid ranges stay explicit",
+    "order event tabs and original-payment links retain their own order and refund identity, including the separate six-yuan payment",
+    "payment and refund tabs use their own rows, note submissions deduplicate, and changing refunds clears the open form while preserving resource-scoped notes",
+    "live transaction metadata remains unavailable and missing identities retain empty states",
+    "normal transaction routes preserve signed-64-bit original payments, partial returned and reserved amounts, and execution completion independently of goal verification",
+    "unconfirmed original payments and over-allocated refund facts leave refundable balances unavailable",
+    "all four transaction routes fit 390px with internally scrollable tables and stacked forms",
+    "transaction previews issue no business mutations and complete without browser exceptions"
+  ],
+  "screenshots": [
+    "ADMIN-O06",
+    "ADMIN-O07",
+    "ADMIN-O08",
+    "ADMIN-O09"
+  ],
+  "errors": [],
+  "layouts": {
+    "O06": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 239,
+        "y": 280,
+        "width": 1557,
+        "bottom": 541.140625
+      },
+      "help": {
+        "x": 12,
+        "y": 824.90625,
+        "width": 191,
+        "bottom": 851.90625
+      }
+    },
+    "O07": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 232,
+        "y": 171.421875,
+        "width": 1560,
+        "bottom": 848.125
+      },
+      "help": {
+        "x": 12,
+        "y": 820.90625,
+        "width": 185,
+        "bottom": 847.90625
+      }
+    },
+    "O08": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 244,
+        "y": 345,
+        "width": 1551,
+        "bottom": 615
+      },
+      "help": {
+        "x": 12,
+        "y": 822.90625,
+        "width": 199,
+        "bottom": 849.90625
+      }
+    },
+    "O09": {
+      "width": 1814,
+      "height": 868,
+      "main": {
+        "x": 252,
+        "y": 672.828125,
+        "width": 1539,
+        "bottom": 850.25
+      },
+      "help": {
+        "x": 12,
+        "y": 821.90625,
+        "width": 195,
+        "bottom": 848.90625
+      }
+    }
+  },
+  "final_visual_acceptance": "pending",
+  "result": "PASS"
+}
