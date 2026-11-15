@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T07:26:41.417Z",
+  "date": "2026-11-15T08:41:00.423Z",
   "checks": [
     "the production-built message and notification-setting pages restore their reference regions inside 1814 by 868, retain sidebar access and keep the Webhook card above the fixed footer with legible save-button text",
     "message category and unread filters survive reload in the URL, and the booking notification opens the original pending-verification category through its normal route",

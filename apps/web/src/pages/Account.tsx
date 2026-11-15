@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   Alert,
   App,
@@ -23,18 +23,25 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ApiError, api, apiPage } from "../api";
 import { useWorkspace } from "../context";
 import type { AccountProfile, AccountSession, Role } from "../types";
 import { PageHeading, Panel, Status, TileIcon } from "../components/ui";
+import { Icon } from "../components/Icon";
 
 type SavedProfile = Pick<
   AccountProfile,
   "id" | "display_name" | "revision" | "locale" | "timezone" | "updated_at"
 >;
+const accountSections = [
+  { key: "profile", label: "资料" },
+  { key: "security", label: "账号安全" },
+  { key: "sessions", label: "会话" },
+  { key: "close", label: "账号注销" },
+];
 export function AccountPage() {
-  const { bootstrap, role, setRole, refresh } = useWorkspace();
+  const { bootstrap, role, setRole, refresh, clearIdentity } = useWorkspace();
   const prototype = bootstrap.data_mode === "prototype";
   const administrator = role === "ADMIN";
   const consumer = role === "USER";
@@ -46,7 +53,12 @@ export function AccountPage() {
     queryFn: ({ signal }) => api<AccountProfile>("/me", { signal }),
   });
   const account = query.data;
-  const [tab, setTab] = useState("profile");
+  const [params, setParams] = useSearchParams();
+  const tab = params.get("section") || "profile";
+  const dialog = params.get("dialog");
+  const validSection = accountSections.some((section) => section.key === tab);
+  const validDialog =
+    !dialog || ["sessions", "security", "closure"].includes(dialog);
   const [workspace, setWorkspace] = useState<Role>(role);
   useEffect(() => setWorkspace(role), [role]);
   const [editing, setEditing] = useState(false);
@@ -54,10 +66,17 @@ export function AccountPage() {
   const [saving, setSaving] = useState(false);
   const [editError, setEditError] = useState<Error>();
   const [editNotice, setEditNotice] = useState("");
-  const [securityOpen, setSecurityOpen] = useState(false);
-  const [sessionsOpen, setSessionsOpen] = useState(false);
+  const securityOpen = dialog === "security";
+  const sessionsOpen = dialog === "sessions";
   const [form] = Form.useForm<{ display_name: string }>();
   const busy = useRef(false);
+  const activeOwner = useRef(owner);
+  useLayoutEffect(() => {
+    activeOwner.current = owner;
+    return () => {
+      activeOwner.current = undefined;
+    };
+  }, [owner]);
   const intent = useRef<
     { key: string; signature: string; revision: string } | undefined
   >(undefined);
@@ -73,6 +92,32 @@ export function AccountPage() {
     sessions: sessionsRef,
     close: closeRef,
   };
+  useEffect(() => {
+    if (!validSection) return;
+    sectionRefs[tab as keyof typeof sectionRefs].current?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
+  }, [tab, validSection]);
+  function closeDialog() {
+    const next = new URLSearchParams(params);
+    next.delete("dialog");
+    setParams(next);
+  }
+  function openDialog(value: string) {
+    const next = new URLSearchParams(params);
+    next.set("dialog", value);
+    setParams(next);
+  }
+  function selectSection(value: string) {
+    const next = new URLSearchParams(params);
+    if (value === "profile") next.delete("section");
+    else next.set("section", value);
+    next.delete("dialog");
+    if (value === "sessions" || (value === "security" && !consumer))
+      next.set("dialog", value);
+    if (next.toString() !== params.toString()) setParams(next);
+  }
   const sessions = useInfiniteQuery({
     queryKey: ["personal", owner, "account-sessions"],
     enabled: sessionsOpen,
@@ -97,7 +142,7 @@ export function AccountPage() {
     {
       id: "PUBLISHER" as Role,
       label: "脚本发布者",
-      icon: "code",
+      icon: "code-brackets",
       description: "发布个人脚本并提供使用服务，按次收取费用。",
     },
     ...(administrator
@@ -112,16 +157,21 @@ export function AccountPage() {
       : []),
   ];
   function switchWorkspace() {
-    if (workspace === "PUBLISHER" && !publisherEnabled) {
+    const target = consumer && workspace === role ? "PUBLISHER" : workspace;
+    if (target === "PUBLISHER" && !publisherEnabled) {
       navigate("/publisher");
       return;
     }
-    if (!bootstrap.user?.roles.includes(workspace)) return;
-    setRole(workspace);
+    if (!bootstrap.user?.roles.includes(target)) return;
+    if (target === role) {
+      void message.info("请选择要切换的工作区");
+      return;
+    }
+    setRole(target);
     navigate(
-      workspace === "ADMIN"
+      target === "ADMIN"
         ? "/admin"
-        : workspace === "PUBLISHER"
+        : target === "PUBLISHER"
           ? "/publisher"
           : "/me/home",
     );
@@ -133,6 +183,7 @@ export function AccountPage() {
   }
   function openEditor() {
     if (!account) return;
+    form.resetFields();
     form.setFieldsValue({ display_name: account.display_name });
     setEditRevision(account.revision);
     setEditError(undefined);
@@ -163,20 +214,33 @@ export function AccountPage() {
         },
         body: JSON.stringify(body),
       });
+      if (activeOwner.current !== owner) return;
       client.setQueryData<AccountProfile>(queryKey, (previous) =>
         previous ? { ...previous, ...saved } : previous,
       );
       intent.current = undefined;
-      setEditing(false);
-      void message.success("个人资料已保存");
+      setEditRevision(saved.revision);
+      const draftName = form.getFieldValue("display_name");
+      const keepDraft =
+        typeof draftName === "string" &&
+        draftName.trim() !== saved.display_name;
+      if (keepDraft) {
+        setEditNotice("已保存提交的昵称，当前输入尚未保存。");
+      } else {
+        setEditing(false);
+        form.resetFields();
+      }
+      void message.success(keepDraft ? "已保存提交的昵称" : "个人资料已保存");
       try {
         await refresh();
       } catch {
-        void message.warning(
-          "资料已保存，身份信息暂时无法刷新，请重新加载页面",
-        );
+        if (activeOwner.current === owner)
+          void message.warning(
+            "资料已保存，身份信息暂时无法刷新，请重新加载页面",
+          );
       }
     } catch (failure) {
+      if (activeOwner.current !== owner) return;
       const error =
         failure instanceof Error ? failure : new Error("资料暂时无法保存");
       setEditError(error);
@@ -191,12 +255,13 @@ export function AccountPage() {
         );
     } finally {
       busy.current = false;
-      setSaving(false);
+      if (activeOwner.current === owner) setSaving(false);
     }
   }
   async function loadLatest() {
     try {
       const latest = await refreshAccount();
+      if (activeOwner.current !== owner) return;
       setEditRevision(latest.revision);
       intent.current = undefined;
       setEditError(undefined);
@@ -204,18 +269,8 @@ export function AccountPage() {
         "最新昵称为“" + latest.display_name + "”，请核对填写内容后再次保存。",
       );
     } catch (error) {
-      setEditError(error as Error);
+      if (activeOwner.current === owner) setEditError(error as Error);
     }
-  }
-  async function clearPrivateState() {
-    await client.cancelQueries({
-      predicate: (item) => item.queryKey[0] !== "public",
-    });
-    await refresh();
-    client.removeQueries({
-      predicate: (item) => item.queryKey[0] !== "public",
-    });
-    navigate("/auth", { replace: true });
   }
   function confirmLogout() {
     modal.confirm({
@@ -226,7 +281,8 @@ export function AccountPage() {
       onOk: async () => {
         try {
           await api("/auth/logout", { method: "POST" });
-          await clearPrivateState();
+          clearIdentity();
+          navigate("/auth", { replace: true });
         } catch (error) {
           void message.error((error as Error).message);
           throw error;
@@ -235,10 +291,17 @@ export function AccountPage() {
     });
   }
   async function afterRevocation() {
-    await client.invalidateQueries({
-      queryKey: ["personal", owner, "account-sessions"],
-    });
-    await refreshAccount();
+    try {
+      await client.invalidateQueries({
+        queryKey: ["personal", owner, "account-sessions"],
+      });
+      await refreshAccount();
+    } catch {
+      if (activeOwner.current === owner)
+        void message.warning(
+          "会话操作已完成，账户资料暂时无法刷新，请重试加载。",
+        );
+    }
   }
   function revokeOthers() {
     const key = crypto.randomUUID();
@@ -257,11 +320,13 @@ export function AccountPage() {
               body: "{}",
             },
           );
-          await afterRevocation();
+          if (activeOwner.current !== owner) return;
           void message.success(
             "已退出其他会话，共" + result.revoked_count + "个",
           );
+          await afterRevocation();
         } catch (error) {
+          if (activeOwner.current !== owner) return;
           void message.error((error as Error).message);
           throw error;
         }
@@ -292,9 +357,11 @@ export function AccountPage() {
             },
             body: "{}",
           });
-          await afterRevocation();
+          if (activeOwner.current !== owner) return;
           void message.success("该会话已退出");
+          await afterRevocation();
         } catch (error) {
+          if (activeOwner.current !== owner) return;
           void message.error((error as Error).message);
           if (error instanceof ApiError && error.status === 412)
             await sessions.refetch();
@@ -312,16 +379,7 @@ export function AccountPage() {
     }).format(new Date(value));
   }
   function closureInfo() {
-    modal.info({
-      title: "账号注销前检查",
-      content: (
-        <>
-          <p>注销将停止新业务，未结售后和结算按原规则继续处理。</p>
-          <p>注销检查与数据清理接口待接入。</p>
-        </>
-      ),
-      okText: "返回账户设置",
-    });
+    openDialog("closure");
   }
   const profileCard = (
     <div ref={profileRef} className="account-profile-section">
@@ -341,12 +399,14 @@ export function AccountPage() {
           <div className="account-profile-content">
             <Avatar
               className="account-profile-avatar"
-              size={consumer ? 70 : 66}
-              icon={<UserOutlined />}
+              size={consumer ? 70 : administrator ? 58 : 66}
+              icon={
+                administrator ? <UserOutlined /> : <Icon name="person-solid" />
+              }
             />
             <div>
               <p>
-                <span>昵称{consumer ? "　" : ""}</span>
+                <span>昵称</span>
                 <b>
                   {account?.display_name || bootstrap.user?.display_name || "—"}
                 </b>
@@ -357,7 +417,7 @@ export function AccountPage() {
                 )}
               </p>
               <p>
-                <span>邮箱{consumer ? "　" : ""}</span>
+                <span>邮箱</span>
                 <b>{account?.email_mask || "—"}</b>
                 {consumer && (
                   <Button
@@ -419,9 +479,7 @@ export function AccountPage() {
   );
   const workspaceButton = (
     <Button type="primary" onClick={switchWorkspace}>
-      {consumer
-        ? "切换到" + (workspace === "PUBLISHER" ? "发布者" : "消费者")
-        : "切换工作区"}
+      {consumer ? "切换到发布者" : "切换工作区"}
     </Button>
   );
   const workspaceCard = consumer ? (
@@ -439,7 +497,7 @@ export function AccountPage() {
     <Panel title="工作区" className="account-workspace-compact">
       {!administrator && (
         <>
-          <TileIcon name="layers" />
+          <TileIcon name="stack" />
           <span>当前可用的工作区</span>
         </>
       )}
@@ -453,7 +511,7 @@ export function AccountPage() {
         title={administrator ? "当前会话" : consumer ? "会话管理" : "账号会话"}
         className="account-sessions"
       >
-        <TileIcon name={administrator ? "windows" : "laptop"} />
+        <TileIcon name={administrator ? "windows-solid" : "desktop"} />
         <div>
           <h3>
             {!administrator ? "当前登录设备　" : ""}
@@ -510,7 +568,10 @@ export function AccountPage() {
                 尚有售后　<b>{prototype ? "1 笔" : "待检查"}</b>
               </span>
               <span>
-                <TileIcon name="database" />
+                <TileIcon
+                  name={administrator ? "money" : "database"}
+                  color={administrator ? "orange" : "blue"}
+                />
                 尚有结算　<b>{prototype ? "1 笔" : "待检查"}</b>
               </span>
               {!administrator && (
@@ -552,24 +613,33 @@ export function AccountPage() {
     <div className="account-page">
       <PageHeading title="账户设置" />
       <Tabs
-        activeKey={tab}
-        onChange={(value) => {
-          setTab(value);
-          sectionRefs[
-            value as keyof typeof sectionRefs
-          ].current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        }}
+        activeKey={validSection ? tab : ""}
+        onChange={selectSection}
         onTabClick={(value) => {
-          if (value === "sessions") setSessionsOpen(true);
-          if (value === "security" && !consumer) setSecurityOpen(true);
+          if (value === tab) selectSection(value);
         }}
-        items={[
-          { key: "profile", label: "资料" },
-          { key: "security", label: "账号安全" },
-          { key: "sessions", label: "会话" },
-          { key: "close", label: "账号注销" },
-        ]}
+        items={accountSections}
       />
+      {(!validSection || !validDialog) && (
+        <Alert
+          className="account-load-error"
+          type="warning"
+          showIcon
+          title="账户设置入口不可用"
+          action={
+            <Button
+              onClick={() => {
+                const next = new URLSearchParams(params);
+                next.delete("section");
+                next.delete("dialog");
+                setParams(next);
+              }}
+            >
+              返回资料
+            </Button>
+          }
+        />
+      )}
       {query.error && (
         <Alert
           className="account-load-error"
@@ -608,11 +678,17 @@ export function AccountPage() {
       <Modal
         title="编辑昵称"
         open={editing}
-        onCancel={() => !saving && setEditing(false)}
+        onCancel={() => {
+          if (!saving) {
+            form.resetFields();
+            setEditing(false);
+          }
+        }}
         onOk={() => form.submit()}
         confirmLoading={saving}
         okText="保存"
         cancelText="取消"
+        forceRender
       >
         {editError && (
           <Alert
@@ -656,8 +732,8 @@ export function AccountPage() {
       <Modal
         title="账号安全"
         open={securityOpen}
-        onCancel={() => setSecurityOpen(false)}
-        footer={<Button onClick={() => setSecurityOpen(false)}>关闭</Button>}
+        onCancel={closeDialog}
+        footer={<Button onClick={closeDialog}>关闭</Button>}
       >
         <p>登录邮箱　{account?.email_mask || "—"}</p>
         <div className="account-security-actions">
@@ -670,12 +746,12 @@ export function AccountPage() {
       <Modal
         title="会话管理"
         open={sessionsOpen}
-        onCancel={() => setSessionsOpen(false)}
+        onCancel={closeDialog}
         width={1000}
         footer={
           <>
             <Button onClick={confirmLogout}>退出当前登录</Button>
-            <Button type="primary" onClick={() => setSessionsOpen(false)}>
+            <Button type="primary" onClick={closeDialog}>
               关闭
             </Button>
           </>
@@ -693,6 +769,7 @@ export function AccountPage() {
         )}
         <Table<AccountSession>
           rowKey="id"
+          scroll={{ x: 850 }}
           loading={sessions.isPending}
           pagination={false}
           dataSource={sessionItems}
@@ -738,6 +815,22 @@ export function AccountPage() {
             加载更多
           </Button>
         )}
+      </Modal>
+      <Modal
+        title="账号注销前检查"
+        open={dialog === "closure"}
+        onCancel={closeDialog}
+        footer={
+          <Button type="primary" onClick={closeDialog}>
+            返回账户设置
+          </Button>
+        }
+      >
+        <p>注销将停止新业务，未结售后和结算按原规则继续处理。</p>
+        {account?.is_last_access_manager && (
+          <p>当前账号是最后权限管理员，请先完成权限交接。</p>
+        )}
+        <p>注销检查与数据清理接口待接入。</p>
       </Modal>
     </div>
   );

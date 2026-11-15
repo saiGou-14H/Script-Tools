@@ -6,6 +6,7 @@ interface WorkspaceContext {
   role: Role;
   setRole: (role: Role) => void;
   refresh: () => Promise<Bootstrap | undefined>;
+  clearIdentity: () => void;
 }
 export const Workspace = createContext<WorkspaceContext | null>(null);
 export function useWorkspace() {

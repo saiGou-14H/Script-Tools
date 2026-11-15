@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T07:30:02.511Z",
+  "date": "2026-11-15T08:39:10.634Z",
   "checks": [
     "account reads expose masked identity and fixed device hints, preserve string revisions and reject anonymous access, CSRF failures and unsupported or invalid profile fields",
     "profile commands create legacy preferences, canonicalize locale and timezone, preserve original idempotent responses and serialize concurrent retries without losing revisions",
@@ -8,11 +8,15 @@
     "bulk revocation preserves the current session, current-session deletion accounts for its own activity touch, and replay from a later session preserves that later session's cookie",
     "the last persistent access-manager indicator follows active grants and does not fabricate workspace privileges",
     "PostgreSQL profile updates exercise real revision triggers and preference upserts while authentication preserves full BIGINT security revision precision in a rolled-back transaction",
+    "account sections, session lists and closure information restore through URLs and browser history, invalid entries recover within the selected workspace, and password changes reach the existing reset flow",
+    "nickname input entered while a submitted write is in flight remains available for a second explicit save using the returned revision",
     "nickname editing persists through the real built UI and database, and conflict recovery reloads the revision while retaining the user's typed intent for explicit resubmission",
     "identity refresh removes a revoked administrator workspace from account settings and reloads private queries under the remaining personal role",
     "the account publisher entry reaches the existing explicit onboarding flow and cancellation preserves the original personal account",
+    "a committed session revocation closes its confirmation and reports its result when the subsequent profile read fails, and read recovery issues no repeated revocation",
+    "confirmed logout clears local identity and private reads while an earlier bootstrap response is delayed, and browser history retains authenticated-route protection after that response arrives",
     "session management lists real devices, bulk logout preserves the browser's current session and explicit current logout returns to authenticated-route protection",
-    "the consumer, publisher and administrator account layouts render their distinct reference structures inside the target viewport without browser exceptions"
+    "all three account layouts fit the desktop and 390px viewports, expose a keyboard-accessible workspace-preserving header link, restore security dialogs, and scroll session tables within the mobile dialog without browser exceptions"
   ],
   "screenshots": [
     "USER-C21",
@@ -23,15 +27,69 @@
   "layouts": {
     "USER-C21": {
       "width": 1814,
-      "height": 868
+      "height": 868,
+      "profile": {
+        "x": 257,
+        "y": 225.453125,
+        "width": 738.53125,
+        "height": 179
+      },
+      "sessions": {
+        "x": 257,
+        "y": 404.453125,
+        "width": 1532,
+        "height": 118.390625
+      },
+      "closure": {
+        "x": 257,
+        "y": 745.625,
+        "width": 1532,
+        "height": 110.390625
+      }
     },
     "PUBLISHER-C21": {
       "width": 1814,
-      "height": 868
+      "height": 868,
+      "profile": {
+        "x": 264,
+        "y": 232.609375,
+        "width": 1527,
+        "height": 153
+      },
+      "sessions": {
+        "x": 264,
+        "y": 403.609375,
+        "width": 1527,
+        "height": 112
+      },
+      "closure": {
+        "x": 264,
+        "y": 661.609375,
+        "width": 1527,
+        "height": 171.171875
+      }
     },
     "ADMIN-C21": {
       "width": 1814,
-      "height": 868
+      "height": 868,
+      "profile": {
+        "x": 249,
+        "y": 217.703125,
+        "width": 741.453125,
+        "height": 170.78125
+      },
+      "sessions": {
+        "x": 249,
+        "y": 388.484375,
+        "width": 1540,
+        "height": 142.46875
+      },
+      "closure": {
+        "x": 249,
+        "y": 552.953125,
+        "width": 1540,
+        "height": 264.78125
+      }
     }
   },
   "result": "PASS"

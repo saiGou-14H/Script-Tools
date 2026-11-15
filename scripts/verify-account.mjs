@@ -70,6 +70,37 @@ const report = {
 const password = "AccountVerification!" + randomUUID(),
   contexts = [];
 let app, server, browser, guest, page, connection;
+async function holdNextResponse(currentPage, pattern, method) {
+  let release;
+  const gate = new Promise((resolve) => {
+    release = resolve;
+  });
+  let captured = false;
+  let finished = false;
+  let status;
+  const handler = async (route) => {
+    if (captured || route.request().method() !== method) {
+      await route.continue();
+      return;
+    }
+    captured = true;
+    const response = await route.fetch();
+    status = response.status();
+    await gate;
+    await route.fulfill({ response });
+    finished = true;
+  };
+  await currentPage.route(pattern, handler);
+  return {
+    wait: () => expect.poll(() => status).toBe(200),
+    release: () => release(),
+    dispose: async () => {
+      release();
+      await expect.poll(() => finished).toBe(true);
+      await currentPage.unroute(pattern, handler);
+    },
+  };
+}
 try {
   app = await NestFactory.create(AppModule, { logger: false });
   app.use(cookieParser());
@@ -491,6 +522,55 @@ try {
   await expect(page.locator(".account-profile-content")).toContainText(
     "并发资料",
   );
+  await page.getByRole("tab", { name: "账号安全", exact: true }).click();
+  assert.equal(new URL(page.url()).searchParams.get("section"), "security");
+  await page.getByRole("button", { name: "修改密码", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "找回密码", exact: true }),
+  ).toBeVisible();
+  await page.goBack();
+  await expect(
+    page.getByRole("tab", { name: "账号安全", exact: true }),
+  ).toHaveAttribute("aria-selected", "true");
+  await page.getByRole("tab", { name: "会话", exact: true }).click();
+  assert.equal(new URL(page.url()).searchParams.get("dialog"), "sessions");
+  await page.reload();
+  await expect(
+    page.getByRole("dialog", { name: "会话管理", exact: true }),
+  ).toContainText("当前会话");
+  await page.goBack();
+  await expect(
+    page.getByRole("dialog", { name: "会话管理", exact: true }),
+  ).toHaveCount(0);
+  await page.goForward();
+  await expect(
+    page.getByRole("dialog", { name: "会话管理", exact: true }),
+  ).toBeVisible();
+  await page
+    .getByRole("dialog", { name: "会话管理", exact: true })
+    .locator(".ant-modal-footer")
+    .getByRole("button", { name: "关闭", exact: true })
+    .click();
+  await page.getByRole("tab", { name: "账号注销", exact: true }).click();
+  await page.getByRole("button", { name: "申请注销", exact: true }).click();
+  await page.reload();
+  await expect(
+    page.getByRole("dialog", { name: "账号注销前检查", exact: true }),
+  ).toContainText("接口待接入");
+  await page.getByRole("button", { name: "返回账户设置", exact: true }).click();
+  await page.goto(
+    web + "/me/settings/account?workspace=USER&section=missing&dialog=missing",
+  );
+  await expect(
+    page.getByText("账户设置入口不可用", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "返回资料", exact: true }).click();
+  assert.equal(new URL(page.url()).searchParams.get("workspace"), "USER");
+  assert.equal(new URL(page.url()).searchParams.has("section"), false);
+  assert.equal(new URL(page.url()).searchParams.has("dialog"), false);
+  report.checks.push(
+    "account sections, session lists and closure information restore through URLs and browser history, invalid entries recover within the selected workspace, and password changes reach the existing reset flow",
+  );
   await page.getByRole("button", { name: "编辑", exact: true }).click();
   await page.getByLabel("昵称", { exact: true }).fill("界面修改昵称");
   await page.getByRole("button", { name: "保存", exact: true }).click();
@@ -498,6 +578,39 @@ try {
   await page.reload();
   await expect(page.locator(".account-profile-content")).toContainText(
     "界面修改昵称",
+  );
+  const pendingProfile = await holdNextResponse(page, "**/api/v1/me", "PATCH");
+  try {
+    await page.getByRole("button", { name: "编辑", exact: true }).click();
+    await page.getByLabel("昵称", { exact: true }).fill("正在提交的昵称");
+    await page.getByRole("button", { name: "保存", exact: true }).click();
+    await pendingProfile.wait();
+    await page.getByLabel("昵称", { exact: true }).fill("提交期间的新输入");
+    pendingProfile.release();
+    await expect(
+      page.getByText("已保存提交的昵称，当前输入尚未保存。", { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByLabel("昵称", { exact: true })).toHaveValue(
+      "提交期间的新输入",
+    );
+    await expect(page.locator(".account-profile-content")).toContainText(
+      "正在提交的昵称",
+    );
+    await expect(
+      page.getByRole("button", { name: "保存", exact: true }),
+    ).not.toHaveClass(/ant-btn-loading/);
+    await page.getByRole("button", { name: "保存", exact: true }).click();
+    await expect(
+      page.getByRole("dialog", { name: "编辑昵称", exact: true }),
+    ).toHaveCount(0);
+    await expect(page.locator(".account-profile-content")).toContainText(
+      "提交期间的新输入",
+    );
+  } finally {
+    await pendingProfile.dispose();
+  }
+  report.checks.push(
+    "nickname input entered while a submitted write is in flight remains available for a second explicit save using the returned revision",
   );
   await page.getByRole("button", { name: "编辑", exact: true }).click();
   await page.getByLabel("昵称", { exact: true }).fill("界面保留输入");
@@ -552,7 +665,9 @@ try {
   report.checks.push(
     "identity refresh removes a revoked administrator workspace from account settings and reloads private queries under the remaining personal role",
   );
-  await page.getByRole("radio", { name: "脚本发布者", exact: true }).check();
+  await expect(
+    page.getByRole("radio", { name: "消费者", exact: true }),
+  ).toBeChecked();
   await page.getByRole("button", { name: "切换到发布者", exact: true }).click();
   await expect(
     page.getByRole("dialog", { name: "开通发布者工作区", exact: true }),
@@ -586,6 +701,129 @@ try {
   await page.getByRole("button", { name: "确认退出", exact: true }).click();
   await expect(page.getByText(/已退出其他会话，共/)).toBeVisible();
   expect((await fresh.context.get("/api/v1/me")).status()).toBe(401);
+  const revokedWithReadFailure = await login(first.email);
+  let failProfileRead = false;
+  let revocationRequests = 0;
+  const failRead = async (route) => {
+    if (failProfileRead && route.request().method() === "GET") {
+      await route.fulfill({
+        status: 503,
+        json: {
+          error: {
+            code: "VERIFICATION_READ_FAILURE",
+            message: "测试资料读取失败",
+          },
+        },
+      });
+    } else await route.continue();
+  };
+  const completeRevocation = async (route) => {
+    if (route.request().method() !== "DELETE") {
+      await route.continue();
+      return;
+    }
+    revocationRequests += 1;
+    const response = await route.fetch();
+    failProfileRead = response.status() === 200;
+    await route.fulfill({ response });
+  };
+  await page.route("**/api/v1/me", failRead);
+  await page.route("**/api/v1/me/sessions/others", completeRevocation);
+  try {
+    await page
+      .getByRole("button", { name: "退出其他会话", exact: true })
+      .click();
+    await page.getByRole("button", { name: "确认退出", exact: true }).click();
+    await expect(
+      page.getByText("会话操作已完成，账户资料暂时无法刷新，请重试加载。", {
+        exact: true,
+      }),
+    ).toBeVisible({ timeout: 15000 });
+    await expect(
+      page.getByRole("dialog", { name: "退出其他会话", exact: true }),
+    ).toHaveCount(0);
+    assert.equal(revocationRequests, 1);
+    expect(
+      (await revokedWithReadFailure.context.get("/api/v1/me")).status(),
+    ).toBe(401);
+  } finally {
+    failProfileRead = false;
+    await page.unroute("**/api/v1/me", failRead);
+    await page.unroute("**/api/v1/me/sessions/others", completeRevocation);
+  }
+  await page
+    .locator(".account-load-error")
+    .getByRole("button", { name: "重试", exact: true })
+    .click();
+  await expect(page.locator(".account-load-error")).toHaveCount(0);
+  report.checks.push(
+    "a committed session revocation closes its confirmation and reports its result when the subsequent profile read fails, and read recovery issues no repeated revocation",
+  );
+
+  const lateUi = await browser.newContext({
+    viewport: { width: 1814, height: 868 },
+  });
+  expect(
+    (
+      await lateUi.request.post(web + "/api/v1/auth/login", {
+        data: { email: first.email, password },
+      })
+    ).status(),
+  ).toBe(200);
+  const latePage = await lateUi.newPage();
+  latePage.on("pageerror", (error) => report.errors.push(error.message));
+  await latePage.goto(web + "/me/home");
+  await latePage
+    .getByRole("navigation")
+    .getByRole("link", { name: "账户设置", exact: true })
+    .click();
+  await expect(
+    latePage.getByRole("button", { name: "编辑", exact: true }),
+  ).toBeEnabled();
+  const delayedBootstrap = await holdNextResponse(
+    latePage,
+    "**/api/v1/bootstrap",
+    "GET",
+  );
+  try {
+    await latePage.getByRole("button", { name: "编辑", exact: true }).click();
+    await latePage.getByLabel("昵称", { exact: true }).fill("迟到身份响应");
+    await latePage.getByRole("button", { name: "保存", exact: true }).click();
+    await delayedBootstrap.wait();
+    await expect(
+      latePage.getByRole("dialog", { name: "编辑昵称", exact: true }),
+    ).toHaveCount(0);
+    await latePage.getByRole("tab", { name: "会话", exact: true }).click();
+    await latePage
+      .getByRole("dialog", { name: "会话管理", exact: true })
+      .getByRole("button", { name: "退出当前登录", exact: true })
+      .click();
+    await latePage
+      .getByRole("button", { name: "退出登录", exact: true })
+      .click();
+    await expect(
+      latePage.getByRole("heading", { name: "登录与注册", exact: true }),
+    ).toBeVisible();
+    await delayedBootstrap.dispose();
+    await latePage.evaluate(
+      () =>
+        new Promise((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(resolve)),
+        ),
+    );
+    await latePage.goBack();
+    await expect(
+      latePage.getByRole("heading", { name: "登录与注册", exact: true }),
+    ).toBeVisible();
+    expect((await lateUi.request.get(web + "/api/v1/me")).status()).toBe(401);
+  } finally {
+    await delayedBootstrap.dispose();
+    await lateUi.close();
+  }
+  report.checks.push(
+    "confirmed logout clears local identity and private reads while an earlier bootstrap response is delayed, and browser history retains authenticated-route protection after that response arrives",
+  );
+
   await page.getByRole("tab", { name: "会话", exact: true }).click();
   await page
     .getByRole("dialog", { name: "会话管理", exact: true })
@@ -616,6 +854,7 @@ try {
       ).status(),
     ).toBe(200);
     const view = await context.newPage();
+    page = view;
     view.on("pageerror", (error) => report.errors.push(error.message));
     await view.goto(web + "/me/settings/account?workspace=" + role);
     await expect(view.locator(".app-shell")).toHaveClass(
@@ -636,16 +875,78 @@ try {
       fullPage: true,
     });
     report.screenshots.push(id);
-    report.layouts[id] = await view.evaluate(() => ({
-      width: document.documentElement.scrollWidth,
-      height: document.documentElement.scrollHeight,
-    }));
-    assert.deepEqual(report.layouts[id], { width: 1814, height: 868 });
+    report.layouts[id] = await view.evaluate(() => {
+      const bounds = (selector) => {
+        const rect = document.querySelector(selector).getBoundingClientRect();
+        return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+      };
+      return {
+        width: document.documentElement.scrollWidth,
+        height: document.documentElement.scrollHeight,
+        profile: bounds(".account-profile-section"),
+        sessions: bounds(".account-sessions"),
+        closure: bounds(".account-close"),
+      };
+    });
+    assert.equal(report.layouts[id].width, 1814);
+    assert.equal(report.layouts[id].height, 868);
+    const accountLink = view
+      .locator(".topbar-actions")
+      .getByRole("link", { name: "打开账户设置", exact: true });
+    await accountLink.focus();
+    await view.keyboard.press("Enter");
+    await expect(view.locator(".app-shell")).toHaveClass(
+      new RegExp("role-" + role),
+    );
+    assert.equal(new URL(view.url()).pathname, "/me/settings/account");
+    if (role !== "USER") {
+      assert.equal(new URL(view.url()).searchParams.get("workspace"), role);
+      await view.getByRole("tab", { name: "账号安全", exact: true }).click();
+      await expect(
+        view.getByRole("dialog", { name: "账号安全", exact: true }),
+      ).toBeVisible();
+      await view.reload();
+      await expect(
+        view.getByRole("dialog", { name: "账号安全", exact: true }),
+      ).toBeVisible();
+      await view
+        .getByRole("dialog", { name: "账号安全", exact: true })
+        .locator(".ant-modal-footer")
+        .getByRole("button", { name: "关闭", exact: true })
+        .click();
+    }
+    await view.setViewportSize({ width: 390, height: 844 });
+    await view.goto(web + "/me/settings/account?workspace=" + role);
+    await expect(
+      view.locator(".account-profile-section .ant-btn").first(),
+    ).toBeEnabled();
+    assert.equal(
+      await view.evaluate(() => document.documentElement.scrollWidth),
+      390,
+    );
+    await view.getByRole("tab", { name: "会话", exact: true }).click();
+    await expect(
+      view.getByRole("dialog", { name: "会话管理", exact: true }),
+    ).toBeVisible();
+    await expect(
+      view.getByRole("dialog", { name: "会话管理", exact: true }),
+    ).toContainText("当前会话");
+    assert.equal(
+      await view.evaluate(() => document.documentElement.scrollWidth),
+      390,
+    );
+    const tableScroll = await view
+      .locator(".ant-modal .ant-table-content")
+      .evaluate((element) => ({
+        client: element.clientWidth,
+        scroll: element.scrollWidth,
+      }));
+    assert.ok(tableScroll.scroll > tableScroll.client);
     await context.close();
   }
   assert.deepEqual(report.errors, []);
   report.checks.push(
-    "the consumer, publisher and administrator account layouts render their distinct reference structures inside the target viewport without browser exceptions",
+    "all three account layouts fit the desktop and 390px viewports, expose a keyboard-accessible workspace-preserving header link, restore security dialogs, and scroll session tables within the mobile dialog without browser exceptions",
   );
   report.result = "PASS";
 } catch (error) {

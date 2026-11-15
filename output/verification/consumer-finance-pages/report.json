@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T07:25:31.437Z",
+  "date": "2026-11-15T08:39:51.788Z",
   "checks": [
     "minor-unit formatting preserves BIGINT boundaries and cent precision",
     "CSV formatting preserves custom script names, commas, doubled quotes, empty values and all supported newline forms",

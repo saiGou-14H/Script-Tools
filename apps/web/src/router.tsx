@@ -1,4 +1,11 @@
-import { lazy, Suspense, useEffect, useState, type ReactElement } from "react";
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+  type ReactElement,
+} from "react";
 import { Alert, Button, Result, Skeleton, Spin } from "antd";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
@@ -436,9 +443,11 @@ export function Application() {
   const [error, setError] = useState("");
   const location = useLocation();
   const client = useQueryClient();
+  const identityGeneration = useRef(0);
   async function refresh(signal?: AbortSignal) {
+    const generation = identityGeneration.current;
     const result = await api<Bootstrap>("/bootstrap", { signal });
-    if (signal?.aborted) return;
+    if (signal?.aborted || generation !== identityGeneration.current) return;
     setCsrfToken(result.csrf_token);
     setError("");
     if (!result.user) setRole("GUEST");
@@ -446,6 +455,17 @@ export function Application() {
       setRole(location.pathname === "/auth" ? "GUEST" : "USER");
     setBootstrap(result);
     return result;
+  }
+  function clearIdentity() {
+    identityGeneration.current += 1;
+    setCsrfToken(null);
+    setRole("GUEST");
+    setBootstrap((current) =>
+      current ? { ...current, user: null, csrf_token: null } : current,
+    );
+    client.removeQueries({
+      predicate: (query) => query.queryKey[0] !== "public",
+    });
   }
   useEffect(() => {
     const controller = new AbortController();
@@ -524,6 +544,7 @@ export function Application() {
           });
         },
         refresh,
+        clearIdentity,
       }}
     >
       <PrototypeProvider key={bootstrap.user?.id || "anonymous"}>

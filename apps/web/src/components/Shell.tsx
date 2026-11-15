@@ -17,7 +17,7 @@ import {
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { menuForRole, pagePath, pages, PageId, roles } from "../catalog";
 import { useWorkspace } from "../context";
-import { Icon, pageIcons } from "./Icon";
+import { Icon, pageIcons, type IconName } from "./Icon";
 import type { Role } from "../types";
 import { usePrototype } from "../prototype";
 import { executionReturnPath } from "../lib/execution-navigation";
@@ -318,6 +318,46 @@ const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
     C07: { C06: "layers", C12: "folder", C13: "clock", C22: "ticket" },
   };
 
+const accountMenuIcons: Partial<Record<Role, Partial<Record<PageId, IconName>>>> = {
+  USER: {
+    C04: "file",
+    C06: "stack",
+    C22: "ticket-stub",
+    C10: "reconciliation",
+    C12: "cube",
+    C13: "clock",
+    C16: "message",
+    C19: "support",
+  },
+  PUBLISHER: {
+    S01: "upload-tray",
+    S07: "cube",
+    S02: "code-brackets",
+    S05: "play",
+    S06: "database",
+    S11: "chart",
+    S12: "shield",
+    S13: "wallet",
+    C21: "user",
+  },
+  ADMIN: {
+    O01: "chart",
+    O03: "market",
+    O05: "stack",
+    O06: "file",
+    O08: "money",
+    O10: "reconciliation",
+    O11: "team",
+    O12: "file",
+    O13: "database",
+    O14: "cube",
+    O15: "bolt",
+    O17: "send",
+    O20: "database",
+    C21: "user",
+  },
+};
+
 export function Shell({ pageId }: { pageId: PageId }) {
   const { role, setRole, bootstrap } = useWorkspace();
   const { unreadNotificationCount } = usePrototype();
@@ -585,12 +625,13 @@ export function Shell({ pageId }: { pageId: PageId }) {
             }}
           >
             <Button className="workspace-button">
+              {pageId === "C21" && role === "ADMIN" && <Icon name="stack" />}
               {role === "GUEST" && ["P01", "P07", "P06"].includes(pageId)
                 ? "当前工作区　"
                 : role === "GUEST"
                   ? "当前身份　"
                   : compactAdmin &&
-                      !["O06", "O07", "O14", "O16", "O19"].includes(pageId)
+                      !["O06", "O07", "O14", "O16", "O19", "C21"].includes(pageId)
                     ? ""
                     : "当前工作区　"}
               <b>{roleName}</b>
@@ -632,11 +673,24 @@ export function Shell({ pageId }: { pageId: PageId }) {
                   </Badge>
                 </Button>
               </Tooltip>
-              <Avatar
-                className="account-avatar"
-                icon={<UserOutlined />}
-                onClick={() => navigate("/me/settings/account")}
-              />
+              <Link
+                className="account-avatar-link"
+                aria-label="打开账户设置"
+                to={
+                  role === "USER"
+                    ? "/me/settings/account"
+                    : `/me/settings/account?workspace=${role}`
+                }
+              >
+                <Avatar
+                  className="account-avatar"
+                  icon={
+                    pageId === "C21" && role !== "ADMIN"
+                      ? <Icon name="person-solid" />
+                      : <UserOutlined />
+                  }
+                />
+              </Link>
             </>
           )}
         </div>
@@ -658,6 +712,9 @@ export function Shell({ pageId }: { pageId: PageId }) {
                 >
                   <Icon
                     name={
+                      (pageId === "C21"
+                        ? accountMenuIcons[role]?.[page.id]
+                        : undefined) ||
                       pageMenuIcons[pageId]?.[page.id] ||
                       pageIcons[page.id] ||
                       "file"

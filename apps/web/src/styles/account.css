@@ -6,6 +6,12 @@
 }
 .role-USER.page-C21 .nav-item {
   height: 31.5px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.role-ADMIN.page-C21 .nav-item {
+  font-size: 14px;
+  font-weight: 600;
 }
 .page-C21 .main-content {
   padding: 74px 25px 12px 31px;
@@ -15,6 +21,30 @@
 }
 .page-C21 .page-heading h1 {
   font-size: 28px;
+}
+.role-USER.page-C21 .global-search.ant-input-affix-wrapper {
+  left: 40%;
+  width: 30%;
+  max-width: none;
+}
+.role-PUBLISHER.page-C21 .global-search.ant-input-affix-wrapper {
+  left: 35.7%;
+  width: 28.6%;
+  max-width: none;
+}
+.role-ADMIN.page-C21 .global-search.ant-input-affix-wrapper {
+  left: 33.4%;
+  width: 30.5%;
+  max-width: none;
+}
+.role-ADMIN.page-C21 .workspace-button {
+  min-width: 248px;
+  height: 36px;
+  font-size: 14px;
+}
+.role-ADMIN.page-C21 .workspace-button > .anticon:first-child {
+  color: #1555ff;
+  font-size: 18px;
 }
 .page-C21 .account-page .ant-tabs-nav {
   margin-bottom: 20px;
@@ -68,17 +98,30 @@
   color: #1555ff;
   border-color: #6689ff;
 }
+.account-profile-section,
+.account-page > div:has(> .account-sessions),
+.account-page > div:has(> .account-close) {
+  scroll-margin-top: calc(var(--header-height) + 16px);
+}
 .role-USER.page-C21 .account-profile-content {
   min-height: 108px;
   padding-left: 40px;
   gap: 40px;
+  padding-top: 14px;
+  align-items: flex-start;
 }
 .role-USER.page-C21 .account-profile-content p {
   gap: 10px;
   font-size: 18px;
 }
 .role-USER.page-C21 .account-profile-content p > span {
-  min-width: 45px;
+  min-width: 50px;
+}
+.role-USER.page-C21 .account-profile-content .ant-btn {
+  min-width: 66px;
+  height: 30px;
+  font-size: 16px;
+  margin-left: 8px;
 }
 .page-C21 .account-top-cards .panel {
   min-height: 0;
@@ -112,6 +155,18 @@
 .account-password-content .ant-btn {
   margin-left: auto;
 }
+.role-USER.page-C21 .account-password-content {
+  align-items: flex-start;
+}
+.role-USER.page-C21 .account-password-content > div {
+  padding-top: 5px;
+}
+.role-USER.page-C21 .account-password-content .ant-btn {
+  min-width: 100px;
+  height: 30px;
+  margin-top: 16px;
+  font-size: 15px;
+}
 .page-C21 .account-sessions .panel-heading {
   min-height: 40px;
   padding: 5px 24px;
@@ -141,13 +196,23 @@
 }
 .page-C21 .account-workspace {
   padding-top: 12px;
-  padding-bottom: 16px;
+  padding-bottom: 20px;
 }
 .page-C21 .account-workspace h2 {
   font-size: 20px;
 }
 .page-C21 .account-workspace > div > .ant-btn {
   min-width: 168px;
+  height: 41px;
+  align-self: flex-start;
+  margin-top: 10px;
+}
+.page-C21 .account-workspace > p {
+  margin-bottom: 10px;
+}
+.page-C21 .account-workspace .ant-radio-wrapper > span:last-child {
+  padding-inline-start: 18px;
+  min-width: 0;
 }
 .page-C21 .account-close .panel-heading {
   min-height: 40px;
@@ -199,13 +264,13 @@
   --sidebar-width: 235px;
 }
 .role-PUBLISHER.page-C21 .main-content {
-  padding: 79px 23px 12px 29px;
+  padding: 82px 23px 12px 29px;
 }
 .role-PUBLISHER.page-C21 .breadcrumb {
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 .role-PUBLISHER.page-C21 .page-heading {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 .role-PUBLISHER.page-C21 .account-page .ant-tabs-nav::before,
 .role-PUBLISHER.page-C21 .account-page .ant-tabs-ink-bar {
@@ -213,12 +278,26 @@
 }
 .role-PUBLISHER.page-C21 .account-page .ant-tabs-tab {
   height: 41px;
-  min-width: 92px;
-  padding: 0 27px;
+  min-width: 90px;
+  padding: 0 22px;
   background: #fff;
   border: 1px solid #e7ebf1;
   border-radius: 9px;
   font-size: 18px;
+}
+.role-PUBLISHER.page-C21 .account-page .ant-tabs-tab:first-child {
+  min-width: 100px;
+}
+.role-PUBLISHER.page-C21 .account-page .panel-heading {
+  border-bottom: 0;
+}
+.role-PUBLISHER.page-C21 .account-profile-section .panel-heading .ant-btn,
+.role-ADMIN.page-C21 .account-profile-section .panel-heading .ant-btn {
+  height: 28px;
+}
+.role-PUBLISHER.page-C21 .account-profile-content {
+  min-height: 102px;
+  padding-block: 14px;
 }
 .role-PUBLISHER.page-C21 .account-page .ant-tabs-tab + .ant-tabs-tab {
   margin-left: 12px;
@@ -349,7 +428,10 @@
   color: #1555ff;
 }
 .role-PUBLISHER.page-C21 .account-close .panel-body {
-  padding: 14px 24px 20px;
+  padding: 14px 24px 24px;
+}
+.role-PUBLISHER.page-C21 .account-closure-counters > span {
+  min-width: 240px;
 }
 .account-admin-top {
   display: grid;
@@ -358,6 +440,35 @@
 }
 .role-ADMIN.page-C21 .main-content {
   padding: 74px 25px 12px;
+}
+.role-ADMIN.page-C21 .page-heading h1 {
+  font-size: 24px;
+}
+.role-ADMIN.page-C21 .page-heading {
+  margin-bottom: 17px;
+}
+.role-ADMIN.page-C21 .account-page .ant-tabs-tab {
+  padding: 6px 16px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.role-ADMIN.page-C21 .account-page .panel-heading {
+  border-bottom: 0;
+  position: relative;
+}
+.role-ADMIN.page-C21 .account-page .panel-heading::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+  right: 12px;
+  border-bottom: 1px solid #edf0f7;
+}
+.role-ADMIN.page-C21 .account-page .panel-heading h2 {
+  font-size: 20px;
+}
+.role-ADMIN.page-C21 .account-admin-top .panel {
+  margin-bottom: 22px;
 }
 .role-ADMIN.page-C21 .account-profile-content {
   min-height: 96px;
@@ -418,19 +529,42 @@
   padding: 9px 24px;
 }
 .role-ADMIN.page-C21 .account-sessions .panel-body {
-  min-height: 92px;
-  padding: 18px 26px;
+  min-height: 91px;
+  padding: 16px 26px;
+}
+.role-ADMIN.page-C21 .account-sessions {
+  margin-bottom: 22px;
+}
+.role-ADMIN.page-C21 .account-sessions .ant-btn {
+  min-width: 172px;
+  height: 40px;
+}
+.role-ADMIN.page-C21 .account-sessions .tile-icon {
+  background: transparent;
+  font-size: 30px;
 }
 .role-ADMIN.page-C21 .account-close .panel-heading {
   min-height: 49px;
   padding: 9px 24px;
 }
 .role-ADMIN.page-C21 .account-close .panel-body {
-  padding: 18px 24px 20px;
+  padding: 18px 24px 16px;
 }
 .role-ADMIN.page-C21 .account-closure-counters > span {
-  min-width: 177px;
-  font-size: 17px;
+  min-width: 174px;
+  font-size: 16px;
+  padding-inline: 10px;
+}
+.role-ADMIN.page-C21 .account-closure-counters {
+  gap: 8px;
+}
+.role-ADMIN.page-C21 .account-closure-counters > span:nth-child(2) {
+  color: #c97516;
+  background: #fff6eb;
+}
+.role-ADMIN.page-C21 .account-closure-counters > span:nth-child(2) b,
+.role-ADMIN.page-C21 .account-closure-counters > span:nth-child(2) .anticon {
+  color: inherit;
 }
 .role-ADMIN.page-C21 .account-closure-details > p {
   font-size: 17px;
@@ -461,5 +595,79 @@
   .account-workspace .ant-radio-group {
     width: 100%;
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 700px) {
+  .app-shell.page-C21 .main-content {
+    margin-left: 0;
+    padding: 80px 12px 22px;
+  }
+  .role-ADMIN.page-C21 .workspace-button {
+    min-width: 0;
+    padding-inline: 8px;
+    height: 32px;
+    font-size: 12px;
+  }
+  .role-ADMIN.page-C21 .workspace-button > .anticon:first-child {
+    display: none;
+  }
+  .app-shell.page-C21 .account-profile-content {
+    padding: 16px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .account-profile-content > div:last-child {
+    min-width: 0;
+    flex: 1;
+  }
+  .account-profile-content p {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .account-profile-content b {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .app-shell.page-C21 .account-password-content {
+    padding: 16px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .account-password-content > div {
+    min-width: 0;
+    flex: 1;
+  }
+  .role-USER.page-C21 .account-password-content .ant-btn {
+    margin-top: 0;
+  }
+  .page-C21 .account-workspace {
+    padding-inline: 16px;
+  }
+  .page-C21 .account-workspace .ant-radio-wrapper {
+    padding: 12px;
+  }
+  .page-C21 .account-workspace .ant-radio-wrapper > span:last-child {
+    padding-inline-start: 8px;
+  }
+  .page-C21 .ant-radio-wrapper > span:last-child > span {
+    min-width: 0;
+  }
+  .account-workspace-compact .ant-radio-group,
+  .page-C21 .account-sessions .panel-body {
+    flex-wrap: wrap;
+  }
+  .page-C21 .account-sessions .panel-body > div {
+    min-width: 0;
+    flex: 1;
+  }
+  .page-C21 .account-sessions h3 {
+    overflow-wrap: anywhere;
+  }
+  .account-close-warning {
+    flex-wrap: wrap;
+  }
+  .account-close-warning > span {
+    min-width: 0;
+    flex: 1;
   }
 }

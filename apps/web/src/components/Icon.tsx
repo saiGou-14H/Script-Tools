@@ -25,6 +25,8 @@ import {
   RocketOutlined,
   ContainerOutlined,
   CloudUploadOutlined,
+  UploadOutlined,
+  SendOutlined,
   SyncOutlined,
   ToolOutlined,
   AuditOutlined,
@@ -44,6 +46,7 @@ import {
   FolderOpenOutlined,
   TagOutlined,
   WindowsOutlined,
+  WindowsFilled,
   CustomerServiceOutlined,
   MailOutlined,
   MessageOutlined,
@@ -64,6 +67,42 @@ import {
   FileZipOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
+
+function PersonFilled({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span className={`anticon ${className}`} {...props}>
+      <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">
+        <circle cx="12" cy="6" r="4.5" />
+        <path d="M3 22v-3c0-4 4-7 9-7s9 3 9 7v3H3Z" />
+      </svg>
+    </span>
+  );
+}
+
+function CodeBracketsOutlined({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span className={`anticon ${className}`} {...props}>
+      <svg
+        viewBox="0 0 24 24"
+        width="1em"
+        height="1em"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="m7 5-6 7 6 7m10-14 6 7-6 7M14 3l-4 18" />
+      </svg>
+    </span>
+  );
+}
 
 function StackOutlined({
   className = "",
@@ -112,6 +151,11 @@ function TicketOutlined({
 }
 
 const icons = {
+  "upload-tray": UploadOutlined,
+  send: SendOutlined,
+  "person-solid": PersonFilled,
+  "code-brackets": CodeBracketsOutlined,
+  "windows-solid": WindowsFilled,
   "plus-circle": PlusCircleOutlined,
   "ticket-stub": TicketOutlined,
   excel: FileExcelOutlined,
