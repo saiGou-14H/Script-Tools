@@ -1,4 +1,6 @@
 import { chromium, expect } from "@playwright/test";
+import assert from "node:assert/strict";
+import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { preview } from "vite";
@@ -28,6 +30,286 @@ if (!address || typeof address !== "object")
   throw new Error("Preview address is unavailable");
 const base = `http://127.0.0.1:${address.port}`;
 const restoredWorkspaces = [];
+async function homeLayout(page) {
+  return page.evaluate(() => {
+    const brand = document.querySelector(".brand").getBoundingClientRect();
+    const actions = document
+      .querySelector(".topbar-actions")
+      .getBoundingClientRect();
+    const search = document
+      .querySelector(".global-search")
+      .getBoundingClientRect();
+    const selectors = [
+      ".home-service-banner",
+      ".home-service-intro",
+      ".home-service-benefits",
+      ".home-recommendation",
+      ".home-recommendation-title",
+      ".home-recommendation-title h3",
+      ".home-recommendation-price",
+      ".home-recommendation footer",
+      ".home-category-navigation",
+      ".home-workflow",
+      ".home-workflow h4",
+      ".home-category-details > a",
+      ".home-fee-note",
+      ".home-payment-guide",
+      ".home-publish-guide",
+    ];
+    return {
+      width: document.documentElement.scrollWidth,
+      clipped: [...document.querySelectorAll(selectors.join(","))]
+        .filter(
+          (element) =>
+            element.scrollWidth > element.clientWidth + 1 ||
+            element.scrollHeight > element.clientHeight + 1,
+        )
+        .map((element) => element.className || element.tagName),
+      header_overlap: brand.right > actions.left,
+      search_overlap:
+        search.width > 0 &&
+        (search.left < brand.right || search.right > actions.left),
+    };
+  });
+}
+async function verifyPublicHome(context, page) {
+  await page.setViewportSize({ width: 1813, height: 868 });
+  const regions = [
+    [".home-service-banner", { x: 250, y: 104, width: 1160, height: 156 }],
+    [".home-recommendation-grid", { x: 250, y: 319, width: 1160, height: 179 }],
+    [".home-discovery-row", { x: 250, y: 515, width: 1160, height: 136 }],
+    [".home-category-details", { x: 250, y: 680, width: 1160, height: 166 }],
+    [".home-fee-note", { x: 1427, y: 104, width: 378, height: 134 }],
+    [".home-payment-guide", { x: 1427, y: 252, width: 378, height: 247 }],
+    [".home-publish-guide", { x: 1427, y: 516, width: 378, height: 275 }],
+  ];
+  report.homeReferenceRegions = [];
+  for (const [selector, expected] of regions) {
+    const actual = await page.locator(selector).evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+    });
+    for (const coordinate of Object.keys(expected))
+      assert(
+        Math.abs(actual[coordinate] - expected[coordinate]) <= 3,
+        JSON.stringify({ selector, expected, actual }),
+      );
+    report.homeReferenceRegions.push({
+      selector,
+      expected,
+      actual,
+      tolerance_px: 3,
+    });
+  }
+  await page.screenshot({
+    path: path.join(output, "GUEST-P01-reference.png"),
+    fullPage: true,
+    animations: "disabled",
+  });
+  report.screenshots.push("GUEST-P01-reference");
+  const widths = [
+    ...new Set([
+      700,
+      701,
+      1000,
+      1001,
+      1100,
+      1101,
+      1200,
+      1201,
+      1450,
+      1451,
+      1700,
+      1701,
+      1800,
+      1801,
+      ...Array.from({ length: 41 }, (_, index) => 390 + index * 37),
+    ]),
+  ];
+  report.homeResponsive = [];
+  for (const width of widths) {
+    await page.setViewportSize({ width, height: width <= 700 ? 844 : 900 });
+    const state = await homeLayout(page);
+    assert(
+      state.width <= width &&
+        state.clipped.length === 0 &&
+        !state.header_overlap &&
+        !state.search_overlap,
+      JSON.stringify({ width, ...state }),
+    );
+    report.homeResponsive.push({ viewport_width: width, ...state });
+    if (width === 390) {
+      await page.screenshot({
+        path: path.join(output, "GUEST-P01-mobile.png"),
+        fullPage: true,
+        animations: "disabled",
+      });
+      report.screenshots.push("GUEST-P01-mobile");
+    }
+  }
+  report.checks.push(
+    `Public home follows seven reference regions and keeps its content and header unclipped across ${widths.length} widths and breakpoint boundaries`,
+  );
+
+  await page.setViewportSize({ width: 1813, height: 868 });
+  const response = await context.request.get(base + "/api/v1/services");
+  expect(response.status()).toBe(200);
+  const envelope = await response.json();
+  const original = envelope.data;
+  for (const travel of [false, true]) {
+    const service = original.find(
+      (item) => (item.scene_key === "travel") === travel,
+    );
+    const recommendation = page
+      .locator(".home-recommendation")
+      .filter({
+        has: page.getByRole("heading", { name: service.title, exact: true }),
+      });
+    await recommendation.getByRole("link").click();
+    expect(new URL(page.url()).pathname).toBe(
+      `${travel ? "/travel/attractions/" : "/services/"}${service.id}`,
+    );
+    await expect(
+      page.locator(
+        travel ? ".travel-service-banner" : ".retail-service-banner",
+      ),
+    ).toBeVisible();
+    await page.goto(base + "/");
+    await expect(page.locator(".home-recommendation")).toHaveCount(4);
+  }
+  await page
+    .locator(".topbar-actions")
+    .getByRole("button", { name: "登录", exact: true })
+    .click();
+  expect(new URL(page.url()).pathname).toBe("/auth");
+  await expect(
+    page.getByRole("heading", { name: "登录与注册", exact: true }),
+  ).toBeVisible();
+  await page.goto(base + "/");
+  await page
+    .locator(".topbar-actions")
+    .getByRole("button", { name: "注册", exact: true })
+    .click();
+  expect(new URL(page.url()).searchParams.get("tab")).toBe("register");
+  await expect(
+    page.getByRole("heading", { name: "登录与注册", exact: true }),
+  ).toBeVisible();
+  report.checks.push(
+    "Home general and travel recommendations retain their exact service identities, and login and registration open their corresponding authentication entries",
+  );
+
+  const samples = structuredClone(original);
+  const long = samples.find((item) => item.delivery_policy.icon === "table");
+  long.title = "自定义脚本".repeat(12);
+  long.description = "payload_".repeat(50);
+  long.amount_minor = "9223372036854775807";
+  long.availability = {
+    can_purchase: false,
+    reason: "controlled unavailable service",
+  };
+  const legacy = samples.find((item) => item.delivery_policy.icon === "file");
+  delete legacy.availability;
+  legacy.deployment_status = "STOPPED";
+  const explicit = samples.find(
+    (item) => item.delivery_policy.icon === "database",
+  );
+  explicit.availability = { can_purchase: true, reason: null };
+  explicit.deployment_status = "DEGRADED";
+  samples.push({
+    ...long,
+    id: randomUUID(),
+    title: "推荐之外的自定义服务",
+    delivery_policy: { ...long.delivery_policy, icon: "__proto__" },
+  });
+  await context.route("**/api/v1/services", (route) =>
+    route.fulfill({ json: { ...envelope, data: samples } }),
+  );
+  await page.goto(base + "/");
+  await expect(page.locator(".home-recommendation")).toHaveCount(4);
+  await expect(
+    page.getByRole("heading", { name: "推荐之外的自定义服务", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page
+      .locator(".home-recommendation > p")
+      .filter({ hasText: long.description }),
+  ).toHaveText(long.description);
+  await expect(
+    page
+      .locator(".home-recommendation-price")
+      .filter({ hasText: "92233720368547758.07" }),
+  ).toHaveCount(1);
+  await expect(
+    page.locator(".home-recommendation footer .status-gray"),
+  ).toHaveCount(2);
+  await expect(
+    page.locator(".home-recommendation footer .status-green"),
+  ).toHaveCount(2);
+  for (const width of [1813, 1701, 1201, 1101, 701, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    const state = await homeLayout(page);
+    assert(
+      state.width <= width &&
+        state.clipped.length === 0 &&
+        !state.header_overlap &&
+        !state.search_overlap,
+      JSON.stringify({ width, long: true, ...state }),
+    );
+  }
+  await page.screenshot({
+    path: path.join(output, "GUEST-P01-long.png"),
+    fullPage: true,
+    animations: "disabled",
+  });
+  report.screenshots.push("GUEST-P01-long");
+  await context.unroute("**/api/v1/services");
+  report.checks.push(
+    "Four home recommendations preserve complete long metadata and exact signed-64-bit prices, respect explicit purchase availability and legacy deployment fallback, and safely rank custom icon names",
+  );
+
+  let phase = "loading";
+  await context.route("**/api/v1/services", async (route) => {
+    if (phase === "loading")
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    if (phase === "error")
+      await route.fulfill({
+        status: 503,
+        json: {
+          error: {
+            code: "UNAVAILABLE",
+            message: "controlled home catalog failure",
+          },
+        },
+      });
+    else
+      await route.fulfill({
+        json: { ...envelope, data: phase === "empty" ? [] : original },
+      });
+  });
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(
+    page.locator(".home-recommendations .ant-skeleton"),
+  ).toBeVisible();
+  await expect(page.locator(".home-recommendation")).toHaveCount(4);
+  phase = "error";
+  await page.reload();
+  await expect(page.getByText("服务暂时无法加载", { exact: true })).toBeVisible(
+    { timeout: 20000 },
+  );
+  await expect(page.locator(".home-recommendation")).toHaveCount(0);
+  phase = "empty";
+  await page.getByRole("button", { name: "重试推荐服务", exact: true }).click();
+  await expect(page.getByText("暂无可用服务", { exact: true })).toBeVisible();
+  phase = "normal";
+  await page.reload();
+  await expect(page.locator(".home-recommendation")).toHaveCount(4);
+  await context.unroute("**/api/v1/services");
+  report.checks.push(
+    "Home catalog loading, empty and failed reads expose their own feedback, and retry restores the returned recommendations",
+  );
+  await page.setViewportSize({ width: 1814, height: 868 });
+}
+
 try {
   for (const [role, email, routes] of [
     [
@@ -120,6 +402,7 @@ try {
         report.checks.push(
           "public home retains the reference columns, recommendations, categories, workflow and purchase guidance within the reference viewport",
         );
+        await verifyPublicHome(context, page);
       }
       await page.screenshot({
         path: path.join(output, `${role}-${id}.png`),

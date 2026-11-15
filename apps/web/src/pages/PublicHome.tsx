@@ -3,26 +3,29 @@ import {
   ArrowRightOutlined,
   CheckOutlined,
   MoreOutlined,
+  InfoCircleFilled,
+  NodeIndexOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { Icon } from "../components/Icon";
 import { Status, TileIcon } from "../components/ui";
 import { useWorkspace } from "../context";
 import { currency, useServices } from "./Market";
+import { serviceAvailable, servicePath } from "../lib/service-display";
 
 const categories = [
   { label: "全部", icon: "market", value: "全部" },
   { label: "城市与景点", icon: "travel", value: "旅行预约" },
-  { label: "数据处理", icon: "database", value: "数据处理" },
+  { label: "数据处理", icon: "data-storage", value: "数据处理" },
   { label: "文件工具", icon: "file", value: "文件工具" },
   { label: "信息整理", icon: "info", value: "信息整理" },
 ];
-const serviceOrder: Record<string, number> = {
-  table: 0,
-  file: 1,
-  database: 2,
-  calendar: 3,
-};
+const serviceOrder = new Map([
+  ["table", 0],
+  ["file", 1],
+  ["database", 2],
+  ["calendar", 3],
+]);
 const workflow = [
   { title: "选择服务", text: "浏览并查看服务详情、价格与退款规则。" },
   { title: "确认规则并支付", text: "确认服务内容与退款政策，完成支付。" },
@@ -33,13 +36,13 @@ const workflow = [
 ];
 
 export function PublicHomePage() {
-  const { data = [], isPending, error } = useServices();
+  const { data = [], isPending, error, refetch } = useServices();
   const { bootstrap } = useWorkspace();
   const services = [...data]
     .sort(
       (a, b) =>
-        (serviceOrder[a.delivery_policy.icon] ?? 4) -
-        (serviceOrder[b.delivery_policy.icon] ?? 4),
+        (serviceOrder.get(a.delivery_policy.icon) ?? 4) -
+        (serviceOrder.get(b.delivery_policy.icon) ?? 4),
     )
     .slice(0, 4);
   return (
@@ -62,7 +65,7 @@ export function PublicHomePage() {
           </div>
           <div className="home-service-benefits">
             {[
-              ["database", "按次付费", "按完整服务计费"],
+              ["data-storage", "按次付费", "按完整服务计费"],
               ["rocket", "部署就绪", "开箱即用，直接使用"],
               ["shield", "规则透明", "使用规则与退款政策购买前可查看"],
             ].map(([icon, title, text]) => (
@@ -75,8 +78,13 @@ export function PublicHomePage() {
               </div>
             ))}
           </div>
-          <div className="hero-document" aria-hidden="true">
-            <span>&lt;/&gt;</span>
+          <div className="home-document-art" aria-hidden="true">
+            <div className="hero-document" />
+            <span className="home-document-code">
+              <Icon name="code-brackets" />
+            </span>
+            <i className="home-document-orbit" />
+            <i className="home-document-dot" />
           </div>
         </section>
 
@@ -91,58 +99,63 @@ export function PublicHomePage() {
               title="服务暂时无法加载"
               description={error.message}
               showIcon
+              action={
+                <Button onClick={() => void refetch()}>重试推荐服务</Button>
+              }
             />
           ) : isPending ? (
             <Skeleton active />
           ) : services.length ? (
             <div className="home-recommendation-grid">
-              {services.map((service) => (
-                <article key={service.id} className="home-recommendation">
-                  <div className="home-recommendation-title">
-                    <TileIcon
-                      name={service.delivery_policy.icon}
-                      color={
-                        service.delivery_policy.icon === "table"
-                          ? "green"
-                          : service.delivery_policy.icon === "calendar"
-                            ? "orange"
-                            : service.delivery_policy.icon === "database"
-                              ? "blue"
-                              : "purple"
-                      }
-                    />
-                    <div>
-                      <h3>{service.title}</h3>
-                      <Status>
-                        {service.scene_key === "travel"
-                          ? "城市与景点"
-                          : service.category}
-                      </Status>
-                      {bootstrap.data_mode === "prototype" && (
-                        <Status tone="purple">示例数据</Status>
-                      )}
+              {services.map((service) => {
+                const available = serviceAvailable(service);
+                return (
+                  <article key={service.id} className="home-recommendation">
+                    <div className="home-recommendation-title">
+                      <TileIcon
+                        name={
+                          service.delivery_policy.icon === "database"
+                            ? "data-storage"
+                            : service.delivery_policy.icon
+                        }
+                        color={
+                          service.delivery_policy.icon === "table"
+                            ? "green"
+                            : service.delivery_policy.icon === "calendar"
+                              ? "orange"
+                              : service.delivery_policy.icon === "database"
+                                ? "blue"
+                                : "purple"
+                        }
+                      />
+                      <div>
+                        <h3>{service.title}</h3>
+                        <Status>
+                          {service.scene_key === "travel"
+                            ? "城市与景点"
+                            : service.category}
+                        </Status>
+                        {bootstrap.data_mode === "prototype" && (
+                          <Status tone="purple">示例数据</Status>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <p>{service.description}</p>
-                  <footer>
-                    <span className="home-recommendation-price">
-                      <b>¥{currency(service.amount_minor)}</b> /次
-                    </span>
-                    <Status tone="green">
-                      <CheckOutlined /> 可用
-                    </Status>
-                    <Link
-                      to={
-                        service.scene_key === "travel"
-                          ? `/travel/attractions/${service.id}`
-                          : `/services/${service.id}`
-                      }
-                    >
-                      <Button size="small">查看详情</Button>
-                    </Link>
-                  </footer>
-                </article>
-              ))}
+                    <p>{service.description}</p>
+                    <footer>
+                      <span className="home-recommendation-price">
+                        <b>¥{currency(service.amount_minor)}</b> /次
+                      </span>
+                      <Status tone={available ? "green" : "gray"}>
+                        {available && <CheckOutlined />}{" "}
+                        {available ? "可用" : "当前不可用"}
+                      </Status>
+                      <Link to={servicePath(service)}>
+                        <Button size="small">查看详情</Button>
+                      </Link>
+                    </footer>
+                  </article>
+                );
+              })}
             </div>
           ) : (
             <Empty description="暂无可用服务" />
@@ -187,7 +200,7 @@ export function PublicHomePage() {
           </section>
           <section className="home-workflow">
             <h3>
-              <Icon name="link" /> 使用流程 · 三步完成服务
+              <NodeIndexOutlined /> 使用流程 · 三步完成服务
             </h3>
             <ol>
               {workflow.map((step, index) => (
@@ -206,7 +219,7 @@ export function PublicHomePage() {
         <section className="home-category-details" aria-label="服务分类介绍">
           {[
             {
-              icon: "database",
+              icon: "data-storage",
               title: "数据处理",
               description: "对表类数据进行清洗与整理，提升可用性。",
               tags: ["表格清洗", "格式整理"],
@@ -252,7 +265,7 @@ export function PublicHomePage() {
         <section className="home-fee-note">
           <div>
             <h3>
-              <Icon name="info" /> 门票通常免费，支付的是脚本服务费
+              <InfoCircleFilled /> 门票通常免费，支付的是脚本服务费
             </h3>
             <p>
               例如景点预约，景区门票通常为免费或零价。您支付的是脚本的服务费，用于完成预约等操作。
@@ -281,7 +294,8 @@ export function PublicHomePage() {
               <li key={title}>
                 <b>{index + 1}</b>
                 <p>
-                  <strong>{title}</strong> · {text}
+                  <strong>{title}：</strong>
+                  {text}
                 </p>
               </li>
             ))}

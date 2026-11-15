@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T14:24:35.702Z",
+  "date": "2026-11-15T15:15:45.869Z",
   "checks": [
     "GUEST market banner, filters and service cards follow their individual reference regions using the returned catalog rows",
     "GUEST catalog market filters, cards, prices and header remain unclipped across 51 widths and breakpoint boundaries",

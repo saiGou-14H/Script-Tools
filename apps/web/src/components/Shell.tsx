@@ -676,6 +676,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
               )}
               {pageId === "P05" && role === "USER" && <Icon name="user" />}
               {pageId === "P02" && role === "GUEST" && <Icon name="user" />}
+              {pageId === "P01" && role === "GUEST" && <Icon name="team" />}
               {
                 pageId === "O01"
                   ? ""
@@ -683,7 +684,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
                     ? role === "GUEST"
                       ? "当前身份："
                       : "当前工作区："
-                    : pageId === "P04"
+                    : ["P01", "P04"].includes(pageId)
                       ? "当前工作区："
                       : role === "GUEST" &&
                           ["P01", "P05", "P07", "P06"].includes(pageId)
@@ -825,7 +826,10 @@ export function Shell({ pageId }: { pageId: PageId }) {
           !(pageId === "P02" && role !== "GUEST") && (
             <div className="breadcrumb">
               {pageId === "P01" ? (
-                <Icon name="home" />
+                <>
+                  <Icon name="home" />
+                  <span aria-hidden="true">›</span>
+                </>
               ) : ["C01", "C06", "C12", "C13", "C15"].includes(pageId) ||
                 (pageId === "C21" && role === "USER") ? (
                 <>

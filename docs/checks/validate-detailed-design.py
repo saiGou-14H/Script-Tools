@@ -1,5 +1,6 @@
 """Check complete design coverage and DB dictionary/DDL correspondence; no live services."""
 import json,re,hashlib
+from datetime import datetime, timezone
 from pathlib import Path
 root=Path(__file__).resolve().parents[1]
 dev=(root/'06-详细开发设计.md').read_text(encoding='utf-8')
@@ -19,6 +20,10 @@ for id,action in catalog['actions'].items():
     ck(action['success'] in dev,id+' stale result')
 for i in range(1,62):ck(len(re.findall(r'^\| 需求 REQ-'+f'{i:03}'+r' ',dev,re.M))==1,f'REQ-{i:03}')
 for i in range(1,17):ck(len(re.findall(r'^\| 规则 CMR-'+f'{i:02}'+r' ',dev,re.M))==1,f'CMR-{i:02}')
+delivery_section=re.search(r'## 17\. 实施顺序与完成门槛\n(.*?)(?:\n关键集成用例|$)',dev,re.S)
+delivery_rows=re.findall(r'^\| [A-Z] [^\n]+',delivery_section.group(1),re.M) if delivery_section else []
+ck(bool(delivery_rows) and all(value in delivery_rows[-1] for value in ('真实Runner','Docker/KVM/显式TCG','调度')),'real Runner and three-mode scheduling must be in the final development stage')
+
 dictionary=re.findall(r'^#### ([a-z_]+) —',db,re.M)
 ddl=re.findall(r'^CREATE TABLE ([a-z_]+) \(',db,re.M)
 ck(dictionary==ddl,'dictionary/table DDL mismatch')
@@ -44,7 +49,7 @@ ck('RJSF为优先验证候选' in dev and '当前仍为待验证' in dev,'RJSF s
 ck(('两连接' in dev or '多连接' in dev) and '多连接' in db,'live concurrency limitation missing')
 if issues:raise SystemExit('FAIL:\n'+'\n'.join(issues))
 report = {
-    'date': '2026-11-14',
+    'date': datetime.now(timezone.utc).date().isoformat(),
     'result': 'PASS',
     'checks': checks,
     'pages': len(catalog['pages']),
