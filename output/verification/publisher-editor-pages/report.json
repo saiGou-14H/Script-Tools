@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T05:14:34.663Z",
+  "date": "2026-11-15T05:58:56.662Z",
   "checks": [
     "Editor entry selection honors an existing declared entrypoint and safely retains malformed or missing manifests",
     "Script panels and the validated status fit the reference viewport while complete publisher schemas remain keyboard-scrollable",

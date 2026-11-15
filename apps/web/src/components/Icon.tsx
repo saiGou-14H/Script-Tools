@@ -57,6 +57,12 @@ import {
   ReadOutlined,
   ShoppingCartOutlined,
   ThunderboltOutlined,
+  FileExcelOutlined,
+  FileImageOutlined,
+  FilePdfOutlined,
+  FileWordOutlined,
+  FileZipOutlined,
+  PlusCircleOutlined,
 } from "@ant-design/icons";
 
 function StackOutlined({
@@ -82,7 +88,37 @@ function StackOutlined({
   );
 }
 
+function TicketOutlined({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span className={`anticon ${className}`} {...props}>
+      <svg
+        viewBox="0 0 24 24"
+        width="1em"
+        height="1em"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      >
+        <path d="M3 5h18v5a2 2 0 0 0 0 4v5H3v-5a2 2 0 0 0 0-4V5Z" />
+        <path d="M9 5v3m0 3v2m0 3v3" />
+      </svg>
+    </span>
+  );
+}
+
 const icons = {
+  "plus-circle": PlusCircleOutlined,
+  "ticket-stub": TicketOutlined,
+  excel: FileExcelOutlined,
+  image: FileImageOutlined,
+  pdf: FilePdfOutlined,
+  word: FileWordOutlined,
+  archive: FileZipOutlined,
   stack: StackOutlined,
   bolt: ThunderboltOutlined,
   book: ReadOutlined,
@@ -150,7 +186,9 @@ export function Icon({
   name: string;
   className?: string;
 }) {
-  const Component = icons[name as IconName] || FileTextOutlined;
+  const Component = Object.hasOwn(icons, name)
+    ? icons[name as IconName]
+    : FileTextOutlined;
   return <Component className={className} aria-hidden="true" />;
 }
 export const pageIcons: Record<string, IconName> = {

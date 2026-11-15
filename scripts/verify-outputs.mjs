@@ -2,29 +2,34 @@ import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium, expect } from "@playwright/test";
-import { createServer } from "vite";
+import { createServer, preview } from "vite";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { startVerificationApp } from "./verification-app.mjs";
 
 const root = path.resolve("apps/web");
-const server = await createServer({
+const application = await startVerificationApp("outputs");
+const server = await preview({
   root,
   configFile: path.join(root, "vite.config.ts"),
-  cacheDir: path.resolve(".local/output-verification-vite"),
-  server: {
+  preview: {
     host: "127.0.0.1",
     port: 0,
     strictPort: true,
-    proxy: { "/api": { target: "http://127.0.0.1:3001" } },
+    proxy: { "/api": { target: application.url } },
   },
 });
-await server.listen();
 const address = server.httpServer.address();
 assert.ok(address && typeof address === "object");
 const base = `http://127.0.0.1:${address.port}`;
 const output = path.resolve("output/verification/output-pages");
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch();
+let sourceServer;
 const report = {
   date: new Date().toISOString(),
+  data_source: "isolated PGlite, controlled metadata responses and local examples",
+  render_source: "production build with separate development-server escaping and icon checks",
   checks: [],
   screenshots: [],
   errors: [],
@@ -78,6 +83,10 @@ try {
     "state=UNSUPPORTED",
     "kind[]=file",
     "cursor=invalid",
+    "kinds=text,unsupported",
+    "kinds=text,",
+    "kind=text&kinds=message",
+    "kinds[]=text",
   ])
     expect(
       (await context.request.get(base + "/api/v1/outputs?" + query)).status(),
@@ -85,6 +94,13 @@ try {
   expect(
     (await context.request.get(base + "/api/v1/outputs/not-an-id")).status(),
   ).toBe(404);
+  expect(
+    (
+      await context.request.get(
+        base + "/api/v1/outputs?kinds=message,text,text",
+      )
+    ).status(),
+  ).toBe(200);
   report.checks.push(
     "the output HTTP API requires a session, returns the standard paginated envelope and rejects unsupported filters and invalid resources",
   );
@@ -104,10 +120,21 @@ try {
   await expect(page.getByRole("dialog")).toContainText(
     '"duplicates_removed": 86',
   );
+  await expect(page).toHaveURL(/preview=1/);
+  await page.reload();
+  await expect(page.getByRole("dialog")).toContainText(
+    '"duplicates_removed": 86',
+  );
   await page
     .locator(".ant-modal-footer")
     .getByRole("button", { name: "关闭", exact: true })
     .click();
+  await page.goBack();
+  await expect(page.getByRole("dialog")).toContainText(
+    '"duplicates_removed": 86',
+  );
+  await page.goForward();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
   const saved = page.waitForEvent("download");
   await page
     .locator(".outputs-toolbar")
@@ -134,7 +161,31 @@ try {
     .getByRole("button", { name: /下载/ })
     .click();
   assert.equal((await jsonDownload).suggestedFilename(), "清洗统计.json");
-  await page.evaluate(async () => {
+  sourceServer = await createServer({
+    root,
+    configFile: path.join(root, "vite.config.ts"),
+    cacheDir: path.resolve(".local/output-verification-vite"),
+    server: {
+      host: "127.0.0.1",
+      port: 0,
+      hmr: false,
+      proxy: { "/api": { target: application.url } },
+    },
+  });
+  await sourceServer.listen();
+  const sourcePage = await context.newPage();
+  await sourcePage.goto(
+    `http://127.0.0.1:${sourceServer.httpServer.address().port}/me/outputs?kind=json`,
+  );
+  await sourcePage.getByRole("tab", { name: "JSON", exact: true }).waitFor();
+  const { Icon } = await sourceServer.ssrLoadModule("/src/components/Icon.tsx");
+  for (const name of ["constructor", "toString", "__proto__", "unknown-format"])
+    assert(
+      renderToStaticMarkup(createElement(Icon, { name })).includes(
+        'data-icon="file-text"',
+      ),
+    );
+  await sourcePage.evaluate(async () => {
     const loaded = performance
       .getEntriesByType("resource")
       .find((entry) => entry.name.includes("/src/lib/consumer-preview.ts"));
@@ -144,14 +195,35 @@ try {
     ).content =
       '<img src="invalid" onerror="window.outputMarkupExecuted=true">';
   });
-  await page.getByRole("tab", { name: "文本", exact: true }).click();
-  await expect(page.locator(".output-text-view pre")).toContainText(
+  await sourcePage.getByRole("tab", { name: "文本", exact: true }).click();
+  await expect(sourcePage.locator(".output-text-view pre")).toContainText(
     '<img src="invalid"',
   );
-  await expect(page.locator(".output-text-view img")).toHaveCount(0);
+  await expect(sourcePage.locator(".output-text-view img")).toHaveCount(0);
   assert.equal(
-    await page.evaluate(() => window.outputMarkupExecuted),
+    await sourcePage.evaluate(() => window.outputMarkupExecuted),
     undefined,
+  );
+  await sourcePage.close();
+  await sourceServer.close();
+  sourceServer = undefined;
+  report.checks.push(
+    "source-rendered script text escapes markup and arbitrary icon names use a valid fallback, including inherited object keys",
+  );
+  await page.goto(base + "/me/outputs?kind=text&output=result-message");
+  await expect(page.locator(".output-inline-metadata")).toContainText("消息");
+  await expect(page.locator(".output-inline-metadata")).toContainText("未触发");
+  await expect(page.locator(".output-text-view pre")).toContainText(
+    '"title": "表格清洗完成"',
+  );
+  await page.goto(base + "/me/outputs?kind=files&output=result-message");
+  await expect(
+    page.getByText("所选产物不属于当前分类", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "查看所属分类", exact: true }).click();
+  await expect(page.locator(".output-inline-metadata")).toContainText("消息");
+  report.checks.push(
+    "message outputs share the text category with their own delivery facts and a mismatched deep link can recover its actual category",
   );
   await page.goto(base + "/me/outputs?output=pending");
   await expect(
@@ -167,6 +239,12 @@ try {
   report.checks.push(
     "JSON and text tabs operate on their own records, render script-provided markup as text and keep unavailable or unknown selection actions disabled",
   );
+  await page.goto(base + "/me/outputs?kind=unsupported");
+  await expect(
+    page.getByText("产物分类无效，请选择有效分类", { exact: true }),
+  ).toBeVisible();
+  for (const button of await page.locator(".outputs-toolbar button").all())
+    await expect(button).toBeDisabled();
   const live = await browser.newContext({
     viewport: { width: 1814, height: 868 },
   });
@@ -251,11 +329,25 @@ try {
     ],
   };
   await live.unroute("**/api/v1/outputs?*");
-  await live.route("**/api/v1/outputs?*", (route) =>
-    route.fulfill({
-      json: { data: [record], next_cursor: null, request_id: "verification" },
-    }),
-  );
+  let fixtureRecords = [record];
+  const groupedRequests = [];
+  await live.route("**/api/v1/outputs?*", (route) => {
+    const search = new URL(route.request().url()).searchParams;
+    const grouped = search.get("kinds");
+    if (grouped) groupedRequests.push(grouped);
+    const kinds = (grouped || search.get("kind") || "").split(",");
+    const matching = fixtureRecords.filter((item) => kinds.includes(item.kind));
+    const start = search.has("cursor") ? 1 : 0;
+    const paged = grouped ? matching.slice(start, start + 1) : matching;
+    return route.fulfill({
+      json: {
+        data: paged,
+        next_cursor:
+          grouped && matching.length > start + 1 ? "next-text-page" : null,
+        request_id: "verification",
+      },
+    });
+  });
   await livePage.reload();
   const row = livePage
     .locator(".outputs-panel .ant-table-tbody tr")
@@ -271,6 +363,101 @@ try {
   report.checks.push(
     "live metadata preserves exact large sizes and independent READY output and UNKNOWN delivery states while unavailable content and delivery adapters stay visibly pending",
   );
+  fixtureRecords = [
+    {
+      ...record,
+      id: "00000000-0000-4000-8000-000000000004",
+      kind: "message",
+      file_name: null,
+      title: "运行消息",
+    },
+    {
+      ...record,
+      id: "00000000-0000-4000-8000-000000000005",
+      kind: "text",
+      file_name: null,
+      title: "输出说明",
+      deliveries: [],
+    },
+  ];
+  await livePage.getByRole("tab", { name: "文本", exact: true }).click();
+  await expect(livePage.locator(".output-inline-metadata")).toContainText(
+    "消息",
+  );
+  await expect(livePage.locator(".output-inline-metadata")).toContainText(
+    "回执未知",
+  );
+  await livePage.getByRole("button", { name: "加载更多", exact: true }).click();
+  await livePage.getByLabel("选择产物", { exact: true }).click();
+  await livePage
+    .locator(".ant-select-dropdown:visible .ant-select-item-option-content")
+    .filter({ hasText: "输出说明" })
+    .click();
+  await expect(livePage.locator(".output-inline-metadata")).toContainText(
+    "文本",
+  );
+  await expect(livePage.locator(".output-inline-metadata")).toContainText(
+    "未触发",
+  );
+  assert(
+    groupedRequests.length >= 2 &&
+      groupedRequests.every((value) => value === "text,message"),
+  );
+  await expect(
+    livePage
+      .locator(".outputs-toolbar")
+      .getByRole("button", { name: "下载", exact: true }),
+  ).toBeDisabled();
+  report.checks.push(
+    "production text pages query and paginate both text and message metadata, retain selection and show independent delivery status",
+  );
+  fixtureRecords = [
+    ["guide.pdf", "application/pdf"],
+    [
+      "report.docx",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ],
+    [
+      "book.xlsx",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    ],
+    ["image.png", "image/png"],
+    ["bundle.zip", "application/zip"],
+    [
+      '<img src=x onerror="window.metadataExecuted=true">.bin',
+      "application/octet-stream",
+    ],
+  ].map(([name, type], index) => ({
+    ...record,
+    id: `00000000-0000-4000-8000-00000000001${index}`,
+    file_name: name,
+    media_type: type,
+  }));
+  await livePage.goto(base + "/me/outputs?kind=files");
+  for (const icon of [
+    "file-pdf",
+    "file-word",
+    "file-excel",
+    "file-image",
+    "file-zip",
+    "file-text",
+  ])
+    await expect(
+      livePage.locator(`.outputs-panel svg[data-icon="${icon}"]`),
+    ).toHaveCount(1);
+  await expect(livePage.locator(".outputs-panel img")).toHaveCount(0);
+  assert.equal(
+    await livePage.evaluate(() => window.metadataExecuted),
+    undefined,
+  );
+  report.checks.push(
+    "production file metadata uses appropriate PDF, Word, spreadsheet, image, archive and generic file icons and escapes file names",
+  );
+  await livePage.goto(base + "/me/pending");
+  await expect(livePage.getByText("待处理事项服务待接入，事项与状态暂不可用。", { exact: true })).toBeVisible();
+  await expect(livePage.locator(".pending-action-card")).toHaveCount(0);
+  await expect(livePage.getByRole("tab", { name: "全部（—）", exact: true })).toBeVisible();
+  report.checks.push("production pending pages show unavailable counters and integration feedback without example records in live mode");
   await live.close();
   await page.goto(base + "/me/pending");
   await expect(page.locator(".pending-action-card")).toHaveCount(2);
@@ -278,6 +465,10 @@ try {
   await page.getByRole("tab", { name: "待核验（1）", exact: true }).click();
   await expect(page.locator(".pending-action-card")).toHaveCount(1);
   await page.getByRole("button", { name: "核验原预约", exact: true }).click();
+  await expect(page).toHaveURL(/dialog=verify/);
+  await page.reload();
+  await expect(page.getByRole("dialog")).toContainText("2026-11-15");
+  await expect(page.getByRole("dialog")).not.toContainText("2026-11-20");
   await page.getByRole("button", { name: "再次核验", exact: true }).click();
   await expect(
     page.getByText("官方核验通道尚未配置，原预约保持待核验状态", {
@@ -286,6 +477,23 @@ try {
   ).toBeVisible();
   report.checks.push(
     "output and pending reference layouts fit the target viewport, and pending filtering and original-booking verification preserve the unresolved result",
+  );
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const route of [
+    "/me/outputs",
+    "/me/outputs?kind=text&output=result-message",
+    "/me/pending",
+  ]) {
+    await page.goto(base + route);
+    await expect(page.locator(".page-heading h1")).toBeVisible();
+    assert.equal(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+      390,
+      route,
+    );
+  }
+  report.checks.push(
+    "message and file outputs plus pending items fit a 390px viewport, and the booking dialog restores its own snapshot through the URL",
   );
   assert.deepEqual(report.errors, []);
   report.result = "PASS";
@@ -300,6 +508,8 @@ try {
 } finally {
   await browser.close();
   await server.close();
+  await sourceServer?.close();
+  await application.close();
   await writeFile(
     path.join(output, "report.json"),
     JSON.stringify(report, null, 2) + "\n",

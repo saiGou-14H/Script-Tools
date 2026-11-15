@@ -1,3 +1,20 @@
+.app-shell:is(.page-C12, .page-C13) .sidebar {
+  padding-top: 5px;
+}
+.app-shell:is(.page-C12, .page-C13) .nav-item {
+  font-size: 16px;
+  gap: 17px;
+}
+.app-shell.page-C12 .global-search {
+  left: 34.8%;
+  width: 34.6%;
+  max-width: 628px;
+}
+.app-shell.page-C13 .global-search {
+  left: 38.1%;
+  width: 31%;
+  max-width: 562px;
+}
 .page-C12 {
   --sidebar-width: 220px;
 }
@@ -30,6 +47,9 @@
   height: 58px;
   font-size: 34px;
   flex-shrink: 0;
+  color: #fff;
+  background: linear-gradient(135deg, #5995ff, #397bff);
+  box-shadow: 0 5px 14px #1555ff12;
 }
 .output-service-banner > div {
   min-width: 0;
@@ -61,7 +81,7 @@
   color: #1455ff;
 }
 .page-C12 .outputs-panel .panel-body {
-  padding: 0 22px 22px;
+  padding: 0 22px 21px;
 }
 .page-C12 .outputs-panel .ant-tabs-nav {
   padding-left: 41px;
@@ -90,7 +110,7 @@
   min-width: 130px;
 }
 .page-C12 .outputs-panel .ant-table-cell {
-  padding: 10px 12px !important;
+  padding: 9px 12px !important;
   font-size: 16px;
   white-space: nowrap;
 }
@@ -105,8 +125,16 @@
 }
 .page-C12 .outputs-panel .entity-cell {
   gap: 13px;
+  min-width: 0;
+}
+.page-C12 .outputs-panel .entity-cell b {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 16px;
 }
 .page-C12 .outputs-panel .tile-icon {
+  flex-shrink: 0;
   width: 28px;
   height: 29px;
   font-size: 21px;
@@ -127,7 +155,7 @@
   min-height: 54px;
   font-size: 16px;
   padding: 15px 20px;
-  margin-top: 20px;
+  margin-top: 22px;
   line-height: 24px;
 }
 .output-row-selected > td {
@@ -139,6 +167,19 @@
 .output-selector {
   min-width: 230px;
   margin-right: auto;
+}
+.output-inline-metadata {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 0;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+}
+.output-inline-metadata > a {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .output-loading {
   padding: 20px;
@@ -161,6 +202,14 @@
   }
 }
 @media (max-width: 700px) {
+  .app-shell:is(.page-C12, .page-C13) .global-search {
+    display: none;
+  }
+  .output-selector {
+    min-width: 0;
+    width: 100%;
+    flex-basis: 100%;
+  }
   .output-service-banner {
     padding: 16px;
     gap: 16px;

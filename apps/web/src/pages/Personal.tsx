@@ -40,9 +40,27 @@ export function PendingActionsPage() {
     else next.set("category", value);
     setFilters(next);
   }
-  const [verify, setVerify] = useState(false);
+  const prototype = bootstrap.data_mode === "prototype";
   const { message } = App.useApp();
-  const allItems = bootstrap.data_mode === "prototype" ? pendingFixtures : [];
+  const allItems = prototype ? pendingFixtures : [];
+  const verifyRequested = filters.get("dialog") === "verify";
+  const verification = verifyRequested
+    ? allItems.find(
+        (item) => item.id === filters.get("item") && item.category === "待核验",
+      )
+    : undefined;
+  function openVerification(id: string) {
+    const next = new URLSearchParams(filters);
+    next.set("item", id);
+    next.set("dialog", "verify");
+    setFilters(next);
+  }
+  function closeVerification() {
+    const next = new URLSearchParams(filters);
+    next.delete("item");
+    next.delete("dialog");
+    setFilters(next);
+  }
   const items = allItems.filter(
     (item) => tab === "全部" || item.category === tab,
   );
@@ -52,11 +70,12 @@ export function PendingActionsPage() {
       <PageHeading
         title="待处理事项"
         description="处理服务执行中的必要事项，及时补充或核验，用于保障本次服务顺利完成。"
+        extra={prototype ? <Status tone="gray">本地示例</Status> : undefined}
       />
       <div className="pending-columns">
         <div>
           <div className="pending-intro">
-            <TileIcon name="layers" />
+            <TileIcon name="stack" />
             <div>
               <h2>及时处理本次服务的待办事项</h2>
               <p>
@@ -64,13 +83,32 @@ export function PendingActionsPage() {
               </p>
             </div>
           </div>
+          {!prototype && (
+            <Notice>待处理事项服务待接入，事项与状态暂不可用。</Notice>
+          )}
+          {requested !== tab && (
+            <Alert
+              className="pending-feedback"
+              type="warning"
+              title="事项分类无效，请选择有效分类"
+              showIcon
+            />
+          )}
+          {verifyRequested && !verification && prototype && (
+            <Alert
+              className="pending-feedback"
+              type="warning"
+              title="指定待核验事项不存在或暂不可用"
+              showIcon
+            />
+          )}
           <Panel className="pending-items">
             <Tabs
               activeKey={tab}
               onChange={setTab}
               items={categories.map((label) => ({
                 key: label,
-                label: `${label}（${label === "全部" ? allItems.length : allItems.filter((item) => item.category === label).length}）`,
+                label: `${label}（${prototype ? (label === "全部" ? allItems.length : allItems.filter((item) => item.category === label).length) : "—"}）`,
               }))}
             />
             {items.length ? (
@@ -78,7 +116,7 @@ export function PendingActionsPage() {
                 <article className="pending-action-card" key={item.id}>
                   <div>
                     <TileIcon
-                      name={item.id === "booking" ? "ticket" : item.icon}
+                      name={item.id === "booking" ? "ticket-stub" : item.icon}
                       color={item.id === "booking" ? "purple" : "blue"}
                     />
                     <section>
@@ -98,18 +136,25 @@ export function PendingActionsPage() {
                         <Button type="primary">{item.action}</Button>
                       </Link>
                     ) : (
-                      <Button type="primary" onClick={() => setVerify(true)}>
+                      <Button
+                        type="primary"
+                        onClick={() => openVerification(item.id)}
+                      >
                         {item.action}
                       </Button>
                     )}
                   </div>
                   <footer>
-                    <CalendarOutlined /> {item.deadline}
+                    <CalendarOutlined /> {item.deadlineLabel}　{item.deadlineAt}
                   </footer>
                 </article>
               ))
             ) : (
-              <Empty description="暂无符合条件的事项" />
+              <Empty
+                description={
+                  prototype ? "暂无符合条件的事项" : "事项数据待载入"
+                }
+              />
             )}
           </Panel>
         </div>
@@ -143,8 +188,8 @@ export function PendingActionsPage() {
       </div>
       <Modal
         title="核验原预约"
-        open={verify}
-        onCancel={() => setVerify(false)}
+        open={!!verification}
+        onCancel={closeVerification}
         footer={
           <Button
             type="primary"
@@ -158,15 +203,15 @@ export function PendingActionsPage() {
       >
         <dl>
           <dt>关联服务</dt>
-          <dd>景点预约</dd>
+          <dd>{verification?.service}</dd>
           <dt>预约日期</dt>
-          <dd>2026-11-20</dd>
+          <dd>{verification?.visitDate || "预约日期待载入"}</dd>
           <dt>当前结果</dt>
           <dd>
             <Status tone="orange">外部结果待确认</Status>
           </dd>
           <dt>核验截止</dt>
-          <dd>2026-11-14 21:00</dd>
+          <dd>{verification?.deadlineAt}</dd>
         </dl>
         <Notice>请核对原预约记录，核验期间保留本次任务及防重限制。</Notice>
       </Modal>

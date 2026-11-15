@@ -83,6 +83,7 @@ export class OutputQueryService {
     const allowed = [
       "run_id",
       "kind",
+      "kinds",
       "phase",
       "state",
       "from",
@@ -107,6 +108,16 @@ export class OutputQueryService {
       phase = scalar("phase"),
       state = scalar("state");
     if (kind && !outputKinds.includes(kind)) invalidQuery("产物类型无效");
+    const kindsValue = scalar("kinds");
+    const requestedKinds = kindsValue?.split(",");
+    if (kind && requestedKinds) invalidQuery("kind与kinds只能选择一项");
+    if (
+      requestedKinds &&
+      (requestedKinds.length > 4 ||
+        requestedKinds.some((value) => !outputKinds.includes(value)))
+    )
+      invalidQuery("kinds须为逗号分隔的1至4项产物类型");
+    const kinds = requestedKinds ? [...new Set(requestedKinds)].sort() : null;
     if (phase && !phases.includes(phase)) invalidQuery("产物阶段无效");
     if (state && !outputStates.includes(state)) invalidQuery("产物状态无效");
     const timestamp = (key: string) => {
@@ -140,6 +151,7 @@ export class OutputQueryService {
       from,
       to,
       limit,
+      ...(kinds ? { kinds } : {}),
     };
     const scope = JSON.stringify([owner, "outputs", filters]);
     const cursor = await this.pagination.decode(scope, query.cursor);
@@ -151,6 +163,7 @@ export class OutputQueryService {
       AND ($4::text IS NULL OR b.phase=$4) AND ($5::text IS NULL OR o.status=$5)
       AND ($6::timestamptz IS NULL OR o.created_at>=$6) AND ($7::timestamptz IS NULL OR o.created_at<$7)
       AND ($8::timestamptz IS NULL OR (o.created_at,o.id)<($8,$9::uuid))
+      AND ($11::text[] IS NULL OR o.kind=ANY($11::text[]))
       ORDER BY o.created_at DESC,o.id DESC LIMIT $10`,
       [
         owner,
@@ -163,6 +176,7 @@ export class OutputQueryService {
         cursor?.created_at || null,
         cursor?.id || null,
         limit + 1,
+        kinds,
       ],
     );
     return this.pagination.page(scope, rows.rows, limit);

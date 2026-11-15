@@ -2,10 +2,16 @@
   --sidebar-width: 232px;
   --header-height: 60px;
 }
+.app-shell.page-C13 .nav-group {
+  margin-bottom: 6.5px;
+}
+.pending-feedback {
+  margin-bottom: 16px;
+}
 .page-C13 .main-content {
   padding-left: 30px;
   padding-right: 20px;
-  padding-top: 75px;
+  padding-top: 72px;
 }
 .page-C13 .breadcrumb {
   margin-bottom: 16px;
@@ -23,6 +29,10 @@
   display: grid;
   grid-template-columns: minmax(0, 2.9fr) minmax(330px, 1fr);
   gap: 20px;
+}
+.pending-columns > div,
+.pending-columns > aside {
+  min-width: 0;
 }
 .pending-intro {
   display: flex;
@@ -51,7 +61,13 @@
     -18px 17px 0 #a6a8ff6b,
     -35px 33px 0 #b5a6ff57;
 }
+.pending-intro > div {
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
 .pending-intro > .tile-icon {
+  flex-shrink: 0;
   width: 75px;
   height: 72px;
   font-size: 40px;
@@ -59,9 +75,10 @@
 .pending-intro h2 {
   font-size: 24px;
   margin-bottom: 8px;
+  line-height: 32px;
 }
 .pending-intro p {
-  font-size: 14px;
+  font-size: 16px;
   color: #2b3d5f;
 }
 .pending-items .panel-body {
@@ -110,6 +127,8 @@
 }
 .pending-action-card section {
   flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .pending-action-card .ant-btn {
   height: 41px;
@@ -1043,6 +1062,9 @@
   .travelers-columns {
     grid-template-columns: 1fr;
   }
+  .pending-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .pending-columns > aside {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1127,6 +1149,16 @@
   }
   .pending-action-card > div {
     flex-wrap: wrap;
+  }
+  .pending-action-card > div > section {
+    flex-basis: calc(100% - 81px);
+  }
+  .pending-action-card > div > a,
+  .pending-action-card > div > .ant-btn {
+    width: 100%;
+  }
+  .pending-action-card > div > a .ant-btn {
+    width: 100%;
   }
   .pending-action-card .ant-btn {
     margin: 0;

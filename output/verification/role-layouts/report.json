@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T05:18:41.510Z",
+  "date": "2026-11-15T06:11:03.485Z",
   "data_source": "isolated development seed",
   "viewport_source": "individual reference manifest dimensions",
   "visual_acceptance": "pending",
@@ -417,7 +417,7 @@
       "route": "/market",
       "reference_file": "02-消费者/P02-脚本市场.png",
       "reference_sha256": "0fa6c0a6c0203406c932cb286720d0f4b557356f485b68d4dcff169cf7bf1ab6",
-      "screenshot_sha256": "f93cf960094c03b1c0406138562fec42506ce59b271f656e8e9e850d098ee8f2",
+      "screenshot_sha256": "c6ba5f7c19380447187b1bb233de55b81827435db40fc42648d167231916a464",
       "viewport": {
         "width": 1815,
         "height": 867
@@ -824,7 +824,7 @@
       "route": "/me/outputs",
       "reference_file": "02-消费者/C12-结果与产物.png",
       "reference_sha256": "1acbd706504a1cc0cad5aa8d3c3da49a2e76a855cb73ea00a0346d9dd64657b0",
-      "screenshot_sha256": "d18e529d5508d84ba2df0f8a1b42f3be2faefb86be0929e05a0a953641a9bf63",
+      "screenshot_sha256": "6d78aae2cb6479bc0ac2274c23d287e03139390b1c737e053a5fbfb9e5927cd9",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -850,7 +850,7 @@
       "route": "/me/pending",
       "reference_file": "02-消费者/C13-待处理事项.png",
       "reference_sha256": "e6a1298dcd4f3da1e354ebc7212405c06712b3dfa11b761017e22dd4ae8589e9",
-      "screenshot_sha256": "b9b7d0082aa08efbd8a4c362a0fc9dea3134edd1167f48141f8539a7d281ba4c",
+      "screenshot_sha256": "976a823d09a4f62c738354ecdbc3636d629f3592a8b3a0b39274bd5f85dbe5de",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -880,7 +880,7 @@
       "route": "/me/credentials",
       "reference_file": "02-消费者/C14-凭据管理.png",
       "reference_sha256": "f50a18f0de73aec903b0109c87d50591f40862d87d9a0240a0df54a2226650cc",
-      "screenshot_sha256": "4a6a12ffd83cfb4c397ac3d4bcd2e87fe69c1b8802ddf17ff42739259d295f29",
+      "screenshot_sha256": "1c5847809c02b01979eacdbd4166e4e2725ddd8d74ad940ea06e9ef229cbaa62",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -1194,7 +1194,7 @@
       "route": "/publisher/scripts",
       "reference_file": "03-脚本发布者/S02-我的脚本.png",
       "reference_sha256": "7784b9b46b15556830d538fa6d53520e379b12c6e158d86ee90f984c6666f18f",
-      "screenshot_sha256": "9091695a019aff7240052de070ccf7d20aec3d9412888d7131e89e7c0cee04ba",
+      "screenshot_sha256": "17df1f9a5a1a6c2068d22778cb5c5f9b2e6962d6c8158032573f5279f9d00faa",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -1576,7 +1576,7 @@
       "route": "/publisher/imports",
       "reference_file": "03-脚本发布者/S16-来源与同步.png",
       "reference_sha256": "87d38b402123896526758389cd80a04e846aec2421789ac019edb6919ec05314",
-      "screenshot_sha256": "133da430ae8d124b95a8f1b0fa7593180d7aa27f4c72ac35b49e2b6101684bf1",
+      "screenshot_sha256": "c2cd2b99cad6914214738a4920f89265814ac11b08a31c9381d7365d00f84c72",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -1601,7 +1601,7 @@
       "route": "/me/settings/account?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/C21-账户设置.png",
       "reference_sha256": "05f5bea2c8dfe63eacd5360d5721c809e296d79eef69a1087ae33e771c12d542",
-      "screenshot_sha256": "e45f2f63417b1e6640a585c56ae08a4adf760740f3a795abd31792a033eabbcc",
+      "screenshot_sha256": "483d566fbac2a210e739cc0bd33b2dde322e5989a34f36b71b197976ec1e9185",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1630,7 +1630,7 @@
       "route": "/help?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/P06-使用帮助.png",
       "reference_sha256": "d5cd9e9d8414514542ac3ce18fc1c7809f179e0f292d06ae34f179cb1f93a15e",
-      "screenshot_sha256": "968e9fabb738abd8a0c1b113dc988420e0d4784256bcb260f491bc182322fa4f",
+      "screenshot_sha256": "b93176d074527265339b3266ce8d88db95d1944b7473a631d87572dc497d713e",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -2229,7 +2229,7 @@
       "route": "/me/settings/account?workspace=ADMIN",
       "reference_file": "04-平台管理员/C21-账户设置.png",
       "reference_sha256": "4c19673067227af6a547e9e5a5e65485b22c6b5632d2758b15ca596191e0a1be",
-      "screenshot_sha256": "82bcc3cb5a92c516e2413bf44db3400154f31b77df98149d025c738ba6b8b9d2",
+      "screenshot_sha256": "aeef88a46d6d4e9118bb3afeb3f421d815a45cb1af79a8c4dc762d86296a69cb",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -2282,11 +2282,11 @@
     }
   ],
   "errors": [],
-  "build_sha256": "83fd740a1a25258eca7a91ef5fa412f2041607be6c967c0eec13606d3d424480",
+  "build_sha256": "2fd110073ab857ff944d51eac9319ea7ad4fe43f0144d9ea5ac6177c5e2636f6",
   "source_sha256": {
     "apps/web/src/pages/PublisherHome.tsx": "c4e6110c2b4ca075150179528a1af443d45a8c07730648d75a148100609abdbf",
     "apps/web/src/pages/AdminHome.tsx": "9316fc19b65bcc1c794debad93e1ece382aa10d601e88d5cfac97359ddcbd1f5",
-    "apps/web/src/components/Shell.tsx": "5634c4c48285a329567fd9fafb553c64a06b08d7ce2b3136189c647e94638d89",
+    "apps/web/src/components/Shell.tsx": "00d1f6299606b3fb770914f4d9392a2be8c5ecc2b5167a826e2635f1fde28f6f",
     "apps/web/src/components/ui.tsx": "fda1383297ec6bdd3f64a9ca9d2ece2f4c9555ca7175341b15ae24cb274e2323",
     "apps/web/src/styles/dashboards.css": "492670dd28518d2ed3766c72735df4752d0211acf47884a86981dfeff61c0a43",
     "apps/web/src/main.tsx": "39cf82ad38c20fe0f7ea414950308e3c374e1174c36ead00d4824b41536811d4",
@@ -2305,13 +2305,20 @@
     "apps/web/src/styles/consumer.css": "cd9b3c717cea3b231ec4b3ff0eafc2b0be24f7a57b73dd35279f8346029dad64",
     "apps/web/src/pages/Checkout.tsx": "b0bb27846c90cca89d426e820b08acdbdefc20a10d93cc47defa8b88a0c1a148",
     "apps/web/src/prototype.tsx": "151e084a42f3a5b7a8bd3bca69175f056c54ae1f3b63f368310014ff29e799b1",
-    "apps/web/src/components/Icon.tsx": "6dd3384924c317de0cf31074876889b75c79ed7384046d85ee1c86caa3e16ba4",
+    "apps/web/src/components/Icon.tsx": "c9c38d784389e24c879047fe4bba2b2549031112e1d7d25009eea673184f64d4",
     "apps/web/src/pages/Tasks.tsx": "c8e9168d2254715162ec8060cf5f385542e6c4905ef2256703f04ebe74f83229",
     "apps/web/src/pages/Runs.tsx": "0715f1998cea001ebfd1bcd5f34f25bd4326606d290ef9c0c6d93c99832fa91d",
     "apps/web/src/pages/RunDetail.tsx": "bd9014d70a428a0e83b4445eea532d3fe3799e8c48cef11d2e531e465328c014",
     "apps/web/src/lib/execution-preview.ts": "3815ca030d78bb9bc74820bfcc25c3dbaba8af3f48474394e639f2835c893b22",
     "apps/web/src/lib/execution-navigation.ts": "70a2f4c7c789bf9ef89cd5c65d66efb96898de97e621b145ea924e63370e81f2",
     "apps/web/src/styles/execution.css": "7465394f1d3cc7cc5b1bd7af80f29934798dd3b03014624e98578a78ea812b52",
+    "apps/web/src/pages/Outputs.tsx": "46d0fa1d050dbc3bc8fe87c0269eb0f507b5630e4f0ff0f8977e54fe82b1ee9d",
+    "apps/web/src/pages/Personal.tsx": "ca33f177f37bf25f62cecc5c5c66ab986fb13d7cbad9a2952e1157a7fec82705",
+    "apps/web/src/lib/consumer-preview.ts": "d6f14662147cdf9eb0b8b97602948680aacddbd9190e2caf4c243ef482e249f0",
+    "apps/web/src/styles/outputs.css": "e23f32317cf7dbf89723a7ba69c5c4079d971152126f047dee99337419601e13",
+    "apps/web/src/styles/personal.css": "66ea0f47cbe1c0efec840616927fa8d83e109ad06c507e0f796283d188983468",
+    "apps/control-api/src/outputs/output-query.service.ts": "ce4053d9cfbf0d780d9151772865bdeae01ee786967505593fb7590f19a780ee",
+    "apps/control-api/src/outputs/output-query.controller.ts": "ea900406a9b1e5883a3b6beeec9e43eecca78d571f381480e6a438107280b92d",
     "apps/web/src/pages/ConfigureService.tsx": "16060362656823364e0daf4d6b20c29ce33f30206bd32d3ea9da73709be1f4f8",
     "apps/web/src/pages/PublisherExecution.tsx": "d68a7f0cf1b4ea10335e7b14b03d0858a9fe00ad7bd4e3544028c51317804f57",
     "apps/web/src/lib/publisher-execution.ts": "97d4e552f165b4569cf75ff7ba496ee4681f789f0746ed5fe4c67bed51caba1a",

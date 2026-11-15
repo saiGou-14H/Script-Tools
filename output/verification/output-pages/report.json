@@ -1,12 +1,20 @@
 {
-  "date": "2026-11-14T12:57:25.903Z",
+  "date": "2026-11-15T06:10:35.873Z",
+  "data_source": "isolated PGlite, controlled metadata responses and local examples",
+  "render_source": "production build with separate development-server escaping and icon checks",
   "checks": [
     "the output HTTP API requires a session, returns the standard paginated envelope and rejects unsupported filters and invalid resources",
     "home-style output links select the requested record, toolbar preview and download use its content, and selection survives reload",
+    "source-rendered script text escapes markup and arbitrary icon names use a valid fallback, including inherited object keys",
+    "message outputs share the text category with their own delivery facts and a mismatched deep link can recover its actual category",
     "JSON and text tabs operate on their own records, render script-provided markup as text and keep unavailable or unknown selection actions disabled",
     "live output lists read the real empty API response, keep preview records isolated and recover from a failed request through retry",
     "live metadata preserves exact large sizes and independent READY output and UNKNOWN delivery states while unavailable content and delivery adapters stay visibly pending",
-    "output and pending reference layouts fit the target viewport, and pending filtering and original-booking verification preserve the unresolved result"
+    "production text pages query and paginate both text and message metadata, retain selection and show independent delivery status",
+    "production file metadata uses appropriate PDF, Word, spreadsheet, image, archive and generic file icons and escapes file names",
+    "production pending pages show unavailable counters and integration feedback without example records in live mode",
+    "output and pending reference layouts fit the target viewport, and pending filtering and original-booking verification preserve the unresolved result",
+    "message and file outputs plus pending items fit a 390px viewport, and the booking dialog restores its own snapshot through the URL"
   ],
   "screenshots": [
     "USER-C12",

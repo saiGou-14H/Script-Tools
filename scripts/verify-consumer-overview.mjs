@@ -705,6 +705,77 @@ try {
   report.checks.push(
     "owned funded entitlements respect expiry and revocation, and per-currency service fee and confirmed-refund aggregates preserve signed 64-bit minor-unit precision using rolled-back financial fixtures",
   );
+  const messageGeneration = await insert("output_generations", {
+    ...owner,
+    invocation_id: invocation,
+    output_series_id: series,
+    sequence: 2,
+    producer_kind: "HOOK",
+    reason: "interval",
+    deadline: new Date(Date.now() + 86_400_000),
+  });
+  const messageBatch = await insert("output_batches", {
+    ...owner,
+    output_series_id: series,
+    batch_key: "message-group",
+    invocation_id: invocation,
+    emission_id: messageGeneration,
+    phase: "OUTPUT_HOOK",
+  });
+  const messageOutput = await insert("script_outputs", {
+    ...outputValues,
+    batch_id: messageBatch,
+    output_key: "message-group",
+    kind: "message",
+    title: "grouped message",
+    media_type: "application/json",
+  });
+  await connection.query(
+    "UPDATE travel.output_batches SET commit_status='COMMITTED',payload_digest='verification-message',producer_outcome='COMPLETED',committed_at=now(),aggregate_status='READY' WHERE id=$1",
+    [messageBatch],
+  );
+  const grouped = [];
+  let groupedCursor;
+  do {
+    const page = await outputs.list(publisher, {
+      run_id: run,
+      kinds: groupedCursor ? "text,message" : "message,text,text",
+      limit: "1",
+      ...(groupedCursor ? { cursor: groupedCursor } : {}),
+    });
+    grouped.push(...page.items);
+    groupedCursor = page.nextCursor;
+  } while (groupedCursor);
+  assert(grouped.some((item) => item.id === messageOutput));
+  assert(grouped.some((item) => item.id === ready));
+  assert(grouped.every((item) => ["text", "message"].includes(item.kind)));
+  assert.equal(new Set(grouped.map((item) => item.id)).size, grouped.length);
+  const groupPage = await outputs.list(publisher, {
+    kinds: "text,message",
+    limit: "1",
+  });
+  for (const query of [
+    { kinds: "text," },
+    { kinds: ["text"] },
+    { kinds: "unknown" },
+    { kinds: "text,message", kind: "file" },
+    { kinds: "text,json", limit: "1", cursor: groupPage.nextCursor },
+  ])
+    await assert.rejects(
+      outputs.list(publisher, query),
+      (error) => error.getStatus() === 422,
+    );
+  await assert.rejects(
+    outputs.list(consumer, {
+      kinds: "text,message",
+      limit: "1",
+      cursor: groupPage.nextCursor,
+    }),
+    (error) => error.getStatus() === 422,
+  );
+  report.checks.push(
+    "text and message output queries paginate as one normalized kind set and reject invalid groups, changed filters and cross-owner cursor replay in a rolled-back PostgreSQL transaction",
+  );
   await connection.query("ROLLBACK");
   connection.release();
   connection = undefined;

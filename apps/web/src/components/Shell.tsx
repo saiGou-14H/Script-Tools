@@ -257,8 +257,8 @@ const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
       C19: "refund",
       C22: "ticket",
     },
-    C12: { C12: "folder", C13: "info" },
-    C13: { C13: "calendar" },
+    C12: { C04: "file", C06: "lock", C12: "folder", C13: "info", C16: "message", C19: "history", C22: "ticket-stub" },
+    C13: { C04: "file", C06: "stack", C12: "file", C13: "calendar", C16: "message", C19: "plus-circle", C22: "ticket-stub" },
     C16: {
       C16: "mail",
       C17: "settings",

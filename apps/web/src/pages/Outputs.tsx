@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Alert,
   App,
@@ -109,9 +108,29 @@ function deliveryLabel(states: string[]) {
   if (states.some((state) => ["PENDING", "SENDING"].includes(state)))
     return "投递中";
   if (states.every((state) => state === "SENT")) return "已通知";
-  return states.every((state) => state === "SUPPRESSED")
-    ? "已抑制"
-    : "部分已通知";
+  if (states.every((state) => state === "SUPPRESSED")) return "已抑制";
+  return states.includes("SENT") ? "部分已通知" : "状态待载入";
+}
+
+function fileIcon(output: OutputRow) {
+  const type = output.mediaType.toLowerCase();
+  const name = output.name.toLowerCase();
+  if (type.includes("json") || name.endsWith(".json"))
+    return { name: "file", color: "purple" };
+  if (type.startsWith("image/") || /\.(png|jpe?g|gif|webp|svg)$/.test(name))
+    return { name: "image", color: "purple" };
+  if (type.includes("pdf") || name.endsWith(".pdf"))
+    return { name: "pdf", color: "red" };
+  if (
+    /csv|excel|spreadsheet/.test(type) ||
+    /\.(csv|tsv|xls|xlsx|ods)$/.test(name)
+  )
+    return { name: "excel", color: "green" };
+  if (/word|opendocument\.text/.test(type) || /\.(docx?|odt)$/.test(name))
+    return { name: "word", color: "blue" };
+  if (/zip|compressed|tar/.test(type) || /\.(zip|7z|rar|tar|gz)$/.test(name))
+    return { name: "archive", color: "purple" };
+  return { name: "file", color: "blue" };
 }
 
 export function OutputsPage() {
@@ -120,7 +139,6 @@ export function OutputsPage() {
   const { message } = App.useApp();
   const [params, setParams] = useSearchParams();
   const requested = params.get("output");
-  const [preview, setPreview] = useState<OutputRow>();
   const examples = [...outputFixtures, ...inlineOutputFixtures];
   const exampleDetail = prototype
     ? examples.find((output) => output.key === requested)
@@ -151,9 +169,10 @@ export function OutputsPage() {
     initialPageParam: null as string | null,
     queryFn: ({ pageParam, signal }) => {
       const search = new URLSearchParams({
-        kind: kind === "files" ? "file" : kind,
         limit: "20",
       });
+      if (kind === "text") search.set("kinds", "text,message");
+      else search.set("kind", kind === "files" ? "file" : kind);
       if (pageParam) search.set("cursor", pageParam);
       return apiPage<OutputMetadata>(`/outputs?${search}`, { signal });
     },
@@ -177,28 +196,39 @@ export function OutputsPage() {
     ? data.find((output) => output.key === requested)
     : data[0];
   const missing = !!requested && prototype && !exampleDetail;
+  const wrongKind = !!requestedRow && tabFor(requestedRow.kind) !== kind;
   function select(output: OutputRow) {
     const next = new URLSearchParams(params);
     next.set("output", output.key);
     next.set("kind", tabFor(output.kind));
+    next.delete("preview");
     setParams(next);
   }
   function switchTab(next: string) {
     const search = new URLSearchParams(params);
     search.set("kind", next);
     search.delete("output");
-    setPreview(undefined);
+    search.delete("preview");
     setParams(search);
   }
   const canRead = (output?: OutputRow) =>
-    !!output?.preview && output.availability === "READY";
+    !invalidKind && !!output?.preview && output.availability === "READY";
+  const previewOpen = params.get("preview") === "1" && canRead(selected);
+  function closePreview() {
+    const next = new URLSearchParams(params);
+    next.delete("preview");
+    setParams(next);
+  }
   function notify(output: OutputRow) {
     select(output);
     void message.info("通知渠道尚未配置，未发送消息");
   }
   function previewOutput(output: OutputRow) {
-    select(output);
-    setPreview(output);
+    const next = new URLSearchParams(params);
+    next.set("output", output.key);
+    next.set("kind", tabFor(output.kind));
+    next.set("preview", "1");
+    setParams(next);
   }
   function download(output: OutputRow) {
     select(output);
@@ -209,7 +239,7 @@ export function OutputsPage() {
       <div className="row-actions">
         <Tooltip title={!prototype ? "正文存储接口待接入" : undefined}>
           <Button
-            icon={<EyeOutlined />}
+            icon={<EyeOutlined aria-hidden />}
             disabled={!canRead(output)}
             onClick={() => previewOutput(output)}
           >
@@ -218,7 +248,7 @@ export function OutputsPage() {
         </Tooltip>
         <Tooltip title={!prototype ? "文件下载接口待接入" : undefined}>
           <Button
-            icon={<DownloadOutlined />}
+            icon={<DownloadOutlined aria-hidden />}
             disabled={!canRead(output)}
             onClick={() => download(output)}
           >
@@ -227,7 +257,7 @@ export function OutputsPage() {
         </Tooltip>
         <Tooltip title={!prototype ? "通知投递接口待接入" : undefined}>
           <Button
-            icon={<SendOutlined />}
+            icon={<SendOutlined aria-hidden />}
             disabled={!canRead(output)}
             onClick={() => notify(output)}
           >
@@ -245,32 +275,41 @@ export function OutputsPage() {
         extra={prototype ? <Status>本地开发示例</Status> : undefined}
       />
       <div className="output-service-banner">
-        <TileIcon name="layers" color="gradient" />
+        <TileIcon name="stack" color="gradient" />
         <div>
           <h2>脚本一次服务说明</h2>
           <div className="output-service-rules">
             <span>
-              <CheckCircleFilled />
+              <CheckCircleFilled aria-hidden />
               每单只有一次完整服务，同次接续不额外收费。
             </span>
             <span>
-              <CheckCircleFilled />
+              <CheckCircleFilled aria-hidden />
               门票0元不等于脚本服务免费。
             </span>
             <span>
-              <CheckCircleFilled />
+              <CheckCircleFilled aria-hidden />
               未达目标的退款规则由发布者选择，购买前展示，成交后固定。
             </span>
           </div>
         </div>
       </div>
-      {(missing || invalidKind) && (
+      {(missing || invalidKind || wrongKind) && (
         <Alert
           className="output-feedback"
           type="warning"
           showIcon
           title={
-            missing ? "指定产物不存在或已失效" : "产物分类无效，请选择有效分类"
+            missing
+              ? "指定产物不存在或已失效"
+              : invalidKind
+                ? "产物分类无效，请选择有效分类"
+                : "所选产物不属于当前分类"
+          }
+          action={
+            wrongKind && requestedRow ? (
+              <Button onClick={() => select(requestedRow)}>查看所属分类</Button>
+            ) : undefined
           }
         />
       )}
@@ -321,7 +360,7 @@ export function OutputsPage() {
           )}
           <Tooltip title={selected?.name}>
             <Button
-              icon={<EyeOutlined />}
+              icon={<EyeOutlined aria-hidden />}
               disabled={!canRead(selected)}
               onClick={() => selected && previewOutput(selected)}
             >
@@ -330,7 +369,7 @@ export function OutputsPage() {
           </Tooltip>
           <Tooltip title={selected?.name}>
             <Button
-              icon={<DownloadOutlined />}
+              icon={<DownloadOutlined aria-hidden />}
               disabled={!canRead(selected)}
               onClick={() => selected && download(selected)}
             >
@@ -371,19 +410,8 @@ export function OutputsPage() {
                 width: 220,
                 render: (value, row) => (
                   <div className="entity-cell">
-                    <TileIcon
-                      name={
-                        row.mediaType.startsWith("application/json")
-                          ? "code"
-                          : "table"
-                      }
-                      color={
-                        row.mediaType.startsWith("application/json")
-                          ? "purple"
-                          : "green"
-                      }
-                    />
-                    <b>{value}</b>
+                    <TileIcon {...fileIcon(row)} />
+                    <b title={value}>{value}</b>
                   </div>
                 ),
               },
@@ -446,10 +474,48 @@ export function OutputsPage() {
           />
         ) : (
           <div className="output-text-view">
-            {selected?.preview ? (
+            {selected && (
+              <div className="output-inline-metadata">
+                <Status>
+                  {selected.kind === "message"
+                    ? "消息"
+                    : selected.kind === "json"
+                      ? "JSON"
+                      : "文本"}
+                </Status>
+                <Status
+                  tone={selected.availability === "READY" ? "green" : "gray"}
+                >
+                  {availabilityLabels[selected.availability] ||
+                    selected.availability}
+                </Status>
+                <Status
+                  tone={
+                    deliveryLabel(selected.deliveryStates) === "已通知"
+                      ? "green"
+                      : "gray"
+                  }
+                >
+                  {deliveryLabel(selected.deliveryStates)}
+                </Status>
+                <Link to={`/me/runs/${encodeURIComponent(selected.runId)}`}>
+                  {selected.run}
+                </Link>
+                <span>{selected.batch}</span>
+                <span>保留至 {selected.expires}</span>
+              </div>
+            )}
+            {selected?.preview && canRead(selected) ? (
               <pre>{selected.preview.content}</pre>
             ) : selected ? (
-              <Empty description="正文存储接口待接入，当前可查看产物元数据" />
+              <Empty
+                description={
+                  selected.preview
+                    ? availabilityLabels[selected.availability] ||
+                      "产物暂不可用"
+                    : "正文存储接口待接入，当前可查看产物元数据"
+                }
+              />
             ) : (
               <Empty description="暂无产物" />
             )}
@@ -474,12 +540,12 @@ export function OutputsPage() {
         </Notice>
       </Panel>
       <Modal
-        title={preview ? `安全预览 · ${preview.name}` : "安全预览"}
-        open={!!preview}
-        onCancel={() => setPreview(undefined)}
-        footer={<Button onClick={() => setPreview(undefined)}>关闭</Button>}
+        title={selected ? `安全预览 · ${selected.name}` : "安全预览"}
+        open={previewOpen}
+        onCancel={closePreview}
+        footer={<Button onClick={closePreview}>关闭</Button>}
       >
-        <pre>{preview?.preview?.content}</pre>
+        <pre>{previewOpen ? selected?.preview?.content : undefined}</pre>
       </Modal>
     </div>
   );

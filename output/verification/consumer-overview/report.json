@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T09:50:58.649Z",
+  "date": "2026-11-15T05:51:44.411Z",
   "checks": [
     "personal overview requires authentication, returns its effective window and as_of, preserves integer counts and rejects owner selection and invalid dates",
     "current running counters retain a continuous run created before the history window, while history totals respect the window and another owner's task stays excluded",
@@ -7,6 +7,7 @@
     "signed output cursors bind the owner and normalized filters, retain deterministic timestamp and UUID pagination, and reject malformed filters, dates and tampering",
     "a running continuous process exposes successive action and output-hook batches as they commit, while open batches, expired or deleted outputs and quarantined files stay excluded and private storage references stay absent",
     "owned funded entitlements respect expiry and revocation, and per-currency service fee and confirmed-refund aggregates preserve signed 64-bit minor-unit precision using rolled-back financial fixtures",
+    "text and message output queries paginate as one normalized kind set and reject invalid groups, changed filters and cross-owner cursor replay in a rolled-back PostgreSQL transaction",
     "pending totals exclude expired requests, bounded lists remain deterministic, and historical filters retain current-state counters with all synthetic database changes rolled back",
     "consumer home restores the reference regions within 1814 by 868, derives preview counts, links each order to its own detail, downloads the selected existing file and opens the corresponding entitlement filter",
     "checkout keeps the reference viewport and a newly cancelled preview order immediately updates the home summary without fabricating a payment confirmation",
@@ -32,7 +33,7 @@
       "x": 260,
       "y": 107.5625,
       "width": 1528,
-      "height": 750.6875,
+      "height": 751.84375,
       "documentWidth": 1814,
       "documentHeight": 868
     }

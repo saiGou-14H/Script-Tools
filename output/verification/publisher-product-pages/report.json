@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T05:16:34.202Z",
+  "date": "2026-11-15T06:01:06.435Z",
   "checks": [
     "all four reference regions and sidebar help fit 1814 by 868",
     "product status selection survives reload and preserves unrelated URL parameters",
