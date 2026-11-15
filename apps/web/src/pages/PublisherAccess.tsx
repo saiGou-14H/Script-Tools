@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Alert, Button, Modal, Skeleton } from "antd";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -13,14 +13,23 @@ export function PublisherAccessPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const entering = useRef(false);
+  const mounted = useRef(true);
+  useLayoutEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
   const [error, setError] = useState("");
   const query = useQuery({
     queryKey: ["personal", bootstrap.user?.id, "publisher-profile"],
-    queryFn: () => api<PublisherProfileView>("/me/publisher-profile"),
+    queryFn: ({ signal }) =>
+      api<PublisherProfileView>("/me/publisher-profile", { signal }),
   });
   async function enter() {
     setError("");
     const current = await refresh();
+    if (!mounted.current) return;
     if (!current?.user?.roles.includes("PUBLISHER"))
       throw new Error("发布者状态已变化，请重新加载资料");
     setRole("PUBLISHER");
@@ -31,7 +40,9 @@ export function PublisherAccessPage() {
   useEffect(() => {
     if (!query.data?.profile?.enabled || entering.current) return;
     entering.current = true;
-    void enter().catch((failure) => setError(failure.message));
+    void enter().catch((failure) => {
+      if (mounted.current) setError(failure.message);
+    });
   }, [query.data?.profile?.enabled]);
   async function reload() {
     const result = await query.refetch();

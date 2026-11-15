@@ -165,6 +165,19 @@ const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
       S13: "wallet",
       C21: "user",
     },
+    S15: {
+      S01: "market",
+      S02: "code-brackets",
+      S05: "stack",
+      S06: "database",
+      S07: "order",
+      S09: "ticket",
+      S10: "reconciliation",
+      S11: "chart",
+      S12: "audit",
+      S13: "wallet",
+      C21: "user",
+    },
     S11: {
       S01: "home",
       S05: "shield",
@@ -366,6 +379,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
   const searchRef = useRef<InputRef>(null);
   const quickSearch = (["P02", "P03", "P04", "C02"].includes(pageId) && role === "USER") || [
     "S01",
+    "S15",
     "C05",
     "C06",
     "C08",
@@ -591,13 +605,15 @@ export function Shell({ pageId }: { pageId: PageId }) {
               ? "搜索功能、文档或常见问题"
               : pageId === "S05"
                 ? "搜索脚本、版本或构建编号"
-                : pageId === "S01"
-                  ? "搜索脚本、服务或订单"
-                  : role === "ADMIN"
-                    ? "搜索订单、用户、服务或预约编号"
-                    : quickSearch
-                      ? "搜索脚本、工具或景点"
-                      : "搜索脚本、服务或订单"
+                : pageId === "S15"
+                  ? "搜索脚本、服务商品、订单或帮助内容"
+                  : pageId === "S01"
+                    ? "搜索脚本、服务或订单"
+                    : role === "ADMIN"
+                      ? "搜索订单、用户、服务或预约编号"
+                      : quickSearch
+                        ? "搜索脚本、工具或景点"
+                        : "搜索脚本、服务或订单"
           }
           onPressEnter={(event) => {
             if (pageId === "S05") {

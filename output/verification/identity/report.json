@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T08:47:15.624Z",
+  "date": "2026-11-15T10:00:17.074Z",
   "checks": [
     "registration requires the accepted terms version, creates an unverified account and keeps challenge secrets and pending registration data protected",
     "verification binds its own registration password, commits a failed-attempt count, activates once under concurrency and invalidates sibling challenges while erasing consumed payloads",

@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T08:45:02.861Z",
+  "date": "2026-11-15T09:56:40.559Z",
   "checks": [
     "minified production entry, icon and public-page chunks load through the built application",
     "production consumer home downloads its existing preview file, and general and travel service detail chunks load in both public and consumer workspaces with enabled local-preview purchase entry points",
@@ -10,8 +10,8 @@
   "screenshots": [],
   "errors": [],
   "largest_js": {
-    "file": "index-CkWhbdw3.js",
-    "bytes": 390090
+    "file": "index-DtypAe_v.js",
+    "bytes": 390330
   },
   "result": "PASS"
 }

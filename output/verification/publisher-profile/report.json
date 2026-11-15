@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T09:51:59.536Z",
+  "date": "2026-11-15T09:51:48.614Z",
   "checks": [
     "profile reads and writes require a verified session, CSRF and an idempotency key, reject owner overrides and enforce current terms and field limits",
     "concurrent retries create one profile, audit event and outbox event, refresh the current session's publisher role and preserve account isolation and management capabilities",
@@ -9,13 +9,22 @@
     "PostgreSQL executes profile creation and trigger-based revisions, and an injected receipt failure rolls back profile, audit and outbox changes together inside a rolled-back verification transaction",
     "anonymous publisher intent survives password login, requires an explicit unchecked consent and can return to the consumer workspace without creating a profile",
     "explicit profile creation refreshes publisher access and the full original route, and settings saves public fields durably without inventing a contact-email database field",
-    "a stale settings form displays revision conflict recovery and loads the newer profile without overwriting it",
+    "settings preserve fields entered during an in-flight write, show the unsaved draft and use the committed revision for a second explicit save",
+    "conflict recovery loads the current revision while retaining typed fields and leaves the external write intact until the user explicitly submits again",
     "the live publisher home renders empty counters and pending integration states without preview refunds or deployment alerts",
+    "onboarding distinguishes a committed profile from a failed identity refresh, and retrying the follow-up enters the original route without repeating the profile command",
+    "returning to the consumer workspace while the post-creation identity response is delayed retains that destination after the response arrives and preserves the explicitly created profile",
+    "onboarding retains input entered during creation and waits for an explicit saved-profile continuation or a second revision-checked save before entering the publisher workspace",
+    "a rejected stale terms version offers metadata reload, retains edited profile fields and requires a fresh explicit consent before the real creation command succeeds",
     "the publisher home fits its reference viewport with complete sidebar access and routes upload and service creation to their normal entry points",
+    "concurrent public-profile and payout previews merge their independent fields, preserve newly typed preview email, trim it on explicit save and retain the updated unverified account mask",
+    "a failed background metadata read keeps the loaded editor and dirty fields mounted, preserves terms access, and retries the read without a profile write",
+    "publisher settings match the desktop regions and 390px layout, retain keyboard search and URL-restored terms/payout dialogs, clear unsubmitted tokens, reject whitespace credentials and keep live payout configuration pending",
     "the production-built publisher onboarding and profile workflow completes without browser exceptions"
   ],
   "screenshots": [
-    "PUBLISHER-S01"
+    "PUBLISHER-S01",
+    "PUBLISHER-S15"
   ],
   "errors": [],
   "scope": "Isolated PGlite HTTP and production-built UI, plus rolled-back PostgreSQL transactions",
@@ -23,6 +32,28 @@
     "width": 1814,
     "height": 868,
     "helpBottom": 868
+  },
+  "settings_layout": {
+    "width": 1812,
+    "height": 868,
+    "columns": {
+      "x": 251,
+      "y": 199.8125,
+      "width": 1544,
+      "height": 350
+    },
+    "notice": {
+      "x": 255,
+      "y": 567.8125,
+      "width": 1536,
+      "height": 57
+    },
+    "save": {
+      "x": 255,
+      "y": 650.8125,
+      "width": 132,
+      "height": 42
+    }
   },
   "result": "PASS"
 }

@@ -27,6 +27,11 @@
 .page-S01 .publisher-columns {
   grid-template-columns: minmax(0, 2.52fr) minmax(340px, 1fr);
 }
+.page-S01 .global-search.ant-input-affix-wrapper {
+  left: 33%;
+  width: 29.5%;
+  max-width: none;
+}
 .role-PUBLISHER.page-S01 .sidebar {
   display: flex;
   flex-direction: column;
@@ -86,6 +91,9 @@
 }
 .page-S01 .publisher-dashboard .panel-heading + .panel-body {
   padding-top: 8px;
+}
+.page-S01 .publisher-columns > div .panel-heading + .panel-body {
+  padding-top: 5px;
 }
 .page-S01 .publisher-services .ant-table-cell {
   font-size: 12px;
@@ -1663,11 +1671,31 @@
   font-size: 18px;
 }
 .page-S15 .main-content {
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-top: 78px;
+  padding-left: 21px;
+  padding-right: 17px;
+}
+.page-S15 .breadcrumb {
+  margin-bottom: 16px;
+}
+.page-S15 .global-search.ant-input-affix-wrapper {
+  left: 34%;
+  width: 32.8%;
+  max-width: none;
+}
+.role-PUBLISHER.page-S15 .sidebar {
+  padding-top: 12px;
+}
+.role-PUBLISHER.page-S15 .nav-item {
+  font-size: 17px;
+  font-weight: 500;
+}
+.role-PUBLISHER.page-S15 .nav-item > .anticon {
+  font-size: 19px;
 }
 .publisher-settings-page .page-heading p {
-  font-size: 17px;
+  font-size: 16px;
+  line-height: 24px;
 }
 .publisher-settings-columns {
   display: grid;
@@ -1680,7 +1708,8 @@
   margin: 0;
 }
 .publisher-settings-columns .panel-heading {
-  padding: 14px 22px;
+  min-height: 57px;
+  padding: 12px 22px;
 }
 .publisher-settings-columns .panel-heading h2 {
   font-size: 21px;
@@ -1698,10 +1727,24 @@
 .publisher-settings-columns .ant-input,
 .publisher-settings-columns .ant-input-affix-wrapper {
   font-size: 16px;
-  min-height: 40px;
+  min-height: 41px;
+}
+.publisher-settings-columns .ant-input-affix-wrapper .ant-input {
+  min-height: 0;
 }
 .publisher-settings-columns textarea.ant-input {
-  min-height: 110px;
+  height: 109px;
+  min-height: 109px;
+  padding-bottom: 26px;
+}
+.publisher-settings-columns .ant-input-data-count {
+  bottom: 8px;
+  inset-inline-end: 10px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.publisher-settings-columns .publisher-contact-field {
+  margin-bottom: 0;
 }
 .publisher-settings-columns dl {
   display: grid;
@@ -1713,14 +1756,33 @@
 .publisher-settings-columns dd {
   margin: 0;
 }
+.publisher-settings-columns dt {
+  color: #111724;
+  font-weight: 600;
+}
 .publisher-settings-columns .status {
   font-size: 17px;
   padding: 6px 14px;
   border-radius: 7px;
 }
 .publisher-settings-columns > .panel:last-child .ant-btn {
-  height: 44px;
+  min-width: 162px;
+  height: 42px;
   font-size: 18px;
+  color: #1555ff;
+  border-color: #6689ff;
+  font-weight: 600;
+}
+.publisher-settings-columns .panel-heading .ant-btn-link {
+  padding: 0;
+  height: 28px;
+}
+.publisher-required-mark {
+  color: #ff4d4f;
+  margin-left: 5px;
+}
+.publisher-settings-feedback {
+  margin-bottom: 16px;
 }
 .publisher-settings-page > .notice {
   margin: 18px 4px 26px;
@@ -1737,6 +1799,9 @@
 .page-S13 .nav-group,
 .page-S15 .nav-group {
   margin-bottom: 4px;
+}
+.role-PUBLISHER.page-S15 .nav-group {
+  margin-bottom: 5px;
 }
 .page-S13 .nav-group-label,
 .page-S15 .nav-group-label {
@@ -1930,5 +1995,41 @@
   .settlement-detail-panel .ant-table,
   .sales-list .ant-table {
     min-width: 900px;
+  }
+}
+@media (max-width: 700px) {
+  .app-shell.page-S15 .main-content {
+    margin-left: 0;
+    padding: 80px 12px 22px;
+  }
+  .page-S15 .publisher-settings-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page-S15 .publisher-settings-columns > .panel {
+    min-height: 0;
+  }
+  .page-S15 .publisher-settings-columns .ant-form-item-row {
+    display: block;
+  }
+  .page-S15 .publisher-settings-columns .ant-form-item-label {
+    padding-bottom: 6px;
+  }
+  .page-S15 .publisher-settings-columns .ant-form-item-control {
+    width: 100%;
+    max-width: 100%;
+  }
+  .page-S15 .publisher-settings-columns .panel-heading {
+    gap: 8px;
+    padding-inline: 16px;
+  }
+  .page-S15 .publisher-settings-columns .panel-heading h2 {
+    font-size: 20px;
+  }
+  .page-S15 .publisher-settings-columns dl {
+    grid-template-columns: 110px minmax(0, 1fr);
+    font-size: 16px;
+  }
+  .page-S15 .publisher-settings-columns dd {
+    overflow-wrap: anywhere;
   }
 }

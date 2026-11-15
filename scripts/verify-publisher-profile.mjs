@@ -9,7 +9,7 @@ import { Pool } from "pg";
 import { chromium, expect, request } from "@playwright/test";
 import { preview } from "vite";
 
-loadEnvFile(".env");
+loadEnvFile(path.resolve(process.argv[2] || ".env"));
 const root = process.cwd();
 const output = path.resolve("output/verification/publisher-profile");
 const localRoot = path.resolve(".local");
@@ -75,6 +75,46 @@ const body = {
   accepted_terms_version: "V3.0",
 };
 const password = `PublisherVerification!${randomUUID()}`;
+
+async function holdNextResponse(currentPage, pattern, method) {
+  let release;
+  const gate = new Promise((resolve) => {
+    release = resolve;
+  });
+  let captured = false;
+  let finished = false;
+  let status;
+  let count = 0;
+  const handler = async (route) => {
+    if (route.request().method() !== method) {
+      await route.continue();
+      return;
+    }
+    count += 1;
+    if (captured) {
+      await route.continue();
+      return;
+    }
+    captured = true;
+    const response = await route.fetch();
+    status = response.status();
+    await gate;
+    await route.fulfill({ response });
+    finished = true;
+  };
+  await currentPage.route(pattern, handler);
+  return {
+    wait: (expectedStatus = 200) =>
+      expect.poll(() => status).toBe(expectedStatus),
+    release: () => release(),
+    count: () => count,
+    dispose: async () => {
+      release();
+      await expect.poll(() => finished).toBe(true);
+      await currentPage.unroute(pattern, handler);
+    },
+  };
+}
 
 try {
   app = await NestFactory.create(AppModule, { logger: false });
@@ -505,6 +545,76 @@ try {
     "explicit profile creation refreshes publisher access and the full original route, and settings saves public fields durably without inventing a contact-email database field",
   );
 
+  const delayedProfile = await holdNextResponse(
+    page,
+    "**/api/v1/me/publisher-profile",
+    "POST",
+  );
+  try {
+    await page.getByLabel("公开昵称", { exact: true }).fill("正在提交的工作室");
+    await page
+      .getByLabel("服务简介", { exact: true })
+      .fill("已提交的公开服务说明");
+    await page.getByRole("button", { name: "保存设置", exact: true }).click();
+    await delayedProfile.wait();
+    await page
+      .getByLabel("公开昵称", { exact: true })
+      .fill("提交期间的新工作室");
+    await page
+      .getByLabel("服务简介", { exact: true })
+      .fill("提交期间的新服务说明");
+    delayedProfile.release();
+    await expect(
+      page.getByText("已保存提交的资料，当前新增输入尚未保存。", {
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(page.getByLabel("公开昵称", { exact: true })).toHaveValue(
+      "提交期间的新工作室",
+    );
+    await expect(page.getByLabel("服务简介", { exact: true })).toHaveValue(
+      "提交期间的新服务说明",
+    );
+    await expect(
+      page.getByRole("button", { name: "保存设置", exact: true }),
+    ).not.toHaveClass(/ant-btn-loading/);
+    assert.equal(
+      (
+        await database.query(
+          "SELECT public_name FROM travel.publisher_profiles WHERE owner_user_id=$1",
+          [second.user.id],
+        )
+      ).rows[0].public_name,
+      "正在提交的工作室",
+    );
+    await page.getByRole("button", { name: "保存设置", exact: true }).click();
+    await expect(
+      page.getByText("已保存提交的资料，当前新增输入尚未保存。", {
+        exact: true,
+      }),
+    ).toHaveCount(0);
+    await expect(
+      page.getByRole("button", { name: "保存设置", exact: true }),
+    ).not.toHaveClass(/ant-btn-loading/);
+    assert.equal(delayedProfile.count(), 2);
+    const persisted = (
+      await database.query(
+        "SELECT public_name,description,revision::text FROM travel.publisher_profiles WHERE owner_user_id=$1",
+        [second.user.id],
+      )
+    ).rows[0];
+    assert.deepEqual(persisted, {
+      public_name: "提交期间的新工作室",
+      description: "提交期间的新服务说明",
+      revision: "4",
+    });
+  } finally {
+    await delayedProfile.dispose();
+  }
+  report.checks.push(
+    "settings preserve fields entered during an in-flight write, show the unsaved draft and use the committed revision for a second explicit save",
+  );
+
   const externalEdit = (
     await database.query(
       "UPDATE travel.publisher_profiles SET public_name='外部更新资料' WHERE owner_user_id=$1 RETURNING revision::text",
@@ -518,7 +628,7 @@ try {
   ).toBeVisible();
   await page.getByRole("button", { name: "加载最新资料", exact: true }).click();
   await expect(page.getByLabel("公开昵称", { exact: true })).toHaveValue(
-    "外部更新资料",
+    "过期页面提交",
   );
   assert.equal(
     (
@@ -529,8 +639,26 @@ try {
     ).rows[0].revision,
     externalEdit.revision,
   );
+  await expect(
+    page.getByText("最新资料已加载，已保留当前编辑内容，请核对后再次保存。", {
+      exact: true,
+    }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "保存设置", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "保存设置", exact: true }),
+  ).not.toHaveClass(/ant-btn-loading/);
+  assert.equal(
+    (
+      await database.query(
+        "SELECT public_name FROM travel.publisher_profiles WHERE owner_user_id=$1",
+        [second.user.id],
+      )
+    ).rows[0].public_name,
+    "过期页面提交",
+  );
   report.checks.push(
-    "a stale settings form displays revision conflict recovery and loads the newer profile without overwriting it",
+    "conflict recovery loads the current revision while retaining typed fields and leaves the external write intact until the user explicitly submits again",
   );
   await page.goto(webBase + "/publisher");
   await expect(
@@ -556,20 +684,324 @@ try {
   report.checks.push(
     "the live publisher home renders empty counters and pending integration states without preview refunds or deployment alerts",
   );
+
+  const mainPage = page;
+  async function onboardingFlow(name) {
+    const owner = await account();
+    const context = await browser.newContext({
+      viewport: { width: 1814, height: 868 },
+    });
+    expect(
+      (
+        await context.request.post(webBase + "/api/v1/auth/login", {
+          data: { email: owner.email, password },
+        })
+      ).status(),
+    ).toBe(200);
+    const currentPage = await context.newPage();
+    page = currentPage;
+    currentPage.on("pageerror", (error) => report.errors.push(error.message));
+    const target = webBase + "/publisher/settings?entry=" + name + "#profile";
+    await currentPage.goto(target);
+    const access = currentPage.getByRole("dialog", {
+      name: "开通发布者工作区",
+      exact: true,
+    });
+    await expect(access).toBeVisible();
+    await access.getByLabel("公开昵称", { exact: true }).fill(name + "工作室");
+    await access
+      .getByLabel("服务简介与联系说明", { exact: true })
+      .fill(name + "的公开服务说明");
+    await access.getByRole("checkbox").check();
+    return { owner, context, page: currentPage, dialog: access, target };
+  }
+  const recovering = await onboardingFlow("recover");
+  let failBootstrap = false;
+  const bootstrapFailure = async (route) => {
+    if (failBootstrap)
+      await route.fulfill({
+        status: 503,
+        json: {
+          error: {
+            code: "VERIFICATION_READ_FAILURE",
+            message: "测试身份读取失败",
+          },
+        },
+      });
+    else await route.continue();
+  };
+  await recovering.page.route("**/api/v1/bootstrap", bootstrapFailure);
+  const createdBeforeReadFailure = await holdNextResponse(
+    recovering.page,
+    "**/api/v1/me/publisher-profile",
+    "POST",
+  );
+  try {
+    await recovering.dialog
+      .getByRole("button", { name: "开通并进入工作区", exact: true })
+      .click();
+    await createdBeforeReadFailure.wait(201);
+    failBootstrap = true;
+    createdBeforeReadFailure.release();
+    await expect(
+      recovering.dialog.getByText("资料已保存，后续状态暂时无法刷新", {
+        exact: true,
+      }),
+    ).toBeVisible();
+    assert.equal(createdBeforeReadFailure.count(), 1);
+    assert.equal(
+      (
+        await database.query(
+          "SELECT revision::text FROM travel.publisher_profiles WHERE owner_user_id=$1",
+          [recovering.owner.user.id],
+        )
+      ).rows[0].revision,
+      "1",
+    );
+    failBootstrap = false;
+    await recovering.dialog
+      .getByRole("button", { name: "重试后续操作", exact: true })
+      .click();
+    await expect(
+      recovering.page.getByRole("heading", { name: "发布者设置", exact: true }),
+    ).toBeVisible();
+    await expect(recovering.page).toHaveURL(recovering.target);
+    assert.equal(createdBeforeReadFailure.count(), 1);
+    assert.equal(
+      (
+        await database.query(
+          "SELECT revision::text FROM travel.publisher_profiles WHERE owner_user_id=$1",
+          [recovering.owner.user.id],
+        )
+      ).rows[0].revision,
+      "1",
+    );
+  } finally {
+    failBootstrap = false;
+    await createdBeforeReadFailure.dispose();
+    await recovering.page.unroute("**/api/v1/bootstrap", bootstrapFailure);
+  }
+  await recovering.context.close();
+  page = mainPage;
+  report.checks.push(
+    "onboarding distinguishes a committed profile from a failed identity refresh, and retrying the follow-up enters the original route without repeating the profile command",
+  );
+
+  const cancelled = await onboardingFlow("cancelled");
+  const delayedEntry = await holdNextResponse(
+    cancelled.page,
+    "**/api/v1/bootstrap",
+    "GET",
+  );
+  try {
+    await cancelled.dialog
+      .getByRole("button", { name: "开通并进入工作区", exact: true })
+      .click();
+    await delayedEntry.wait();
+    await expect(
+      cancelled.dialog.getByLabel("公开昵称", { exact: true }),
+    ).toBeDisabled();
+    await cancelled.dialog
+      .getByRole("button", { name: "返回消费者工作区", exact: true })
+      .click();
+    await expect(cancelled.page).toHaveURL(webBase + "/me/home");
+    delayedEntry.release();
+    await delayedEntry.dispose();
+    await cancelled.page.evaluate(
+      () =>
+        new Promise((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(resolve)),
+        ),
+    );
+    await expect(cancelled.page).toHaveURL(webBase + "/me/home");
+    await expect(cancelled.page.locator(".app-shell.role-USER")).toBeVisible();
+    assert.equal(
+      (
+        await database.query(
+          "SELECT revision::text FROM travel.publisher_profiles WHERE owner_user_id=$1",
+          [cancelled.owner.user.id],
+        )
+      ).rows[0].revision,
+      "1",
+    );
+  } finally {
+    await delayedEntry.dispose();
+  }
+  await cancelled.context.close();
+  page = mainPage;
+  report.checks.push(
+    "returning to the consumer workspace while the post-creation identity response is delayed retains that destination after the response arrives and preserves the explicitly created profile",
+  );
+
+  const continuing = await onboardingFlow("continue");
+  const delayedCreation = await holdNextResponse(
+    continuing.page,
+    "**/api/v1/me/publisher-profile",
+    "POST",
+  );
+  try {
+    await continuing.dialog
+      .getByRole("button", { name: "开通并进入工作区", exact: true })
+      .click();
+    await delayedCreation.wait(201);
+    await continuing.dialog
+      .getByLabel("公开昵称", { exact: true })
+      .fill("继续编辑的工作室");
+    await continuing.dialog
+      .getByLabel("服务简介与联系说明", { exact: true })
+      .fill("继续编辑的公开服务说明");
+    delayedCreation.release();
+    await expect(
+      continuing.dialog.getByRole("button", {
+        name: "使用已保存资料进入",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      continuing.dialog.getByLabel("公开昵称", { exact: true }),
+    ).toHaveValue("继续编辑的工作室");
+    assert.equal(
+      (
+        await database.query(
+          "SELECT public_name FROM travel.publisher_profiles WHERE owner_user_id=$1",
+          [continuing.owner.user.id],
+        )
+      ).rows[0].public_name,
+      "continue工作室",
+    );
+    await continuing.dialog
+      .getByRole("button", { name: "开通并进入工作区", exact: true })
+      .click();
+    await expect(
+      continuing.page.getByRole("heading", { name: "发布者设置", exact: true }),
+    ).toBeVisible();
+    await expect(
+      continuing.page.getByLabel("公开昵称", { exact: true }),
+    ).toHaveValue("继续编辑的工作室");
+    assert.equal(delayedCreation.count(), 2);
+    assert.equal(
+      (
+        await database.query(
+          "SELECT revision::text FROM travel.publisher_profiles WHERE owner_user_id=$1",
+          [continuing.owner.user.id],
+        )
+      ).rows[0].revision,
+      "2",
+    );
+  } finally {
+    await delayedCreation.dispose();
+  }
+  await continuing.context.close();
+  page = mainPage;
+  report.checks.push(
+    "onboarding retains input entered during creation and waits for an explicit saved-profile continuation or a second revision-checked save before entering the publisher workspace",
+  );
+
+  const staleTerms = await onboardingFlow("terms");
+  const outdatedTerms = async (route) => {
+    if (route.request().method() !== "GET") {
+      await route.continue();
+      return;
+    }
+    const response = await route.fetch();
+    const payload = await response.json();
+    payload.data.terms.version = "V2.0";
+    await route.fulfill({ response, json: payload });
+  };
+  await staleTerms.page.route("**/api/v1/me/publisher-profile", outdatedTerms);
+  await staleTerms.page.reload();
+  await expect(
+    staleTerms.dialog.getByRole("button", {
+      name: "阅读服务约定 V2.0",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await staleTerms.dialog
+    .getByLabel("公开昵称", { exact: true })
+    .fill("保留输入的新版约定工作室");
+  await staleTerms.dialog
+    .getByLabel("服务简介与联系说明", { exact: true })
+    .fill("确认当前约定后的公开说明");
+  await staleTerms.dialog.getByRole("checkbox").check();
+  await staleTerms.dialog
+    .getByRole("button", { name: "开通并进入工作区", exact: true })
+    .click();
+  await expect(
+    staleTerms.dialog.getByRole("button", {
+      name: "加载最新资料",
+      exact: true,
+    }),
+  ).toBeVisible();
+  assert.equal(
+    (
+      await database.query(
+        "SELECT id FROM travel.publisher_profiles WHERE owner_user_id=$1",
+        [staleTerms.owner.user.id],
+      )
+    ).rows.length,
+    0,
+  );
+  await staleTerms.page.unroute(
+    "**/api/v1/me/publisher-profile",
+    outdatedTerms,
+  );
+  await staleTerms.dialog
+    .getByRole("button", { name: "加载最新资料", exact: true })
+    .click();
+  await expect(
+    staleTerms.dialog.getByRole("button", {
+      name: "阅读服务约定 V3.0",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(
+    staleTerms.dialog.getByLabel("公开昵称", { exact: true }),
+  ).toHaveValue("保留输入的新版约定工作室");
+  await expect(staleTerms.dialog.getByRole("checkbox")).not.toBeChecked();
+  await staleTerms.dialog
+    .getByRole("button", { name: "开通并进入工作区", exact: true })
+    .click();
+  await expect(
+    staleTerms.dialog.getByText("请阅读并同意发布者服务约定", { exact: true }),
+  ).toBeVisible();
+  await staleTerms.dialog.getByRole("checkbox").check();
+  await staleTerms.dialog
+    .getByRole("button", { name: "开通并进入工作区", exact: true })
+    .click();
+  await expect(
+    staleTerms.page.getByRole("heading", { name: "发布者设置", exact: true }),
+  ).toBeVisible();
+  assert.equal(
+    (
+      await database.query(
+        "SELECT terms_version FROM travel.publisher_profiles WHERE owner_user_id=$1",
+        [staleTerms.owner.user.id],
+      )
+    ).rows[0].terms_version,
+    "V3.0",
+  );
+  await staleTerms.context.close();
+  page = mainPage;
+  report.checks.push(
+    "a rejected stale terms version offers metadata reload, retains edited profile fields and requires a fresh explicit consent before the real creation command succeeds",
+  );
+
   const prototype = await browser.newContext({
     viewport: { width: 1814, height: 868 },
   });
-  expect(
-    (
-      await prototype.request.post(webBase + "/api/v1/auth/login", {
-        data: {
-          email: "publisher@example.invalid",
-          password: "TravelTools2026!",
-        },
-      })
-    ).status(),
-  ).toBe(200);
+  const prototypeLogin = await prototype.request.post(
+    webBase + "/api/v1/auth/login",
+    {
+      data: {
+        email: "publisher@example.invalid",
+        password: "TravelTools2026!",
+      },
+    },
+  );
+  expect(prototypeLogin.status()).toBe(200);
+  const prototypeUser = (await prototypeLogin.json()).data.user;
   const prototypePage = await prototype.newPage();
+  page = prototypePage;
   prototypePage.on("pageerror", (error) => report.errors.push(error.message));
   await prototypePage.goto(webBase + "/publisher");
   await expect(
@@ -578,6 +1010,7 @@ try {
   await expect(
     prototypePage.getByText("本地开发示例", { exact: true }),
   ).toBeVisible();
+  await prototypePage.evaluate(() => document.fonts.ready);
   report.layout = await prototypePage.evaluate(() => ({
     width: document.documentElement.scrollWidth,
     height: document.documentElement.scrollHeight,
@@ -590,6 +1023,7 @@ try {
   await prototypePage.screenshot({
     path: path.join(output, "PUBLISHER-S01.png"),
     fullPage: true,
+    animations: "disabled",
   });
   report.screenshots.push("PUBLISHER-S01");
   await prototypePage
@@ -612,12 +1046,339 @@ try {
   report.checks.push(
     "the publisher home fits its reference viewport with complete sidebar access and routes upload and service creation to their normal entry points",
   );
+
+  page = prototypePage;
+  await prototypePage.setViewportSize({ width: 1812, height: 868 });
+  await prototypePage.goto(
+    webBase + "/publisher/settings?entry=settings#profile",
+  );
+  await expect(
+    prototypePage.getByLabel("公开昵称", { exact: true }),
+  ).toHaveValue("数据工坊");
+  await expect(prototypePage.getByRole("checkbox")).toHaveCount(0);
+  await prototypePage.evaluate(() => document.fonts.ready);
+  report.settings_layout = await prototypePage.evaluate(() => {
+    const rect = (selector) => {
+      const box = document.querySelector(selector).getBoundingClientRect();
+      return { x: box.x, y: box.y, width: box.width, height: box.height };
+    };
+    return {
+      width: document.documentElement.scrollWidth,
+      height: document.documentElement.scrollHeight,
+      columns: rect(".publisher-settings-columns"),
+      notice: rect(".publisher-settings-page > .notice"),
+      save: rect(".publisher-settings-save"),
+    };
+  });
+  assert.equal(report.settings_layout.width, 1812);
+  assert.equal(report.settings_layout.height, 868);
+  await expect(
+    prototypePage.getByRole("button", { name: "保存设置", exact: true }),
+  ).toHaveCSS("color", "rgb(255, 255, 255)");
+  await prototypePage.screenshot({
+    path: path.join(output, "PUBLISHER-S15.png"),
+    fullPage: true,
+    animations: "disabled",
+  });
+  report.screenshots.push("PUBLISHER-S15");
+
+  const concurrentSettings = await holdNextResponse(
+    prototypePage,
+    "**/api/v1/me/publisher-profile",
+    "POST",
+  );
+  try {
+    await prototypePage
+      .getByLabel("公开昵称", { exact: true })
+      .fill("并发设置验证工作室");
+    await prototypePage
+      .getByLabel("服务简介", { exact: true })
+      .fill("提供公开服务与联系说明");
+    await prototypePage
+      .getByRole("button", { name: "保存设置", exact: true })
+      .click();
+    await concurrentSettings.wait();
+    await prototypePage
+      .getByLabel("联系邮箱", { exact: true })
+      .fill(" next-contact@example.invalid ");
+    await prototypePage
+      .getByRole("button", { name: "更新收款资料", exact: true })
+      .click();
+    await prototypePage
+      .getByLabel("收款账户令牌", { exact: true })
+      .fill("concurrent-account-9087");
+    await prototypePage
+      .getByRole("button", { name: "保存资料预览", exact: true })
+      .click();
+    await expect(
+      prototypePage.getByText("********9087", { exact: true }),
+    ).toBeVisible();
+    concurrentSettings.release();
+    await expect(
+      prototypePage.getByText("已保存提交的资料，当前新增输入尚未保存。", {
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      prototypePage.getByRole("button", { name: "保存设置", exact: true }),
+    ).not.toHaveClass(/ant-btn-loading/);
+    await expect(
+      prototypePage.getByText("********9087", { exact: true }),
+    ).toBeVisible();
+    await expect(
+      prototypePage.getByLabel("联系邮箱", { exact: true }),
+    ).toHaveValue(" next-contact@example.invalid ");
+    await prototypePage
+      .getByRole("button", { name: "保存设置", exact: true })
+      .click();
+    await expect(
+      prototypePage.getByRole("button", { name: "保存设置", exact: true }),
+    ).not.toHaveClass(/ant-btn-loading/);
+    await expect(
+      prototypePage.getByLabel("联系邮箱", { exact: true }),
+    ).toHaveValue("next-contact@example.invalid");
+    await expect(
+      prototypePage.getByText("********9087", { exact: true }),
+    ).toBeVisible();
+  } finally {
+    await concurrentSettings.dispose();
+  }
+  report.checks.push(
+    "concurrent public-profile and payout previews merge their independent fields, preserve newly typed preview email, trim it on explicit save and retain the updated unverified account mask",
+  );
+  await prototypePage
+    .getByLabel("公开昵称", { exact: true })
+    .fill("读取失败时保留的昵称");
+  await prototypePage
+    .getByLabel("服务简介", { exact: true })
+    .fill("读取失败时保留的公开说明");
+  let failedReadAttempts = 0;
+  const failedProfileRead = async (route) => {
+    if (route.request().method() !== "GET") {
+      await route.continue();
+      return;
+    }
+    failedReadAttempts += 1;
+    await route.fulfill({
+      status: 503,
+      json: {
+        error: {
+          code: "VERIFICATION_READ_FAILURE",
+          message: "测试资料读取失败",
+        },
+      },
+    });
+  };
+  await prototypePage.route(
+    "**/api/v1/me/publisher-profile",
+    failedProfileRead,
+  );
+  await prototypePage.evaluate(() => {
+    window.dispatchEvent(new Event("offline"));
+    window.dispatchEvent(new Event("online"));
+  });
+  await expect(
+    prototypePage.getByText("发布者资料暂时无法加载", { exact: true }),
+  ).toBeVisible({ timeout: 15000 });
+  assert.ok(failedReadAttempts > 0);
+  await expect(
+    prototypePage.getByLabel("公开昵称", { exact: true }),
+  ).toHaveValue("读取失败时保留的昵称");
+  await expect(
+    prototypePage.getByLabel("服务简介", { exact: true }),
+  ).toHaveValue("读取失败时保留的公开说明");
+  await expect(
+    prototypePage.getByRole("button", { name: "保存设置", exact: true }),
+  ).toBeEnabled();
+  await prototypePage
+    .getByRole("button", { name: "阅读服务约定 V3.0", exact: true })
+    .click();
+  await expect(
+    prototypePage.getByRole("dialog", {
+      name: "发布者服务约定 V3.0",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await prototypePage
+    .getByRole("dialog", { name: "发布者服务约定 V3.0", exact: true })
+    .locator(".ant-modal-footer")
+    .getByRole("button", { name: "关闭", exact: true })
+    .click();
+  await prototypePage.unroute(
+    "**/api/v1/me/publisher-profile",
+    failedProfileRead,
+  );
+  await prototypePage
+    .locator(".publisher-settings-read-error")
+    .getByRole("button", { name: "重试", exact: true })
+    .click();
+  await expect(
+    prototypePage.locator(".publisher-settings-read-error"),
+  ).toHaveCount(0);
+  await expect(
+    prototypePage.getByLabel("公开昵称", { exact: true }),
+  ).toHaveValue("读取失败时保留的昵称");
+  await expect(
+    prototypePage.getByLabel("服务简介", { exact: true }),
+  ).toHaveValue("读取失败时保留的公开说明");
+  assert.equal(
+    (
+      await database.query(
+        "SELECT public_name FROM travel.publisher_profiles WHERE owner_user_id=$1",
+        [prototypeUser.id],
+      )
+    ).rows[0].public_name,
+    "并发设置验证工作室",
+  );
+  report.checks.push(
+    "a failed background metadata read keeps the loaded editor and dirty fields mounted, preserves terms access, and retries the read without a profile write",
+  );
+  await prototypePage.keyboard.press("Control+k");
+  await expect(prototypePage.locator(".global-search input")).toBeFocused();
+  await prototypePage
+    .getByRole("button", { name: "阅读服务约定 V3.0", exact: true })
+    .click();
+  await expect(
+    prototypePage.getByRole("dialog", {
+      name: "发布者服务约定 V3.0",
+      exact: true,
+    }),
+  ).toBeVisible();
+  assert.equal(new URL(prototypePage.url()).hash, "#profile");
+  await prototypePage.reload();
+  await expect(
+    prototypePage.getByRole("dialog", {
+      name: "发布者服务约定 V3.0",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await prototypePage.goBack();
+  await expect(
+    prototypePage.getByRole("dialog", {
+      name: "发布者服务约定 V3.0",
+      exact: true,
+    }),
+  ).toHaveCount(0);
+  await prototypePage.goForward();
+  await expect(
+    prototypePage.getByRole("dialog", {
+      name: "发布者服务约定 V3.0",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await prototypePage
+    .getByRole("dialog", { name: "发布者服务约定 V3.0", exact: true })
+    .locator(".ant-modal-footer")
+    .getByRole("button", { name: "关闭", exact: true })
+    .click();
+  await prototypePage
+    .getByRole("button", { name: "更新收款资料", exact: true })
+    .click();
+  await prototypePage
+    .getByLabel("收款账户令牌", { exact: true })
+    .fill("unsaved-payout-token");
+  await prototypePage.reload();
+  const payoutDialog = prototypePage.getByRole("dialog", {
+    name: "更新收款资料",
+    exact: true,
+  });
+  await expect(payoutDialog).toBeVisible();
+  await expect(
+    payoutDialog.getByLabel("收款账户令牌", { exact: true }),
+  ).toHaveValue("");
+  await payoutDialog.getByLabel("收款账户令牌", { exact: true }).fill("      ");
+  await payoutDialog
+    .getByRole("button", { name: "保存资料预览", exact: true })
+    .click();
+  await expect(
+    payoutDialog.getByText("请填写收款账户令牌", { exact: true }),
+  ).toBeVisible();
+  await payoutDialog.getByRole("button", { name: "取消", exact: true }).click();
+  await prototypePage.goBack();
+  await expect(payoutDialog).toBeVisible();
+  await expect(
+    payoutDialog.getByLabel("收款账户令牌", { exact: true }),
+  ).toHaveValue("");
+  await payoutDialog
+    .getByLabel("收款账户令牌", { exact: true })
+    .fill(" preview-account-5678 ");
+  await payoutDialog
+    .getByRole("button", { name: "保存资料预览", exact: true })
+    .click();
+  await expect(payoutDialog).toHaveCount(0);
+  await expect(
+    prototypePage.getByText("********5678", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    prototypePage.getByText("待验证", { exact: true }),
+  ).toBeVisible();
+  await prototypePage.goto(
+    webBase +
+      "/publisher/settings?workspace=PUBLISHER&entry=settings&dialog=missing#profile",
+  );
+  await expect(
+    prototypePage.getByText("发布者设置入口不可用", { exact: true }),
+  ).toBeVisible();
+  await prototypePage
+    .getByRole("button", { name: "返回设置", exact: true })
+    .click();
+  assert.equal(
+    new URL(prototypePage.url()).searchParams.get("entry"),
+    "settings",
+  );
+  assert.equal(
+    new URL(prototypePage.url()).searchParams.get("workspace"),
+    "PUBLISHER",
+  );
+  assert.equal(new URL(prototypePage.url()).searchParams.get("dialog"), null);
+  assert.equal(new URL(prototypePage.url()).hash, "#profile");
+  await prototypePage.setViewportSize({ width: 390, height: 844 });
+  await expect(
+    prototypePage.getByLabel("公开昵称", { exact: true }),
+  ).toBeVisible();
+  assert.equal(
+    await prototypePage.evaluate(() => document.documentElement.scrollWidth),
+    390,
+  );
+  await prototypePage
+    .getByRole("button", { name: "阅读服务约定 V3.0", exact: true })
+    .click();
+  await expect(
+    prototypePage.getByRole("dialog", {
+      name: "发布者服务约定 V3.0",
+      exact: true,
+    }),
+  ).toBeVisible();
+  assert.equal(
+    await prototypePage.evaluate(() => document.documentElement.scrollWidth),
+    390,
+  );
+  await mainPage.goto(
+    webBase + "/publisher/settings?entry=live&dialog=payout#profile",
+  );
+  await expect(
+    mainPage.getByRole("dialog", { name: "更新收款资料", exact: true }),
+  ).toContainText("收款资料与技术验证接口待接入");
+  await expect(
+    mainPage.getByLabel("收款账户令牌", { exact: true }),
+  ).toHaveCount(0);
+  await mainPage
+    .getByRole("dialog", { name: "更新收款资料", exact: true })
+    .getByRole("button", { name: "返回设置", exact: true })
+    .click();
+  assert.equal(new URL(mainPage.url()).searchParams.get("entry"), "live");
+  assert.equal(new URL(mainPage.url()).hash, "#profile");
+  report.checks.push(
+    "publisher settings match the desktop regions and 390px layout, retain keyboard search and URL-restored terms/payout dialogs, clear unsubmitted tokens, reject whitespace credentials and keep live payout configuration pending",
+  );
   await prototype.close();
+  page = mainPage;
   assert.deepEqual(report.errors, []);
   report.checks.push(
     "the production-built publisher onboarding and profile workflow completes without browser exceptions",
   );
   report.result = "PASS";
+  await rm(path.join(output, "failure.png"), { force: true });
 } catch (error) {
   report.result = "FAIL";
   report.error = error.stack || error.message;

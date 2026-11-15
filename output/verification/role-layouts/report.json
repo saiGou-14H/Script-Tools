@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T08:43:14.435Z",
+  "date": "2026-11-15T09:55:31.743Z",
   "data_source": "isolated development seed",
   "viewport_source": "individual reference manifest dimensions",
   "visual_acceptance": "pending",
@@ -417,7 +417,7 @@
       "route": "/market",
       "reference_file": "02-消费者/P02-脚本市场.png",
       "reference_sha256": "0fa6c0a6c0203406c932cb286720d0f4b557356f485b68d4dcff169cf7bf1ab6",
-      "screenshot_sha256": "f93cf960094c03b1c0406138562fec42506ce59b271f656e8e9e850d098ee8f2",
+      "screenshot_sha256": "c6ba5f7c19380447187b1bb233de55b81827435db40fc42648d167231916a464",
       "viewport": {
         "width": 1815,
         "height": 867
@@ -850,7 +850,7 @@
       "route": "/me/pending",
       "reference_file": "02-消费者/C13-待处理事项.png",
       "reference_sha256": "e6a1298dcd4f3da1e354ebc7212405c06712b3dfa11b761017e22dd4ae8589e9",
-      "screenshot_sha256": "976a823d09a4f62c738354ecdbc3636d629f3592a8b3a0b39274bd5f85dbe5de",
+      "screenshot_sha256": "7eabd6b1d5b56be3c04e4f57403ff31b6b98a58559bde710d0705722abe6706c",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1076,7 +1076,7 @@
       "route": "/me/settings/account",
       "reference_file": "02-消费者/C21-账户设置.png",
       "reference_sha256": "949661ac95f410ffd640fef89f7e84fc3ff906d27751289bba8fb8ac4d11c302",
-      "screenshot_sha256": "5c3d768539d31f93b15bbb1ff2fb18e3d3fefeb42fb0cb1ee509e9bbc4a854e3",
+      "screenshot_sha256": "65795f584a60bef4f7cf00c8970595d6a2789f562a71f658c21fb1345ed0c0f5",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1163,7 +1163,7 @@
       "route": "/publisher",
       "reference_file": "03-脚本发布者/S01-发布者工作台.png",
       "reference_sha256": "d805eb18972c61241c73bf1c8cd1c84cca2af80fca92547c2db68ba7a6e7efb1",
-      "screenshot_sha256": "df8fae108bef966822106b6f3694939a74dcf94124d1237713817d9a377b7338",
+      "screenshot_sha256": "af45f6422ce3e4694586f87dfdc11fea2a68abd7e34cb8b09f015c5129878553",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -1172,7 +1172,7 @@
         "width": 1614,
         "scroll_width": 1614,
         "document_width": 1814,
-        "document_height": 873,
+        "document_height": 867,
         "headings": [
           "发布者工作台",
           "管理你的脚本服务",
@@ -1194,7 +1194,7 @@
       "route": "/publisher/scripts",
       "reference_file": "03-脚本发布者/S02-我的脚本.png",
       "reference_sha256": "7784b9b46b15556830d538fa6d53520e379b12c6e158d86ee90f984c6666f18f",
-      "screenshot_sha256": "d4e053fa6a9c679963a3063a107c71655a62a3490a33be4ee72460ae47ee6065",
+      "screenshot_sha256": "5e4671d826fb48803d6a65791304d6909bc322557275a7bf90721db8a87c316d",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -1332,7 +1332,7 @@
       "route": "/publisher/services",
       "reference_file": "03-脚本发布者/S07-服务商品.png",
       "reference_sha256": "f562270f5c32dcb7ad39ed2a091d5de57461e2e97762d8512d8614f0719ac9ba",
-      "screenshot_sha256": "cc3a3588b3c2161fa9c3ffc648b4999945c42ceb6dc8f4266d883a2ee71fcbf3",
+      "screenshot_sha256": "4ee5d2acace345a90302afd2f0fb3e690372255d0b8d911d417902d7003bab5a",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1549,7 +1549,7 @@
       "route": "/publisher/settings",
       "reference_file": "03-脚本发布者/S15-发布者设置.png",
       "reference_sha256": "dcc323547c2f6989796592302c25e36415d89454b74e02ec761a46d69d8a9789",
-      "screenshot_sha256": "add2b024f04eb2a20035467c2cbe1002c8283fd305fc6f3f5aed66282297f25a",
+      "screenshot_sha256": "e31fbc0ccc7d6b7362e6e49426e4c3620dafa02cac0d0a98229d4b85bffa04ce",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -1576,7 +1576,7 @@
       "route": "/publisher/imports",
       "reference_file": "03-脚本发布者/S16-来源与同步.png",
       "reference_sha256": "87d38b402123896526758389cd80a04e846aec2421789ac019edb6919ec05314",
-      "screenshot_sha256": "cd612e5e13fd0491c9a3d93330db5cb41728f21a1deb17e1a706f000a3cc84ea",
+      "screenshot_sha256": "c2cd2b99cad6914214738a4920f89265814ac11b08a31c9381d7365d00f84c72",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -1601,7 +1601,7 @@
       "route": "/me/settings/account?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/C21-账户设置.png",
       "reference_sha256": "05f5bea2c8dfe63eacd5360d5721c809e296d79eef69a1087ae33e771c12d542",
-      "screenshot_sha256": "1abb12bbde69e46998273b34b3aa8c787051c090e9bde8eff087d6b9764f8d76",
+      "screenshot_sha256": "4415b44492943eb29e8d61d51a26f00677cb54a20a80fe7968223ee33ac747da",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1630,7 +1630,7 @@
       "route": "/help?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/P06-使用帮助.png",
       "reference_sha256": "d5cd9e9d8414514542ac3ce18fc1c7809f179e0f292d06ae34f179cb1f93a15e",
-      "screenshot_sha256": "66fa4e9831d3d8089fd328a34a7d4faef272cb5689b79fda09217bd9354e9c5b",
+      "screenshot_sha256": "968e9fabb738abd8a0c1b113dc988420e0d4784256bcb260f491bc182322fa4f",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -2282,11 +2282,19 @@
     }
   ],
   "errors": [],
-  "build_sha256": "43e68d3683ce8e80b587aa22ce758de783c62b6e3008d6d6a33d5b1a120c0591",
+  "build_sha256": "963268112227d3459c897bee4d3326b18d1eac472e7a02b47d182967a83a4304",
   "source_sha256": {
     "apps/web/src/pages/PublisherHome.tsx": "c4e6110c2b4ca075150179528a1af443d45a8c07730648d75a148100609abdbf",
+    "apps/web/src/pages/PublisherFinance.tsx": "2a4d3699cb05def79dc4fe926f8fe1b3a2ebd983168ebe96d85523674bfb2fb7",
+    "apps/web/src/pages/PublisherAccess.tsx": "3ebe1483a59be92e24a62971e0f0adc17767b53cb2159cdeb41732e180f4cc72",
+    "apps/web/src/components/PublisherProfileEditor.tsx": "80666f9106ba2f8834fe078ec5fa98c9f8f1b2ee005edd04fa2b8c5e7e9a53d8",
+    "apps/web/src/styles/publisher.css": "9146bede749261a12076e24d61dfe4e1627812c5038762505732a16b50c6a912",
+    "apps/web/src/styles/publisher-finance.css": "4330f6312cb2d76c08aa0f3121689e36fe34f1a14d02cd4482fa239aad7e3ec3",
+    "apps/web/src/lib/publisher-finance-preview.ts": "cf5620237f6acc8ae86085a046f69e17fee796981700ea918d37587fd51e658c",
+    "apps/control-api/src/publisher/publisher-profile.controller.ts": "31efc67557d346b7c1acca0050078a018ead665668d0843e664a46009b022c89",
+    "apps/control-api/src/publisher/publisher-profile.service.ts": "46168a11c3ae4f6c79bbf628a656644274691144c1dd3e0ffc05196052b520c9",
     "apps/web/src/pages/AdminHome.tsx": "9316fc19b65bcc1c794debad93e1ece382aa10d601e88d5cfac97359ddcbd1f5",
-    "apps/web/src/components/Shell.tsx": "10282720d3ed8fd330530727b38f861222ece9c1c8e8adb067bd97ec81747dfc",
+    "apps/web/src/components/Shell.tsx": "0f94978bf374477d6c572f2b594ca931cc7304a259576c225ebc521849d14157",
     "apps/web/src/router.tsx": "13835e3616169904e8bb7a8ca97e168ce0498b35c6ad7ca1b551380e0495baf6",
     "apps/web/src/context.tsx": "3f9c2cb25f58c2aacc222cd6eba9719b61618821db92309151547baab052890d",
     "apps/web/src/styles.css": "c894d789e31ff592c70d6b1ef94b1a031dba775d21cf942e2ecd1ece66f6a6b6",
@@ -2303,7 +2311,7 @@
     "package-lock.json": "8d9ef4230098093b60d365f69f932908751b23d500c5d29665b2585348aa25b6",
     "apps/web/src/pages/PublisherScripts.tsx": "a277aed74a18fc7cde005a7892ac3a6b8430569e26d79ff62b4874c52bb881d8",
     "apps/web/src/pages/PublisherProducts.tsx": "2bc3828f10c93b7dc24306fd0237869bc8593aa2319fa264c6c4cdd2068c4e44",
-    "apps/web/src/publisher-preview.tsx": "886e3047eb633692539eccecc625c98ccf50d73791b744b0843b900855a93d02",
+    "apps/web/src/publisher-preview.tsx": "59bb9488e53aae4fee2bfd72d05addb29765cb8985c061cf427bbf4a2b2e60aa",
     "apps/web/src/styles/publisher-editors.css": "9b4f49529c54d3d482f6f175aab9ea10d1e70b5d30bf83ef5ec667f9c1e78bb7",
     "apps/web/src/lib/script-editor.ts": "c4bd8b093d832a4797f74a34637014c00b3187c23546ecff848063d309fad248",
     "apps/web/src/lib/schema-validator.ts": "b38bebbeec590b102e8ba46c1c894d4b68379bcd24ff2437ccf70c7fc2845372",

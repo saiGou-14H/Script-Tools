@@ -294,7 +294,7 @@ interface PublisherPreviewValue {
     requestKey: string,
   ) => void;
   profile: PublisherProfile;
-  saveProfile: (profile: PublisherProfile) => void;
+  saveProfile: (profile: Partial<PublisherProfile>) => void;
 }
 const PublisherPreview = createContext<PublisherPreviewValue | null>(null);
 
@@ -603,7 +603,7 @@ export function PublisherPreviewProvider({
         profile,
         saveProfile: (value) => {
           requirePreview();
-          setProfile({ ...value });
+          setProfile((current) => ({ ...current, ...value }));
         },
       }}
     >

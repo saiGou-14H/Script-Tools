@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Alert,
   App,
@@ -14,7 +14,13 @@ import {
 } from "antd";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircleFilled, InfoCircleOutlined } from "@ant-design/icons";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { useWorkspace } from "../context";
 import { usePublisherPreview } from "../publisher-preview";
 import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
@@ -66,7 +72,9 @@ export function EarningsPage() {
         }
       />
       {!prototype && (
-        <Notice>收益、账本和打款查询服务待接入，当前金额及结算状态暂不可用。</Notice>
+        <Notice>
+          收益、账本和打款查询服务待接入，当前金额及结算状态暂不可用。
+        </Notice>
       )}
       <div className="publisher-earnings-summary">
         {[
@@ -111,7 +119,10 @@ export function EarningsPage() {
                     trigger={["hover", "focus"]}
                     title={`待成熟${compactMoney(pending)}元，打款预占${compactMoney(reserved)}元。`}
                   >
-                    <InfoCircleOutlined aria-label="待结算金额组成" tabIndex={0} />
+                    <InfoCircleOutlined
+                      aria-label="待结算金额组成"
+                      tabIndex={0}
+                    />
                   </Tooltip>
                 )}
                 <strong>
@@ -126,13 +137,15 @@ export function EarningsPage() {
           <Button
             type="primary"
             disabled={!prototype || !profile.payoutVerified || available <= 0n}
-            onClick={() => setPayoutPreview({
-              amountMinor: available.toString(),
-              accountMask: profile.payoutMask,
-              ledgerIds: rows
-                .filter((row) => BigInt(row.available) > 0n)
-                .map((row) => row.id),
-            })}
+            onClick={() =>
+              setPayoutPreview({
+                amountMinor: available.toString(),
+                accountMask: profile.payoutMask,
+                ledgerIds: rows
+                  .filter((row) => BigInt(row.available) > 0n)
+                  .map((row) => row.id),
+              })
+            }
           >
             申请打款
           </Button>
@@ -218,7 +231,8 @@ export function EarningsPage() {
         <dl>
           <dt>可结算金额</dt>
           <dd>
-            {payoutPreview ? formatMinorUnits(payoutPreview.amountMinor) : "—"}元
+            {payoutPreview ? formatMinorUnits(payoutPreview.amountMinor) : "—"}
+            元
           </dd>
           <dt>收款账户</dt>
           <dd>{payoutPreview?.accountMask}</dd>
@@ -243,28 +257,38 @@ export function SettlementDetailPage() {
   if (id !== "demo" && id !== batch.id)
     return <Empty description="结算批次不存在或已失效" />;
   const income = batch.lines.reduce((sum, row) => sum + BigInt(row.income), 0n);
-  const refunded = batch.lines.reduce((sum, row) => sum + BigInt(row.refund), 0n);
+  const refunded = batch.lines.reduce(
+    (sum, row) => sum + BigInt(row.refund),
+    0n,
+  );
   const fees = batch.lines.reduce((sum, row) => sum + BigInt(row.fee), 0n);
   const net = income - refunded - fees;
-  const confirmedSteps = batch.status === "SUCCEEDED" ? 4 : batch.status === "UNKNOWN" ? 2 : 3;
+  const confirmedSteps =
+    batch.status === "SUCCEEDED" ? 4 : batch.status === "UNKNOWN" ? 2 : 3;
   return (
     <div className="publisher-settlement-page">
-      <PageHeading title="结算详情" extra={<Status tone="gray">本地示例</Status>} />
+      <PageHeading
+        title="结算详情"
+        extra={<Status tone="gray">本地示例</Status>}
+      />
       <div className="settlement-steps">
         <Steps
           current={confirmedSteps}
-          items={["可结算", "资金预占", "渠道受理", batch.status === "SUCCEEDED" ? "回执已确认" : "等待回执"].map(
-            (title, index) => ({
-              title,
-              status: index < confirmedSteps ? "finish" : "wait",
-              icon:
-                index < confirmedSteps ? (
-                  <CheckCircleFilled aria-hidden />
-                ) : (
-                  <span className="settlement-wait-icon" aria-hidden />
-                ),
-            }),
-          )}
+          items={[
+            "可结算",
+            "资金预占",
+            "渠道受理",
+            batch.status === "SUCCEEDED" ? "回执已确认" : "等待回执",
+          ].map((title, index) => ({
+            title,
+            status: index < confirmedSteps ? "finish" : "wait",
+            icon:
+              index < confirmedSteps ? (
+                <CheckCircleFilled aria-hidden />
+              ) : (
+                <span className="settlement-wait-icon" aria-hidden />
+              ),
+          }))}
         />
       </div>
       <Panel className="settlement-detail-panel">
@@ -281,12 +305,15 @@ export function SettlementDetailPage() {
                 {payoutLabels[batch.status]}
               </Status>
             </strong>
-            <p>{batch.status === "SUCCEEDED" ? "渠道回执已确认" : "待渠道回执"}</p>
+            <p>
+              {batch.status === "SUCCEEDED" ? "渠道回执已确认" : "待渠道回执"}
+            </p>
           </article>
           <article>
             <span>金额</span>
             <strong>
-              {compactMoney(batch.amountMinor)}<small> 元</small>
+              {compactMoney(batch.amountMinor)}
+              <small> 元</small>
             </strong>
           </article>
           <article>
@@ -370,9 +397,7 @@ export function SettlementDetailPage() {
           type="primary"
           size="large"
           onClick={() =>
-            void message.info(
-              `原请求${batch.payoutId}的回执查询接口待接入`,
-            )
+            void message.info(`原请求${batch.payoutId}的回执查询接口待接入`)
           }
         >
           查询原请求
@@ -390,20 +415,35 @@ export function PublisherSettingsPage() {
   const profileKey = ["personal", bootstrap.user?.id, "publisher-profile"];
   const query = useQuery({
     queryKey: profileKey,
-    queryFn: () => api<PublisherProfileView>("/me/publisher-profile"),
+    queryFn: ({ signal }) =>
+      api<PublisherProfileView>("/me/publisher-profile", { signal }),
   });
   const [payoutForm] = Form.useForm();
-  const [editingPayout, setEditingPayout] = useState(false);
+  const [profileSaving, setProfileSaving] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = new URLSearchParams(location.search);
+  const dialog = params.get("dialog");
+  const editingPayout = dialog === "payout";
+  function setDialog(value?: string) {
+    const next = new URLSearchParams(params);
+    if (value) next.set("dialog", value);
+    else next.delete("dialog");
+    navigate({ search: next.toString(), hash: location.hash });
+  }
+  useEffect(() => {
+    if (prototype) payoutForm.resetFields();
+  }, [editingPayout, prototype]);
   const { message } = App.useApp();
   function updatePayout(values: { accountToken: string }) {
+    if (!prototype) return;
     try {
       saveProfile({
-        ...profile,
-        payoutMask: `********${values.accountToken.slice(-4)}`,
+        payoutMask: `********${values.accountToken.trim().slice(-4)}`,
         payoutVerified: false,
       });
       payoutForm.resetFields();
-      setEditingPayout(false);
+      setDialog();
       void message.info("收款资料掩码预览已更新，技术验证待接入");
     } catch (error) {
       void message.error((error as Error).message);
@@ -415,12 +455,29 @@ export function PublisherSettingsPage() {
         title="发布者设置"
         description="维护你的发布者信息、收款与技术验证设置，用于脚本服务的发布、交易与结算。"
       />
+      {dialog && !["terms", "payout"].includes(dialog) && (
+        <Alert
+          className="publisher-settings-feedback"
+          type="warning"
+          showIcon
+          title="发布者设置入口不可用"
+          action={<Button onClick={() => setDialog()}>返回设置</Button>}
+        />
+      )}
       <div className="publisher-settings-columns">
-        <Panel title="基本信息">
-          {query.isPending ? (
-            <Skeleton active />
-          ) : query.error ? (
+        <Panel
+          title="基本信息"
+          extra={
+            query.data?.terms && (
+              <Button type="link" onClick={() => setDialog("terms")}>
+                阅读服务约定 {query.data.terms.version}
+              </Button>
+            )
+          }
+        >
+          {query.error && (
             <Alert
+              className="publisher-profile-error publisher-settings-read-error"
               type="error"
               title="发布者资料暂时无法加载"
               description={query.error.message}
@@ -428,6 +485,9 @@ export function PublisherSettingsPage() {
                 <Button onClick={() => void query.refetch()}>重试</Button>
               }
             />
+          )}
+          {query.isPending ? (
+            <Skeleton active />
           ) : query.data?.profile ? (
             <PublisherProfileEditor
               profile={query.data.profile}
@@ -436,17 +496,30 @@ export function PublisherSettingsPage() {
               layout="horizontal"
               descriptionLabel="服务简介"
               externalSubmit
+              onBusyChange={setProfileSaving}
               onSaved={(saved, values) => {
-                queryClient.setQueryData(profileKey, {
-                  ...query.data,
-                  profile: saved,
-                });
+                queryClient.setQueryData<PublisherProfileView>(
+                  profileKey,
+                  (current) => {
+                    if (!current) return current;
+                    const latest = current.profile;
+                    return {
+                      ...current,
+                      profile:
+                        latest &&
+                        BigInt(latest.revision) > BigInt(saved.revision)
+                          ? latest
+                          : saved,
+                    };
+                  },
+                );
                 if (prototype)
                   saveProfile({
-                    ...profile,
                     publicName: saved.public_name,
                     description: saved.description,
-                    contactEmail: values.contactEmail || profile.contactEmail,
+                    ...(values.contactEmail !== undefined
+                      ? { contactEmail: values.contactEmail.trim() }
+                      : {}),
                   });
                 void message.success("发布者资料已保存");
               }}
@@ -457,19 +530,22 @@ export function PublisherSettingsPage() {
             >
               {prototype && (
                 <Form.Item
+                  className="publisher-contact-field"
                   name="contactEmail"
                   label="联系邮箱"
                   initialValue={profile.contactEmail}
-                  extra="联系邮箱仅供本地预览。公开联系说明随服务简介保存。"
-                  rules={[{ type: "email" }, { max: 254 }]}
+                  rules={[
+                    { type: "email", transform: (value) => value?.trim() },
+                    { max: 254 },
+                  ]}
                 >
                   <Input />
                 </Form.Item>
               )}
             </PublisherProfileEditor>
-          ) : (
+          ) : !query.error ? (
             <Empty description="请先开通发布者工作区" />
-          )}
+          ) : null}
         </Panel>
         <Panel title="收款与验证">
           <dl>
@@ -478,7 +554,13 @@ export function PublisherSettingsPage() {
             <dt>技术验证</dt>
             <dd>
               <Status tone={profile.payoutVerified ? "green" : "orange"}>
-                {profile.payoutVerified ? "✓ 已通过" : "待验证"}
+                {profile.payoutVerified ? (
+                  <>
+                    <CheckCircleFilled /> 已通过
+                  </>
+                ) : (
+                  "待验证"
+                )}
               </Status>
             </dd>
           </dl>
@@ -486,21 +568,26 @@ export function PublisherSettingsPage() {
             disabled={!prototype}
             onClick={() => {
               payoutForm.resetFields();
-              setEditingPayout(true);
+              setDialog("payout");
             }}
           >
             更新收款资料
           </Button>
         </Panel>
       </div>
-      <Notice>变更仅作用于新打款，在途使用原快照。</Notice>
+      <Notice>
+        变更仅作用于新打款，在途使用原快照。
+        {prototype && "联系邮箱为本地预览，公开联系说明随服务简介保存。"}
+      </Notice>
       {!prototype && <Notice>收款资料与技术验证接口待接入。</Notice>}
       <Button
         type="primary"
         className="publisher-settings-save"
+        aria-label="保存设置"
         htmlType="submit"
         form="publisher-settings-form"
         disabled={!query.data?.profile?.enabled}
+        loading={profileSaving}
       >
         保存设置
       </Button>
@@ -509,23 +596,39 @@ export function PublisherSettingsPage() {
         open={editingPayout}
         onCancel={() => {
           payoutForm.resetFields();
-          setEditingPayout(false);
+          setDialog();
         }}
         onOk={() => payoutForm.submit()}
         okText="保存资料预览"
         cancelText="取消"
+        footer={
+          !prototype ? (
+            <Button onClick={() => setDialog()}>返回设置</Button>
+          ) : undefined
+        }
         forceRender
       >
-        <Form form={payoutForm} layout="vertical" onFinish={updatePayout}>
-          <Form.Item
-            name="accountToken"
-            label="收款账户令牌"
-            rules={[{ required: true }, { min: 6, max: 8192 }]}
-          >
-            <Input.Password autoComplete="new-password" />
-          </Form.Item>
-          <Notice>保存后生成新的资料版本，验证通过后可用于新打款。</Notice>
-        </Form>
+        {prototype ? (
+          <Form form={payoutForm} layout="vertical" onFinish={updatePayout}>
+            <Form.Item
+              name="accountToken"
+              label="收款账户令牌"
+              rules={[
+                {
+                  required: true,
+                  whitespace: true,
+                  message: "请填写收款账户令牌",
+                },
+                { min: 6, max: 8192, transform: (value) => value?.trim() },
+              ]}
+            >
+              <Input.Password autoComplete="new-password" />
+            </Form.Item>
+            <Notice>保存后生成新的资料版本，验证通过后可用于新打款。</Notice>
+          </Form>
+        ) : (
+          <Alert type="info" showIcon title="收款资料与技术验证接口待接入" />
+        )}
       </Modal>
     </div>
   );

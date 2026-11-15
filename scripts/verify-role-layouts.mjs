@@ -308,6 +308,14 @@ try {
   report.source_hash_normalization = "LF";
   for (const file of [
     "apps/web/src/pages/PublisherHome.tsx",
+    "apps/web/src/pages/PublisherFinance.tsx",
+    "apps/web/src/pages/PublisherAccess.tsx",
+    "apps/web/src/components/PublisherProfileEditor.tsx",
+    "apps/web/src/styles/publisher.css",
+    "apps/web/src/styles/publisher-finance.css",
+    "apps/web/src/lib/publisher-finance-preview.ts",
+    "apps/control-api/src/publisher/publisher-profile.controller.ts",
+    "apps/control-api/src/publisher/publisher-profile.service.ts",
     "apps/web/src/pages/AdminHome.tsx",
     "apps/web/src/components/Shell.tsx",
     "apps/web/src/router.tsx",
