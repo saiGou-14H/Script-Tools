@@ -10,7 +10,7 @@
   "fields": 1755,
   "source_hash_normalization": "LF",
   "documents": {
-    "06-详细开发设计.md": "1a53d3c023abd8f9acf36280853be1451bb3cc4e6f1d3132d2240870d580cdff",
+    "06-详细开发设计.md": "167cdd2294bd1be1c53d182e92c69c338f20a9bd78d4358c3bbabd1118cb8b55",
     "07-完整系统数据库设计.md": "99d11fdfc942bb53a4d4f6d72583cee98674ab255e81111cf29815dcbd85ec71"
   },
   "limit": "Static coverage and dictionary/DDL alignment; not live implementation acceptance"

@@ -55,6 +55,135 @@ async function sortByPrice() {
   await page.getByRole("combobox", { name: "服务排序", exact: true }).click();
   await page.getByText("价格从低到高", { exact: true }).click();
 }
+async function marketLayout() {
+  return page.evaluate(() => {
+    const brand = document.querySelector(".brand").getBoundingClientRect();
+    const actions = document
+      .querySelector(".topbar-actions")
+      .getBoundingClientRect();
+    const search = document
+      .querySelector(".global-search")
+      .getBoundingClientRect();
+    return {
+      width: document.documentElement.scrollWidth,
+      clipped: [
+        ...document.querySelectorAll(
+          ".consumer-market-banner,.market-toolbar,.service-card,.service-card-top,.service-card h2,.consumer-market-price,.consumer-market-card-meta,.consumer-market-delivery,.consumer-market-refund,.service-card-metrics",
+        ),
+      ]
+        .filter(
+          (element) =>
+            element.scrollWidth > element.clientWidth + 1 ||
+            element.scrollHeight > element.clientHeight + 1,
+        )
+        .map((element) => element.className),
+      header_overlap: brand.right > actions.left,
+      search_overlap:
+        search.width > 0 &&
+        (search.left < brand.right || search.right > actions.left),
+    };
+  });
+}
+async function verifyMarketLayout(role, variant = "catalog") {
+  const reference = manifest.items[role + "-P02"];
+  if (variant === "catalog") {
+    const regions =
+      role === "USER"
+        ? [
+            [
+              ".consumer-market-banner",
+              { x: 238, y: 152, width: 1559, height: 112 },
+            ],
+            [".market-toolbar", { x: 238, y: 274, width: 1559, height: 64 }],
+            [".service-card", { x: 238, y: 355, width: 383, height: 241 }],
+          ]
+        : [
+            [".market-toolbar", { x: 253, y: 193, width: 1540, height: 72 }],
+            [".service-card", { x: 253, y: 316, width: 375, height: 238 }],
+          ];
+    report.layouts[role + "-P02-regions"] = [];
+    for (const [selector, expected] of regions) {
+      const actual = await page
+        .locator(selector)
+        .first()
+        .evaluate((element) => {
+          const rect = element.getBoundingClientRect();
+          return {
+            x: rect.x,
+            y: rect.y,
+            width: rect.width,
+            height: rect.height,
+          };
+        });
+      for (const coordinate of Object.keys(expected))
+        assert(
+          Math.abs(actual[coordinate] - expected[coordinate]) <= 3,
+          JSON.stringify({ role, selector, expected, actual }),
+        );
+      report.layouts[role + "-P02-regions"].push({
+        selector,
+        expected,
+        actual,
+        tolerance_px: 3,
+      });
+    }
+    report.checks.push(
+      role +
+        " market banner, filters and service cards follow their individual reference regions using the returned catalog rows",
+    );
+  }
+  const widths = [
+    ...new Set([
+      700,
+      701,
+      1000,
+      1001,
+      1200,
+      1201,
+      1400,
+      1401,
+      1450,
+      1451,
+      ...Array.from({ length: 41 }, (_, index) => 390 + index * 37),
+    ]),
+  ];
+  const responsive = [];
+  for (const width of widths) {
+    await page.setViewportSize({ width, height: width <= 700 ? 844 : 900 });
+    if (role === "USER")
+      await expect(page.locator(".workspace-button")).toHaveCSS(
+        "font-size",
+        width <= 700 ? "0px" : "14px",
+      );
+    const state = await marketLayout();
+    assert(
+      state.width <= width &&
+        state.clipped.length === 0 &&
+        !state.header_overlap &&
+        !state.search_overlap,
+      JSON.stringify({ role, width, variant, ...state }),
+    );
+    responsive.push({ viewport_width: width, ...state });
+    if (width === 390 && variant === "catalog") {
+      const name = role + "-P02-mobile";
+      await page.screenshot({
+        path: path.join(output, name + ".png"),
+        fullPage: true,
+        animations: "disabled",
+      });
+      report.screenshots.push(name);
+    }
+  }
+  report.layouts[role + "-P02-" + variant + "-responsive"] = responsive;
+  report.checks.push(
+    role +
+      ` ${variant} market filters, cards, prices and header remain unclipped across ${widths.length} widths and breakpoint boundaries`,
+  );
+  await page.setViewportSize({
+    width: reference.width,
+    height: reference.height,
+  });
+}
 try {
   await mkdir(output, { recursive: true });
   application = await startVerificationApp("market-navigation");
@@ -103,12 +232,15 @@ try {
     const context = await contextFor(role);
     await page.goto(base + "/market");
     await capture(role, "P02");
-    const search = page.getByPlaceholder(
-      "搜索用途或服务，如：表格清洗、文件批量处理",
-      { exact: true },
-    );
+    await verifyMarketLayout(role);
+    const search = page.getByRole("textbox", {
+      name: "搜索脚本服务",
+      exact: true,
+    });
     await search.fill("全部");
-    await expect.poll(() => new URL(page.url()).searchParams.get("q")).toBe("全部");
+    await expect
+      .poll(() => new URL(page.url()).searchParams.get("q"))
+      .toBe("全部");
     await expect(page.locator(".global-search input")).toHaveValue("全部");
     await search.fill(table.title);
     await page
@@ -312,14 +444,115 @@ try {
   );
 
   const expanded = await contextFor("USER");
-  const eight = [
-    ...services,
-    ...services.map((service) => ({
-      ...service,
-      id: randomUUID(),
-      title: service.title + "扩展示例",
-    })),
+  const referenceServices = [
+    [
+      "表格清洗服务",
+      "数据处理",
+      "table",
+      "600",
+      "数据小助手",
+      "对表格数据进行清洗，格式统一与缺失值处理，输出可用的规范表格。",
+      "输出清洗后的表格文件",
+      "未达目标可全额退款",
+    ],
+    [
+      "文件批量处理",
+      "文件工具",
+      "folder",
+      "300",
+      "效率工具集",
+      "批量处理文件，如重命名、格式转换、压缩整理等，提高文件管理效率。",
+      "按要求完成全部文件处理",
+      "未按要求完成可退款",
+    ],
+    [
+      "公开数据整理",
+      "信息整理",
+      "database",
+      "500",
+      "数据整理屋",
+      "获取并整理公开数据，进行清洗与结构化，输出常用格式的数据文件。",
+      "提供整理后的结构化数据",
+      "未达目标可全额退款",
+    ],
+    [
+      "景点预约服务",
+      "旅行预约",
+      "travel",
+      "800",
+      "出行助手",
+      "根据需求完成指定景点的预约操作，并提供预约结果与凭证信息。",
+      "返回预约成功凭证与关键信息",
+      "预约未成功可全额退款",
+    ],
+    [
+      "数据统计分析",
+      "数据处理",
+      "bars",
+      "600",
+      "分析小站",
+      "对数据进行汇总、统计与简单分析，生成清晰的结果表格或报告。",
+      "提供统计结果与分析文件",
+      "未满足描述目标可退款",
+    ],
+    [
+      "文档格式转换",
+      "文件工具",
+      "file",
+      "300",
+      "文件工坊",
+      "在常见文档格式之间进行批量转换，并保持内容与排版的基本一致。",
+      "输出指定格式的文件",
+      "转换失败可全额退款",
+    ],
+    [
+      "信息汇总整理",
+      "信息整理",
+      "stack",
+      "500",
+      "资料管家",
+      "从多份资料中提取关键信息，按要求汇总成结构化文档，便于查阅与使用。",
+      "提供汇总后的文档文件",
+      "未按要求整理可退款",
+    ],
+    [
+      "景点信息查询与预约",
+      "旅行预约",
+      "calendar",
+      "800",
+      "旅行工具箱",
+      "查询景点开放与预约情况，并按要求完成预约，返回预约结果与相关信息。",
+      "提供预约成功凭证与结果说明",
+      "未成功预约可全额退款",
+    ],
   ];
+  const eight = referenceServices.map(
+    (
+      [title, category, icon, amount, publisher, description, delivery, refund],
+      index,
+    ) => {
+      const source =
+        services.find((service) => service.category === category) || table;
+      return {
+        ...source,
+        id: randomUUID(),
+        title,
+        category,
+        description,
+        amount_minor: amount,
+        updated_at: new Date(
+          Date.UTC(2026, 10, 13, 12, 0, 8 - index),
+        ).toISOString(),
+        delivery_policy: {
+          ...source.delivery_policy,
+          icon,
+          publisher_name: publisher,
+          summary: delivery,
+        },
+        refund_policy: { ...source.refund_policy, summary: refund },
+      };
+    },
+  );
   await page.route("**/api/v1/services", (route) =>
     route.fulfill({ json: { ...envelope, data: eight } }),
   );
@@ -332,6 +565,10 @@ try {
       cards.map((card) => Math.round(card.getBoundingClientRect().y)),
     );
   assert.equal(new Set(rows).size, 2);
+  await expect(page.locator(".service-card h2")).toHaveText(
+    referenceServices.map((row) => row[0]),
+  );
+  await verifyMarketLayout("USER", "eight-service-fixture");
   await expanded.close();
   report.checks.push(
     "Eight controlled service records retain the consumer reference's two-row card layout using unchanged service contracts",

@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T13:47:31.335Z",
+  "date": "2026-11-15T14:26:56.973Z",
   "checks": [
     "GUEST directory follows its individual banner, filters, card and action reference regions with separate ticket/service fees and unavailable purchase controls",
     "GUEST directory keeps filters, content, fees, actions and header controls unclipped across 53 widths and breakpoint boundaries",
@@ -553,77 +553,77 @@
         "width": 1001,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 602.40625
+        "actions_left": 603
       },
       {
         "viewport_width": 1050,
         "width": 1050,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 651.40625
+        "actions_left": 652
       },
       {
         "viewport_width": 1051,
         "width": 1051,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 651
+        "actions_left": 653
       },
       {
         "viewport_width": 1400,
         "width": 1400,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 997.46875
+        "actions_left": 1002
       },
       {
         "viewport_width": 1401,
         "width": 1401,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 994.1875
+        "actions_left": 1003
       },
       {
         "viewport_width": 427,
         "width": 427,
         "clipped": [],
         "brand_right": 147.703125,
-        "actions_left": 282.1875
+        "actions_left": 291
       },
       {
         "viewport_width": 464,
         "width": 464,
         "clipped": [],
         "brand_right": 147.703125,
-        "actions_left": 319.1875
+        "actions_left": 328
       },
       {
         "viewport_width": 501,
         "width": 501,
         "clipped": [],
         "brand_right": 147.703125,
-        "actions_left": 360.53125
+        "actions_left": 365
       },
       {
         "viewport_width": 538,
         "width": 538,
         "clipped": [],
         "brand_right": 147.703125,
-        "actions_left": 397.53125
+        "actions_left": 402
       },
       {
         "viewport_width": 575,
         "width": 575,
         "clipped": [],
         "brand_right": 147.703125,
-        "actions_left": 434.53125
+        "actions_left": 439
       },
       {
         "viewport_width": 612,
         "width": 612,
         "clipped": [],
         "brand_right": 147.703125,
-        "actions_left": 471.53125
+        "actions_left": 476
       },
       {
         "viewport_width": 649,
@@ -658,210 +658,210 @@
         "width": 797,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 398.40625
+        "actions_left": 399
       },
       {
         "viewport_width": 834,
         "width": 834,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 435.40625
+        "actions_left": 436
       },
       {
         "viewport_width": 871,
         "width": 871,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 472.40625
+        "actions_left": 473
       },
       {
         "viewport_width": 908,
         "width": 908,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 508
+        "actions_left": 510
       },
       {
         "viewport_width": 945,
         "width": 945,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 545
+        "actions_left": 547
       },
       {
         "viewport_width": 982,
         "width": 982,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 582
+        "actions_left": 584
       },
       {
         "viewport_width": 1019,
         "width": 1019,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 616.46875
+        "actions_left": 621
       },
       {
         "viewport_width": 1056,
         "width": 1056,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 649.1875
+        "actions_left": 657.40625
       },
       {
         "viewport_width": 1093,
         "width": 1093,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 686.1875
+        "actions_left": 694.40625
       },
       {
         "viewport_width": 1130,
         "width": 1130,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 723.1875
+        "actions_left": 731.40625
       },
       {
         "viewport_width": 1167,
         "width": 1167,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 760.1875
+        "actions_left": 768.40625
       },
       {
         "viewport_width": 1204,
         "width": 1204,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 790.03125
+        "actions_left": 805.40625
       },
       {
         "viewport_width": 1241,
         "width": 1241,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 827.03125
+        "actions_left": 842.40625
       },
       {
         "viewport_width": 1278,
         "width": 1278,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 864.03125
+        "actions_left": 879.40625
       },
       {
         "viewport_width": 1315,
         "width": 1315,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 890.125
+        "actions_left": 915
       },
       {
         "viewport_width": 1352,
         "width": 1352,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 927.125
+        "actions_left": 952
       },
       {
         "viewport_width": 1389,
         "width": 1389,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 964.125
+        "actions_left": 989
       },
       {
         "viewport_width": 1426,
         "width": 1426,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 990.40625
+        "actions_left": 1026
       },
       {
         "viewport_width": 1463,
         "width": 1463,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1020.53125
+        "actions_left": 1063
       },
       {
         "viewport_width": 1500,
         "width": 1500,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1057.53125
+        "actions_left": 1097.46875
       },
       {
         "viewport_width": 1537,
         "width": 1537,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1090.59375
+        "actions_left": 1134.46875
       },
       {
         "viewport_width": 1574,
         "width": 1574,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1125.40625
+        "actions_left": 1171.46875
       },
       {
         "viewport_width": 1611,
         "width": 1611,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1161.3125
+        "actions_left": 1208.46875
       },
       {
         "viewport_width": 1648,
         "width": 1648,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1198
+        "actions_left": 1245.46875
       },
       {
         "viewport_width": 1685,
         "width": 1685,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1235
+        "actions_left": 1278.1875
       },
       {
         "viewport_width": 1722,
         "width": 1722,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1272
+        "actions_left": 1315.1875
       },
       {
         "viewport_width": 1759,
         "width": 1759,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1309
+        "actions_left": 1352.1875
       },
       {
         "viewport_width": 1796,
         "width": 1796,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1346
+        "actions_left": 1389.1875
       },
       {
         "viewport_width": 1833,
         "width": 1833,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1383
+        "actions_left": 1426.1875
       },
       {
         "viewport_width": 1870,
         "width": 1870,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1420
+        "actions_left": 1463.1875
       }
     ],
     "USER-P04-regions": [

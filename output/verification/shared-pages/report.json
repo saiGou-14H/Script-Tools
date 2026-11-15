@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T13:51:23.730Z",
+  "date": "2026-11-15T14:26:33.504Z",
   "checks": [
     "public home retains the reference columns, recommendations, categories, workflow and purchase guidance within the reference viewport",
     "catalog header search restores reload and browser history and follows the page search while global submission retains its existing all-category scope",

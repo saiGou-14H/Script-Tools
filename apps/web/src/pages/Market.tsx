@@ -20,6 +20,11 @@ import {
 import { useWorkspace } from "../context";
 import { formatMinorUnits } from "../lib/money";
 
+const compactServiceIcons = new Map([
+  ["database", "data-storage"],
+  ["folder", "folder-closed"],
+]);
+
 export function useServices() {
   return useQuery({
     queryKey: ["public", "services"],
@@ -45,7 +50,13 @@ export function ServiceCard({
     return (
       <article className="service-card consumer-market-card">
         <div className="consumer-market-card-title">
-          <TileIcon name={service.delivery_policy.icon} />
+          <TileIcon
+            name={
+              compactServiceIcons.get(service.delivery_policy.icon) ??
+              service.delivery_policy.icon
+            }
+            color={service.delivery_policy.icon === "table" ? "purple" : "blue"}
+          />
           <div>
             <div className="consumer-market-heading">
               <h2>{service.title}</h2>
@@ -62,20 +73,20 @@ export function ServiceCard({
         <div className="consumer-market-card-meta">
           <span>
             <Icon name="user" />
-            发布者　{service.delivery_policy.publisher_name}
+            发布者：{service.delivery_policy.publisher_name}
           </span>
           <span>
             <Icon name="clock" />
-            最近更新　{serviceDate(service.updated_at)}
+            最近更新：{serviceDate(service.updated_at)}
           </span>
         </div>
         <p className="consumer-market-delivery">
-          <Status tone="green">交付标准</Status>
-          {service.delivery_policy.summary}
+          <Status tone="green">交付标准：</Status>
+          <span>{service.delivery_policy.summary}</span>
         </p>
         <p className="consumer-market-refund">
-          <Status tone="purple">退款规则</Status>
-          {service.refund_policy.summary}
+          <Status tone="purple">退款规则：</Status>
+          <span>{service.refund_policy.summary}</span>
         </p>
         <Link to={servicePath(service, returnTo)}>
           <Button block>查看详情</Button>
@@ -218,8 +229,8 @@ export function MarketPage() {
           <ul>
             {[
               "每单仅一次完整服务，同次接续不额外收费",
-              "门票与脚本服务费分别展示",
-              "未达目标的退款规则在购买前展示，成交后固定",
+              "门票0元不等于脚本服务免费",
+              "未达目标的退款规则由发布者选择，购买前展示，成交后固定",
             ].map((text) => (
               <li key={text}>
                 <CheckCircleFilled />
@@ -228,15 +239,20 @@ export function MarketPage() {
             ))}
           </ul>
           <div className="market-script-art" aria-hidden="true">
-            &lt;/&gt;
+            <Icon name="code-brackets" />
           </div>
         </section>
       )}
       <div className="market-toolbar">
         <Input
           size="large"
+          aria-label="搜索脚本服务"
           prefix={<SearchOutlined />}
-          placeholder="搜索用途或服务，如：表格清洗、文件批量处理"
+          placeholder={
+            consumer
+              ? "搜索用途或服务，如：表格清洗、文件处理、景点预约"
+              : "搜索用途或服务，如：表格清洗、文件批量处理"
+          }
           value={query}
           onChange={(event) => updateFilter("q", event.target.value)}
           allowClear

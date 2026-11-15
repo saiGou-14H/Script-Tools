@@ -3,7 +3,7 @@
   --header-height: 56px;
 }
 .role-USER.page-P02 {
-  --sidebar-width: 212px;
+  --sidebar-width: 214px;
   --header-height: 54px;
 }
 .role-GUEST.page-P03 {
@@ -27,8 +27,10 @@
   padding-right: 20px;
 }
 .role-USER.page-P02 .main-content {
+  padding-left: 24px;
+  padding-right: 18px;
   padding-top: 74px;
-  padding-bottom: 19px;
+  padding-bottom: 18px;
 }
 .page-P03 .main-content {
   padding-left: 25px;
@@ -63,6 +65,46 @@
 .role-USER.page-P02 .global-search {
   left: 34.16%;
   width: 33.8%;
+}
+.role-GUEST.page-P02 .workspace-button {
+  border: 0;
+  background: #f3f6fc;
+  box-shadow: none;
+  color: #17223a;
+}
+.role-GUEST.page-P02 .workspace-button > .anticon:last-child {
+  display: none;
+}
+.role-USER.page-P02 .workspace-button {
+  border-color: #1555ff;
+  color: #17223a;
+}
+.role-USER.page-P02 .topbar-actions > .ant-btn:not(.workspace-button) {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #e4eaf5;
+}
+.role-USER.page-P02 .topbar-actions > .ant-btn .anticon {
+  font-size: 17px;
+}
+.app-shell.role-USER.page-P02 .nav-item {
+  font-weight: 600;
+}
+.app-shell.role-USER.page-P02 .nav-group {
+  margin-bottom: 1px;
+}
+.role-USER.page-P02 .nav-group:nth-child(3) {
+  margin-bottom: 5px;
+}
+.role-USER.page-P02 .nav-group:nth-child(4) {
+  margin-bottom: 4px;
+}
+.role-USER.page-P02 .nav-group:nth-child(n + 4):not(:last-child) .nav-item {
+  height: 33px;
+}
+.role-USER.page-P02 .nav-group:last-child .nav-group-label {
+  padding-block: 0;
+  line-height: 17px;
 }
 .page-P02 .brand,
 .page-P03 .brand,
@@ -303,7 +345,7 @@
   font-size: 12px;
 }
 .consumer-market .page-heading {
-  margin-bottom: 11px;
+  margin-bottom: 13px;
 }
 .consumer-market .page-heading h1 {
   font-size: 26px;
@@ -316,10 +358,19 @@
   display: flex;
   align-items: center;
   gap: 28px;
-  padding: 20px 34px;
+  padding: 12px 34px;
   background:
-    radial-gradient(ellipse at 75% 180%, #b9c9ff66 0 46%, transparent 46%),
-    linear-gradient(110deg, #eaf0ff, #dce5ff 60%, #d6d8fb);
+    radial-gradient(
+      ellipse 480px 120px at 118% 116%,
+      #b9c9ff77 0 95%,
+      transparent 95.5%
+    ),
+    radial-gradient(
+      ellipse 540px 170px at 62% 160%,
+      #bdcaff26 0 90%,
+      transparent 90.5%
+    ),
+    linear-gradient(110deg, #dfebff, #ebe8ff 60%, #d2dcff);
   border: 1px solid #dae3ff;
   border-radius: 12px;
   margin-bottom: 11px;
@@ -331,7 +382,8 @@
 }
 .consumer-market-banner h2 {
   color: #0c1734;
-  font-size: 25px;
+  font-size: 24px;
+  line-height: 34px;
   margin-bottom: 7px;
 }
 .consumer-market-banner p {
@@ -344,10 +396,13 @@
   padding: 0;
   color: #3c4b71;
   font-size: 14px;
-  line-height: 22px;
+  line-height: 28px;
   padding-left: 30px;
   border-left: 1px solid #d8def8;
-  flex: 0 1 580px;
+  flex: 0 1 598px;
+}
+.consumer-market-banner li:first-child {
+  font-weight: 600;
 }
 .consumer-market-banner li .anticon {
   color: #2462ff;
@@ -359,7 +414,7 @@
   border-radius: 12px;
   color: #fff;
   padding: 0;
-  font-size: 42px;
+  font-size: 46px;
   line-height: 1.2;
   font-weight: 700;
   transform: rotate(9deg);
@@ -370,10 +425,13 @@
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 82px;
-  height: 70px;
+  width: 76px;
+  height: 68px;
   margin-left: 22px;
-  margin-right: 94px;
+  margin-right: 82px;
+}
+.market-script-art > .anticon {
+  filter: drop-shadow(0 2px 2px #2f5ae955);
 }
 .consumer-market .market-toolbar {
   margin-bottom: 16px;
@@ -403,7 +461,7 @@
 }
 .consumer-market-card {
   padding: 10px 18px 13px;
-  min-height: 238px;
+  min-height: 241px;
   display: flex;
   flex-direction: column;
 }
@@ -457,10 +515,10 @@
   overflow-wrap: anywhere;
 }
 .consumer-market-price > small {
-  font-weight: 400;
-  font-size: 14px;
-  margin-left: 6px;
-  color: #52607d;
+  font-weight: 600;
+  font-size: 18px;
+  margin-left: 3px;
+  color: inherit;
 }
 .consumer-market-price > .status {
   margin-left: 7px;
@@ -471,13 +529,13 @@
   justify-content: space-between;
   gap: 5px;
   font-size: 12px;
-  color: #64728c;
+  color: #46516a;
   margin: 4px 0 8px;
   flex-wrap: wrap;
   line-height: 17px;
 }
 .consumer-market-card-meta .anticon {
-  color: #929cb0;
+  color: #59667e;
   margin-right: 4px;
 }
 .consumer-market-delivery,
@@ -485,7 +543,7 @@
   display: flex;
   align-items: flex-start;
   gap: 7px;
-  color: #4e5c77;
+  color: #384151;
   font-size: 12px;
   line-height: 1.6;
   margin-bottom: 7px;
@@ -495,6 +553,12 @@
   font-size: 12px;
   line-height: 18px;
   padding-inline: 5px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.consumer-market-delivery > span:last-child,
+.consumer-market-refund > span:last-child {
+  min-width: 0;
 }
 .consumer-market-card > a {
   margin-top: auto;
@@ -503,8 +567,9 @@
 .consumer-market-card > a .ant-btn {
   color: #1654ff;
   height: 30px;
-  border-color: #9ab5ff;
+  border-color: #2760ff;
   font-size: 14px;
+  font-weight: 600;
 }
 .retail-breadcrumb {
   display: flex;
@@ -1629,6 +1694,9 @@
 .app-shell.role-USER:is(.page-P02, .page-P03) .sidebar {
   padding: 6px 6px 8px 8px;
 }
+.app-shell.role-USER.page-P02 .sidebar {
+  padding-top: 3px;
+}
 .page-P02 .page-heading p {
   font-size: 16px;
   line-height: 22px;
@@ -1743,6 +1811,15 @@
 }
 .consumer-market .category-buttons .ant-btn:first-child {
   width: 70px;
+}
+.consumer-market .market-toolbar > span,
+.consumer-market .sort-control,
+.consumer-market .sort-control .ant-select,
+.consumer-market .market-toolbar input {
+  font-size: 14px;
+}
+.consumer-market .category-buttons .ant-btn {
+  font-weight: 600;
 }
 .consumer-market-heading {
   display: flex;
@@ -1862,6 +1939,9 @@
   .market-page .market-toolbar {
     flex-wrap: wrap;
   }
+  .market-page .category-buttons {
+    flex-wrap: wrap;
+  }
   .market-page .market-toolbar > .ant-input-affix-wrapper {
     width: 42%;
   }
@@ -1933,6 +2013,11 @@
     font-size: 20px;
   }
 }
+@media (max-width: 1200px) {
+  .page-P02 .global-search.ant-input-affix-wrapper {
+    display: none;
+  }
+}
 @media (max-width: 700px) {
   .app-shell:is(.page-P02, .page-P03, .page-P05) {
     --sidebar-width: 0px;
@@ -1942,6 +2027,39 @@
   .page-P05 .main-content {
     padding-left: 16px;
     padding-right: 16px;
+  }
+  .role-USER.page-P02 .main-content {
+    padding-inline: 16px;
+  }
+  .page-P02 .topbar {
+    padding-inline: 12px;
+    gap: 10px;
+  }
+  .page-P02 .brand {
+    gap: 8px;
+    min-width: 0;
+  }
+  .role-GUEST.page-P02 .brand strong,
+  .role-USER.page-P02 .brand strong {
+    font-size: 18px;
+  }
+  .page-P02 .brand-code {
+    font-size: 24px;
+  }
+  .role-USER.page-P02 .workspace-button {
+    font-size: 0;
+    padding-inline: 8px;
+    gap: 6px;
+  }
+  .role-USER.page-P02 .workspace-button b,
+  .role-USER.page-P02 .workspace-button .anticon {
+    font-size: 12px;
+  }
+  .role-GUEST.page-P02 .workspace-button {
+    display: none;
+  }
+  .page-P02 .topbar-actions {
+    gap: 6px;
   }
   .consumer-market .service-grid,
   .guest-market .service-grid,

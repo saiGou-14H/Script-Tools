@@ -30,8 +30,8 @@ const guestAttractionMenuIcons: Partial<Record<PageId, string>> = {
 const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
   {
     P02: {
-      C04: "file", C06: "layers", C22: "ticket", C12: "folder",
-      C13: "clock", C16: "message",
+      C04: "file", C06: "stack", C22: "ticket-stub", C10: "clock", C12: "stack",
+      C13: "hourglass", C14: "link", C16: "message",
     },
     P03: {
       P02: "order", C04: "file", C06: "layers", C22: "ticket",
@@ -621,27 +621,29 @@ export function Shell({ pageId }: { pageId: PageId }) {
           placeholder={
             pageId === "P06"
               ? "搜索功能、文档或常见问题"
-              : pageId === "P04"
-                ? role === "GUEST"
-                  ? "搜索脚本、工具或景点"
-                  : "搜索脚本、工具、景点或功能"
-                : pageId === "P05"
+              : pageId === "P02" && role === "USER"
+                ? "搜索用途或服务，如：表格清洗、文件处理、景点预约"
+                : pageId === "P04"
                   ? role === "GUEST"
-                    ? "搜索脚本、工具或景点服务"
-                    : "搜索脚本、工具或景点"
-                  : pageId === "S02"
-                    ? "搜索脚本名称、用途或版本号"
-                    : pageId === "S05"
-                      ? "搜索脚本、版本或构建编号"
-                      : pageId === "S15"
-                        ? "搜索脚本、服务商品、订单或帮助内容"
-                        : pageId === "S01"
-                          ? "搜索脚本、服务或订单"
-                          : role === "ADMIN"
-                            ? "搜索订单、用户、服务或预约编号"
-                            : quickSearch
-                              ? "搜索脚本、工具或景点"
-                              : "搜索脚本、服务或订单"
+                    ? "搜索脚本、工具或景点"
+                    : "搜索脚本、工具、景点或功能"
+                  : pageId === "P05"
+                    ? role === "GUEST"
+                      ? "搜索脚本、工具或景点服务"
+                      : "搜索脚本、工具或景点"
+                    : pageId === "S02"
+                      ? "搜索脚本名称、用途或版本号"
+                      : pageId === "S05"
+                        ? "搜索脚本、版本或构建编号"
+                        : pageId === "S15"
+                          ? "搜索脚本、服务商品、订单或帮助内容"
+                          : pageId === "S01"
+                            ? "搜索脚本、服务或订单"
+                            : role === "ADMIN"
+                              ? "搜索订单、用户、服务或预约编号"
+                              : quickSearch
+                                ? "搜索脚本、工具或景点"
+                                : "搜索脚本、服务或订单"
           }
           onPressEnter={(event) => {
             if (pageId === "S02" || pageId === "S05") {
@@ -673,18 +675,28 @@ export function Shell({ pageId }: { pageId: PageId }) {
                 <Icon name={pageId === "O01" ? "shield" : "stack"} />
               )}
               {pageId === "P05" && role === "USER" && <Icon name="user" />}
-              {pageId === "O01"
-                ? ""
-                : pageId === "P04"
-                  ? "当前工作区："
-                : role === "GUEST" && ["P01", "P05", "P07", "P06"].includes(pageId)
-                  ? "当前工作区　"
-                  : role === "GUEST"
-                    ? "当前身份　"
-                    : compactAdmin &&
-                        !["O06", "O07", "O14", "O16", "O19", "C21"].includes(pageId)
-                      ? ""
-                      : "当前工作区　"}
+              {pageId === "P02" && role === "GUEST" && <Icon name="user" />}
+              {
+                pageId === "O01"
+                  ? ""
+                  : pageId === "P02"
+                    ? role === "GUEST"
+                      ? "当前身份："
+                      : "当前工作区："
+                    : pageId === "P04"
+                      ? "当前工作区："
+                      : role === "GUEST" &&
+                          ["P01", "P05", "P07", "P06"].includes(pageId)
+                        ? "当前工作区　"
+                        : role === "GUEST"
+                          ? "当前身份　"
+                          : compactAdmin &&
+                              !["O06", "O07", "O14", "O16", "O19", "C21"].includes(
+                                pageId,
+                              )
+                            ? ""
+                            : "当前工作区　"
+              }
               <b>{roleName}</b>
               <DownOutlined />
             </Button>

@@ -313,10 +313,10 @@ try {
       await expect(globalSearch).toHaveValue("文件批量处理");
       await page.goForward();
       await expect(globalSearch).toHaveValue("公开数据整理");
-      const marketSearch = page.getByPlaceholder(
-        "搜索用途或服务，如：表格清洗、文件批量处理",
-        { exact: true },
-      );
+      const marketSearch = page.getByRole("textbox", {
+        name: "搜索脚本服务",
+        exact: true,
+      });
       await marketSearch.fill("表格");
       await expect(globalSearch).toHaveValue("表格");
       await marketSearch.fill("");

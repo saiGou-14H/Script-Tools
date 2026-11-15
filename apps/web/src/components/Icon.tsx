@@ -44,6 +44,7 @@ import {
   SearchOutlined,
   BlockOutlined,
   FolderOpenOutlined,
+  FolderOutlined,
   TagOutlined,
   WindowsOutlined,
   WindowsFilled,
@@ -127,6 +128,28 @@ function PlayOutlined({
         strokeLinejoin="round"
       >
         <path d="m5 3 15 9-15 9V3Z" />
+      </svg>
+    </span>
+  );
+}
+
+function DataStorageOutlined({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span className={`anticon ${className}`} {...props}>
+      <svg
+        viewBox="0 0 24 24"
+        width="1em"
+        height="1em"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      >
+        <ellipse cx="12" cy="4.5" rx="8" ry="3" />
+        <path d="M4 4.5v15c0 1.7 3.6 3 8 3s8-1.3 8-3v-15M4 9.5c0 1.7 3.6 3 8 3s8-1.3 8-3M4 14.5c0 1.7 3.6 3 8 3s8-1.3 8-3" />
       </svg>
     </span>
   );
@@ -288,6 +311,8 @@ function VerifiedTargetOutlined({
 }
 
 const icons = {
+  "data-storage": DataStorageOutlined,
+  "folder-closed": FolderOutlined,
   store: ShopOutlined,
   "play-outline": PlayOutlined,
   "send-solid": PaperPlaneFilled,
