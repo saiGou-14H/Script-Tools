@@ -89,7 +89,13 @@ export function Notice({ children }: { children: ReactNode }) {
     </div>
   );
 }
-export function UsageBanner({ compact = false }: { compact?: boolean }) {
+export function UsageBanner({
+  compact = false,
+  fileIcon = "rocket",
+}: {
+  compact?: boolean;
+  fileIcon?: string;
+}) {
   return (
     <div className={`usage-banner ${compact ? "compact" : ""}`}>
       {compact && <TileIcon name="database" color="gradient" />}
@@ -110,7 +116,7 @@ export function UsageBanner({ compact = false }: { compact?: boolean }) {
       {!compact && (
         <div className="banner-options">
           <span>
-            <TileIcon name="rocket" />{" "}
+            <TileIcon name={fileIcon} />{" "}
             <span>
               <b>数据 / 文件工具</b>
               <small>数据清洗、格式转换、公开数据整理等</small>

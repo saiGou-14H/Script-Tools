@@ -9,7 +9,9 @@ import {
   previewRuns,
   runStateLabels,
   runTones,
+  runIcons,
 } from "../lib/execution-preview";
+import { Icon } from "../components/Icon";
 import { formatMinorUnits } from "../lib/money";
 
 function readRange(params: URLSearchParams): [Dayjs, Dayjs] | null {
@@ -38,6 +40,9 @@ export function RunsPage() {
     readRange(params),
   );
   const prototype = bootstrap.data_mode === "prototype";
+  const listPath = `/me/runs${params.size ? `?${params}` : ""}`;
+  const detailPath = (id: string) =>
+    `/me/runs/${id}?${new URLSearchParams({ returnTo: listPath })}`;
   useEffect(() => {
     setService(params.get("service") || "all");
     setStatus(params.get("status") || "all");
@@ -87,7 +92,7 @@ export function RunsPage() {
         }
       />
       <div className="execution-usage-banner">
-        <TileIcon name="layers" color="gradient" />
+        <TileIcon name="stack" color="gradient" />
         <div>
           <h2>通用脚本服务说明</h2>
           <div>
@@ -167,7 +172,7 @@ export function RunsPage() {
               title: "运行编号",
               width: "13%",
               dataIndex: "id",
-              render: (value) => <Link to={`/me/runs/${value}`}>{value}</Link>,
+              render: (value) => <Link to={detailPath(value)}>{value}</Link>,
             },
             {
               title: "服务",
@@ -194,6 +199,7 @@ export function RunsPage() {
               width: "15%",
               render: (_, run) => (
                 <Status tone={runTones[run.state]}>
+                  <Icon name={runIcons[run.state]} />{" "}
                   {runStateLabels[run.state]}
                 </Status>
               ),
@@ -224,7 +230,7 @@ export function RunsPage() {
             {
               title: "详情",
               render: (_, run) => (
-                <Link to={`/me/runs/${run.id}`}>
+                <Link to={detailPath(run.id)}>
                   <Button>详情</Button>
                 </Link>
               ),

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { App, Button, Empty, Modal, Progress, Segmented, Table } from "antd";
 import {
   CalendarOutlined,
@@ -19,7 +18,8 @@ import {
   UsageBanner,
 } from "../components/ui";
 import { previewTasks as tasks } from "../lib/consumer-preview";
-import { findPreviewRun, runTones } from "../lib/execution-preview";
+import { findPreviewRun, runIcons, runTones } from "../lib/execution-preview";
+import { Icon } from "../components/Icon";
 import { formatMinorUnits } from "../lib/money";
 
 function usePausePreview() {
@@ -44,6 +44,7 @@ export function TasksPage() {
   const prototype = bootstrap.data_mode === "prototype";
   const pause = usePausePreview();
   const rows = prototype && scope === "付费服务" ? tasks : [];
+  const listPath = `/me/tasks${params.size ? `?${params}` : ""}`;
   return (
     <div className="tasks-page">
       <PageHeading
@@ -55,7 +56,7 @@ export function TasksPage() {
           </Status>
         }
       />
-      <UsageBanner />
+      <UsageBanner fileIcon="bolt" />
       <div className="important-notice">
         <InfoCircleOutlined aria-hidden />
         <b>重要说明</b>
@@ -160,7 +161,7 @@ export function TasksPage() {
                 return (
                   <>
                     <Status tone={run ? runTones[run.state] : "gray"}>
-                      {row.status}
+                      {run && <Icon name={runIcons[run.state]} />} {row.status}
                     </Status>
                     {row.progress === 100 && <small>{row.used}</small>}
                   </>
@@ -175,6 +176,7 @@ export function TasksPage() {
                   <Progress
                     percent={row.progress}
                     size="small"
+                    strokeWidth={12}
                     strokeColor="#205fff"
                     status="normal"
                   />
@@ -186,7 +188,9 @@ export function TasksPage() {
               title: "操作",
               render: (_, row) => (
                 <div className="row-actions">
-                  <Link to={`/me/tasks/${row.key}`}>
+                  <Link
+                    to={`/me/tasks/${row.key}?${new URLSearchParams({ returnTo: listPath })}`}
+                  >
                     <Button>查看</Button>
                   </Link>
                   {findPreviewRun(row.key)?.state === "RUNNING" && (
@@ -205,7 +209,18 @@ export function TasksPage() {
 export function TaskDetailPage() {
   const { id = "demo" } = useParams();
   const { bootstrap } = useWorkspace();
-  const [dialog, setDialog] = useState<"snapshot" | "copy" | null>(null);
+  const [params, setParams] = useSearchParams();
+  const selectedDialog = params.get("dialog");
+  const dialog =
+    selectedDialog === "snapshot" || selectedDialog === "copy"
+      ? selectedDialog
+      : null;
+  function setDialog(value: "snapshot" | "copy" | null) {
+    const search = new URLSearchParams(params);
+    if (value) search.set("dialog", value);
+    else search.delete("dialog");
+    setParams(search);
+  }
   const pause = usePausePreview();
   const task = tasks.find(
     (item) => item.key === (id === "demo" ? "booking" : id),
@@ -214,6 +229,7 @@ export function TaskDetailPage() {
   if (bootstrap.data_mode !== "prototype")
     return <Empty description="任务服务待接入，任务详情暂不可用" />;
   if (!task || !run) return <Empty description="任务不存在或已失效" />;
+  const runPath = `/me/runs/${run.id}?${new URLSearchParams({ returnTo: `/me/runs?task=${task.key}` })}`;
   const completed = run.state === "SUCCEEDED";
   const waiting = run.state === "WAITING_INPUT";
   const steps = [
@@ -224,11 +240,7 @@ export function TaskDetailPage() {
       status: waiting ? "process" : "finish",
     },
     {
-      title: completed
-        ? "脚本执行完成"
-        : waiting
-          ? "脚本待执行"
-          : "脚本运行中",
+      title: completed ? "脚本执行完成" : waiting ? "脚本待执行" : "脚本运行中",
       detail: task.summary,
       status: completed ? "finish" : waiting ? "wait" : "process",
     },
@@ -284,7 +296,12 @@ export function TaskDetailPage() {
                 <div>
                   <TileIcon name="file" />
                   <span>
-                    <small>关联订单（已支付）</small>
+                    <small>
+                      关联订单
+                      {run.paymentState === "PAID"
+                        ? "（已支付）"
+                        : "（支付待核对）"}
+                    </small>
                     {run.orderId ? (
                       <Link
                         className="dark-link"
@@ -374,7 +391,7 @@ export function TaskDetailPage() {
                 {
                   title: "使用内容（逻辑）",
                   render: () => (
-                    <Link to={`/me/runs/${run.id}`}>
+                    <Link to={runPath}>
                       {run.service} · {run.id}
                     </Link>
                   ),
@@ -436,7 +453,7 @@ export function TaskDetailPage() {
           </Panel>
           <Panel title="操作" className="task-actions-panel">
             <div className="task-primary-actions">
-              <Link to={`/me/runs/${run.id}`}>
+              <Link to={runPath}>
                 <Button
                   type="primary"
                   icon={<PlayCircleOutlined aria-hidden />}

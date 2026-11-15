@@ -14,6 +14,7 @@ export interface PreviewRun {
   goal: "SUCCEEDED" | "PENDING";
   mode: "finite" | "continuous";
   amountMinor: string;
+  paymentState: "PAID" | "UNKNOWN";
   version: string;
   validUntil: string;
   launchUntil: string;
@@ -45,6 +46,7 @@ export const previewRuns: PreviewRun[] = [
     goal: "SUCCEEDED",
     mode: "finite",
     amountMinor: "600",
+    paymentState: "PAID",
     version: "v1.2",
     validUntil: "2026-11-30",
     launchUntil: "2026-11-20",
@@ -89,6 +91,7 @@ export const previewRuns: PreviewRun[] = [
     goal: "PENDING",
     mode: "continuous",
     amountMinor: "800",
+    paymentState: "PAID",
     version: "v1.0",
     validUntil: "2026-11-30",
     launchUntil: "2026-11-14",
@@ -132,6 +135,7 @@ export const previewRuns: PreviewRun[] = [
     goal: "PENDING",
     mode: "finite",
     amountMinor: "500",
+    paymentState: "UNKNOWN",
     version: "v1.0",
     validUntil: "2026-11-30",
     launchUntil: "2026-11-20",
@@ -162,6 +166,12 @@ export const runTones = {
   SUCCEEDED: "green",
   RUNNING: "blue",
   WAITING_INPUT: "orange",
+} as const;
+
+export const runIcons = {
+  SUCCEEDED: "check",
+  RUNNING: "sync",
+  WAITING_INPUT: "clock",
 } as const;
 
 export function findPreviewRun(id: string) {

@@ -1,3 +1,4 @@
+import type { HTMLAttributes } from "react";
 import {
   AppstoreOutlined,
   HomeOutlined,
@@ -55,9 +56,35 @@ import {
   DesktopOutlined,
   ReadOutlined,
   ShoppingCartOutlined,
+  ThunderboltOutlined,
 } from "@ant-design/icons";
 
+function StackOutlined({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span className={`anticon ${className}`} {...props}>
+      <svg
+        viewBox="0 0 24 24"
+        width="1em"
+        height="1em"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      >
+        <path d="M12 3 3 7.5 12 12l9-4.5L12 3Z" />
+        <path d="m3 12 9 4.5 9-4.5M3 16.5l9 4.5 9-4.5" />
+      </svg>
+    </span>
+  );
+}
+
 const icons = {
+  stack: StackOutlined,
+  bolt: ThunderboltOutlined,
   book: ReadOutlined,
   cart: ShoppingCartOutlined,
   cube: CodeSandboxOutlined,

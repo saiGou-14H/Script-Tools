@@ -3,6 +3,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium, expect } from "@playwright/test";
 import { preview } from "vite";
+import { executionReturnPath } from "../apps/web/src/lib/execution-navigation.ts";
 
 const output = path.resolve("output/verification/execution-pages");
 await mkdir(output, { recursive: true });
@@ -100,6 +101,30 @@ async function capture(id, route, title, selector) {
     };
   });
   report.layouts[id] = layout;
+  if (id === "USER-C10") {
+    const dateFont = await page
+      .locator(".record-filters .ant-picker-input input")
+      .first()
+      .evaluate((element) => getComputedStyle(element).fontSize);
+    assert.equal(dateFont, "18px");
+    layout.date_font = dateFont;
+  }
+  if (id === "USER-C11") {
+    const centers = await page
+      .locator(".run-steps .execution-step")
+      .evaluateAll((elements) =>
+        elements.map((element) => {
+          const bounds = element.getBoundingClientRect();
+          return bounds.x + bounds.width / 2;
+        }),
+      );
+    assert.equal(centers.length, 4);
+    const referenceCenters = [510, 853, 1195, 1538];
+    centers.forEach((center, index) =>
+      assert(Math.abs(center - referenceCenters[index]) <= 6),
+    );
+    layout.stage_centers = centers;
+  }
   assert.equal(layout.width, 1814);
   assert.equal(layout.height, 868);
   assert.ok(layout.main.bottom <= 868);
@@ -113,6 +138,21 @@ async function choose(label, option) {
     .click();
 }
 try {
+  for (const kind of ["tasks", "runs"]) {
+    assert.equal(
+      executionReturnPath(`/me/${kind}?status=RUNNING`, kind),
+      `/me/${kind}?status=RUNNING`,
+    );
+    for (const value of [
+      "//example.invalid",
+      "https://example.invalid",
+      "/me/runs-unsafe",
+      "/admin/runs",
+      "/me/tasks/booking",
+    ]) {
+      assert.equal(executionReturnPath(value, kind), undefined);
+    }
+  }
   page = await session();
   const mutations = [];
   page.on("request", (request) => {
@@ -170,6 +210,11 @@ try {
     "免费景点预约",
   );
   await expect(
+    page
+      .locator(".breadcrumb")
+      .getByRole("link", { name: "我的任务", exact: true }),
+  ).toHaveAttribute("href", "/me/tasks?scope=paid");
+  await expect(
     page.getByRole("link", { name: "OD202611130002", exact: true }),
   ).toHaveAttribute("href", "/me/orders/OD202611130002");
   await page.getByRole("button", { name: "配置快照", exact: true }).click();
@@ -177,6 +222,11 @@ try {
     '"visit_date": "2026-11-15"',
   );
   await expect(page.getByRole("dialog")).not.toContainText("source_file");
+  await expect(page).toHaveURL(/dialog=snapshot/);
+  await page.reload();
+  await expect(page.getByRole("dialog")).toContainText(
+    '"visit_date": "2026-11-15"',
+  );
   await page
     .locator(".ant-modal-footer")
     .getByRole("button", { name: "关闭", exact: true })
@@ -196,6 +246,9 @@ try {
   report.checks.push(
     "task detail uses its own order and input snapshot, exposes configuration-copy requirements and filters its run history",
   );
+  report.checks.push(
+    "task scope and configuration dialogs survive detail navigation and refresh through URL state",
+  );
 
   await menu("运行记录");
   await choose("运行状态筛选", "执行中");
@@ -203,6 +256,14 @@ try {
   await expect(page.locator(".record-table .ant-table-row")).toHaveCount(1);
   await expect(page).toHaveURL(/status=RUNNING/);
   await page.reload();
+  await expect(page.locator(".record-table .ant-table-row")).toHaveCount(1);
+  await page.getByRole("button", { name: "详情", exact: true }).click();
+  await expect(page.locator(".run-header")).toContainText("Run082");
+  await page
+    .locator(".breadcrumb")
+    .getByRole("link", { name: "运行记录", exact: true })
+    .click();
+  await expect(page).toHaveURL(/status=RUNNING/);
   await expect(page.locator(".record-table .ant-table-row")).toHaveCount(1);
   await choose("服务筛选", "景点预约");
   await page.getByRole("button", { name: "查询", exact: true }).click();
@@ -229,6 +290,9 @@ try {
   await expect(page.locator(".record-table .ant-table-row")).toHaveCount(0);
   report.checks.push(
     "service, state and actual date controls filter records and preserve applied filters in the URL, including invalid and empty ranges",
+  );
+  report.checks.push(
+    "run detail breadcrumbs retain the applied list filter and return paths accept only their matching task or run list",
   );
 
   await page.goto(base + "/me/runs/RUN082");
@@ -324,6 +388,10 @@ try {
 
   await page.goto(base + "/me/runs/RUN083");
   await expect(page.locator(".run-header")).toContainText("待补充");
+  await expect(page.locator(".run-order-snapshot")).toContainText(
+    "支付资料待载入",
+  );
+  await expect(page.locator(".run-order-snapshot")).not.toContainText("已支付");
   await expect(page.locator(".run-result-panel")).toContainText("单次执行");
   await expect(
     page.getByRole("button", { name: "下载文件", exact: true }),
@@ -332,10 +400,15 @@ try {
   await expect(page).toHaveURL(/category=/);
   await expect(page.locator(".pending-action-card")).toHaveCount(1);
   await page.goto(base + "/me/tasks/data");
+  await expect(page.locator(".task-summary-facts")).toContainText("支付待核对");
+  await expect(page.locator(".task-summary-facts")).not.toContainText("已支付");
   await expect(page.locator(".task-timeline")).toContainText("脚本待执行");
   await expect(page.locator(".task-timeline")).not.toContainText("脚本运行中");
   report.checks.push(
     "a waiting run presents its own pending-input log and routes to the matching pending category",
+  );
+  report.checks.push(
+    "task and run records with missing original payment evidence display unavailable payment details",
   );
 
   const live = await session(true);

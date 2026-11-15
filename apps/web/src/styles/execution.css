@@ -7,7 +7,7 @@
   gap: 15px;
 }
 .app-shell:is(.page-C08, .page-C09, .page-C10, .page-C11) .nav-group {
-  margin-bottom: 6px;
+  margin-bottom: 7.5px;
 }
 .app-shell:is(.page-C08, .page-C09, .page-C10, .page-C11) .nav-group-label {
   font-size: 13px;
@@ -24,18 +24,31 @@
   left: 31.1%;
   width: 31.8%;
 }
+.page-C08 .main-content {
+  padding-right: 21px;
+}
 .page-C08 .usage-banner {
-  padding: 24px 36px;
+  padding: 24px 65px 24px 36px;
   min-height: 150px;
 }
 .page-C08 .banner-options {
   gap: 40px;
+  align-self: flex-start;
+  margin-top: 5px;
 }
 .page-C08 .banner-options > span {
   min-width: 334px;
+  padding: 16px;
+  border-radius: 16px;
+}
+.page-C08 .banner-options b {
+  font-size: 16px;
+}
+.page-C08 .banner-options small {
+  font-size: 14px;
 }
 .page-C08 .important-notice {
-  font-size: 15px;
+  font-size: 16px;
   padding-block: 17px;
   margin-bottom: 23px;
 }
@@ -62,20 +75,28 @@
   display: none;
 }
 .page-C08 .task-table .ant-table-row {
-  height: 86px;
+  height: 88px;
 }
 .page-C08 .task-table .ant-table-tbody > tr > td {
   padding: 12px 16px;
   font-size: 15px;
 }
+.page-C08 .task-table .entity-cell {
+  gap: 14px;
+}
+.page-C08 .task-table .tile-icon {
+  width: 44px;
+  height: 44px;
+}
 .page-C08 .task-table .entity-cell b {
   font-size: 16px;
 }
 .page-C08 .task-table .muted {
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 15px;
+  line-height: 21px;
 }
 .page-C08 .task-table .status {
+  line-height: 24px;
   font-size: 15px;
   padding: 3px 9px;
 }
@@ -86,6 +107,12 @@
   border-color: #6d8fff;
   color: #1555ff;
 }
+.page-C08 .task-table .ant-progress {
+  --ant-progress-line-border-radius: 8px;
+}
+.page-C08 .task-table .ant-progress-text {
+  font-size: 14px;
+}
 .page-C08 .task-table small {
   font-size: 14px;
 }
@@ -93,7 +120,7 @@
   --sidebar-width: 221px;
 }
 .page-C09 .main-content {
-  padding: 72px 16px 10px 21px;
+  padding: 70px 16px 10px 21px;
 }
 .page-C09 .breadcrumb {
   font-size: 15px;
@@ -186,10 +213,12 @@
   margin-bottom: 4px;
 }
 .task-summary-facts b {
-  font-size: 18px;
+  font-size: 20px;
+  line-height: 24px;
 }
 .task-summary-facts .status {
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 22px;
 }
 .task-plan-panel {
   margin-bottom: 18px;
@@ -263,7 +292,7 @@
   font-size: 16px;
 }
 .task-timeline p {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.55;
 }
 .task-plan-summary {
@@ -301,7 +330,7 @@
   padding: 0 20px 16px;
 }
 .task-history-panel .ant-table-cell {
-  font-size: 14px;
+  font-size: 16px;
   white-space: nowrap;
 }
 .task-goal-panel .panel-heading,
@@ -332,7 +361,7 @@
   font-size: 23px;
 }
 .task-goal-facts h3 {
-  font-size: 16px;
+  font-size: 17px;
   margin-bottom: 3px;
 }
 .task-goal-facts .status {
@@ -341,7 +370,7 @@
   margin-left: 5px;
 }
 .task-goal-facts p {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.6;
 }
 .task-goal-panel .notice {
@@ -371,7 +400,7 @@
 .task-primary-actions .ant-btn {
   width: 100%;
   height: 40px;
-  font-size: 15px;
+  font-size: 16px;
 }
 .task-primary-actions .ant-btn-primary:enabled {
   color: #fff;
@@ -387,7 +416,7 @@
   height: 39px;
 }
 .task-copy-action span {
-  font-size: 13px;
+  font-size: 14px;
   color: #63718b;
 }
 .page-C10 {
@@ -426,6 +455,11 @@
   height: 76px;
   font-size: 40px;
 }
+.execution-usage-banner > .tile-icon {
+  color: #fff;
+  background: linear-gradient(135deg, #477eff, #2460ff);
+  box-shadow: 0 5px 12px #1555ff1a;
+}
 .execution-usage-banner h2 {
   font-size: 28px;
   margin-bottom: 10px;
@@ -448,6 +482,9 @@
   color: #1555ff;
   margin-right: 4px;
 }
+.execution-usage-banner > .tile-icon .anticon {
+  color: #fff;
+}
 .page-C10 .record-filters {
   padding: 20px 26px;
   margin: 24px 0 26px;
@@ -463,6 +500,9 @@
   width: 337px;
   height: 44px;
   flex-shrink: 0;
+}
+.page-C10 .record-filters .ant-picker-input > input {
+  font-size: 18px;
 }
 .page-C10 .record-filters .ant-picker + label {
   margin-left: 44px;
@@ -533,7 +573,7 @@
   margin-bottom: 12px;
 }
 .page-C11 .run-header .panel-body {
-  padding: 11px 22px;
+  padding: 11px 27px;
 }
 .page-C11 .run-detail-page .page-heading {
   margin-bottom: 7px;
@@ -545,13 +585,21 @@
   font-size: 14px;
   line-height: 1.4;
 }
+.page-C11 .run-service-notice {
+  font-size: 15px;
+  line-height: 23px;
+}
 .page-C11 .run-header .status {
   font-size: 14px;
 }
 .page-C11 .run-steps {
   min-height: 99px;
-  padding: 10px 14%;
+  padding: 10px 5%;
   margin-bottom: 2px;
+}
+.page-C11 .run-steps .ant-steps-item-title {
+  font-size: 16px;
+  font-weight: 600;
 }
 .page-C11 .run-steps .ant-steps-item-wrapper {
   row-gap: 4px;
@@ -638,6 +686,9 @@
   grid-template-columns: 115px minmax(0, 1fr);
   font-size: 14px;
   margin-bottom: 24px;
+}
+.page-C11 .run-order-snapshot dt {
+  font-weight: 600;
 }
 .page-C11 .run-order-snapshot dd {
   overflow-wrap: anywhere;

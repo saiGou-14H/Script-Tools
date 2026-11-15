@@ -20,6 +20,7 @@ import { useWorkspace } from "../context";
 import { Icon, pageIcons } from "./Icon";
 import type { Role } from "../types";
 import { usePrototype } from "../prototype";
+import { executionReturnPath } from "../lib/execution-navigation";
 
 const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
   {
@@ -201,7 +202,9 @@ const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
       C21: "user",
     },
     C08: {
-      C06: "layers",
+      C04: "file",
+      C10: "clock",
+      C06: "stack",
       C13: "warning",
       C16: "message",
       C19: "shield",
@@ -209,24 +212,29 @@ const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
     },
     C09: {
       C04: "file",
-      C06: "layers",
-      C12: "folder",
+      C06: "stack",
+      C12: "file",
       C13: "info",
       C16: "message",
       C22: "ticket",
     },
     C10: {
-      C06: "layers",
+      C04: "file",
+      C15: "user",
+      C06: "stack",
       C10: "file",
       C12: "chart",
       C13: "calendar",
       C16: "mail",
-      C19: "refund",
+      C19: "history",
       C22: "ticket",
     },
     C11: {
       C04: "file",
-      C06: "layers",
+      C15: "user",
+      C16: "message",
+      C19: "history",
+      C06: "stack",
       C10: "file",
       C12: "chart",
       C13: "clock",
@@ -718,7 +726,13 @@ export function Shell({ pageId }: { pageId: PageId }) {
                   )}
                   {ancestors.map((id) => (
                     <span className="breadcrumb-link" key={id}>
-                      <Link to={pagePath(id)}>{pages[id].title}</Link>
+                      <Link to={
+                        id === "C08" && pageId === "C09"
+                          ? executionReturnPath(new URLSearchParams(location.search).get("returnTo"), "tasks") || pagePath(id)
+                          : id === "C10" && pageId === "C11"
+                            ? executionReturnPath(new URLSearchParams(location.search).get("returnTo"), "runs") || pagePath(id)
+                            : pagePath(id)
+                      }>{pages[id].title}</Link>
                       <span>›</span>
                     </span>
                   ))}

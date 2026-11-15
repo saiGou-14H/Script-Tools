@@ -154,7 +154,7 @@ export function RunDetailPage() {
                       </span>
                     </div>
                     <div>
-                      <TileIcon name="layers" />
+                      <TileIcon name="stack" />
                       <span>
                         <small>去重数量</small>
                         <b>
@@ -339,7 +339,9 @@ export function RunDetailPage() {
             </dd>
             <dt>支付状态</dt>
             <dd>
-              <Status tone="green">已支付</Status>
+              <Status tone={run.paymentState === "PAID" ? "green" : "gray"}>
+                {run.paymentState === "PAID" ? "已支付" : "支付资料待载入"}
+              </Status>
             </dd>
             <dt>服务版本</dt>
             <dd>{run.version}</dd>
