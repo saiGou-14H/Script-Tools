@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T11:01:16.564Z",
+  "date": "2026-11-15T11:50:41.065Z",
   "data_source": "isolated development seed",
   "viewport_source": "individual reference manifest dimensions",
   "visual_acceptance": "pending",
@@ -61,6 +61,9 @@
     "PUBLISHER dashboard fits the reference desktop height",
     "PUBLISHER dashboard uses internal table scrolling at 390px",
     "PUBLISHER live dashboard exposes pending integrations with empty data and neutral indicators",
+    "Admin dashboard regions follow the measured reference coordinates and its workspace label remains fully visible",
+    "Admin trend labels and point markers retain pixel proportions and the filled series terminates at its zero-value gridline",
+    "Admin transaction and service tables preserve reference typography without blank space from Ant Design measurement rows",
     "ADMIN-O01 retains all content within the reference viewport height",
     "ADMIN-O01 renders its authorized role route at the reference viewport",
     "ADMIN-O02 renders its authorized role route at the reference viewport",
@@ -86,6 +89,7 @@
     "ADMIN-C21 renders its authorized role route at the reference viewport",
     "ADMIN-P06 renders its authorized role route at the reference viewport",
     "Admin chart metrics retain selection and coherent end values, and runtime capacity and availability preserve reference detail",
+    "Admin heading, metric and anomaly cards remain unclipped and availability legends remain single-line across 53 widths and breakpoint boundaries from 390px to 1870px",
     "ADMIN dashboard fits the reference desktop height",
     "ADMIN dashboard uses internal table scrolling at 390px",
     "ADMIN live dashboard exposes pending integrations with empty data and neutral indicators",
@@ -271,7 +275,7 @@
       "route": "/travel",
       "reference_file": "01-游客/P04-城市与景点.png",
       "reference_sha256": "998c6f2eebbb0098a600fcdac56b2f0232caeead739fa4d6853276abf033a4a1",
-      "screenshot_sha256": "29497ff5a3cbbab7aaeb3e8c705cc0f1e143c1695b27de5b3e0b21fd8d4975d4",
+      "screenshot_sha256": "1cea29eb651440e29ee1d4ec399dcb5569d078b262b97eea7a876e536fef4757",
       "viewport": {
         "width": 1815,
         "height": 867
@@ -419,7 +423,7 @@
       "route": "/market",
       "reference_file": "02-消费者/P02-脚本市场.png",
       "reference_sha256": "0fa6c0a6c0203406c932cb286720d0f4b557356f485b68d4dcff169cf7bf1ab6",
-      "screenshot_sha256": "c6ba5f7c19380447187b1bb233de55b81827435db40fc42648d167231916a464",
+      "screenshot_sha256": "88fafdbb7ad6de098bcdf62c22f012903d0a36055544929390888e475758096d",
       "viewport": {
         "width": 1815,
         "height": 867
@@ -852,7 +856,7 @@
       "route": "/me/pending",
       "reference_file": "02-消费者/C13-待处理事项.png",
       "reference_sha256": "e6a1298dcd4f3da1e354ebc7212405c06712b3dfa11b761017e22dd4ae8589e9",
-      "screenshot_sha256": "976a823d09a4f62c738354ecdbc3636d629f3592a8b3a0b39274bd5f85dbe5de",
+      "screenshot_sha256": "7eabd6b1d5b56be3c04e4f57403ff31b6b98a58559bde710d0705722abe6706c",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1196,7 +1200,7 @@
       "route": "/publisher/scripts",
       "reference_file": "03-脚本发布者/S02-我的脚本.png",
       "reference_sha256": "7784b9b46b15556830d538fa6d53520e379b12c6e158d86ee90f984c6666f18f",
-      "screenshot_sha256": "243c52f8307448f927be665487c299b424b2632d03c644bb4572e5fdf8a79aaa",
+      "screenshot_sha256": "ef156e6f5824b1a1eae3118deea673afc82411a1320a4812cff93d04537d360b",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -1221,7 +1225,7 @@
       "route": "/publisher/scripts/demo/edit",
       "reference_file": "03-脚本发布者/S03-脚本编辑.png",
       "reference_sha256": "8c7bb4a03966ef5e1056f32f670051f5536d19dc6ec9454e8e16979f36c94190",
-      "screenshot_sha256": "5a9b8ac83b7dfaad03aad0f842add1d102ecb1c086ab8bce1a00235fd0a468ba",
+      "screenshot_sha256": "cb742ea5ced96de38437fe82669b7961b294743cdde8c5d5364703003426b985",
       "capture_state": "manifest_structure_checked_through_ui",
       "viewport": {
         "width": 1815,
@@ -1551,7 +1555,7 @@
       "route": "/publisher/settings",
       "reference_file": "03-脚本发布者/S15-发布者设置.png",
       "reference_sha256": "dcc323547c2f6989796592302c25e36415d89454b74e02ec761a46d69d8a9789",
-      "screenshot_sha256": "570e3db11b5bbaea6d74e08353aceb0e9afe9d5f581740023a606ef84930821a",
+      "screenshot_sha256": "2f6a127e182395a21ee3087457461bacb3037c89f9f6d276d44aff435ca42c25",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -1578,7 +1582,7 @@
       "route": "/publisher/imports",
       "reference_file": "03-脚本发布者/S16-来源与同步.png",
       "reference_sha256": "87d38b402123896526758389cd80a04e846aec2421789ac019edb6919ec05314",
-      "screenshot_sha256": "78f80548792f1654a5a3355f39e97234ee421db49194f9e95c05940f191df2a8",
+      "screenshot_sha256": "133da430ae8d124b95a8f1b0fa7593180d7aa27f4c72ac35b49e2b6101684bf1",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -1603,7 +1607,7 @@
       "route": "/me/settings/account?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/C21-账户设置.png",
       "reference_sha256": "05f5bea2c8dfe63eacd5360d5721c809e296d79eef69a1087ae33e771c12d542",
-      "screenshot_sha256": "1abb12bbde69e46998273b34b3aa8c787051c090e9bde8eff087d6b9764f8d76",
+      "screenshot_sha256": "0ac23b9c71eb486df0a15885819a86bdf60ddeec15ec4bbe2861521ac7048042",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1632,7 +1636,7 @@
       "route": "/help?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/P06-使用帮助.png",
       "reference_sha256": "d5cd9e9d8414514542ac3ce18fc1c7809f179e0f292d06ae34f179cb1f93a15e",
-      "screenshot_sha256": "968e9fabb738abd8a0c1b113dc988420e0d4784256bcb260f491bc182322fa4f",
+      "screenshot_sha256": "0c6bbf708d837559c1e928033e9cf1917a3421dc8a3a8a9cc1eb07f32f896d18",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -1661,7 +1665,7 @@
       "route": "/admin",
       "reference_file": "04-平台管理员/O01-运营总览.png",
       "reference_sha256": "ffc75574ff2e95fab603385f1db669a7b3aa9cdcaaec24ef406e8be00bf4bbbd",
-      "screenshot_sha256": "385b1f1efe929fc8928ffd7fa7063d27f34a28ab43fcf04db208483ee001f496",
+      "screenshot_sha256": "d4618bdaecc01e39e86c130492d78894975b2672e1533743a0422812ea217d42",
       "viewport": {
         "width": 1815,
         "height": 867
@@ -1678,7 +1682,7 @@
           "待处理异常",
           "商业指标",
           "技术指标",
-          "最近服务交易 示例数据",
+          "最近服务交易 （示例数据）",
           "服务运行概览"
         ],
         "empty_states": []
@@ -2231,7 +2235,7 @@
       "route": "/me/settings/account?workspace=ADMIN",
       "reference_file": "04-平台管理员/C21-账户设置.png",
       "reference_sha256": "4c19673067227af6a547e9e5a5e65485b22c6b5632d2758b15ca596191e0a1be",
-      "screenshot_sha256": "fdacd0e1564271078b77934d8714946ecc733cefd51e41b513d28a25506c8f80",
+      "screenshot_sha256": "b81e464867509f4ead3cb04cf4b3b145831752823ff74aed1855c92cca5ab167",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -2284,7 +2288,7 @@
     }
   ],
   "errors": [],
-  "build_sha256": "eb1c0acffaf4147d4ba10bca6caf6f52d5c293d509b1757412686410deaa25a8",
+  "build_sha256": "649b72cd839e2f4639236057c55bc615decae3c6befe5ca716ba5ac2f32c8ccd",
   "source_sha256": {
     "apps/web/src/pages/PublisherHome.tsx": "c4e6110c2b4ca075150179528a1af443d45a8c07730648d75a148100609abdbf",
     "apps/web/src/pages/PublisherFinance.tsx": "e799c0d9eaae017daf2f4e94f82d9265cabee7806199ff1bd278c5dce1211ee9",
@@ -2295,8 +2299,8 @@
     "apps/web/src/lib/publisher-finance-preview.ts": "cf5620237f6acc8ae86085a046f69e17fee796981700ea918d37587fd51e658c",
     "apps/control-api/src/publisher/publisher-profile.controller.ts": "31efc67557d346b7c1acca0050078a018ead665668d0843e664a46009b022c89",
     "apps/control-api/src/publisher/publisher-profile.service.ts": "46168a11c3ae4f6c79bbf628a656644274691144c1dd3e0ffc05196052b520c9",
-    "apps/web/src/pages/AdminHome.tsx": "9316fc19b65bcc1c794debad93e1ece382aa10d601e88d5cfac97359ddcbd1f5",
-    "apps/web/src/components/Shell.tsx": "4610f4a8376c4ef302e4834175a7afa21b5cb1c7bab6e6db1b3c17fa23565d8f",
+    "apps/web/src/pages/AdminHome.tsx": "3c73893ea8dc991acae252e2455b49ffd5b7bff29edea6a41139e56fa93f33c5",
+    "apps/web/src/components/Shell.tsx": "d3c9cff4486e3d499ce67158c731516a2558964528844f525a94513302a37dfa",
     "apps/web/src/router.tsx": "13835e3616169904e8bb7a8ca97e168ce0498b35c6ad7ca1b551380e0495baf6",
     "apps/web/src/context.tsx": "3f9c2cb25f58c2aacc222cd6eba9719b61618821db92309151547baab052890d",
     "apps/web/src/styles.css": "c894d789e31ff592c70d6b1ef94b1a031dba775d21cf942e2ecd1ece66f6a6b6",
@@ -2305,7 +2309,7 @@
     "apps/control-api/src/account/account.controller.ts": "34a335b05cd2f90c6cd42f11d8c44cb4078100bbb144e49f49ff39c1a5c7618d",
     "apps/control-api/src/account/account.service.ts": "95a5de8b87154cf907164c6d98d233a045a745cabf918ffc0b1974439a960ad4",
     "apps/web/src/components/ui.tsx": "fda1383297ec6bdd3f64a9ca9d2ece2f4c9555ca7175341b15ae24cb274e2323",
-    "apps/web/src/styles/dashboards.css": "3eb132a29c3b4228c1e4c495bff02f2659103ea2955c1455b88823c0180ebb6e",
+    "apps/web/src/styles/dashboards.css": "adaef61109b8ffa7c9a9603707bfd334c4d93b4070b1eba54c41d787a6cba6ba",
     "apps/web/src/main.tsx": "39cf82ad38c20fe0f7ea414950308e3c374e1174c36ead00d4824b41536811d4",
     "apps/web/src/pages/ScriptEditor.tsx": "3c59c39577884eb4c892df21494a7baac8371194b9c420d77d173d47ea9293bb",
     "apps/web/src/components/SourceCodeEditor.tsx": "a73d17031aad4f6752b54ff2e6c9d10ff7772c74e9789dbe63cd6a347499dfa0",
@@ -2322,7 +2326,7 @@
     "apps/web/src/styles/consumer.css": "cd9b3c717cea3b231ec4b3ff0eafc2b0be24f7a57b73dd35279f8346029dad64",
     "apps/web/src/pages/Checkout.tsx": "b0bb27846c90cca89d426e820b08acdbdefc20a10d93cc47defa8b88a0c1a148",
     "apps/web/src/prototype.tsx": "151e084a42f3a5b7a8bd3bca69175f056c54ae1f3b63f368310014ff29e799b1",
-    "apps/web/src/components/Icon.tsx": "e020ef3eb505952c7927a4b0290a3e12f0e6dc0e9a37bec7c4b24fabb03dee67",
+    "apps/web/src/components/Icon.tsx": "65758d3517b35950bc8913181b17fa9b0418fbe8f9c26af3da5ea61a781603cf",
     "apps/web/src/pages/Tasks.tsx": "c8e9168d2254715162ec8060cf5f385542e6c4905ef2256703f04ebe74f83229",
     "apps/web/src/pages/Runs.tsx": "0715f1998cea001ebfd1bcd5f34f25bd4326606d290ef9c0c6d93c99832fa91d",
     "apps/web/src/pages/RunDetail.tsx": "bd9014d70a428a0e83b4445eea532d3fe3799e8c48cef11d2e531e465328c014",
@@ -2361,5 +2365,672 @@
     "apps/web/src/styles/retail.css": "1480d70607429f894a1b9d109c0c8e981f0ad78d6daaa947c7aa8034f06ee64e"
   },
   "source_hash_normalization": "LF",
+  "admin_dashboard_reference_regions": [
+    {
+      "selector": ".admin-head-stats",
+      "expected": {
+        "x": 220,
+        "y": 142,
+        "width": 1580,
+        "height": 89
+      },
+      "actual": {
+        "x": 220,
+        "y": 141.8125,
+        "width": 1579,
+        "height": 90.84375
+      },
+      "tolerance_px": 3
+    },
+    {
+      "selector": ".admin-upper-grid > .panel:first-child",
+      "expected": {
+        "x": 220,
+        "y": 253,
+        "width": 618,
+        "height": 231
+      },
+      "actual": {
+        "x": 220,
+        "y": 252.65625,
+        "width": 617.09375,
+        "height": 231
+      },
+      "tolerance_px": 3
+    },
+    {
+      "selector": ".admin-upper-grid > .panel:nth-child(2)",
+      "expected": {
+        "x": 854,
+        "y": 253,
+        "width": 424,
+        "height": 231
+      },
+      "actual": {
+        "x": 853.09375,
+        "y": 252.65625,
+        "width": 422.6875,
+        "height": 231
+      },
+      "tolerance_px": 3
+    },
+    {
+      "selector": ".admin-middle-grid > .panel:first-child",
+      "expected": {
+        "x": 220,
+        "y": 499,
+        "width": 844,
+        "height": 139
+      },
+      "actual": {
+        "x": 220,
+        "y": 499.65625,
+        "width": 844.9375,
+        "height": 138
+      },
+      "tolerance_px": 3
+    },
+    {
+      "selector": ".admin-bottom-grid > .panel:first-child",
+      "expected": {
+        "x": 220,
+        "y": 653,
+        "width": 853,
+        "height": 200
+      },
+      "actual": {
+        "x": 220,
+        "y": 652.65625,
+        "width": 852.53125,
+        "height": 200
+      },
+      "tolerance_px": 3
+    }
+  ],
+  "admin_dashboard_responsive": [
+    {
+      "width": 390,
+      "document_width": 390,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 700,
+      "document_width": 700,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 701,
+      "document_width": 701,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 900,
+      "document_width": 900,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 901,
+      "document_width": 901,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1000,
+      "document_width": 1000,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1001,
+      "document_width": 1001,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1200,
+      "document_width": 1200,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1201,
+      "document_width": 1201,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1450,
+      "document_width": 1450,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1451,
+      "document_width": 1451,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1650,
+      "document_width": 1650,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1651,
+      "document_width": 1651,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 427,
+      "document_width": 427,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 464,
+      "document_width": 464,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 501,
+      "document_width": 501,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 538,
+      "document_width": 538,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 575,
+      "document_width": 575,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 612,
+      "document_width": 612,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 649,
+      "document_width": 649,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 686,
+      "document_width": 686,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 723,
+      "document_width": 723,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 760,
+      "document_width": 760,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 797,
+      "document_width": 797,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 834,
+      "document_width": 834,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 871,
+      "document_width": 871,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 908,
+      "document_width": 908,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 945,
+      "document_width": 945,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 982,
+      "document_width": 982,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1019,
+      "document_width": 1019,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1056,
+      "document_width": 1056,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1093,
+      "document_width": 1093,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1130,
+      "document_width": 1130,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1167,
+      "document_width": 1167,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1204,
+      "document_width": 1204,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1241,
+      "document_width": 1241,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1278,
+      "document_width": 1278,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1315,
+      "document_width": 1315,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1352,
+      "document_width": 1352,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1389,
+      "document_width": 1389,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1426,
+      "document_width": 1426,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1463,
+      "document_width": 1463,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1500,
+      "document_width": 1500,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1537,
+      "document_width": 1537,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1574,
+      "document_width": 1574,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1611,
+      "document_width": 1611,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1648,
+      "document_width": 1648,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1685,
+      "document_width": 1685,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1722,
+      "document_width": 1722,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1759,
+      "document_width": 1759,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1796,
+      "document_width": 1796,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1833,
+      "document_width": 1833,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "width": 1870,
+      "document_width": 1870,
+      "clipped": [],
+      "legend_heights": [
+        34,
+        34,
+        34,
+        34
+      ]
+    }
+  ],
   "result": "PASS"
 }

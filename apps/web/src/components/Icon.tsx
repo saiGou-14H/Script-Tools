@@ -66,6 +66,12 @@ import {
   FileWordOutlined,
   FileZipOutlined,
   PlusCircleOutlined,
+  CheckCircleFilled,
+  HourglassOutlined,
+  ExclamationCircleOutlined,
+  BarChartOutlined,
+  UnorderedListOutlined,
+  LineChartOutlined,
 } from "@ant-design/icons";
 
 function PersonFilled({
@@ -150,7 +156,127 @@ function TicketOutlined({
   );
 }
 
+function PaperPlaneFilled({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span className={`anticon ${className}`} {...props}>
+      <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">
+        <path d="M2 9.5 22 2l-7.5 20-4.2-8.3L18 6l-8.9 6.5L2 9.5Z" />
+      </svg>
+    </span>
+  );
+}
+
+function RefundBoxOutlined({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span className={`anticon ${className}`} {...props}>
+      <svg
+        viewBox="0 0 24 24"
+        width="1em"
+        height="1em"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M8 3h10a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-2" />
+        <path d="m7 6-4 4 4 4m-4-4h9a4 4 0 0 1 0 8h-2" />
+      </svg>
+    </span>
+  );
+}
+
+function ServerRackOutlined({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span className={`anticon ${className}`} {...props}>
+      <svg
+        viewBox="0 0 24 24"
+        width="1em"
+        height="1em"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <rect x="3" y="3" width="18" height="4" rx="1" />
+        <rect x="3" y="10" width="18" height="4" rx="1" />
+        <rect x="3" y="17" width="18" height="4" rx="1" />
+        <path d="M6 5h.01M6 12h.01M6 19h.01M16 5h2m-2 7h2m-2 7h2" />
+      </svg>
+    </span>
+  );
+}
+
+function CoinStackOutlined({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span className={`anticon ${className}`} {...props}>
+      <svg
+        viewBox="0 0 24 24"
+        width="1em"
+        height="1em"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <ellipse cx="15.5" cy="5" rx="5.5" ry="2.5" />
+        <path d="M10 5v4c0 1.4 2.5 2.5 5.5 2.5S21 10.4 21 9V5m-7 10c3.8.5 7-.8 7-2.5V9m-7 10c3.8.5 7-.8 7-2.5v-4" />
+        <ellipse cx="7.5" cy="12" rx="5.5" ry="2.5" />
+        <path d="M2 12v4c0 1.4 2.5 2.5 5.5 2.5S13 17.4 13 16v-4M2 16v3c0 1.4 2.5 2.5 5.5 2.5S13 20.4 13 19v-3" />
+      </svg>
+    </span>
+  );
+}
+
+function VerifiedTargetOutlined({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span className={`anticon ${className}`} {...props}>
+      <svg
+        viewBox="0 0 24 24"
+        width="1em"
+        height="1em"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M20.5 9A9 9 0 1 1 15 3.5M17.5 11a6 6 0 1 1-5-5" />
+        <path d="m8 12 3 3 8-9m-2-3 1 3 3 1" />
+      </svg>
+    </span>
+  );
+}
+
 const icons = {
+  "send-solid": PaperPlaneFilled,
+  "check-solid": CheckCircleFilled,
+  "refund-box": RefundBoxOutlined,
+  rack: ServerRackOutlined,
+  coins: CoinStackOutlined,
+  "verified-target": VerifiedTargetOutlined,
+  hourglass: HourglassOutlined,
+  exclamation: ExclamationCircleOutlined,
+  bars: BarChartOutlined,
+  list: UnorderedListOutlined,
+  "line-chart": LineChartOutlined,
   "upload-tray": UploadOutlined,
   send: SendOutlined,
   "person-solid": PersonFilled,

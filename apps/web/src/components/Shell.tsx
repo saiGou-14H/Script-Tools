@@ -50,9 +50,9 @@ const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
       S12: "audit", S13: "database", C21: "user",
     },
     O01: {
-      O03: "cube", O05: "layers", O06: "file", O08: "payment",
-      O10: "reconciliation", O12: "settings", O13: "layers",
-      O14: "server", O15: "audit", O17: "upload", O20: "database", C21: "user",
+      O03: "stack", O05: "stack", O06: "file", O08: "payment",
+      O10: "reconciliation", O11: "database", O12: "settings", O13: "list",
+      O14: "cube", O15: "line-chart", O17: "send", O20: "database", C21: "user",
     },
     P04: {
       C04: "file",
@@ -592,7 +592,11 @@ export function Shell({ pageId }: { pageId: PageId }) {
           }
           className="brand"
         >
-          <span className="brand-code">&lt;/&gt;</span>
+          {pageId === "O01" ? (
+            <Icon name="send-solid" />
+          ) : (
+            <span className="brand-code">&lt;/&gt;</span>
+          )}
           <strong>Script Tools</strong>
           <span>通用脚本服务平台</span>
         </Link>
@@ -646,15 +650,19 @@ export function Shell({ pageId }: { pageId: PageId }) {
             }}
           >
             <Button className="workspace-button">
-              {pageId === "C21" && role === "ADMIN" && <Icon name="stack" />}
-              {role === "GUEST" && ["P01", "P07", "P06"].includes(pageId)
-                ? "当前工作区　"
-                : role === "GUEST"
-                  ? "当前身份　"
-                  : compactAdmin &&
-                      !["O06", "O07", "O14", "O16", "O19", "C21"].includes(pageId)
-                    ? ""
-                    : "当前工作区　"}
+              {["C21", "O01"].includes(pageId) && role === "ADMIN" && (
+                <Icon name={pageId === "O01" ? "shield" : "stack"} />
+              )}
+              {pageId === "O01"
+                ? ""
+                : role === "GUEST" && ["P01", "P07", "P06"].includes(pageId)
+                  ? "当前工作区　"
+                  : role === "GUEST"
+                    ? "当前身份　"
+                    : compactAdmin &&
+                        !["O06", "O07", "O14", "O16", "O19", "C21"].includes(pageId)
+                      ? ""
+                      : "当前工作区　"}
               <b>{roleName}</b>
               <DownOutlined />
             </Button>

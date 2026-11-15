@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T11:08:41.790Z",
+  "date": "2026-11-15T11:57:55.279Z",
   "checks": [
     "account reads expose masked identity and fixed device hints, preserve string revisions and reject anonymous access, CSRF failures and unsupported or invalid profile fields",
     "profile commands create legacy preferences, canonicalize locale and timezone, preserve original idempotent responses and serialize concurrent retries without losing revisions",

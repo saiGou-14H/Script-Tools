@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T20:01:06.513Z",
+  "date": "2026-11-15T11:56:20.255Z",
   "checks": [
     "all eight infrastructure and platform pages render within the reference viewport with complete navigation",
     "rate and pool-drain previews preserve occupied capacity while pending work remains visible",

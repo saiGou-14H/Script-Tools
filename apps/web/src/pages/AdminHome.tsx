@@ -1,4 +1,5 @@
 import { Button, Empty, Progress, Select, Table } from "antd";
+import { useLayoutEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { PageHeading, Panel, Status, TileIcon, More } from "../components/ui";
 import { Icon } from "../components/Icon";
@@ -71,12 +72,31 @@ export function AdminHomePage() {
         },
       ]
     : [];
+  const chartRef = useRef<SVGSVGElement>(null);
+  const [chartWidth, setChartWidth] = useState(540);
+  useLayoutEffect(() => {
+    const element = chartRef.current;
+    if (!element) return;
+    const measure = () =>
+      setChartWidth(Math.max(80, element.getBoundingClientRect().width));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
   const values = chartMetrics[metric];
+  const firstX = 16;
+  const lastX = chartWidth - 52;
+  const baseline = 120;
+  const plotHeight = 110;
   const points = values
-    .map((value, index) => `${20 + index * 100},${190 - (value / 1200) * 176}`)
+    .map(
+      (value, index) =>
+        `${firstX + (index * (lastX - firstX)) / (values.length - 1)},${baseline - (value / 1200) * plotHeight}`,
+    )
     .join(" ");
   const latestValue = values[values.length - 1];
-  const latestY = 190 - (latestValue / 1200) * 176;
+  const latestY = baseline - (latestValue / 1200) * plotHeight;
   return (
     <div className="admin-dashboard">
       <PageHeading
@@ -91,7 +111,7 @@ export function AdminHomePage() {
           <div className="row-actions">
             快捷入口{" "}
             <Link to="/admin/reconciliation">
-              <Button type="primary" icon={<Icon name="chart" />}>
+              <Button type="primary" icon={<Icon name="bars" />}>
                 对账
               </Button>
             </Link>
@@ -106,17 +126,18 @@ export function AdminHomePage() {
       />
       <div className="admin-head-stats">
         {[
-          ["cart", "今日服务成交", "¥860", "+12.3%"],
-          ["refund", "退款", "¥80", "+33.3%"],
-          ["check", "有效使用", "128 次", "+20.8%"],
-          ["server", "运行节点", "8 个", "—"],
-        ].map(([icon, title, value, change]) => (
+          ["cart", "今日服务成交", "¥860", "", "+12.3%"],
+          ["refund-box", "退款", "¥80", "", "+33.3%"],
+          ["check-solid", "有效使用", "128", "次", "+20.8%"],
+          ["rack", "运行节点", "8", "个", "—"],
+        ].map(([icon, title, value, unit, change]) => (
           <div key={title}>
             <TileIcon name={icon} />
             <span>
               <b>{title}</b>
               <strong>
-                {prototype ? value : "—"}{" "}
+                {prototype ? value : "—"}
+                {prototype && unit && <em>{unit}</em>}{" "}
                 <small className={title === "退款" ? "negative" : "positive"}>
                   {prototype ? `${change === "—" ? "" : "▲ "}${change}` : ""}
                 </small>
@@ -162,8 +183,8 @@ export function AdminHomePage() {
               )}
             </div>
             <svg
-              viewBox="0 0 640 205"
-              preserveAspectRatio="none"
+              ref={chartRef}
+              viewBox={`0 0 ${chartWidth} 127`}
               role="img"
               aria-label={
                 prototype
@@ -177,20 +198,30 @@ export function AdminHomePage() {
                   <stop offset="100%" stopColor="#2d69ff" stopOpacity=".02" />
                 </linearGradient>
               </defs>
-              {[14, 43.33, 72.67, 102, 131.33, 160.67, 190].map((y) => (
-                <line key={y} x1="0" x2="640" y1={y} y2={y} stroke="#eef1f7" />
+              {Array.from(
+                { length: 7 },
+                (_, index) => 10 + (index * plotHeight) / 6,
+              ).map((y) => (
+                <line
+                  key={y}
+                  x1="0"
+                  x2={chartWidth}
+                  y1={y}
+                  y2={y}
+                  stroke="#eef1f7"
+                />
               ))}
               {prototype && (
                 <>
                   <polygon
-                    points={`20,200 ${points} 620,200`}
+                    points={`${firstX},${baseline} ${points} ${lastX},${baseline}`}
                     fill="url(#chart-area)"
                   />
                   <polyline
                     points={points}
                     fill="none"
                     stroke="#2260ff"
-                    strokeWidth="3"
+                    strokeWidth="2"
                   />
                   {points.split(" ").map((point, index) => {
                     const [x, y] = point.split(",");
@@ -199,10 +230,10 @@ export function AdminHomePage() {
                         key={point}
                         cx={x}
                         cy={y}
-                        r="4"
+                        r="3.5"
                         fill="#2260ff"
                         stroke="#fff"
-                        strokeWidth="2"
+                        strokeWidth="1.5"
                       >
                         <title>
                           {chartDates[index]} {metric} ¥{values[index]}
@@ -212,11 +243,11 @@ export function AdminHomePage() {
                   })}
                   <g
                     className="dashboard-chart-value"
-                    transform={`translate(620,${latestY})`}
+                    transform={`translate(${lastX},${latestY})`}
                   >
-                    <rect x="-52" y="-39" width="64" height="28" rx="5" />
+                    <rect x="-12" y="-35" width="52" height="24" rx="5" />
                     <path d="M-5,-11 L0,-5 L5,-11" />
-                    <text x="-20" y="-20" textAnchor="middle">
+                    <text x="14" y="-18" textAnchor="middle">
                       ¥{latestValue}
                     </text>
                   </g>
@@ -262,12 +293,12 @@ export function AdminHomePage() {
             {(prototype
               ? [
                   [
-                    "history",
+                    "hourglass",
                     "支付待核对",
                     "存在来自自动跳转的支付记录，需要人工核对",
                     "2",
                   ],
-                  ["warning", "退款未知", "存在未明确结果的退款申请", "1"],
+                  ["exclamation", "退款未知", "存在未明确结果的退款申请", "1"],
                   [
                     "tool",
                     "部署故障",
@@ -310,10 +341,10 @@ export function AdminHomePage() {
         <Panel title="商业指标">
           <div className="metric-grid">
             {[
-              ["payment", "交易额", "¥6,820", "blue"],
-              ["sync", "退款额", "¥320", "red"],
-              ["database", "净交易额", "¥6,500", "green"],
-              ["shield", "已结算平台服务费", "¥260", "purple"],
+              ["money", "交易额", "¥6,820", "blue"],
+              ["refund-box", "退款额", "¥320", "red"],
+              ["coins", "净交易额", "¥6,500", "green"],
+              ["verified-target", "已结算平台服务费", "¥260", "purple"],
             ].map(([icon, label, value, color]) => (
               <div className={`metric-block stat-${color}`} key={label}>
                 <TileIcon name={icon} color={color} />
@@ -328,7 +359,7 @@ export function AdminHomePage() {
         <Panel title="技术指标">
           <div className="metric-grid technical-metrics">
             {[
-              ["server", "执行容量", "2,400 次/日", "blue"],
+              ["rack", "执行容量", "2,400 次/日", "blue"],
               ["check", "任务成功率", "99.2%", "green"],
               ["clock", "平均执行时长", "1.8 秒", "purple"],
             ].map(([icon, label, value, color]) => (
@@ -371,7 +402,7 @@ export function AdminHomePage() {
       </div>
       <div className="admin-bottom-grid">
         <Panel
-          title={<>最近服务交易 {prototype && <Status>示例数据</Status>}</>}
+          title={<>最近服务交易 {prototype && <small>（示例数据）</small>}</>}
           extra={<More to="/admin/orders">查看更多订单</More>}
         >
           <Table
@@ -382,25 +413,31 @@ export function AdminHomePage() {
             dataSource={orders}
             locale={{ emptyText: "服务交易接口待接入" }}
             columns={[
-              { title: "订单号", dataIndex: "id" },
-              { title: "服务名称", dataIndex: "name" },
-              { title: "业务场景", dataIndex: "scene" },
+              { title: "订单号", dataIndex: "id", width: 136 },
+              { title: "服务名称", dataIndex: "name", width: 144 },
+              { title: "业务场景", dataIndex: "scene", width: 100 },
               {
                 title: "成交金额",
                 dataIndex: "amount",
+                width: 83,
                 render: (value) => `¥${value}`,
               },
-              { title: "使用次数（PER_USE）", render: () => "1 次" },
+              {
+                title: "使用次数（PER_USE）",
+                width: 143,
+                render: () => "1 次",
+              },
               {
                 title: "状态",
                 dataIndex: "status",
+                width: 91,
                 render: (value) => (
                   <Status tone={value === "已退款" ? "orange" : "green"}>
                     {value}
                   </Status>
                 ),
               },
-              { title: "下单时间", dataIndex: "time" },
+              { title: "下单时间", dataIndex: "time", width: 125 },
             ]}
           />
         </Panel>
@@ -416,10 +453,11 @@ export function AdminHomePage() {
             dataSource={orders}
             locale={{ emptyText: "服务运行概览接口待接入" }}
             columns={[
-              { title: "服务名称", dataIndex: "name" },
-              { title: "业务场景", dataIndex: "scene" },
+              { title: "服务名称", dataIndex: "name", width: 194 },
+              { title: "业务场景", dataIndex: "scene", width: 130 },
               {
                 title: "状态",
+                width: 148,
                 render: (_, row) => (
                   <Status tone={row.scene === "旅行预约" ? "orange" : "green"}>
                     <i className="dashboard-status-dot" aria-hidden="true" />
@@ -429,9 +467,15 @@ export function AdminHomePage() {
               },
               {
                 title: "今日使用",
+                width: 125,
                 render: (_, row) => `${row.uses} 次`,
               },
-              { title: "可用率", dataIndex: "availability" },
+              {
+                title: "可用率",
+                dataIndex: "availability",
+                width: 83,
+                align: "center",
+              },
             ]}
           />
         </Panel>

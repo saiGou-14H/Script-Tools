@@ -461,6 +461,137 @@ try {
       assert.equal(bytes.readUInt32BE(16), reference.width);
       assert.equal(bytes.readUInt32BE(20), reference.height);
       const layout = await dimensions(page);
+      if (key === "ADMIN-O01") {
+        const regions = [
+          [".admin-head-stats", { x: 220, y: 142, width: 1580, height: 89 }],
+          [
+            ".admin-upper-grid > .panel:first-child",
+            { x: 220, y: 253, width: 618, height: 231 },
+          ],
+          [
+            ".admin-upper-grid > .panel:nth-child(2)",
+            { x: 854, y: 253, width: 424, height: 231 },
+          ],
+          [
+            ".admin-middle-grid > .panel:first-child",
+            { x: 220, y: 499, width: 844, height: 139 },
+          ],
+          [
+            ".admin-bottom-grid > .panel:first-child",
+            { x: 220, y: 653, width: 853, height: 200 },
+          ],
+        ];
+        report.admin_dashboard_reference_regions = [];
+        for (const [selector, expected] of regions) {
+          const actual = await page.locator(selector).evaluate((element) => {
+            const rect = element.getBoundingClientRect();
+            return {
+              x: rect.x,
+              y: rect.y,
+              width: rect.width,
+              height: rect.height,
+            };
+          });
+          for (const coordinate of Object.keys(expected))
+            assert(
+              Math.abs(actual[coordinate] - expected[coordinate]) <= 3,
+              JSON.stringify({ selector, expected, actual }),
+            );
+          report.admin_dashboard_reference_regions.push({
+            selector,
+            expected,
+            actual,
+            tolerance_px: 3,
+          });
+        }
+        const workspace = page.locator(".workspace-button");
+        await expect(workspace).toHaveText("平台管理员");
+        await expect(workspace).toBeVisible();
+        assert(
+          await workspace.evaluate(
+            (element) => element.scrollWidth <= element.clientWidth,
+          ),
+        );
+        await expect(page.locator(".brand .anticon")).toBeVisible();
+        report.checks.push(
+          "Admin dashboard regions follow the measured reference coordinates and its workspace label remains fully visible",
+        );
+
+        const graph = await page
+          .locator(".line-chart svg")
+          .evaluate((element) => {
+            const matrix = element.getScreenCTM();
+            return {
+              scale_x: matrix.a,
+              scale_y: matrix.d,
+              grid: [...element.querySelectorAll("line")].map((line) =>
+                Number(line.getAttribute("y1")),
+              ),
+              points: [...element.querySelectorAll("circle")].map((point) => ({
+                x: Number(point.getAttribute("cx")),
+                y: Number(point.getAttribute("cy")),
+              })),
+              area: element
+                .querySelector("polygon")
+                .getAttribute("points")
+                .trim()
+                .split(/\s+/)
+                .map((point) => point.split(",").map(Number)),
+            };
+          });
+        assert(
+          Math.abs(graph.scale_x - 1) < 0.01 &&
+            Math.abs(graph.scale_y - 1) < 0.01,
+          JSON.stringify(graph),
+        );
+        assert.equal(graph.grid.length, 7);
+        assert.equal(graph.points.length, 7);
+        assert.equal(graph.area[0][1], graph.grid.at(-1));
+        assert.equal(graph.area.at(-1)[1], graph.grid.at(-1));
+        for (const [index, amount] of [
+          600, 680, 590, 640, 850, 630, 860,
+        ].entries())
+          assert(
+            Math.abs(graph.points[index].y - (120 - (amount / 1200) * 110)) <
+              0.01,
+          );
+        report.checks.push(
+          "Admin trend labels and point markers retain pixel proportions and the filled series terminates at its zero-value gridline",
+        );
+
+        const tables = await page
+          .locator(".admin-bottom-grid .ant-table")
+          .evaluateAll((elements) =>
+            elements.map((table) => ({
+              measure_height: table
+                .querySelector(".ant-table-measure-row")
+                .getBoundingClientRect().height,
+              header_bottom: table
+                .querySelector(".ant-table-thead")
+                .getBoundingClientRect().bottom,
+              first_top: table
+                .querySelector(".ant-table-row")
+                .getBoundingClientRect().top,
+              cell_font: getComputedStyle(
+                table.querySelector(".ant-table-row td"),
+              ).fontSize,
+              rows: table.querySelectorAll(".ant-table-row").length,
+            })),
+          );
+        assert.equal(tables.length, 2);
+        for (const table of tables) {
+          assert.equal(table.measure_height, 0);
+          assert(
+            Math.abs(table.header_bottom - table.first_top) < 0.1,
+            JSON.stringify(table),
+          );
+          assert.equal(table.cell_font, "13px");
+          assert.equal(table.rows, 4);
+        }
+        report.checks.push(
+          "Admin transaction and service tables preserve reference typography without blank space from Ant Design measurement rows",
+        );
+      }
       if (key === "PUBLISHER-S02" || key === "ADMIN-O01") {
         assert(
           layout.document_height <= reference.height,
@@ -583,6 +714,74 @@ try {
         ).toHaveText(["99.8%", "99.6%", "99.5%", "98.9%"]);
         report.checks.push(
           "Admin chart metrics retain selection and coherent end values, and runtime capacity and availability preserve reference detail",
+        );
+        const desktopViewport = page.viewportSize();
+        const widths = [
+          ...new Set([
+            390,
+            700,
+            701,
+            900,
+            901,
+            1000,
+            1001,
+            1200,
+            1201,
+            1450,
+            1451,
+            1650,
+            1651,
+            ...Array.from({ length: 41 }, (_, index) => 390 + index * 37),
+          ]),
+        ];
+        report.admin_dashboard_responsive = [];
+        for (const width of widths) {
+          await page.setViewportSize({ width, height: 900 });
+          await expect
+            .poll(() =>
+              page
+                .locator(".line-chart svg")
+                .evaluate((element) =>
+                  Math.abs(
+                    element.getBoundingClientRect().width -
+                      element.viewBox.baseVal.width,
+                  ),
+                ),
+            )
+            .toBeLessThan(0.5);
+          const state = await page.evaluate(() => ({
+            document_width: document.documentElement.scrollWidth,
+            clipped: [
+              ...document.querySelectorAll(
+                ".availability,.metric-block,.page-heading,.admin-head-stats > div,.admin-anomalies > a",
+              ),
+            ]
+              .filter(
+                (element) => element.scrollWidth > element.clientWidth + 1,
+              )
+              .map((element) => ({
+                class: element.className,
+                width: element.clientWidth,
+                scroll: element.scrollWidth,
+              })),
+            legend_heights: [
+              ...document.querySelectorAll(".availability p"),
+            ].map((element) => element.getBoundingClientRect().height),
+          }));
+          assert(
+            state.document_width <= width && state.clipped.length === 0,
+            JSON.stringify({ width, ...state }),
+          );
+          assert(
+            state.legend_heights.every((height) => height <= 34.1),
+            JSON.stringify({ width, ...state }),
+          );
+          report.admin_dashboard_responsive.push({ width, ...state });
+          if (width === 1024) await capture("ADMIN-O01-" + width, true);
+        }
+        await page.setViewportSize(desktopViewport);
+        report.checks.push(
+          "Admin heading, metric and anomaly cards remain unclipped and availability legends remain single-line across 53 widths and breakpoint boundaries from 390px to 1870px",
         );
       }
       await page.goto(base + route);
