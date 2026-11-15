@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T11:50:41.065Z",
+  "date": "2026-11-15T13:09:59.070Z",
   "data_source": "isolated development seed",
   "viewport_source": "individual reference manifest dimensions",
   "visual_acceptance": "pending",
@@ -275,7 +275,7 @@
       "route": "/travel",
       "reference_file": "01-游客/P04-城市与景点.png",
       "reference_sha256": "998c6f2eebbb0098a600fcdac56b2f0232caeead739fa4d6853276abf033a4a1",
-      "screenshot_sha256": "1cea29eb651440e29ee1d4ec399dcb5569d078b262b97eea7a876e536fef4757",
+      "screenshot_sha256": "16c53d67af68605e064c32759887eb83aec4ba56a1d505fd52eaa7bffad8fe9a",
       "viewport": {
         "width": 1815,
         "height": 867
@@ -304,7 +304,7 @@
       "route": "/travel/attractions/demo",
       "reference_file": "01-游客/P05-景点代抢服务详情.png",
       "reference_sha256": "a3c1ab2c8aaba61cbb169d39c31aaf25d37030bb113b826e019102824d820857",
-      "screenshot_sha256": "9404c0b39ddbba30560021ddcce5e44b2dd8dcc6a780c9e8601024e8efabf22a",
+      "screenshot_sha256": "346cc7f56cbf57cccf7909bd05f3ab8a6649fe1b9cd02e4a39fec9ae1badefdb",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -513,7 +513,7 @@
       "route": "/travel/attractions/demo",
       "reference_file": "02-消费者/P05-景点代抢服务详情.png",
       "reference_sha256": "88ea9162f3e9a0b646734c389944949e2fbbbd3f00328c4d04cfd815d8ed8f3e",
-      "screenshot_sha256": "4e783f0fbcb89040872fa1f19e3f0403efe0456d1a908aec2bf6f735fe1b08b8",
+      "screenshot_sha256": "3546ab4a6086cbdbf24f7385b6433a9c4a02dfb3b784ac9429ff3729f0759b7c",
       "viewport": {
         "width": 1815,
         "height": 867
@@ -1200,7 +1200,7 @@
       "route": "/publisher/scripts",
       "reference_file": "03-脚本发布者/S02-我的脚本.png",
       "reference_sha256": "7784b9b46b15556830d538fa6d53520e379b12c6e158d86ee90f984c6666f18f",
-      "screenshot_sha256": "ef156e6f5824b1a1eae3118deea673afc82411a1320a4812cff93d04537d360b",
+      "screenshot_sha256": "c4d76ea610a24d0b118acca98de511e592c2d6fcb1a8f4e09eb6ac293d5a9726",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -1555,7 +1555,7 @@
       "route": "/publisher/settings",
       "reference_file": "03-脚本发布者/S15-发布者设置.png",
       "reference_sha256": "dcc323547c2f6989796592302c25e36415d89454b74e02ec761a46d69d8a9789",
-      "screenshot_sha256": "2f6a127e182395a21ee3087457461bacb3037c89f9f6d276d44aff435ca42c25",
+      "screenshot_sha256": "570e3db11b5bbaea6d74e08353aceb0e9afe9d5f581740023a606ef84930821a",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -1582,7 +1582,7 @@
       "route": "/publisher/imports",
       "reference_file": "03-脚本发布者/S16-来源与同步.png",
       "reference_sha256": "87d38b402123896526758389cd80a04e846aec2421789ac019edb6919ec05314",
-      "screenshot_sha256": "133da430ae8d124b95a8f1b0fa7593180d7aa27f4c72ac35b49e2b6101684bf1",
+      "screenshot_sha256": "c2cd2b99cad6914214738a4920f89265814ac11b08a31c9381d7365d00f84c72",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -1607,7 +1607,7 @@
       "route": "/me/settings/account?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/C21-账户设置.png",
       "reference_sha256": "05f5bea2c8dfe63eacd5360d5721c809e296d79eef69a1087ae33e771c12d542",
-      "screenshot_sha256": "0ac23b9c71eb486df0a15885819a86bdf60ddeec15ec4bbe2861521ac7048042",
+      "screenshot_sha256": "1abb12bbde69e46998273b34b3aa8c787051c090e9bde8eff087d6b9764f8d76",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1636,7 +1636,7 @@
       "route": "/help?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/P06-使用帮助.png",
       "reference_sha256": "d5cd9e9d8414514542ac3ce18fc1c7809f179e0f292d06ae34f179cb1f93a15e",
-      "screenshot_sha256": "0c6bbf708d837559c1e928033e9cf1917a3421dc8a3a8a9cc1eb07f32f896d18",
+      "screenshot_sha256": "968e9fabb738abd8a0c1b113dc988420e0d4784256bcb260f491bc182322fa4f",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -2235,7 +2235,7 @@
       "route": "/me/settings/account?workspace=ADMIN",
       "reference_file": "04-平台管理员/C21-账户设置.png",
       "reference_sha256": "4c19673067227af6a547e9e5a5e65485b22c6b5632d2758b15ca596191e0a1be",
-      "screenshot_sha256": "b81e464867509f4ead3cb04cf4b3b145831752823ff74aed1855c92cca5ab167",
+      "screenshot_sha256": "c641619320e4d859a2b8799ef3186627372c7281f1ec7d341c14a1f45ffbaa8e",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -2288,7 +2288,7 @@
     }
   ],
   "errors": [],
-  "build_sha256": "649b72cd839e2f4639236057c55bc615decae3c6befe5ca716ba5ac2f32c8ccd",
+  "build_sha256": "9da94314238e488bba529a8e7cfda4bf7fbc03217e34246c538a4c436bb8e3a9",
   "source_sha256": {
     "apps/web/src/pages/PublisherHome.tsx": "c4e6110c2b4ca075150179528a1af443d45a8c07730648d75a148100609abdbf",
     "apps/web/src/pages/PublisherFinance.tsx": "e799c0d9eaae017daf2f4e94f82d9265cabee7806199ff1bd278c5dce1211ee9",
@@ -2300,7 +2300,7 @@
     "apps/control-api/src/publisher/publisher-profile.controller.ts": "31efc67557d346b7c1acca0050078a018ead665668d0843e664a46009b022c89",
     "apps/control-api/src/publisher/publisher-profile.service.ts": "46168a11c3ae4f6c79bbf628a656644274691144c1dd3e0ffc05196052b520c9",
     "apps/web/src/pages/AdminHome.tsx": "3c73893ea8dc991acae252e2455b49ffd5b7bff29edea6a41139e56fa93f33c5",
-    "apps/web/src/components/Shell.tsx": "d3c9cff4486e3d499ce67158c731516a2558964528844f525a94513302a37dfa",
+    "apps/web/src/components/Shell.tsx": "51172ccb385d26dc5f42d95590d0c5a526ffcc0a7693f8c4dfd9a0847cd931e1",
     "apps/web/src/router.tsx": "13835e3616169904e8bb7a8ca97e168ce0498b35c6ad7ca1b551380e0495baf6",
     "apps/web/src/context.tsx": "3f9c2cb25f58c2aacc222cd6eba9719b61618821db92309151547baab052890d",
     "apps/web/src/styles.css": "c894d789e31ff592c70d6b1ef94b1a031dba775d21cf942e2ecd1ece66f6a6b6",
@@ -2360,9 +2360,9 @@
     "apps/web/src/styles/script-versions.css": "6b4de9360101d602d1cc3825d3a8860fbc8b845bab6ff327f7e89927d3c6520e",
     "apps/web/src/pages/Market.tsx": "2aca696bf98f7f75427e5705d39f58198eb05082321a4c44bcac6f48751f0303",
     "apps/web/src/pages/ServiceDetail.tsx": "08fa71449cc78df06d375e150046a93585c5b0fdba00661b0f7560ecd2284bc0",
-    "apps/web/src/pages/TravelService.tsx": "e8e152bac8410c7ff954dcfd1b1fee53e4f1064a9f296706954dc1388b2f6e92",
+    "apps/web/src/pages/TravelService.tsx": "003301497c65bb1e5041f1e94619077cb0992c4163972d610b35761f3e92cafe",
     "apps/web/src/lib/service-display.ts": "4532a84f8eb1d43d5542f27a56fd28ea20757a4618ca39e3f24127e1ba800034",
-    "apps/web/src/styles/retail.css": "1480d70607429f894a1b9d109c0c8e981f0ad78d6daaa947c7aa8034f06ee64e"
+    "apps/web/src/styles/retail.css": "17d7f789e930ecce9e7dd9d8334ee5dda4a5464323101cd06df36b541cae0c77"
   },
   "source_hash_normalization": "LF",
   "admin_dashboard_reference_regions": [

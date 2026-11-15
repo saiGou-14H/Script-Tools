@@ -1,7 +1,7 @@
 import { Alert, Button, Empty, Skeleton } from "antd";
 import {
+  BankFilled,
   BankOutlined,
-  CheckCircleFilled,
   CheckOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
@@ -106,7 +106,7 @@ export function TravelServicePage() {
   const rules = [
     {
       title: "预约规则",
-      icon: "calendar",
+      icon: "reconciliation",
       items: [
         "每单提供一次完整预约服务。",
         "同次必要接续不额外收费。",
@@ -115,7 +115,7 @@ export function TravelServicePage() {
     },
     {
       title: "服务范围",
-      icon: "shield",
+      icon: guest ? "stack" : "cube",
       items: [
         service.delivery_policy.summary,
         "门票费用与脚本服务费分别展示。",
@@ -124,7 +124,7 @@ export function TravelServicePage() {
     },
     {
       title: "退款规则",
-      icon: "refund",
+      icon: guest ? "shield" : "money",
       items: [
         "未执行可全额退服务费。",
         service.refund_policy.summary,
@@ -133,7 +133,7 @@ export function TravelServicePage() {
     },
     {
       title: "目标判定",
-      icon: "flag",
+      icon: guest ? "flag" : "verified-target",
       items: [
         "以官方预约结果与核验信息为依据。",
         "核验中的订单会继续展示当前进度。",
@@ -142,34 +142,55 @@ export function TravelServicePage() {
     },
   ];
   const facts = [
-    { label: "参观日期", value: date || "购买时配置", icon: "calendar" },
-    { label: "预约场次", value: slot || "购买时配置", icon: "clock" },
+    { label: "预约日期", value: date || "购买时配置", icon: "calendar" },
+    {
+      label: guest ? "场次" : "预约场次",
+      value: slot || "购买时配置",
+      icon: "clock",
+    },
     {
       label: "出行人数",
       value: partySize ? `${partySize}人` : "购买时配置",
-      icon: "team",
+      icon: "user",
     },
   ];
   const notice = [
-    "包含一次完整服务及同次必要接续",
-    service.refund_policy.summary,
-    verification,
-    window,
-    "可售状态以下单时校验为准",
+    { key: "refund", text: service.refund_policy.summary, icon: "shield" },
+    { key: "verification", text: verification, icon: "clock" },
+    { key: "window", text: window, icon: "hourglass" },
+    { key: "scope", text: "包含一次完整服务及同次必要接续", icon: "check" },
+    { key: "availability", text: "可售状态以下单时校验为准", icon: "info" },
   ];
+  const ticketPrice = {
+    key: "ticket",
+    label: guest ? "票款" : "票款（景点官方收取）",
+    value: attraction ? `¥${ticket}` : ticket,
+  };
+  const scriptPrice = {
+    key: "service",
+    label: "脚本服务费",
+    value: (
+      <>
+        ¥{currency(service.amount_minor)}
+        <small>/次</small>
+      </>
+    ),
+  };
+  const prices = guest
+    ? [ticketPrice, scriptPrice]
+    : [scriptPrice, ticketPrice];
   return (
     <div
       className={`travel-service-page ${guest ? "guest-travel-service" : "member-travel-service"}`}
     >
       <div className="travel-service-heading">
         <div className="retail-breadcrumb">
-          <Link to={backPath}>{marketBack ? "脚本市场" : "城市与景点"}</Link>
+          <Link to={backPath}>
+            {guest && !marketBack && <Icon name="home" />}
+            {marketBack ? "脚本市场" : "城市与景点"}
+          </Link>
           <span>/</span>
-          <span>
-            {attraction
-              ? `${attraction.city} · ${attraction.title}`
-              : service.title}
-          </span>
+          <span>景点代抢服务详情</span>
         </div>
         <h1>景点代抢服务详情</h1>
       </div>
@@ -177,7 +198,7 @@ export function TravelServicePage() {
         <section className="travel-service-main">
           <header className="travel-service-banner">
             <span className="travel-museum-icon">
-              <BankOutlined />
+              {guest ? <BankFilled /> : <BankOutlined />}
             </span>
             <div>
               <h2>{name}</h2>
@@ -189,9 +210,9 @@ export function TravelServicePage() {
               </p>
               {!guest && (
                 <div className="travel-service-tags">
-                  <Status>脚本服务费另计</Status>
-                  <Status tone="green">一次完整服务</Status>
-                  <Status tone="purple">含同次必要接续</Status>
+                  <Status>景点预约</Status>
+                  <Status>自动化脚本</Status>
+                  <Status tone="purple">个人可用</Status>
                 </div>
               )}
             </div>
@@ -200,7 +221,7 @@ export function TravelServicePage() {
                 {facts.map((fact) => (
                   <span key={fact.label}>
                     <Icon name={fact.icon} />
-                    {fact.label}
+                    <span className="travel-fact-label">{fact.label}：</span>
                     <b>{fact.value}</b>
                   </span>
                 ))}
@@ -219,13 +240,19 @@ export function TravelServicePage() {
                 </div>
               ))}
               <div>
-                <span>门票价格</span>
+                <span>
+                  <Icon name="ticket-stub" />
+                  票款
+                </span>
                 <b className="travel-ticket-price">
                   {attraction ? `¥${ticket}` : ticket}
                 </b>
               </div>
               <div>
-                <span>脚本服务费</span>
+                <span>
+                  <Icon name="coins" />
+                  脚本服务费
+                </span>
                 <b className="travel-script-price">
                   ¥{currency(service.amount_minor)}
                   <small>/次</small>
@@ -243,8 +270,7 @@ export function TravelServicePage() {
                 <ul>
                   {rule.items.map((item) => (
                     <li key={item}>
-                      {guest ? <CheckOutlined /> : <CheckCircleFilled />}
-                      {item}
+                      <span>{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -256,19 +282,15 @@ export function TravelServicePage() {
           <h2>{guest ? "购买服务" : "预约此服务"}</h2>
           <div className="travel-purchase-body">
             <div className="travel-purchase-prices">
-              <div>
-                <span>门票价格</span>
-                <strong>{attraction ? `¥${ticket}` : ticket}</strong>
-                <small>以官方票价为准</small>
-              </div>
-              <div>
-                <span>脚本服务费</span>
-                <strong>
-                  ¥{currency(service.amount_minor)}
-                  <small>/次</small>
-                </strong>
-                <small>包含一次完整服务</small>
-              </div>
+              {prices.map((price) => (
+                <div key={price.key} className={`travel-price-${price.key}`}>
+                  <span>{price.label}</span>
+                  <strong>
+                    {price.value}
+                    {guest && price.key === "service" && <Status>独立</Status>}
+                  </strong>
+                </div>
+              ))}
             </div>
             <section className="travel-purchase-notice">
               <h3>
@@ -277,18 +299,18 @@ export function TravelServicePage() {
               </h3>
               <ul>
                 {notice.map((item) => (
-                  <li key={item}>
-                    <CheckCircleFilled />
-                    {item}
+                  <li key={item.key}>
+                    {guest ? <Icon name={item.icon} /> : <CheckOutlined />}
+                    <span>{item.text}</span>
                   </li>
                 ))}
               </ul>
+              {prototype && (
+                <p className="travel-prototype-note">
+                  示例接入，预约条件供展示。参数按发布者Schema填写。
+                </p>
+              )}
             </section>
-            {prototype && (
-              <p className="travel-prototype-note">
-                示例接入状态，预约条件仅用于场景展示。脚本输入按发布者Schema填写。
-              </p>
-            )}
             {!available && (
               <Alert
                 type="warning"
@@ -306,9 +328,6 @@ export function TravelServicePage() {
               disabled={!available}
               context={context}
             />
-            <p className="travel-purchase-caption">
-              请在购买前确认交付范围与退款规则
-            </p>
           </div>
         </aside>
       </div>

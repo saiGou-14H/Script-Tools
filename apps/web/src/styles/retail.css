@@ -104,6 +104,122 @@
   padding-top: 17px;
   padding-bottom: 10px;
 }
+.role-GUEST.page-P05 .topbar {
+  padding-inline: 32px 25px;
+}
+.role-USER.page-P05 .topbar {
+  padding-inline: 28px 27px;
+}
+.role-GUEST.page-P05 .brand strong {
+  font-size: 26px;
+}
+.role-USER.page-P05 .brand strong {
+  font-size: 24px;
+}
+.role-GUEST.page-P05 .global-search.ant-input-affix-wrapper {
+  left: 34.45%;
+  width: 33.8%;
+  height: 44px;
+  padding-inline: 18px;
+}
+.role-USER.page-P05 .global-search.ant-input-affix-wrapper {
+  left: 31.8%;
+  width: 36.36%;
+  max-width: none;
+  height: 38px;
+  border: 1px solid #dce3ef;
+}
+.page-P05 .global-search input {
+  font-size: 16px;
+}
+.role-GUEST.page-P05 .topbar-actions {
+  gap: 14px;
+}
+.role-GUEST.page-P05 .workspace-button {
+  padding: 0 34px 0 0;
+  margin-right: 18px;
+  height: 34px;
+  border: 0;
+  border-right: 1px solid #dbe2ef;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 18px;
+  color: #111a2a;
+}
+.role-GUEST.page-P05 .workspace-button b {
+  padding: 3px 12px;
+  border-radius: 8px;
+  color: #1455ff;
+  background: #edf3ff;
+  font-size: 18px;
+}
+.role-GUEST.page-P05 .workspace-button > .anticon {
+  display: none;
+}
+.role-GUEST.page-P05 .topbar-actions > .ant-btn:not(.workspace-button) {
+  min-width: 84px;
+  height: 44px;
+  font-size: 19px;
+  font-weight: 600;
+}
+.role-GUEST.page-P05 .topbar-actions > .ant-btn-default:not(.workspace-button) {
+  color: #1555ff;
+  border-color: #4775ff;
+}
+.role-USER.page-P05 .topbar-actions {
+  gap: 25px;
+}
+.role-USER.page-P05 .workspace-button {
+  height: 36px;
+  padding-inline: 17px;
+  border-color: #4775ff;
+  color: #1455ff;
+}
+.role-USER.page-P05 .workspace-button b {
+  color: #111a2a;
+}
+.role-USER.page-P05 .workspace-button > .anticon:first-child {
+  font-size: 17px;
+}
+.role-USER.page-P05 .topbar-actions > .ant-btn:not(.workspace-button) {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #e2e8f3;
+  font-size: 20px;
+}
+.role-GUEST.page-P05 .sidebar,
+.role-USER.page-P05 .sidebar {
+  padding-inline: 12px;
+}
+.role-GUEST.page-P05 .nav-item {
+  padding-left: 23px;
+  gap: 15px;
+  font-size: 21px;
+}
+.role-GUEST.page-P05 .nav-group:first-child {
+  margin-bottom: 7px;
+}
+.role-GUEST.page-P05 .nav-group-label {
+  padding-left: 19px;
+  padding-bottom: 3px;
+  font-size: 18px;
+  line-height: 26px;
+}
+.role-GUEST.page-P05 .nav-group:nth-child(2) {
+  margin-bottom: 13px;
+}
+.role-GUEST.page-P05 .nav-group:nth-child(2) .nav-group-label {
+  padding-bottom: 7px;
+}
+.role-GUEST.page-P05 .nav-group:last-child .nav-group-label {
+  padding-bottom: 4px;
+}
+.role-USER.page-P05 .nav-item {
+  padding-left: 15px;
+  gap: 14px;
+  font-size: 16px;
+  font-weight: 600;
+}
 .role-GUEST.page-P02 .nav-item {
   height: 41px;
   font-size: 16px;
@@ -866,6 +982,11 @@
 .service-rules-tab h2 {
   margin: 14px 0 7px;
 }
+.travel-service-heading .retail-breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
 .travel-service-heading h1 {
   font-size: 32px;
   margin: 23px 0 25px;
@@ -917,30 +1038,51 @@
   font-size: 17px;
 }
 .guest-travel-service .travel-service-banner {
-  padding-bottom: 80px;
+  display: grid;
+  grid-template-columns: 111px minmax(0, 1fr);
+  column-gap: 24px;
+  row-gap: 17px;
+  padding: 29px 24px 27px;
 }
 .guest-travel-service .travel-museum-icon {
-  position: absolute;
-  top: 29px;
+  grid-row: 1 / 3;
+  align-self: start;
 }
 .guest-travel-service .travel-service-banner > div:not(.travel-context-facts) {
-  margin-left: 135px;
+  grid-column: 2;
+}
+.guest-travel-service .travel-service-banner p {
+  font-size: 18px;
+  line-height: 28px;
+  margin-top: 6px;
+}
+.guest-travel-service .travel-service-banner > div > .status {
+  font-size: 16px;
+  line-height: 24px;
+  padding: 3px 12px;
 }
 .guest-travel-service .travel-context-facts {
-  position: absolute;
-  left: 159px;
-  right: 24px;
-  bottom: 27px;
+  grid-column: 2;
   display: flex;
-  gap: 30px;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: 12px 38px;
+  min-width: 0;
 }
 .guest-travel-service .travel-context-facts > span {
+  display: inline-flex;
+  align-items: baseline;
+  max-width: 100%;
+  min-width: 0;
   background: #f5f7fb;
   border: 1px solid #e8edf6;
   border-radius: 9px;
   padding: 8px 14px;
   color: #4e5b77;
-  font-size: 16px;
+  font-size: 19px;
+  line-height: 27px;
+}
+.guest-travel-service .travel-fact-label {
   white-space: nowrap;
 }
 .guest-travel-service .travel-context-facts .anticon {
@@ -948,7 +1090,9 @@
 }
 .guest-travel-service .travel-context-facts b {
   color: #111827;
-  margin-left: 10px;
+  margin-left: 8px;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .travel-rule-grid {
   display: grid;
@@ -990,11 +1134,19 @@
   line-height: 1.55;
   margin-top: 5px;
 }
-.travel-rule-card li > .anticon {
-  color: #1a60ff;
-  font-size: 13px;
-  margin-top: 6px;
+.travel-rule-card li::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 8px;
+  background: #1a60ff;
   flex-shrink: 0;
+}
+.travel-rule-card li > span,
+.travel-purchase-notice li > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .travel-purchase-card {
   border: 1px solid #dce3f0;
@@ -1040,8 +1192,15 @@
   font-weight: 400;
   color: #1b243b;
 }
-.travel-purchase-prices > div + div strong {
+.travel-purchase-prices .travel-price-service strong {
   color: #1455ff;
+}
+.travel-purchase-prices strong > .status {
+  margin-left: 12px;
+  font-size: 14px;
+  line-height: 24px;
+  padding: 1px 9px;
+  vertical-align: middle;
 }
 .travel-purchase-prices > div > small {
   font-size: 11px;
@@ -1077,15 +1236,9 @@
   font-size: 11px;
   margin: 0 10px 16px;
 }
-.travel-purchase-caption {
-  font-size: 11px;
-  color: #6a7892;
-  text-align: center;
-  margin-top: 10px;
-}
 .member-travel-service .travel-service-heading h1 {
-  font-size: 28px;
-  margin: 10px 0 18px;
+  font-size: 30px;
+  margin: 10px 0 15px;
 }
 .member-travel-service .travel-service-columns {
   grid-template-columns: minmax(0, 1fr) 421px;
@@ -1093,10 +1246,25 @@
 }
 .member-travel-service .travel-service-banner {
   min-height: 150px;
-  background: linear-gradient(110deg, #edf3ff, #e3eaff 65%, #ded8ff);
+  background:
+    radial-gradient(
+      ellipse 185px 210px at calc(100% + 20px) 160px,
+      #bcbcff88 99%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 330px 190px at 100% calc(100% + 125px),
+      #c9cdff55 98.5%,
+      #ffffff88 99%,
+      transparent 99.5%
+    ),
+    linear-gradient(110deg, #fbfcff, #f1f4ff 45%, #e7e4ff);
   border: 2px solid #fff;
-  padding: 22px 27px;
-  gap: 24px;
+  padding: 16px 30px 20px;
+  gap: 34px;
+}
+.member-travel-service .travel-service-banner > div {
+  align-self: start;
 }
 .member-travel-service .travel-museum-icon {
   width: 98px;
@@ -1106,23 +1274,39 @@
   border-radius: 18px;
 }
 .member-travel-service .travel-service-banner h2 {
+  display: block;
+  margin: 0;
   font-size: 27px;
+  line-height: 36px;
+  overflow-wrap: anywhere;
 }
 .member-travel-service .travel-service-banner p {
-  font-size: 16px;
-  margin-top: 7px;
+  font-size: 17px;
+  line-height: 26px;
+  margin-top: 8px;
 }
 .travel-service-tags {
   display: flex;
-  gap: 11px;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-top: 10px;
+}
+.travel-service-tags .status {
+  border: 1px solid #cad8ff;
+  border-radius: 8px;
+  padding: 0 9px;
+  font-size: 14px;
+  line-height: 24px;
+}
+.travel-service-tags .status-purple {
+  border-color: #e1ccff;
 }
 .member-travel-service .travel-context-facts {
   display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr 1fr 1.1fr;
-  padding: 20px 22px;
-  gap: 16px;
-  margin-top: 13px;
+  grid-template-columns: 1fr 1fr 1.02fr 1.04fr 0.94fr;
+  padding: 20px 30px;
+  gap: 0;
+  margin-top: 12px;
   border: 1px solid #dfe5f1;
   background: #fff;
   border-radius: 11px;
@@ -1131,66 +1315,88 @@
 .member-travel-service .travel-context-facts > div {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  position: relative;
+  gap: 3px;
   border-right: 1px solid #e4e9f3;
-  padding-right: 10px;
+  padding: 0 8px 0 93px;
   min-width: 0;
+}
+.member-travel-service .travel-context-facts > div:first-child {
+  padding-left: 45px;
 }
 .member-travel-service .travel-context-facts > div:last-child {
   border: 0;
 }
 .member-travel-service .travel-context-facts span {
-  font-size: 13px;
+  font-size: 14px;
   color: #60708c;
 }
 .member-travel-service .travel-context-facts .anticon {
-  margin-right: 8px;
+  position: absolute;
+  left: 48px;
+  top: 1px;
+  color: #155aff;
+  font-size: 24px;
+}
+.member-travel-service .travel-context-facts > div:first-child .anticon {
+  left: 0;
 }
 .member-travel-service .travel-context-facts b {
-  font-size: 17px;
-  line-height: 1.3;
+  font-size: 22px;
+  line-height: 26px;
   overflow-wrap: anywhere;
 }
 .member-travel-service .travel-context-facts .travel-ticket-price {
-  color: #09a148;
+  color: #101526;
 }
 .member-travel-service .travel-context-facts .travel-script-price {
   color: #1955ff;
 }
 .travel-script-price small {
-  font-size: 11px;
+  font-size: 16px;
+  line-height: 1;
   font-weight: 400;
   margin-left: 3px;
 }
 .member-travel-service .travel-rule-grid {
-  margin-top: 18px;
-  gap: 15px;
+  margin-top: 20px;
+  gap: 18px;
 }
 .member-travel-service .travel-rule-card {
-  min-height: 187px;
-  padding: 20px 22px;
-  border-radius: 11px;
+  min-height: 177px;
+  padding: 16px 25px;
+  border-radius: 14px;
+  border-color: #e8edf6;
+  box-shadow: 0 3px 12px #7791ba08;
+}
+.member-travel-service .travel-rule-card:nth-child(n + 3) {
+  min-height: 192px;
 }
 .member-travel-service .travel-rule-card h2 {
-  font-size: 20px;
-  margin-bottom: 12px;
-  gap: 10px;
-  padding-bottom: 10px;
+  font-size: 22px;
+  line-height: 32px;
+  margin-bottom: 6px;
+  gap: 14px;
+  padding-bottom: 8px;
   border-bottom: 1px solid #e8edf5;
 }
 .member-travel-service .travel-rule-card h2 .anticon {
-  font-size: 20px;
+  font-size: 26px;
   padding: 0;
   background: transparent;
 }
 .member-travel-service .travel-rule-card li {
-  font-size: 15px;
-  gap: 9px;
-  margin-top: 7px;
+  color: #121a2b;
+  font-size: 16px;
+  line-height: 28px;
+  font-weight: 600;
+  gap: 12px;
+  margin-top: 6px;
 }
-.member-travel-service .travel-rule-card li .anticon {
-  font-size: 13px;
-  margin-top: 4px;
+.member-travel-service .travel-rule-card li::before {
+  width: 5px;
+  height: 5px;
+  margin-top: 11px;
 }
 .member-travel-service .travel-purchase-card {
   padding: 0;
@@ -1198,53 +1404,60 @@
 }
 .member-travel-service .travel-purchase-card > h2 {
   background: transparent;
-  padding: 18px 22px 13px;
-  font-size: 21px;
-  border-bottom: 1px solid #e5eaf4;
+  padding: 16px 20px 0;
+  font-size: 24px;
+  line-height: 34px;
 }
 .member-travel-service .travel-purchase-body {
-  padding: 17px 20px 16px;
+  padding: 20px 18px 22px;
 }
 .member-travel-service .travel-purchase-prices {
   display: block;
   border: 1px solid #e2e7f1;
   border-radius: 9px;
-  padding: 12px 15px;
+  padding: 0 14px;
 }
 .member-travel-service .travel-purchase-prices > div {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
+  gap: 12px;
+  min-height: 55px;
 }
 .member-travel-service .travel-purchase-prices > div + div {
   border: 0;
   border-top: 1px solid #e8ecf4;
-  padding: 9px 0 0;
-  margin-top: 7px;
+  padding: 0;
+  margin-top: 0;
 }
 .member-travel-service .travel-purchase-prices span {
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
 }
 .member-travel-service .travel-purchase-prices strong {
-  font-size: 23px;
+  font-size: 24px;
+  line-height: 34px;
   text-align: right;
 }
-.member-travel-service .travel-purchase-prices > div:first-child strong {
-  color: #09a148;
+.member-travel-service .travel-purchase-prices .travel-price-ticket strong {
+  color: #101526;
+  font-size: 18px;
 }
 .member-travel-service .travel-purchase-prices > div > small {
   display: none;
 }
 .member-travel-service .travel-purchase-notice {
-  padding: 12px 13px;
-  background: #edf3ff;
-  border-radius: 9px;
-  margin: 14px 0 17px;
+  padding: 14px;
+  background: linear-gradient(110deg, #f0f6ff, #edf4ff);
+  border-radius: 12px;
+  margin: 14px 0 22px;
 }
 .member-travel-service .travel-purchase-notice h3 {
   display: block;
-  font-size: 15px;
-  color: #24499d;
+  font-size: 18px;
+  line-height: 26px;
+  color: #111a2b;
 }
 .member-travel-service .travel-purchase-notice h3 .anticon {
   margin-right: 7px;
@@ -1253,19 +1466,67 @@
   margin: 0;
 }
 .member-travel-service .travel-purchase-notice li {
-  font-size: 13px;
-  gap: 8px;
-  line-height: 1.7;
+  font-size: 16px;
+  font-weight: 500;
+  gap: 10px;
+  line-height: 26px;
   margin-top: 7px;
 }
 .member-travel-service .travel-purchase-notice li .anticon {
-  font-size: 12px;
-  margin-top: 5px;
+  font-size: 18px;
+  margin-top: 4px;
+}
+.member-travel-service .travel-prototype-note {
+  margin: 8px 0 0;
+  line-height: 18px;
+}
+.travel-purchase-body > .ant-alert {
+  margin-block: 12px;
 }
 .member-travel-service .travel-purchase-card .service-purchase-button {
-  height: 45px;
-  font-size: 17px;
-  border-radius: 8px;
+  height: 50px;
+  font-size: 20px;
+  border-radius: 10px;
+}
+.member-travel-service .service-purchase-button .anticon {
+  font-size: 26px;
+}
+.travel-purchase-card .service-purchase-button:not(:disabled) {
+  background: linear-gradient(105deg, #145dff, #1250ff);
+  box-shadow: 0 2px 5px #1455ff18;
+}
+.guest-travel-service .travel-purchase-body {
+  padding: 0 0 12px;
+}
+.guest-travel-service .travel-purchase-prices {
+  grid-template-columns: 0.82fr 1.18fr;
+  gap: 0;
+  padding: 22px 20px 18px;
+  border: 1px solid #e6edff;
+  border-radius: 0 0 13px 13px;
+}
+.guest-travel-service .travel-purchase-prices > div + div {
+  padding-left: 48px;
+}
+.guest-travel-service .travel-prototype-note {
+  margin-bottom: 26px;
+}
+.guest-travel-service .travel-purchase-prices > div > span {
+  font-size: 20px;
+  line-height: 26px;
+}
+.guest-travel-service .travel-purchase-prices strong {
+  line-height: 42px;
+}
+.guest-travel-service .travel-purchase-notice li {
+  font-size: 19px;
+  line-height: 30px;
+}
+.guest-travel-service
+  .travel-purchase-card
+  .service-purchase-button
+  .ant-btn-icon {
+  display: none;
 }
 .guest-service .service-introduction h2 {
   font-size: 22px;
@@ -1354,8 +1615,9 @@
   padding-bottom: 14px;
 }
 .guest-travel-service .travel-service-heading h1 {
+  font-size: 34px;
   margin-top: 20px;
-  margin-bottom: 24px;
+  margin-bottom: 21px;
 }
 .checkout-travel-context {
   margin-bottom: 16px;
@@ -1603,17 +1865,28 @@
   .market-page .market-toolbar > .ant-input-affix-wrapper {
     width: 42%;
   }
-  .guest-travel-service .travel-service-banner {
-    padding-bottom: 110px;
-  }
   .guest-travel-service .travel-context-facts {
-    left: 24px;
-    flex-wrap: wrap;
     gap: 8px;
-    bottom: 18px;
   }
   .guest-travel-service .travel-context-facts > span {
-    font-size: 13px;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .member-travel-service .travel-context-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    padding: 18px 22px;
+  }
+  .member-travel-service .travel-context-facts > div,
+  .member-travel-service .travel-context-facts > div:first-child {
+    padding-left: 38px;
+  }
+  .member-travel-service .travel-context-facts .anticon,
+  .member-travel-service .travel-context-facts > div:first-child .anticon {
+    left: 0;
+  }
+  .member-travel-service .travel-context-facts > div:nth-child(even) {
+    border-right: 0;
   }
   .service-usage ol,
   .member-service .service-usage ol {
@@ -1729,13 +2002,86 @@
     height: 70px;
     font-size: 43px;
   }
-  .guest-travel-service .travel-service-banner {
-    padding-bottom: 155px;
+  .role-GUEST.page-P05 .topbar,
+  .role-USER.page-P05 .topbar {
+    padding-inline: 12px;
+    gap: 12px;
   }
-  .guest-travel-service
-    .travel-service-banner
-    > div:not(.travel-context-facts) {
-    margin-left: 90px;
+  .page-P05 .brand {
+    min-width: 0;
+    flex: 1;
+    gap: 8px;
+  }
+  .role-GUEST.page-P05 .brand strong,
+  .role-USER.page-P05 .brand strong {
+    font-size: 18px;
+  }
+  .page-P05 .brand-code {
+    font-size: 24px;
+  }
+  .role-GUEST.page-P05 .topbar-actions,
+  .role-USER.page-P05 .topbar-actions {
+    flex-shrink: 0;
+    gap: 8px;
+  }
+  .role-GUEST.page-P05 .workspace-button {
+    display: none;
+  }
+  .role-GUEST.page-P05 .topbar-actions > .ant-btn:not(.workspace-button) {
+    min-width: 58px;
+    height: 34px;
+    padding-inline: 12px;
+    font-size: 14px;
+  }
+  .role-USER.page-P05 .workspace-button {
+    padding-inline: 8px;
+    gap: 6px;
+    font-size: 0;
+  }
+  .role-USER.page-P05 .workspace-button b {
+    font-size: 12px;
+  }
+  .member-travel-service .travel-service-banner {
+    padding: 20px;
+    gap: 16px;
+  }
+  .member-travel-service .travel-context-facts {
+    padding: 16px;
+    gap: 14px;
+  }
+  .member-travel-service .travel-context-facts b {
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .member-travel-service .travel-rule-card {
+    padding-inline: 20px;
+  }
+  .guest-travel-service .travel-service-banner {
+    grid-template-columns: 70px minmax(0, 1fr);
+    padding: 20px;
+    gap: 16px;
+  }
+  .guest-travel-service .travel-context-facts {
+    grid-column: 1 / -1;
+  }
+  .guest-travel-service .travel-context-facts > span {
+    font-size: 14px;
+    line-height: 22px;
+  }
+  .guest-travel-service .travel-purchase-prices {
+    padding-inline: 12px;
+    gap: 12px;
+  }
+  .guest-travel-service .travel-purchase-prices > div + div {
+    padding-left: 12px;
+  }
+  .guest-travel-service .travel-purchase-prices strong {
+    font-size: 26px;
+  }
+  .guest-travel-service .travel-purchase-prices strong > .status {
+    margin-left: 5px;
+    padding-inline: 5px;
+    font-size: 12px;
   }
   .travel-service-banner p {
     font-size: 14px;

@@ -32,6 +32,10 @@ const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
       P02: "order", C04: "file", C06: "layers", C22: "ticket",
       C12: "folder", C13: "clock", C16: "message",
     },
+    P05: {
+      C04: "file", C06: "stack", C22: "ticket-stub", C10: "list",
+      C12: "file", C13: "clock", C16: "message",
+    },
     C02: {
       C04: "cart", C06: "layers", C22: "ticket", C12: "folder",
       C13: "clock", C16: "message", C17: "bell",
@@ -610,19 +614,23 @@ export function Shell({ pageId }: { pageId: PageId }) {
           placeholder={
             pageId === "P06"
               ? "搜索功能、文档或常见问题"
-              : pageId === "S02"
-                ? "搜索脚本名称、用途或版本号"
-                : pageId === "S05"
-                  ? "搜索脚本、版本或构建编号"
-                  : pageId === "S15"
-                    ? "搜索脚本、服务商品、订单或帮助内容"
-                    : pageId === "S01"
-                      ? "搜索脚本、服务或订单"
-                      : role === "ADMIN"
-                        ? "搜索订单、用户、服务或预约编号"
-                        : quickSearch
-                          ? "搜索脚本、工具或景点"
-                          : "搜索脚本、服务或订单"
+              : pageId === "P05"
+                ? role === "GUEST"
+                  ? "搜索脚本、工具或景点服务"
+                  : "搜索脚本、工具或景点"
+                : pageId === "S02"
+                  ? "搜索脚本名称、用途或版本号"
+                  : pageId === "S05"
+                    ? "搜索脚本、版本或构建编号"
+                    : pageId === "S15"
+                      ? "搜索脚本、服务商品、订单或帮助内容"
+                      : pageId === "S01"
+                        ? "搜索脚本、服务或订单"
+                        : role === "ADMIN"
+                          ? "搜索订单、用户、服务或预约编号"
+                          : quickSearch
+                            ? "搜索脚本、工具或景点"
+                            : "搜索脚本、服务或订单"
           }
           onPressEnter={(event) => {
             if (pageId === "S02" || pageId === "S05") {
@@ -653,9 +661,10 @@ export function Shell({ pageId }: { pageId: PageId }) {
               {["C21", "O01"].includes(pageId) && role === "ADMIN" && (
                 <Icon name={pageId === "O01" ? "shield" : "stack"} />
               )}
+              {pageId === "P05" && role === "USER" && <Icon name="user" />}
               {pageId === "O01"
                 ? ""
-                : role === "GUEST" && ["P01", "P07", "P06"].includes(pageId)
+                : role === "GUEST" && ["P01", "P05", "P07", "P06"].includes(pageId)
                   ? "当前工作区　"
                   : role === "GUEST"
                     ? "当前身份　"

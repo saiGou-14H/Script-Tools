@@ -53,6 +53,250 @@ const report = {
 const contexts = [];
 let app, server, browser, page, connection;
 
+async function verifyTravelDetail(context, currentPage, role, web) {
+  const viewport = { width: role === "GUEST" ? 1814 : 1815, height: 867 };
+  await currentPage.setViewportSize(viewport);
+  await currentPage.goto(web + "/travel/attractions/demo");
+  await expect(currentPage.locator(".travel-service-banner")).toContainText(
+    "西湖博物馆",
+  );
+  const regions =
+    role === "GUEST"
+      ? [
+          [
+            ".travel-service-banner",
+            { x: 257, y: 199, width: 1059, height: 194 },
+          ],
+          [".travel-rule-grid", { x: 257, y: 415, width: 1059, height: 412 }],
+          [
+            ".travel-purchase-card",
+            { x: 1337, y: 199, width: 458, height: 572 },
+          ],
+        ]
+      : [
+          [
+            ".travel-service-banner",
+            { x: 254, y: 172, width: 1096, height: 150 },
+          ],
+          [
+            ".travel-context-facts",
+            { x: 254, y: 334, width: 1096, height: 94 },
+          ],
+          [".travel-rule-grid", { x: 254, y: 448, width: 1096, height: 387 }],
+          [
+            ".travel-purchase-card",
+            { x: 1370, y: 172, width: 420, height: 538 },
+          ],
+        ];
+  report.layouts[role + "-P05"] = [];
+  for (const [selector, expected] of regions) {
+    const actual = await currentPage.locator(selector).evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+    });
+    for (const coordinate of Object.keys(expected))
+      assert(
+        Math.abs(actual[coordinate] - expected[coordinate]) <= 3,
+        JSON.stringify({ role, selector, expected, actual }),
+      );
+    report.layouts[role + "-P05"].push({
+      selector,
+      expected,
+      actual,
+      tolerance_px: 3,
+    });
+  }
+  assert.equal(
+    await currentPage.evaluate(() => document.documentElement.scrollHeight),
+    viewport.height,
+  );
+  await expect(
+    currentPage.locator(".travel-purchase-prices > div").first(),
+  ).toHaveClass(
+    role === "GUEST" ? "travel-price-ticket" : "travel-price-service",
+  );
+  await expect(currentPage.locator(".travel-prototype-note")).toContainText(
+    "参数按发布者Schema填写",
+  );
+  await currentPage.screenshot({
+    path: path.join(output, role + "-P05.png"),
+    fullPage: true,
+    animations: "disabled",
+  });
+  report.screenshots.push(role + "-P05");
+  report.checks.push(
+    role +
+      " travel detail follows its own reference regions and price reading order while identifying its prototype conditions",
+  );
+
+  async function clipping() {
+    return currentPage.evaluate(() => ({
+      width: document.documentElement.scrollWidth,
+      clipped: [
+        ...document.querySelectorAll(
+          ".travel-service-banner,.travel-context-facts,.travel-rule-card,.travel-purchase-prices,.travel-purchase-notice",
+        ),
+      ]
+        .filter(
+          (element) =>
+            element.scrollWidth > element.clientWidth + 1 ||
+            element.scrollHeight > element.clientHeight + 1,
+        )
+        .map((element) => element.className),
+      brand_right: document
+        .querySelector(".brand strong")
+        .getBoundingClientRect().right,
+      actions_left: document
+        .querySelector(".topbar-actions")
+        .getBoundingClientRect().left,
+    }));
+  }
+  const widths = [
+    ...new Set([
+      390,
+      700,
+      701,
+      1000,
+      1001,
+      1050,
+      1051,
+      1400,
+      1401,
+      ...Array.from({ length: 41 }, (_, index) => 390 + index * 37),
+    ]),
+  ];
+  const responsive = [];
+  for (const width of widths) {
+    await currentPage.setViewportSize({
+      width,
+      height: width <= 700 ? 844 : 900,
+    });
+    if (role === "USER")
+      await expect(currentPage.locator(".workspace-button")).toHaveCSS(
+        "font-size",
+        width <= 700 ? "0px" : "14px",
+      );
+    const state = await clipping();
+    assert(
+      state.width <= width &&
+        state.clipped.length === 0 &&
+        state.brand_right <= state.actions_left,
+      JSON.stringify({ role, width, ...state }),
+    );
+    responsive.push({ viewport_width: width, ...state });
+    if (width === 390) {
+      await currentPage.screenshot({
+        path: path.join(output, role + "-P05-mobile.png"),
+        fullPage: true,
+        animations: "disabled",
+      });
+      report.screenshots.push(role + "-P05-mobile");
+    }
+  }
+  report.layouts[role + "-P05-responsive"] = responsive;
+  report.checks.push(
+    role +
+      " travel detail keeps headings, facts, rule cards, prices and purchase controls unclipped across 49 widths and breakpoint boundaries",
+  );
+
+  await currentPage.setViewportSize(viewport);
+  await currentPage
+    .getByRole("button", { name: "确认预约服务", exact: true })
+    .click();
+  await expect(currentPage).toHaveURL(
+    role === "GUEST" ? /\/auth\?/ : /\/checkout\?/,
+  );
+  const destination =
+    role === "GUEST"
+      ? new URL(new URL(currentPage.url()).searchParams.get("returnTo"), web)
+      : new URL(currentPage.url());
+  assert(destination.searchParams.get("service"));
+  for (const [key, value] of Object.entries({
+    attraction: "westlake",
+    date: "2026-11-20",
+    slot: "上午",
+    party_size: "1",
+  }))
+    assert.equal(destination.searchParams.get(key), value);
+  await currentPage.goBack();
+  await expect(currentPage.locator(".travel-context-facts")).toContainText(
+    "2026-11-20",
+  );
+  report.checks.push(
+    role +
+      " travel purchase entry preserves its selected scene through authentication or checkout and browser return",
+  );
+
+  const duplicateSummary = "包含一次完整服务及同次必要接续";
+  const longDelivery = "完整交付" + "schema/".repeat(80);
+  await context.route("**/api/v1/services", async (route) => {
+    const response = await route.fetch();
+    const body = await response.json();
+    for (const service of body.data.filter(
+      (item) => item.scene_key === "travel",
+    )) {
+      service.amount_minor = "9223372036854775807";
+      service.max_service_seconds = 3600;
+      service.resolution_seconds = 7200;
+      service.refund_policy.summary = duplicateSummary;
+      service.delivery_policy.summary = longDelivery;
+    }
+    await route.fulfill({ response, json: body });
+  });
+  const selection = new URLSearchParams({
+    attraction: "westlake",
+    date: "2026-11-21",
+    slot: "场".repeat(100),
+    party_size: "9007199254740991",
+  });
+  await currentPage.goto(web + "/travel/attractions/demo?" + selection);
+  await expect(currentPage.locator(".travel-context-facts")).toContainText(
+    selection.get("slot"),
+  );
+  await expect(currentPage.locator(".travel-context-facts")).toContainText(
+    "9007199254740991人",
+  );
+  await expect(
+    currentPage.locator(".travel-price-service strong"),
+  ).toContainText("92233720368547758.07");
+  await expect(currentPage.locator(".travel-purchase-notice")).toContainText(
+    "单次执行最长1小时",
+  );
+  await expect(currentPage.locator(".travel-purchase-notice")).toContainText(
+    "执行结束后最多核验2小时",
+  );
+  await expect(currentPage.locator(".travel-purchase-notice li")).toHaveCount(
+    5,
+  );
+  await expect(
+    currentPage
+      .locator(".travel-purchase-notice")
+      .getByText(duplicateSummary, { exact: true }),
+  ).toHaveCount(2);
+  await expect(
+    currentPage.locator(".travel-rule-card").filter({ hasText: "服务范围" }),
+  ).toContainText(longDelivery);
+  for (const width of [viewport.width, 1051, 390]) {
+    await currentPage.setViewportSize({ width, height: 844 });
+    const state = await clipping();
+    assert(
+      state.width <= width && state.clipped.length === 0,
+      JSON.stringify({ role, width, ...state }),
+    );
+  }
+  await currentPage.screenshot({
+    path: path.join(output, role + "-P05-long.png"),
+    fullPage: true,
+    animations: "disabled",
+  });
+  report.screenshots.push(role + "-P05-long");
+  await context.unroute("**/api/v1/services");
+  report.checks.push(
+    role +
+      " travel detail renders long selected conditions and publisher text, independent equal notices and exact BIGINT pricing with the returned service and verification durations",
+  );
+}
+
 async function fixtures(database) {
   async function insert(table, values) {
     const record = { id: randomUUID(), ...values };
@@ -426,6 +670,7 @@ try {
       await page.evaluate(() => document.documentElement.scrollWidth),
       390,
     );
+    await verifyTravelDetail(context, page, role, web);
     await context.close();
     report.checks.push(
       `${role} travel directory restores its own reference layout, keeps city/date/search state through reload and service-detail return, preserves exact attraction identity and uses full-width 390px content`,
