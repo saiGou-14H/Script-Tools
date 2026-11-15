@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium, expect } from "@playwright/test";
 import { preview } from "vite";
 import { formatMinorUnits } from "../apps/web/src/lib/money.ts";
+import { formatCsvRows } from "../apps/web/src/lib/csv.ts";
 
 const output = path.resolve("output/verification/consumer-finance-pages");
 await mkdir(output, { recursive: true });
@@ -102,12 +103,37 @@ async function capture(id, route, title, selector, count) {
       ),
       editor: bounds(".refund-application textarea"),
       help: bounds(".sidebar .nav-group:last-child .nav-item"),
+      voucher_button: bounds(".bookings-list .ant-btn-primary"),
+      refund_step: bounds(".refund-step-marker"),
     };
   });
   report.layouts[id] = layout;
   assert.equal(layout.width, 1814);
   assert.equal(layout.height, 868);
   assert.ok(layout.help.bottom <= 868);
+  if (id === "USER-C20") {
+    assert.equal(layout.refund_step.width, 32);
+    assert.equal(layout.refund_step.height, 32);
+    await expect(
+      page.locator(".refund-step-marker.is-finished svg"),
+    ).toHaveCount(3);
+    await expect(
+      page.locator(
+        ".refund-progress-panel .ant-steps-item-process .ant-steps-item-rail",
+      ),
+    ).toHaveCSS("border-top-style", "dashed");
+  }
+  if (id === "USER-C22") {
+    assert.ok(layout.voucher_button.width >= 110);
+    await expect(page.locator(".booking-date").first()).toHaveCSS(
+      "font-size",
+      "18px",
+    );
+    await expect(page.locator(".bookings-list .status-green")).toHaveCSS(
+      "font-size",
+      "16px",
+    );
+  }
   assert.ok(layout.detail.bottom <= 868);
   if (id === "USER-C19") assert.ok(layout.editor.height >= 114);
 }
@@ -131,6 +157,19 @@ try {
   assert.equal(formatMinorUnits("0"), "0.00");
   report.checks.push(
     "minor-unit formatting preserves BIGINT boundaries and cent precision",
+  );
+  assert.equal(formatCsvRows([]), "");
+  assert.equal(
+    formatCsvRows([
+      ["服务名称", "说明"],
+      ["定制,脚本", '含有"引号"'],
+      ["多行\r\n脚本", ""],
+      ["单独\r回车", "单独\n换行"],
+    ]),
+    '服务名称,说明\r\n"定制,脚本","含有""引号"""\r\n"多行\r\n脚本",\r\n"单独\r回车","单独\n换行"',
+  );
+  report.checks.push(
+    "CSV formatting preserves custom script names, commas, doubled quotes, empty values and all supported newline forms",
   );
   page = await session();
   const mutations = [];
@@ -177,6 +216,7 @@ try {
   await page.getByRole("button", { name: "导出本人账单", exact: true }).click();
   const download = await downloadEvent;
   const csv = await readFile(await download.path(), "utf8");
+  assert.ok(csv.startsWith("\ufeff"));
   assert.ok(csv.includes("8.00,示例渠道A,WX****3921,已支付,退款处理中"));
   assert.ok(csv.includes("3.00,示例渠道B,WX****6607,已支付,已退款"));
   report.checks.push(
@@ -205,6 +245,45 @@ try {
   );
   report.checks.push(
     "bill selection survives reload, date filters reconcile totals and unknown order IDs keep an unavailable detail",
+  );
+  await page.getByRole("button", { name: "返回账单列表", exact: true }).click();
+  await expect(page.locator(".bill-detail")).toContainText("TT202611130027");
+  await page.goto(base + "/me/bills?date=invalid&order_id=TT202611130025");
+  await expect(
+    page.getByText("账单时间范围不可用", { exact: true }),
+  ).toBeVisible();
+  await expect(page.locator(".bill-summary strong")).toHaveText([
+    "—",
+    "—",
+    "—",
+  ]);
+  await expect(page.locator(".bill-list .ant-table-row")).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "导出本人账单", exact: true }),
+  ).toBeDisabled();
+  await page.getByRole("button", { name: "查看全部时间", exact: true }).click();
+  assert.equal(new URL(page.url()).searchParams.has("date"), false);
+  assert.equal(new URL(page.url()).searchParams.has("order_id"), false);
+  await expect(page.locator(".bill-summary strong")).toHaveText([
+    "17.00",
+    "3.00",
+    "8.00",
+  ]);
+  await row("文件处理")
+    .getByRole("button", { name: "详情", exact: true })
+    .click();
+  await choose("账单时间筛选", "2026-11-13");
+  await expect(page.locator(".bill-list .ant-table-row")).toHaveCount(2);
+  await page.goBack();
+  await expect(
+    page.locator('.bill-list tr[aria-selected="true"]'),
+  ).toContainText("文件处理");
+  await page.goForward();
+  await expect(
+    page.locator('.bill-list tr[aria-selected="true"]'),
+  ).toContainText("景点预约");
+  report.checks.push(
+    "unavailable bill ranges keep totals unknown and exports disabled, recovery clears stale selections, and browser history restores the matching filter and selected row",
   );
 
   await menu("退款与售后");
@@ -291,12 +370,39 @@ try {
   await expect(page.getByRole("dialog")).toContainText(
     "TT202611130081 · 已支付¥8",
   );
+  assert.equal(new URL(page.url()).searchParams.get("voucher"), "BK582");
+  await expect(
+    page.locator('.bookings-list tr[aria-selected="true"]'),
+  ).toContainText("城市展览馆");
+  await page.reload();
+  await expect(page.getByRole("dialog")).toContainText("BK•••582");
+  await page.goBack();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await page.goForward();
+  await expect(page.getByRole("dialog")).toContainText("BK•••582");
   await page
     .locator(".ant-modal-footer")
     .getByRole("button", { name: "关闭", exact: true })
     .click();
   report.checks.push(
     "pending booking retains its verification state and the verified voucher includes the correct masked code and service order",
+  );
+  for (const voucher of ["BK583", "missing"]) {
+    await page.goto(base + "/me/bookings?voucher=" + voucher);
+    await expect(
+      page.getByText("预约凭证不存在或暂不可用", { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await page
+      .getByRole("button", { name: "返回预约列表", exact: true })
+      .click();
+    assert.equal(new URL(page.url()).searchParams.has("voucher"), false);
+    await expect(
+      row("博物馆").getByRole("button", { name: "查看凭证", exact: true }),
+    ).toBeDisabled();
+  }
+  report.checks.push(
+    "voucher selection survives refresh and browser history, pending and unknown voucher links require recovery, and the original booking verification state is retained",
   );
 
   const live = await session(true);
@@ -317,11 +423,22 @@ try {
   await expect(live.locator(".refund-application")).not.toContainText(
     "目标未达成全退服务费",
   );
-  await live.goto(base + "/me/bookings");
+  await expect(live.locator(".refunds-list .ant-table-row")).toHaveCount(0);
+  await live.goto(base + "/me/refunds/REF018");
+  await expect(
+    live.getByRole("heading", { name: "退款详情", exact: true }),
+  ).toBeVisible();
+  await expect(
+    live.getByText("退款详情服务待接入", { exact: true }),
+  ).toBeVisible();
+  await live.getByRole("link", { name: "返回退款与售后", exact: true }).click();
+  await expect(live.locator(".refunds-list .ant-table-row")).toHaveCount(0);
+  await live.goto(base + "/me/bookings?voucher=BK582");
   await expect(live.locator(".bookings-page")).toContainText(
     "官方票款、预约状态和凭证暂不可用",
   );
   await expect(live.locator(".bookings-list")).not.toContainText("无需支付");
+  await expect(live.getByRole("dialog")).toHaveCount(0);
   report.checks.push(
     "live mode shows unavailable finance totals, disables local actions and keeps ticket amounts and refund rules unknown",
   );
@@ -359,6 +476,8 @@ try {
   await Promise.all(contexts.map((context) => context.close()));
   await browser.close();
   await server.close();
+  if (report.result === "PASS")
+    await rm(path.join(output, "failure.png"), { force: true });
   await writeFile(
     path.join(output, "report.json"),
     JSON.stringify(report, null, 2) + "\n",

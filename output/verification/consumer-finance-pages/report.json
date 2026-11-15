@@ -1,13 +1,16 @@
 {
-  "date": "2026-11-15T06:56:27.370Z",
+  "date": "2026-11-15T07:25:31.437Z",
   "checks": [
     "minor-unit formatting preserves BIGINT boundaries and cent precision",
+    "CSV formatting preserves custom script names, commas, doubled quotes, empty values and all supported newline forms",
     "four finance and booking routes fit the reference viewport with visible help navigation",
     "billing summaries, masked CSV and settled refunds share decimal-string monetary values and refund state",
     "bill selection survives reload, date filters reconcile totals and unknown order IDs keep an unavailable detail",
+    "unavailable bill ranges keep totals unknown and exports disabled, recovery clears stale selections, and browser history restores the matching filter and selected row",
     "refund detail links to its matching bill, keeps channel progress and reads the stored rule and execution snapshot",
     "refund confirmation preserves escaped supplementary text and the original outcome and deduplicates repeated applications",
     "pending booking retains its verification state and the verified voucher includes the correct masked code and service order",
+    "voucher selection survives refresh and browser history, pending and unknown voucher links require recovery, and the original booking verification state is retained",
     "live mode shows unavailable finance totals, disables local actions and keeps ticket amounts and refund rules unknown",
     "all four routes keep tables internally scrollable at 390px and preview actions issue no business mutations"
   ],
@@ -43,7 +46,9 @@
         "width": 212,
         "height": 31,
         "bottom": 866.953125
-      }
+      },
+      "voucher_button": null,
+      "refund_step": null
     },
     "USER-C19": {
       "width": 1814,
@@ -52,47 +57,49 @@
         "x": 269,
         "y": 213.515625,
         "width": 1021.75,
-        "height": 197.140625,
-        "bottom": 410.65625
+        "height": 207.140625,
+        "bottom": 420.65625
       },
       "detail": {
         "x": 1314.75,
         "y": 213.515625,
         "width": 475.234375,
-        "height": 605.671875,
-        "bottom": 819.1875
+        "height": 604.671875,
+        "bottom": 818.1875
       },
       "editor": {
         "x": 1338.75,
-        "y": 615.1875,
+        "y": 611.1875,
         "width": 427.234375,
         "height": 114,
-        "bottom": 729.1875
+        "bottom": 725.1875
       },
       "help": {
         "x": 10,
-        "y": 835.953125,
+        "y": 808.953125,
         "width": 224,
-        "height": 31,
-        "bottom": 866.953125
-      }
+        "height": 29,
+        "bottom": 837.953125
+      },
+      "voucher_button": null,
+      "refund_step": null
     },
     "USER-C20": {
       "width": 1814,
       "height": 868,
       "main": {
         "x": 265,
-        "y": 320.125,
+        "y": 319.125,
         "width": 1523,
-        "height": 521.5,
-        "bottom": 841.625
+        "height": 525,
+        "bottom": 844.125
       },
       "detail": {
         "x": 265,
-        "y": 320.125,
+        "y": 319.125,
         "width": 1523,
-        "height": 521.5,
-        "bottom": 841.625
+        "height": 525,
+        "bottom": 844.125
       },
       "editor": null,
       "help": {
@@ -101,6 +108,14 @@
         "width": 211,
         "height": 31,
         "bottom": 866.953125
+      },
+      "voucher_button": null,
+      "refund_step": {
+        "x": 454.890625,
+        "y": 339.125,
+        "width": 32,
+        "height": 32,
+        "bottom": 371.125
       }
     },
     "USER-C22": {
@@ -108,17 +123,17 @@
       "height": 868,
       "main": {
         "x": 243,
-        "y": 295.921875,
+        "y": 297.328125,
         "width": 1555,
-        "height": 213.265625,
-        "bottom": 509.1875
+        "height": 210.65625,
+        "bottom": 507.984375
       },
       "detail": {
         "x": 243,
-        "y": 295.921875,
+        "y": 297.328125,
         "width": 1555,
-        "height": 213.265625,
-        "bottom": 509.1875
+        "height": 210.65625,
+        "bottom": 507.984375
       },
       "editor": null,
       "help": {
@@ -127,7 +142,15 @@
         "width": 202,
         "height": 31,
         "bottom": 866.953125
-      }
+      },
+      "voucher_button": {
+        "x": 1478.046875,
+        "y": 369.703125,
+        "width": 110,
+        "height": 40,
+        "bottom": 409.703125
+      },
+      "refund_step": null
     }
   },
   "final_visual_acceptance": "pending",

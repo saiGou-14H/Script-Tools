@@ -1,5 +1,19 @@
-import { App, Button, Empty, Form, Input, Select, Steps, Table } from "antd";
-import { CalendarOutlined, DownloadOutlined } from "@ant-design/icons";
+import {
+  Alert,
+  App,
+  Button,
+  Empty,
+  Form,
+  Input,
+  Select,
+  Steps,
+  Table,
+} from "antd";
+import {
+  CalendarOutlined,
+  CheckOutlined,
+  DownloadOutlined,
+} from "@ant-design/icons";
 import {
   Link,
   useNavigate,
@@ -10,6 +24,7 @@ import { useWorkspace } from "../context";
 import { usePrototype, type PreviewRefund } from "../prototype";
 import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
 import { formatMinorUnits } from "../lib/money";
+import { formatCsvRows } from "../lib/csv";
 
 const billFixtures = [
   {
@@ -43,12 +58,20 @@ const billFixtures = [
     date: "2026-11-12",
   },
 ];
+const billDateOptions = [
+  { value: "all", label: "全部时间" },
+  ...Array.from(new Set(billFixtures.map((bill) => bill.date))).map((date) => ({
+    value: date,
+    label: date,
+  })),
+];
 
 export function BillsPage() {
   const { bootstrap } = useWorkspace();
   const { refunds } = usePrototype();
   const [search, setSearch] = useSearchParams();
   const range = search.get("date") || "all";
+  const validRange = billDateOptions.some((option) => option.value === range);
   const selected = search.get("order_id");
   const isPrototype = bootstrap.data_mode === "prototype";
   const all = isPrototype
@@ -57,13 +80,15 @@ export function BillsPage() {
         refund: refunds.find((refund) => refund.orderId === bill.orderId),
       }))
     : [];
-  const rows = all.filter((item) => range === "all" || item.date === range);
+  const rows = all.filter(
+    (item) => validRange && (range === "all" || item.date === range),
+  );
   const item = selected
     ? rows.find((row) => row.orderId === selected)
     : rows[0];
   const summary = [
     {
-      icon: "payment",
+      icon: "wallet",
       label: "总实付",
       amount: rows.reduce((sum, row) => sum + BigInt(row.amountMinor), 0n),
       color: "blue",
@@ -117,7 +142,7 @@ export function BillsPage() {
         row.date,
       ]),
     ];
-    const content = "\ufeff" + lines.map((line) => line.join(",")).join("\r\n");
+    const content = "\ufeff" + formatCsvRows(lines);
     const url = URL.createObjectURL(
       new Blob([content], { type: "text/csv;charset=utf-8" }),
     );
@@ -142,13 +167,37 @@ export function BillsPage() {
       {!isPrototype && (
         <Notice>账单服务待接入，实付与退款汇总暂不可用。</Notice>
       )}
+      {!validRange && (
+        <Alert
+          className="finance-feedback"
+          type="warning"
+          showIcon
+          title="账单时间范围不可用"
+          description="请重新选择时间范围。"
+          action={
+            <Button
+              onClick={() => {
+                const next = new URLSearchParams(search);
+                next.delete("date");
+                next.delete("order_id");
+                setSearch(next);
+              }}
+            >
+              查看全部时间
+            </Button>
+          }
+        />
+      )}
       <div className="bill-summary">
         {summary.map(({ icon, label, amount, color }) => (
           <Panel key={label}>
             <TileIcon name={icon} color={color} />
             <div>
               <h3>{label}</h3>
-              <strong>{isPrototype ? formatMinorUnits(amount) : "—"}</strong> 元
+              <strong>
+                {isPrototype && validRange ? formatMinorUnits(amount) : "—"}
+              </strong>{" "}
+              元
             </div>
           </Panel>
         ))}
@@ -160,14 +209,23 @@ export function BillsPage() {
             <Select
               aria-label="账单时间筛选"
               value={range}
-              onChange={(date) => setSearch(date === "all" ? {} : { date })}
+              onChange={(date) => {
+                const next = new URLSearchParams(search);
+                if (date === "all") next.delete("date");
+                else next.set("date", date);
+                next.delete("order_id");
+                setSearch(next);
+              }}
               prefix={<CalendarOutlined />}
               disabled={!isPrototype}
-              options={[
-                { value: "all", label: "全部时间" },
-                { value: "2026-11-13", label: "2026-11-13" },
-                { value: "2026-11-12", label: "2026-11-12" },
-              ]}
+              options={
+                validRange
+                  ? billDateOptions
+                  : [
+                      { value: range, label: "时间范围不可用", disabled: true },
+                      ...billDateOptions,
+                    ]
+              }
             />
             <Button
               icon={<DownloadOutlined />}
@@ -183,6 +241,7 @@ export function BillsPage() {
             pagination={false}
             dataSource={rows}
             rowClassName={(row) => (row.id === item?.id ? "selected-bill" : "")}
+            onRow={(row) => ({ "aria-selected": row.id === item?.id })}
             scroll={{ x: 960 }}
             columns={[
               {
@@ -286,7 +345,19 @@ export function BillsPage() {
                   ? "该订单的账单尚未载入或不在所选日期范围内"
                   : "暂无交易明细"
               }
-            />
+            >
+              {selected && (
+                <Button
+                  onClick={() => {
+                    const next = new URLSearchParams(search);
+                    next.delete("order_id");
+                    setSearch(next);
+                  }}
+                >
+                  返回账单列表
+                </Button>
+              )}
+            </Empty>
           )}
         </Panel>
       </div>
@@ -317,6 +388,7 @@ export function RefundsPage() {
     reason: string;
     description?: string;
   }) {
+    if (!eligible) return;
     modal.confirm({
       title: "确认退款申请",
       content:
@@ -355,7 +427,7 @@ export function RefundsPage() {
         <Panel className="refunds-list">
           <Table
             rowKey="id"
-            dataSource={refunds}
+            dataSource={isPrototype ? refunds : []}
             pagination={false}
             scroll={{ x: 960 }}
             columns={[
@@ -481,13 +553,33 @@ export function RefundsPage() {
 }
 
 export function RefundDetailPage() {
+  const { bootstrap } = useWorkspace();
   const { id } = useParams();
   const { refunds } = usePrototype();
   const { message } = App.useApp();
-  const refund = refunds.find(
-    (item) => item.id === (id === "demo" ? "REF018" : id),
-  );
-  if (!refund) return <Empty description="退款申请不存在或已失效" />;
+  const refund =
+    bootstrap.data_mode === "prototype"
+      ? refunds.find((item) => item.id === (id === "demo" ? "REF018" : id))
+      : undefined;
+  if (!refund)
+    return (
+      <div className="refund-detail-page">
+        <PageHeading title="退款详情" />
+        <Panel>
+          <Empty
+            description={
+              bootstrap.data_mode === "prototype"
+                ? "退款申请不存在或已失效"
+                : "退款详情服务待接入"
+            }
+          >
+            <Link to="/me/refunds">
+              <Button>返回退款与售后</Button>
+            </Link>
+          </Empty>
+        </Panel>
+      </div>
+    );
   const current =
     refund.status === "SUCCEEDED" ? 5 : refund.status === "PROCESSING" ? 3 : 0;
   return (
@@ -531,7 +623,7 @@ export function RefundDetailPage() {
                 aria-hidden
                 className={`refund-step-marker ${index < current ? "is-finished" : index === current ? "is-current" : ""}`}
               >
-                {index < current ? "✓" : ""}
+                {index < current && <CheckOutlined />}
               </span>
             ),
           }))}

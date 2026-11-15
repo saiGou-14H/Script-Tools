@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T06:50:31.911Z",
+  "date": "2026-11-15T07:30:21.986Z",
   "checks": [
     "GUEST travel directory restores its own reference layout, keeps city/date/search state through reload and service-detail return, preserves exact attraction identity and uses full-width 390px content",
     "USER travel directory restores its own reference layout, keeps city/date/search state through reload and service-detail return, preserves exact attraction identity and uses full-width 390px content",

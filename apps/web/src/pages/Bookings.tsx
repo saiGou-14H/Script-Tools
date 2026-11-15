@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { App, Button, Modal, Table } from "antd";
+import { Alert, App, Button, Empty, Modal, Table } from "antd";
 import {
   CheckOutlined,
   ClockCircleOutlined,
   InfoCircleFilled,
 } from "@ant-design/icons";
 import { useWorkspace } from "../context";
+import { useSearchParams } from "react-router-dom";
 import { Notice, PageHeading, Panel, Status } from "../components/ui";
 
 const bookings = [
@@ -31,9 +31,18 @@ const bookings = [
 
 export function BookingsPage() {
   const { bootstrap } = useWorkspace();
-  const [selected, setSelected] = useState<(typeof bookings)[number]>();
   const { message } = App.useApp();
   const isPrototype = bootstrap.data_mode === "prototype";
+  const [params, setParams] = useSearchParams();
+  const requestedVoucher = params.get("voucher");
+  const selected = isPrototype
+    ? bookings.find((row) => row.id === requestedVoucher && row.verified)
+    : undefined;
+  function closeVoucher() {
+    const next = new URLSearchParams(params);
+    next.delete("voucher");
+    setParams(next);
+  }
   return (
     <div className="bookings-page">
       <PageHeading
@@ -57,16 +66,41 @@ export function BookingsPage() {
           </div>
         </div>
       </div>
+      {requestedVoucher !== null && !selected && (
+        <Alert
+          className="finance-feedback"
+          type="warning"
+          showIcon
+          title="预约凭证不存在或暂不可用"
+          description="请从已核验成功的预约记录中选择凭证。"
+          action={<Button onClick={closeVoucher}>返回预约列表</Button>}
+        />
+      )}
       <Panel className="bookings-list">
         <Table
           rowKey="id"
+          tableLayout="fixed"
           pagination={false}
           dataSource={isPrototype ? bookings : []}
+          locale={{
+            emptyText: (
+              <Empty
+                description={
+                  isPrototype ? "暂无预约记录" : "预约记录服务待接入"
+                }
+              />
+            ),
+          }}
+          rowClassName={(row) =>
+            row.id === selected?.id ? "selected-booking" : ""
+          }
+          onRow={(row) => ({ "aria-selected": row.id === selected?.id })}
           scroll={{ x: 1470 }}
           columns={[
             {
               title: "景点",
               width: "14%",
+              ellipsis: true,
               dataIndex: "attraction",
               render: (value) => <b>{value}</b>,
             },
@@ -74,7 +108,7 @@ export function BookingsPage() {
               title: "日期场次",
               width: "11%",
               render: (_, row) => (
-                <div>
+                <div className="booking-date">
                   {row.date}
                   <br />
                   {row.slot}
@@ -126,14 +160,18 @@ export function BookingsPage() {
                   <Button
                     type="primary"
                     disabled={!row.verified}
-                    onClick={() => setSelected(row)}
+                    onClick={() => {
+                      const next = new URLSearchParams(params);
+                      next.set("voucher", row.id);
+                      setParams(next);
+                    }}
                   >
                     查看凭证
                   </Button>
                   <Button
                     onClick={() =>
                       void message.info(
-                        "官方核验通道尚未接入，保留原预约及当前状态",
+                        `${row.attraction} · ${row.date} ${row.slot}。官方核验通道尚未接入，保留原预约及当前状态`,
                       )
                     }
                   >
@@ -148,8 +186,8 @@ export function BookingsPage() {
       <Modal
         title="预约凭证"
         open={!!selected}
-        onCancel={() => setSelected(undefined)}
-        footer={<Button onClick={() => setSelected(undefined)}>关闭</Button>}
+        onCancel={closeVoucher}
+        footer={<Button onClick={closeVoucher}>关闭</Button>}
       >
         <dl>
           <dt>景点</dt>

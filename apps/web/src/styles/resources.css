@@ -46,6 +46,15 @@
   left: 37%;
   width: 28.7%;
 }
+.app-shell.page-C19 .nav-item {
+  height: 29px;
+}
+.app-shell.page-C19 .sidebar {
+  padding-top: 16px;
+}
+.finance-feedback {
+  margin: 16px 0;
+}
 .page-C20 {
   --sidebar-width: 232px;
 }
@@ -88,6 +97,11 @@
   height: 64px;
   border-radius: 50%;
   font-size: 30px;
+}
+.bill-summary .tile-green .anticon,
+.refund-detail-banner > .tile-icon .anticon,
+.page-C20 .nav-item[href="/me/refunds"] .anticon {
+  transform: rotate(90deg);
 }
 .bill-summary h3 {
   font-weight: 500;
@@ -170,6 +184,8 @@
   grid-template-columns: 102px minmax(0, 1fr);
   gap: 4px 10px;
   margin: 0;
+  font-size: 18px;
+  line-height: 1.45;
 }
 .bill-detail dt {
   color: #445370;
@@ -192,6 +208,7 @@
   margin-bottom: 12px;
   color: inherit;
   line-height: 1.5;
+  font-size: 18px;
 }
 .refunds-columns {
   display: grid;
@@ -214,10 +231,10 @@
   background: #f3f5fa;
   font-size: 16px;
   white-space: nowrap;
-  padding: 12px 16px;
+  padding: 9px 16px;
 }
 .refunds-list .ant-table-tbody > tr > td {
-  padding: 15px 16px;
+  padding: 19px 16px;
   white-space: nowrap;
 }
 .refunds-list .ant-table-thead > tr > th::before {
@@ -225,13 +242,13 @@
 }
 .refund-application .panel-heading {
   border: 0;
-  padding: 20px 22px 0;
+  padding: 16px 22px 0;
 }
 .refund-application .panel-heading h2 {
-  font-size: 21px;
+  font-size: 22px;
 }
 .refund-application .panel-body {
-  padding: 22px;
+  padding: 18px 22px 25px;
   font-size: 15px;
 }
 .refund-application .ant-form-item {
@@ -287,7 +304,7 @@
   gap: 24px;
   padding: 16px 32px;
   min-height: 118px;
-  margin: 20px 0;
+  margin: 20px 0 19px;
 }
 .refund-detail-banner .tile-icon {
   width: 68px;
@@ -308,27 +325,43 @@
   padding-right: 8px;
 }
 .refund-detail-banner p {
+  font-size: 16px;
   color: #55627c;
   margin-bottom: 6px;
 }
-.refund-detail-banner .status {
+.refund-detail-banner .status.ant-tag {
   border-radius: 26px;
-  font-size: 19px;
+  font-size: 20px;
+  font-weight: 600;
   padding: 8px 20px;
 }
 .refund-progress-panel {
   margin-bottom: 0;
 }
 .refund-progress-panel .panel-body {
-  padding: 18px 20px 20px;
+  padding: 19px 20px 23px;
 }
 .refund-progress-panel .ant-steps {
   padding: 0 46px;
-  margin-bottom: 26px;
+  margin-bottom: 33px;
 }
 .refund-progress-panel .ant-steps-item-title {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 600;
+  line-height: 26px;
+}
+.refund-progress-panel .ant-steps .ant-steps-item .ant-steps-item-wrapper {
+  row-gap: 6px;
+}
+.refund-progress-panel .ant-steps .ant-steps-item .ant-steps-item-icon {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+}
+.refund-progress-panel .ant-steps-item-process .ant-steps-item-rail {
+  background: none;
+  border-top: 2px dashed #d5ddeb;
+  height: 0;
 }
 .refund-step-marker {
   display: grid;
@@ -345,6 +378,10 @@
   border-color: #1555ff;
   background: #1555ff;
   color: #fff;
+}
+.refund-step-marker > .anticon {
+  font-size: 18px;
+  line-height: 1;
 }
 .refund-step-marker.is-current {
   border-color: #1555ff;
@@ -375,7 +412,7 @@
   border-bottom: 1px solid #e5eaf3;
   padding: 8px 20px;
   gap: 22px;
-  font-size: 17px;
+  font-size: 18px;
 }
 .refund-facts > div:last-child {
   border: 0;
@@ -581,8 +618,13 @@
   color: #1555ff;
 }
 .booking-ticket-notice h2 {
+  font-size: 20px;
   color: #111;
   margin-bottom: 3px;
+}
+.booking-ticket-notice .notice p {
+  font-size: 16px;
+  line-height: 1.5;
 }
 .bookings-list .panel-body {
   padding: 8px 10px 10px;
@@ -592,27 +634,43 @@
 }
 .bookings-list .ant-table-thead > tr > th {
   background: #f5f7fc;
-  padding: 11px 20px;
+  padding: 10px 24px;
+  font-size: 18px;
 }
 .bookings-list .ant-table-tbody > tr > td {
-  padding: 11px 20px;
+  padding: 9px 24px;
+  font-size: 18px;
   white-space: nowrap;
   line-height: 1.45;
 }
+.bookings-list .ant-table-tbody > tr.selected-booking > td {
+  background: #e8f1ff;
+}
+.bookings-list .booking-date {
+  text-align: center;
+}
 .bookings-list .ant-table-thead > tr > th::before {
   display: none;
+}
+.bookings-list .ant-table-tbody > tr > td:nth-child(6) {
+  padding-inline: 20px;
+}
+.bookings-list .ant-table-tbody > tr > td:last-child {
+  padding-inline: 13px;
 }
 .bookings-list .ant-btn {
   font-size: 16px;
   height: 40px;
 }
-.bookings-list .status {
-  font-size: 15px;
-  padding: 4px 10px;
+.bookings-list .status.ant-tag {
+  font-size: 16px;
+  padding: 3px 12px;
+  line-height: 24px;
   border-radius: 8px;
   font-weight: 600;
 }
-.bookings-list .status-gray {
+.bookings-list .status-gray.ant-tag {
+  font-size: 15px;
   color: #111827;
   background: #f3f5fa;
 }
@@ -620,8 +678,12 @@
   gap: 13px;
 }
 .bookings-list .ant-btn-default {
+  min-width: 128px;
   color: #1555ff;
   border-color: #1555ff;
+}
+.bookings-list .ant-btn-primary {
+  min-width: 110px;
 }
 .bookings-list .ant-btn-primary:disabled {
   background: #d5dbe5;
@@ -1082,7 +1144,7 @@
   .refund-detail-banner > div:last-child {
     margin-left: 0;
   }
-  .refund-detail-banner .status {
+  .refund-detail-banner .status.ant-tag {
     font-size: 16px;
   }
   .refund-facts > div {

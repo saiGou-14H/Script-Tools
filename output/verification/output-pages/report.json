@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T06:46:32.222Z",
+  "date": "2026-11-15T07:28:26.327Z",
   "data_source": "isolated PGlite, controlled metadata responses and local examples",
   "render_source": "production build with separate development-server escaping and icon checks",
   "checks": [

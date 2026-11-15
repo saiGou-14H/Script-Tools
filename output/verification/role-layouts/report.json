@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T06:48:35.754Z",
+  "date": "2026-11-15T07:28:52.607Z",
   "data_source": "isolated development seed",
   "viewport_source": "individual reference manifest dimensions",
   "visual_acceptance": "pending",
@@ -269,7 +269,7 @@
       "route": "/travel",
       "reference_file": "01-游客/P04-城市与景点.png",
       "reference_sha256": "998c6f2eebbb0098a600fcdac56b2f0232caeead739fa4d6853276abf033a4a1",
-      "screenshot_sha256": "16c53d67af68605e064c32759887eb83aec4ba56a1d505fd52eaa7bffad8fe9a",
+      "screenshot_sha256": "1cea29eb651440e29ee1d4ec399dcb5569d078b262b97eea7a876e536fef4757",
       "viewport": {
         "width": 1815,
         "height": 867
@@ -997,7 +997,7 @@
       "route": "/me/bills",
       "reference_file": "02-消费者/C18-支付与账单.png",
       "reference_sha256": "ec1490cf041d3c6421204c6febd406dea9c581f2d2b6c4e0d5df2f718bae6b1d",
-      "screenshot_sha256": "4bd48403d0973927c56dcd23c20825ec52d30cacb87b0d1b3cf725b0aba75b72",
+      "screenshot_sha256": "5af4dc68c9678e8f6358d8e39015080bc56af92206f93e7d221d96dc7f7c313a",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1024,7 +1024,7 @@
       "route": "/me/refunds",
       "reference_file": "02-消费者/C19-退款与售后.png",
       "reference_sha256": "cfa34e1e8a257dcdf13b87e7b27aa4b8566fe60272d6e7294f79641bf0c5270f",
-      "screenshot_sha256": "b4fa5e7f7f48d3847320ec3698a50bba811db5f58f5b4b3a4e56389ab20c2deb",
+      "screenshot_sha256": "f12f1f2b44c44aa1d8072e3c5f02ab3484e79effdb7ad897134d8a911c438d6f",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1050,7 +1050,7 @@
       "route": "/me/refunds/demo",
       "reference_file": "02-消费者/C20-退款详情.png",
       "reference_sha256": "86981c3792d9089d8782b309c861850fbc0c83e8041d17db6ea32bc7e87bb066",
-      "screenshot_sha256": "49ec3be174e4cdc9d0be07ca8c5ba469964aa155c011242a269fa6612b8364a9",
+      "screenshot_sha256": "a5918e108318846ab9c7aaff9cab7959e572a405681789dc8bef60b67fcbc558",
       "viewport": {
         "width": 1815,
         "height": 867
@@ -1059,7 +1059,7 @@
         "width": 1583,
         "scroll_width": 1583,
         "document_width": 1815,
-        "document_height": 867,
+        "document_height": 868,
         "headings": [
           "退款详情",
           "REF018 景点预约"
@@ -1107,7 +1107,7 @@
       "route": "/me/bookings",
       "reference_file": "02-消费者/C22-预约凭证与票款.png",
       "reference_sha256": "fadbd086dd12dc684d124b2f613779d2972a1f1e3b7264b758d7e36ac8bd398c",
-      "screenshot_sha256": "9470bf1ec125530a10ab11203b58804c44dc3acb9b965455faba99df447eeb7a",
+      "screenshot_sha256": "69d7479865638c409b54198019084d23af36d02646b46394fa3d81495f94c8ae",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1194,7 +1194,7 @@
       "route": "/publisher/scripts",
       "reference_file": "03-脚本发布者/S02-我的脚本.png",
       "reference_sha256": "7784b9b46b15556830d538fa6d53520e379b12c6e158d86ee90f984c6666f18f",
-      "screenshot_sha256": "17df1f9a5a1a6c2068d22778cb5c5f9b2e6962d6c8158032573f5279f9d00faa",
+      "screenshot_sha256": "cf2b979b562cca926dd5b5443fdb093de95463229605d1880942e050212ce9c7",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -1219,7 +1219,7 @@
       "route": "/publisher/scripts/demo/edit",
       "reference_file": "03-脚本发布者/S03-脚本编辑.png",
       "reference_sha256": "8c7bb4a03966ef5e1056f32f670051f5536d19dc6ec9454e8e16979f36c94190",
-      "screenshot_sha256": "cb742ea5ced96de38437fe82669b7961b294743cdde8c5d5364703003426b985",
+      "screenshot_sha256": "5a9b8ac83b7dfaad03aad0f842add1d102ecb1c086ab8bce1a00235fd0a468ba",
       "capture_state": "manifest_structure_checked_through_ui",
       "viewport": {
         "width": 1815,
@@ -1601,7 +1601,7 @@
       "route": "/me/settings/account?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/C21-账户设置.png",
       "reference_sha256": "05f5bea2c8dfe63eacd5360d5721c809e296d79eef69a1087ae33e771c12d542",
-      "screenshot_sha256": "aef457547ca83fd8dd819bf011a27716a2c04c1d303cb9824261911a0ba0defb",
+      "screenshot_sha256": "e45f2f63417b1e6640a585c56ae08a4adf760740f3a795abd31792a033eabbcc",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1630,7 +1630,7 @@
       "route": "/help?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/P06-使用帮助.png",
       "reference_sha256": "d5cd9e9d8414514542ac3ce18fc1c7809f179e0f292d06ae34f179cb1f93a15e",
-      "screenshot_sha256": "2abbbb4a75d8114834c25fc44909a1f6b8d6b97878149cab91ffde7dfb2f6228",
+      "screenshot_sha256": "71da9cd7af3eaafef094c542a70d58979a3cf527f6fd0790d8542d435e83a57b",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -2174,7 +2174,7 @@
       "route": "/admin/recovery",
       "reference_file": "04-平台管理员/O20-备份与清理.png",
       "reference_sha256": "d72dffcb141adab395397ff91960f9c38f14b33901feaa5f8338c41d17244b78",
-      "screenshot_sha256": "4a602c5b58921d0f0fea9b0c366e78fed33ffe4d1e059a0a1d93920ec4a39807",
+      "screenshot_sha256": "b005e07eccbd94c09f94996962fa5c8ea43e0040fface5e9b110eacb897badfb",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -2229,7 +2229,7 @@
       "route": "/me/settings/account?workspace=ADMIN",
       "reference_file": "04-平台管理员/C21-账户设置.png",
       "reference_sha256": "4c19673067227af6a547e9e5a5e65485b22c6b5632d2758b15ca596191e0a1be",
-      "screenshot_sha256": "82bcc3cb5a92c516e2413bf44db3400154f31b77df98149d025c738ba6b8b9d2",
+      "screenshot_sha256": "37e655ac3ea4e1a903203f32e0145c20b99a5c9458316127f71a39c9911a4375",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -2282,11 +2282,11 @@
     }
   ],
   "errors": [],
-  "build_sha256": "d0c31b1ad337a6a0340c9cba95ae07c6db60408fa5365facd236f704fe471915",
+  "build_sha256": "e856c8b8b703fccf3c9ec6d0c62898548b131b4daa6b14d9031cd10d7ea48e28",
   "source_sha256": {
     "apps/web/src/pages/PublisherHome.tsx": "c4e6110c2b4ca075150179528a1af443d45a8c07730648d75a148100609abdbf",
     "apps/web/src/pages/AdminHome.tsx": "9316fc19b65bcc1c794debad93e1ece382aa10d601e88d5cfac97359ddcbd1f5",
-    "apps/web/src/components/Shell.tsx": "a1abcd36286cbca7a8236771ae38b19cb2e2e880598d601c2faf5f7c00e986d3",
+    "apps/web/src/components/Shell.tsx": "ce5b5a38db6beb7ab53dcbd21b36238aced704bd991f591ae1e47506a3e5b00f",
     "apps/web/src/components/ui.tsx": "fda1383297ec6bdd3f64a9ca9d2ece2f4c9555ca7175341b15ae24cb274e2323",
     "apps/web/src/styles/dashboards.css": "492670dd28518d2ed3766c72735df4752d0211acf47884a86981dfeff61c0a43",
     "apps/web/src/main.tsx": "39cf82ad38c20fe0f7ea414950308e3c374e1174c36ead00d4824b41536811d4",
@@ -2315,6 +2315,10 @@
     "apps/web/src/pages/Outputs.tsx": "46d0fa1d050dbc3bc8fe87c0269eb0f507b5630e4f0ff0f8977e54fe82b1ee9d",
     "apps/web/src/pages/Personal.tsx": "520f8f4bf3d1b1a23a916961ce70d342a47088eb0bf04cf99842bca0e70d8252",
     "apps/web/src/pages/Notifications.tsx": "5471bbb10fcc744dfa03c79399a997749a58153f1d60afd813e70e2b1a20eeea",
+    "apps/web/src/pages/ConsumerFinance.tsx": "9ca75aadd55c7180a2a1ea021de9cd72a1c2ddc41ad22675e3afdf6756822c8a",
+    "apps/web/src/pages/Bookings.tsx": "40384003e3464138374749ca05a7926f7bde0b6ddca91fcf0a53797ca1852c88",
+    "apps/web/src/lib/csv.ts": "51af4cb55a7632c8cc69406692fbe6dfb3997c46ef3ea2776b375a0474c56f4d",
+    "apps/web/src/styles/resources.css": "1479c65e54238d261751b43336998668759c0bf0866d34f365a2fc5836bc6902",
     "apps/web/src/lib/consumer-preview.ts": "16652c4ba78b95963373617921e0c74f0f9091b5b766fafc957e6999ab883704",
     "apps/web/src/styles/outputs.css": "e23f32317cf7dbf89723a7ba69c5c4079d971152126f047dee99337419601e13",
     "apps/web/src/styles/personal.css": "4784c34505b1d024521fd47c1c8327027506c127f3c9595760ae9cf8480423ae",
