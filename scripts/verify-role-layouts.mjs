@@ -316,6 +316,9 @@ try {
   report.source_hash_normalization = "LF";
   for (const file of [
     "apps/web/src/pages/PublisherHome.tsx",
+    "apps/web/src/lib/publisher-overview.ts",
+    "apps/control-api/src/publisher/publisher-overview.controller.ts",
+    "apps/control-api/src/publisher/publisher-overview.service.ts",
     "apps/web/src/pages/PublisherFinance.tsx",
     "apps/web/src/pages/PublisherAccess.tsx",
     "apps/web/src/components/PublisherProfileEditor.tsx",
@@ -891,15 +894,19 @@ try {
       await page.goto(base + route);
       await ready(page, role.id, id);
       await expect(page.locator(".main-content")).not.toContainText("示例数据");
-      await expect(
-        page.locator(publisher ? ".publisher-stats" : ".admin-head-stats"),
-      ).not.toContainText("¥");
       if (publisher) {
+        await expect(page.locator(".publisher-stats strong")).toHaveText([
+          "4",
+          "0",
+          "¥0.00",
+          "0",
+        ]);
         await expect(
           page.locator(".publisher-services .ant-table-row"),
-        ).toHaveCount(0);
+        ).toHaveCount(4);
         await expect(page.locator(".publisher-stats em")).toHaveCount(0);
       } else {
+        await expect(page.locator(".admin-head-stats")).not.toContainText("¥");
         await expect(page.locator(".admin-anomalies > a")).toHaveCount(0);
         await expect(page.locator(".dashboard-chart-value")).toHaveCount(0);
         await expect(page.locator(".availability-ring")).toHaveClass(
@@ -914,8 +921,9 @@ try {
       }
       await capture(role.id + "-" + id + "-live-mobile", true);
       report.checks.push(
-        role.id +
-          " live dashboard exposes pending integrations with empty data and neutral indicators",
+        publisher
+          ? "publisher live dashboard exposes owner-scoped service rows and exact zero-valued ledger facts"
+          : "administrator live dashboard exposes pending integrations with empty data and neutral indicators",
       );
     }
     await context.close();

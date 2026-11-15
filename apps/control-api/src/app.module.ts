@@ -23,6 +23,8 @@ import { ScriptController } from "./scripts/script.controller";
 import { ScriptService } from "./scripts/script.service";
 import { PublisherExecutionController } from "./publisher/publisher-execution.controller";
 import { PublisherExecutionService } from "./publisher/publisher-execution.service";
+import { PublisherOverviewController } from "./publisher/publisher-overview.controller";
+import { PublisherOverviewService } from "./publisher/publisher-overview.service";
 import { ScriptVersionQueryService } from "./scripts/script-version-query.service";
 
 @Module({
@@ -35,6 +37,7 @@ import { ScriptVersionQueryService } from "./scripts/script-version-query.servic
     AdminMetadataController,
     ScriptController,
     PublisherExecutionController,
+    PublisherOverviewController,
   ],
   providers: [
     DatabaseService,
@@ -51,6 +54,7 @@ import { ScriptVersionQueryService } from "./scripts/script-version-query.servic
     PublicTravelService,
     ScriptService,
     PublisherExecutionService,
+    PublisherOverviewService,
     ScriptVersionQueryService,
     { provide: APP_GUARD, useClass: AuthGuard },
   ],

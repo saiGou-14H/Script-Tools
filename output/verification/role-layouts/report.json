@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T17:03:42.850Z",
+  "date": "2026-11-15T17:43:26.165Z",
   "data_source": "isolated development seed",
   "viewport_source": "individual reference manifest dimensions",
   "visual_acceptance": "pending",
@@ -60,7 +60,7 @@
     "Publisher dashboard filter state survives reload, fixture policy matches the reference, and Ctrl+K focuses search",
     "PUBLISHER dashboard fits the reference desktop height",
     "PUBLISHER dashboard uses internal table scrolling at 390px",
-    "PUBLISHER live dashboard exposes pending integrations with empty data and neutral indicators",
+    "publisher live dashboard exposes owner-scoped service rows and exact zero-valued ledger facts",
     "Admin dashboard regions follow the measured reference coordinates and its workspace label remains fully visible",
     "Admin trend labels and point markers retain pixel proportions and the filled series terminates at its zero-value gridline",
     "Admin transaction and service tables preserve reference typography without blank space from Ant Design measurement rows",
@@ -92,7 +92,7 @@
     "Admin heading, metric and anomaly cards remain unclipped and availability legends remain single-line across 53 widths and breakpoint boundaries from 390px to 1870px",
     "ADMIN dashboard fits the reference desktop height",
     "ADMIN dashboard uses internal table scrolling at 390px",
-    "ADMIN live dashboard exposes pending integrations with empty data and neutral indicators",
+    "administrator live dashboard exposes pending integrations with empty data and neutral indicators",
     "The comparison viewer opens local reference and implementation images, supports deep links, role navigation and opacity overlays"
   ],
   "screenshots": [
@@ -423,7 +423,7 @@
       "route": "/market",
       "reference_file": "02-消费者/P02-脚本市场.png",
       "reference_sha256": "0fa6c0a6c0203406c932cb286720d0f4b557356f485b68d4dcff169cf7bf1ab6",
-      "screenshot_sha256": "3030ca4a6312763cf8cc5ed36e361751fe4a7d052174c3f5199d5842207c4c9c",
+      "screenshot_sha256": "bb9228e81b80d05989c0e535827816c783063de8217fa569a64f67302962c253",
       "viewport": {
         "width": 1815,
         "height": 867
@@ -856,7 +856,7 @@
       "route": "/me/pending",
       "reference_file": "02-消费者/C13-待处理事项.png",
       "reference_sha256": "e6a1298dcd4f3da1e354ebc7212405c06712b3dfa11b761017e22dd4ae8589e9",
-      "screenshot_sha256": "7eabd6b1d5b56be3c04e4f57403ff31b6b98a58559bde710d0705722abe6706c",
+      "screenshot_sha256": "24819adf7b16972b69734f76b9bb913125ab41e4f3fee6f4025478e9d3975115",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1200,7 +1200,7 @@
       "route": "/publisher/scripts",
       "reference_file": "03-脚本发布者/S02-我的脚本.png",
       "reference_sha256": "7784b9b46b15556830d538fa6d53520e379b12c6e158d86ee90f984c6666f18f",
-      "screenshot_sha256": "e1d6d52a845502be2e1f4d7092692cb5b8cc4ec9e9c2a5b30ec54a508b959d6a",
+      "screenshot_sha256": "6e12273875da1a3d999eec149fbf3d3adb917e887e42b131d142267351f1f152",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -1254,7 +1254,7 @@
       "route": "/publisher/versions/demo",
       "reference_file": "03-脚本发布者/S04-版本与测试.png",
       "reference_sha256": "b45758505dbd08073327601165293761fa12fc52de67ffd33577e2e8b4c3a5cf",
-      "screenshot_sha256": "2607f732d0e8d2b2c58d7c792c34466b9e46855d0faed6a27e78d44931986d8b",
+      "screenshot_sha256": "782d61629761342db672803f33a6bb1bc3103dd5443fac6b92b18aaf8cd42343",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -1338,7 +1338,7 @@
       "route": "/publisher/services",
       "reference_file": "03-脚本发布者/S07-服务商品.png",
       "reference_sha256": "f562270f5c32dcb7ad39ed2a091d5de57461e2e97762d8512d8614f0719ac9ba",
-      "screenshot_sha256": "4ee5d2acace345a90302afd2f0fb3e690372255d0b8d911d417902d7003bab5a",
+      "screenshot_sha256": "cc3a3588b3c2161fa9c3ffc648b4999945c42ceb6dc8f4266d883a2ee71fcbf3",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1555,7 +1555,7 @@
       "route": "/publisher/settings",
       "reference_file": "03-脚本发布者/S15-发布者设置.png",
       "reference_sha256": "dcc323547c2f6989796592302c25e36415d89454b74e02ec761a46d69d8a9789",
-      "screenshot_sha256": "2f6a127e182395a21ee3087457461bacb3037c89f9f6d276d44aff435ca42c25",
+      "screenshot_sha256": "570e3db11b5bbaea6d74e08353aceb0e9afe9d5f581740023a606ef84930821a",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -1636,7 +1636,7 @@
       "route": "/help?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/P06-使用帮助.png",
       "reference_sha256": "d5cd9e9d8414514542ac3ce18fc1c7809f179e0f292d06ae34f179cb1f93a15e",
-      "screenshot_sha256": "b361eb969509cf9cdf8ff826262b5aae49e42176db4cf1ddb3d89eaf114786d8",
+      "screenshot_sha256": "1b8511072e991fe164863019746d50e35efb7e7a99cc6148685a53eb5e6f57ae",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -2124,7 +2124,7 @@
       "route": "/admin/settings",
       "reference_file": "04-平台管理员/O18-平台设置.png",
       "reference_sha256": "98679295baff171f06123ab31dc9c83c45f54ce4e5e54f71f54a919fbca5d2eb",
-      "screenshot_sha256": "a5a1608023da581633284257306495a235321bb9b43b2cade8fd4db4cd7b98ea",
+      "screenshot_sha256": "295c91e51d030761af7dd829521b648e4b802fc45c0b2cfd7c0e18397f33b69e",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -2235,7 +2235,7 @@
       "route": "/me/settings/account?workspace=ADMIN",
       "reference_file": "04-平台管理员/C21-账户设置.png",
       "reference_sha256": "4c19673067227af6a547e9e5a5e65485b22c6b5632d2758b15ca596191e0a1be",
-      "screenshot_sha256": "b81e464867509f4ead3cb04cf4b3b145831752823ff74aed1855c92cca5ab167",
+      "screenshot_sha256": "dd988d285ab79723916f9dce94dad872cdbbaa2054db09d91ce6430298642cf1",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -2288,9 +2288,12 @@
     }
   ],
   "errors": [],
-  "build_sha256": "973d35f83074fb6e3b6e972d051ce3086799f3d8df653e7908bafc72778d7b87",
+  "build_sha256": "ced34fd8dc326ac7667967ef101887546d067dc38eb60976edf84b430df4ecc0",
   "source_sha256": {
-    "apps/web/src/pages/PublisherHome.tsx": "1d5a941bc9107c4ee343cf17f99dca4de2924d173c2d9d15dc16d5ca2fef56f5",
+    "apps/web/src/pages/PublisherHome.tsx": "648ed27a94a49d3c872df31480e2780b23e2d1334dae134fc43b2468164c245a",
+    "apps/web/src/lib/publisher-overview.ts": "83152b6f0640607349d0803d85aac97bf5c95abf4a4f2d9fe23458ddf338abf7",
+    "apps/control-api/src/publisher/publisher-overview.controller.ts": "d9cf51254f9d837da64a93f4c4dbda12723ea8060fbc44eb7182621797a3f3cb",
+    "apps/control-api/src/publisher/publisher-overview.service.ts": "4913f0ffc45718a2a4bd5fbf68a4b1fd199778062dd7f9561ab03f8cad384746",
     "apps/web/src/pages/PublisherFinance.tsx": "e799c0d9eaae017daf2f4e94f82d9265cabee7806199ff1bd278c5dce1211ee9",
     "apps/web/src/pages/PublisherAccess.tsx": "3ebe1483a59be92e24a62971e0f0adc17767b53cb2159cdeb41732e180f4cc72",
     "apps/web/src/components/PublisherProfileEditor.tsx": "80666f9106ba2f8834fe078ec5fa98c9f8f1b2ee005edd04fa2b8c5e7e9a53d8",
@@ -2315,7 +2318,7 @@
     "apps/control-api/src/account/account.controller.ts": "34a335b05cd2f90c6cd42f11d8c44cb4078100bbb144e49f49ff39c1a5c7618d",
     "apps/control-api/src/account/account.service.ts": "95a5de8b87154cf907164c6d98d233a045a745cabf918ffc0b1974439a960ad4",
     "apps/web/src/components/ui.tsx": "fda1383297ec6bdd3f64a9ca9d2ece2f4c9555ca7175341b15ae24cb274e2323",
-    "apps/web/src/styles/dashboards.css": "3559cd097c30ae9938873858a9ac8ce0ca30ab3a576287911188667c1f2f1ad2",
+    "apps/web/src/styles/dashboards.css": "21b9e5ed94e3706e30ce01a13a7476f347635cb3de0d4eef7c71402105f60d8b",
     "apps/web/src/main.tsx": "39cf82ad38c20fe0f7ea414950308e3c374e1174c36ead00d4824b41536811d4",
     "apps/web/src/pages/ScriptEditor.tsx": "3c59c39577884eb4c892df21494a7baac8371194b9c420d77d173d47ea9293bb",
     "apps/web/src/components/SourceCodeEditor.tsx": "a73d17031aad4f6752b54ff2e6c9d10ff7772c74e9789dbe63cd6a347499dfa0",
@@ -2358,7 +2361,7 @@
     "apps/control-api/src/publisher/publisher-execution.controller.ts": "6a4618360af2dc4cf8ff517f71b87b9f912c07b8740af422559e79a0a03e3470",
     "apps/control-api/src/publisher/publisher-execution.service.ts": "b0e57317e38f1c6999028a62cc20afbe4522f68d57aee7b1f6f73c4d478ec2a1",
     "apps/control-api/src/scripts/script.service.ts": "2996fa0ab048f4f00e59a3517413166d9e23496604268fca9c1ff2c057bd330c",
-    "apps/control-api/src/app.module.ts": "c938af1e2eb126acf1a5308e746a4b1c4fe5c46014c260f3ae01683e576dc31d",
+    "apps/control-api/src/app.module.ts": "4215eec9ccc51aa8ea43ef946438db71a0f1ad817b0ef25d0d885438b1dbf01a",
     "apps/control-api/src/scripts/script.controller.ts": "818d7ba018c18e18dd29486204d108c2c77dd1910fd66d8d2076dd9fc4ca372c",
     "apps/control-api/src/scripts/script-version-query.service.ts": "d8d2837ed805559fb07bf1889034cd3dcdbfcf2670f7a19c0fa5fe8893e8ef4f",
     "apps/control-api/src/publisher/artifact-metadata.ts": "48027a1beba62df6d5f69d691e7d55008ea88b4f9128e6c8a223a5d0587df3d8",

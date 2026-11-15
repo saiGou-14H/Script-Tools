@@ -665,24 +665,30 @@ try {
     page.getByRole("heading", { name: "发布者工作台", exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByText("部署告警接口待接入", { exact: true }),
+    page.getByText("暂无登记异常部署", { exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByText("销售退款接口待接入", { exact: true }),
+    page.getByText("统计期内暂无退款记录", { exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByRole("tab", { name: "全部服务", exact: true }),
+    page.getByRole("tab", { name: "全部服务(0)", exact: true }),
   ).toBeVisible();
   await expect(page.getByText("T202501200036")).toHaveCount(0);
+  await expect(page.locator(".publisher-stats strong")).toHaveText([
+    "0",
+    "0",
+    "—",
+    "0",
+  ]);
   await expect(
-    page.getByText("发布者服务概况接口待接入", { exact: true }),
+    page.getByText("暂无符合条件的服务", { exact: true }),
   ).toBeVisible();
   assert.equal(
     await page.evaluate(() => document.documentElement.scrollWidth),
     1814,
   );
   report.checks.push(
-    "the live publisher home renders empty counters and pending integration states without preview refunds or deployment alerts",
+    "the newly enabled publisher home reads its empty owner-scoped API, renders exact zero counters and has no sample refunds or deployment alerts",
   );
 
   const mainPage = page;

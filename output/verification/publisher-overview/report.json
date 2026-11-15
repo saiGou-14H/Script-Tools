@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-15T17:42:05.017Z",
+  "checks": [
+    "HTTP authentication, enabled publisher ownership, no-store envelope, explicit UTC window and registered deployment basis pass on isolated PGlite data",
+    "unknown, repeated and malformed parameters, invalid calendar dates and service identifiers are rejected, while literal wildcard searches affect only matching service rows",
+    "PostgreSQL owner isolation and disabled publisher checks prevent foreign service discovery, refunds and balances",
+    "six-row summaries expose exact matching counts, stable tie-break ordering, server-side search and sale-state filtering, including unreleased drafts",
+    "service release version filters include historical releases and deduplicate shared deployments, with persisted degraded status kept separate from health evidence",
+    "funded sales use publisher ownership across a different buyer, exclude unpaid orders and preserve sums above signed 64-bit and JavaScript safe integer limits",
+    "refund amounts require confirmed success timestamps, processing counts remain current, and historical windows preserve current deployment and refund-state counts",
+    "posted ledger balances, allocation-only income, maturity debits and confirmed settlements preserve exact per-currency amounts, exclude future and foreign facts, and retain declared global balance scope under service and historical filters",
+    "summary projection omits buyer identity, credentials, private payloads, input and terms digests, refund reasons and raw runtime or health evidence",
+    "pending LIVE requests display loading feedback and unavailable counters until the summary arrives",
+    "LIVE S01 reads its actual owner-scoped API, renders zero-valued financial facts and current states, and restores server-side service search after reload",
+    "failed LIVE summary reads expose retry feedback and recover through the normal request path",
+    "controlled LIVE responses keep exact large numeric strings, long script names and multiple currencies distinct, with current deployment identity links and five responsive widths",
+    "publisher overview API and dashboard complete without browser exceptions"
+  ],
+  "screenshots": [
+    "PUBLISHER-S01-live",
+    "PUBLISHER-S01-live-multicurrency"
+  ],
+  "errors": [],
+  "scope": "production-built S01, isolated HTTP seed API, rolled-back PostgreSQL 18 financial fixtures and controlled live responses",
+  "visual_acceptance": "pending",
+  "result": "PASS"
+}

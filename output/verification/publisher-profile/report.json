@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T17:03:00.651Z",
+  "date": "2026-11-15T17:42:53.592Z",
   "checks": [
     "profile reads and writes require a verified session, CSRF and an idempotency key, reject owner overrides and enforce current terms and field limits",
     "concurrent retries create one profile, audit event and outbox event, refresh the current session's publisher role and preserve account isolation and management capabilities",
@@ -11,7 +11,7 @@
     "explicit profile creation refreshes publisher access and the full original route, and settings saves public fields durably without inventing a contact-email database field",
     "settings preserve fields entered during an in-flight write, show the unsaved draft and use the committed revision for a second explicit save",
     "conflict recovery loads the current revision while retaining typed fields and leaves the external write intact until the user explicitly submits again",
-    "the live publisher home renders empty counters and pending integration states without preview refunds or deployment alerts",
+    "the newly enabled publisher home reads its empty owner-scoped API, renders exact zero counters and has no sample refunds or deployment alerts",
     "onboarding distinguishes a committed profile from a failed identity refresh, and retrying the follow-up enters the original route without repeating the profile command",
     "returning to the consumer workspace while the post-creation identity response is delayed retains that destination after the response arrives and preserves the explicitly created profile",
     "onboarding retains input entered during creation and waits for an explicit saved-profile continuation or a second revision-checked save before entering the publisher workspace",

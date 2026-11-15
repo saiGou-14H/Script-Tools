@@ -1,12 +1,12 @@
 {
-  "date": "2026-11-15T17:02:26.392Z",
+  "date": "2026-11-15T17:42:30.249Z",
   "checks": [
     "publisher home calibrates seven principal regions against the reference within three pixels and retains its explicitly labeled six-service development data",
     "publisher home keeps header controls separate, reflows workflow and summary regions and exposes table actions through internal scrolling across 54 distinct widths",
     "service name search, sale status, empty intersections, clear and browser history preserve their URL state and matching fixture rows through reload",
     "normal upload and creation buttons and prototype workflow and row controls reach their script, build, deployment and service management modules",
     "controlled DOM layout stress keeps long names, filenames, descriptions and signed-64-bit numeric text visible across the same 54 widths without asserting a live overview API",
-    "live publisher home retains explicit pending-overview feedback, empty sales records and unavailable counters across 54 widths",
+    "live publisher home renders owner-scoped API service rows, explicit registered deployment state and exact zero balances across 54 widths",
     "version self-use form previews publisher-defined fields and requires explicit owner authorization",
     "version, self-use and impact tabs switch without mixing published facts and new drafts",
     "build filters and trial-run tabs update records and the matching selected detail",
@@ -1063,7 +1063,7 @@
         "clipped": []
       }
     ],
-    "home_live_pending": [
+    "home_live": [
       {
         "width": 390,
         "document_width": 390,

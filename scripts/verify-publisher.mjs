@@ -388,29 +388,26 @@ try {
   await livePage.goto(base + "/publisher");
   await expect(
     livePage.locator(".publisher-services .ant-table-row"),
-  ).toHaveCount(0);
+  ).toHaveCount(4);
   await expect(
-    livePage.getByText("发布者服务概况接口待接入", { exact: true }),
+    livePage.getByText("暂无登记异常部署", { exact: true }),
   ).toBeVisible();
   await expect(
-    livePage.getByText("部署告警接口待接入", { exact: true }),
-  ).toBeVisible();
-  await expect(
-    livePage.getByText("销售退款接口待接入", { exact: true }),
+    livePage.getByText("统计期内暂无退款记录", { exact: true }),
   ).toBeVisible();
   await expect(livePage.locator(".publisher-stats strong")).toHaveText([
-    "—",
-    "—",
-    "—",
-    "—",
+    "4",
+    "0",
+    "¥0.00",
+    "0",
   ]);
   await expect(livePage.getByText("本地开发示例", { exact: true })).toHaveCount(
     0,
   );
-  await checkHomeWidths(livePage, "home_live_pending");
+  await checkHomeWidths(livePage, "home_live");
   await liveContext.close();
   report.checks.push(
-    "live publisher home retains explicit pending-overview feedback, empty sales records and unavailable counters across 54 widths",
+    "live publisher home renders owner-scoped API service rows, explicit registered deployment state and exact zero balances across 54 widths",
   );
 
   await capture("PUBLISHER-S02", "/publisher/scripts", "我的脚本");
