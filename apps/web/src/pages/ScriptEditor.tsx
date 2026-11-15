@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Alert, Button, Input, Select, Tabs, Tree, App, Spin } from "antd";
 import {
   CheckOutlined,
@@ -6,6 +6,9 @@ import {
   FolderFilled,
   PlusOutlined,
   SafetyOutlined,
+  InboxOutlined,
+  FileTextOutlined,
+  CodeOutlined,
 } from "@ant-design/icons";
 import { PageHeading, Panel, Status } from "../components/ui";
 import { Empty } from "antd";
@@ -14,6 +17,7 @@ import { initialScriptFiles, usePublisherPreview } from "../publisher-preview";
 import Ajv2020 from "ajv/dist/2020";
 import manifestSchema from "../generated/manifest-schema.json";
 import { initialEditorFile } from "../lib/script-editor";
+import { SourceCodeEditor } from "../components/SourceCodeEditor";
 
 const validateManifest = new Ajv2020({
   allErrors: true,
@@ -45,6 +49,7 @@ function ScriptEditor({ id }: { id: string }) {
     : {};
   const [files, setFiles] = useState(initialFiles);
   const [selected, setSelected] = useState(initialEditorFile(initialFiles));
+  const [openFiles, setOpenFiles] = useState([initialEditorFile(initialFiles)]);
   const [sourceRetry, setSourceRetry] = useState(0);
   const [loadingSource, setLoadingSource] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -56,7 +61,9 @@ function ScriptEditor({ id }: { id: string }) {
       .then((source) => {
         if (!active) return;
         setFiles(source);
-        setSelected(initialEditorFile(source));
+        const entry = initialEditorFile(source);
+        setSelected(entry);
+        setOpenFiles([entry]);
       })
       .catch((failure) => {
         if (active) setError(failure.message);
@@ -68,7 +75,6 @@ function ScriptEditor({ id }: { id: string }) {
       active = false;
     };
   }, [script?.id, script?.versionId, sourceRetry]);
-  const lineNumbers = useRef<HTMLDivElement>(null);
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState("");
   const manifest = useMemo<EditableManifest>(() => {
@@ -134,6 +140,20 @@ function ScriptEditor({ id }: { id: string }) {
       ? Object.keys(manifest.actions)
       : [];
   const action = manifest.actions?.[manifest.default_action || actionNames[0]];
+  function openFile(file: string) {
+    setSelected(file);
+    setOpenFiles((current) =>
+      current.includes(file) ? current : [...current, file],
+    );
+  }
+  function closeFile(file: string) {
+    const remaining = openFiles.filter((item) => item !== file);
+    setOpenFiles(remaining);
+    if (selected === file) {
+      const index = openFiles.indexOf(file);
+      setSelected(remaining[Math.min(index, remaining.length - 1)] || "");
+    }
+  }
   return (
     <>
       <PageHeading title="脚本编辑" />
@@ -171,6 +191,7 @@ function ScriptEditor({ id }: { id: string }) {
           </Button>
           <Button
             type="primary"
+            icon={<InboxOutlined />}
             onClick={() =>
               modal.info({
                 title: "封存版本",
@@ -215,7 +236,8 @@ function ScriptEditor({ id }: { id: string }) {
                       return;
                     }
                     setFiles((previous) => ({ ...previous, [name]: "" }));
-                    setSelected(name);
+                    openFile(name);
+                    setValidated(false);
                     close();
                   },
                 })
@@ -230,7 +252,7 @@ function ScriptEditor({ id }: { id: string }) {
             defaultExpandAll
             onSelect={(keys) => {
               if (typeof keys[0] === "string" && keys[0] in files)
-                setSelected(keys[0]);
+                openFile(keys[0]);
             }}
             treeData={[
               {
@@ -240,7 +262,11 @@ function ScriptEditor({ id }: { id: string }) {
                 children: Object.keys(files).map((name) => ({
                   key: name,
                   title: name,
-                  icon: <FileOutlined />,
+                  icon: name.endsWith(".json") ? (
+                    <CodeOutlined />
+                  ) : (
+                    <FileTextOutlined />
+                  ),
                 })),
               },
             ]}
@@ -249,32 +275,39 @@ function ScriptEditor({ id }: { id: string }) {
         <Panel className="code-panel">
           <Tabs
             activeKey={selected}
-            items={[{ key: selected, label: selected }]}
+            type="editable-card"
+            hideAdd
+            locale={{ removeAriaLabel: "关闭文件页签" }}
+            onChange={setSelected}
+            onEdit={(key, action) => {
+              if (action === "remove" && typeof key === "string")
+                closeFile(key);
+            }}
+            items={openFiles.map((file) => ({
+              key: file,
+              label: file,
+            }))}
           />
-          <div className="code-editor" key={selected}>
-            <div className="line-numbers" ref={lineNumbers} aria-hidden="true">
-              {(files[selected] || "").split("\n").map((_, index) => (
-                <div key={index}>{index + 1}</div>
-              ))}
-            </div>
-            <Input.TextArea
-              aria-label="脚本代码"
-              value={files[selected]}
-              onChange={(event) => {
+          {selected ? (
+            <SourceCodeEditor
+              key={selected}
+              file={selected}
+              value={files[selected] || ""}
+              onChange={(value) => {
                 setFiles((previous) => ({
                   ...previous,
-                  [selected]: event.target.value,
+                  [selected]: value,
                 }));
                 setValidated(false);
               }}
-              onScroll={(event) => {
-                if (lineNumbers.current)
-                  lineNumbers.current.scrollTop = event.currentTarget.scrollTop;
-              }}
-              wrap="off"
-              spellCheck={false}
             />
-          </div>
+          ) : (
+            <Empty
+              className="code-empty"
+              description="选择文件查看和编辑"
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+            />
+          )}
         </Panel>
         <Panel title="脚本配置">
           <div className="editor-config-row">
@@ -314,7 +347,7 @@ function ScriptEditor({ id }: { id: string }) {
             <Button
               type="link"
               size="small"
-              onClick={() => setSelected("manifest.json")}
+              onClick={() => openFile("manifest.json")}
             >
               编辑
             </Button>
@@ -331,7 +364,7 @@ function ScriptEditor({ id }: { id: string }) {
             <Button
               type="link"
               size="small"
-              onClick={() => setSelected("manifest.json")}
+              onClick={() => openFile("manifest.json")}
             >
               编辑
             </Button>

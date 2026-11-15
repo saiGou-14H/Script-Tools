@@ -10,6 +10,79 @@
 .page-S03 .page-heading {
   margin-bottom: 6px;
 }
+.page-S03 .global-search.ant-input-affix-wrapper {
+  left: 32.67%;
+  width: 34.16%;
+}
+.page-S03 .global-search input,
+.page-S03 .global-search input::placeholder {
+  color: #354561;
+  font-size: 16px;
+}
+.page-S03 .topbar {
+  padding-right: 28px;
+}
+.page-S03 .topbar-actions {
+  gap: 32px;
+}
+.page-S03 .workspace-button {
+  width: 226px;
+  height: 38px;
+  padding-inline: 12px;
+  font-size: 16px;
+}
+.page-S03 .topbar-actions > .ant-btn-circle {
+  width: 36px;
+  height: 36px;
+  font-size: 24px;
+}
+.page-S03 .account-avatar {
+  width: 38px;
+  height: 38px;
+  font-size: 20px;
+}
+.page-S03 .sidebar {
+  padding-left: 18px;
+  padding-right: 8px;
+}
+.page-S03 .nav-group {
+  position: relative;
+}
+.page-S03 .nav-group:not(:last-child)::after {
+  position: absolute;
+  right: 6px;
+  bottom: -4px;
+  left: 10px;
+  border-bottom: 1px solid #edf0f6;
+  content: "";
+}
+.page-S03 .nav-group-label {
+  padding-left: 10px;
+  font-size: 14px;
+}
+.page-S03 .nav-item {
+  gap: 14px;
+  padding-inline: 18px;
+}
+.page-S03 .nav-item > .anticon {
+  font-size: 20px;
+}
+.page-S03 .editor-title .ant-btn {
+  font-size: 17px;
+}
+.page-S03 .editor-title .ant-btn:first-child {
+  min-width: 122px;
+}
+.page-S03 .editor-title .ant-btn:nth-child(2) {
+  min-width: 114px;
+}
+.page-S03 .editor-title .ant-btn .anticon {
+  font-size: 20px;
+}
+.page-S03 .editor-title h2 .status {
+  padding: 2px 10px;
+  font-size: 14px;
+}
 .app-shell:is(.page-S03, .page-S04, .page-S08) .nav-item {
   font-size: 16px;
   font-weight: 600;
@@ -37,8 +110,26 @@
 .page-S03 .editor-layout .ant-tree {
   font-size: 17px;
 }
+.page-S03 .editor-layout > .panel:first-child > .panel-body {
+  padding-inline: 8px;
+}
 .page-S03 .editor-layout .ant-tree-treenode {
-  padding: 6px 0;
+  padding: 2px 0;
+}
+.page-S03 .editor-layout .ant-tree-node-content-wrapper,
+.page-S03 .editor-layout .ant-tree-switcher,
+.page-S03 .editor-layout .ant-tree-iconEle {
+  min-height: 34px;
+  line-height: 34px;
+}
+.page-S03 .editor-layout .ant-tree-node-selected {
+  margin-left: -12px;
+  padding-left: 16px;
+  color: #0b1c3a;
+  font-weight: 600;
+}
+.page-S03 .editor-layout .ant-tree-node-selected .anticon {
+  color: #1555ff;
 }
 .page-S03 .editor-layout > .code-panel > .panel-body {
   overflow: hidden;
@@ -53,31 +144,112 @@
 .page-S03 .code-panel .ant-tabs-tab-btn {
   color: #172137;
 }
+.page-S03 .code-panel .ant-tabs-nav {
+  min-height: 49px;
+}
+.page-S03 .code-panel .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border: 1px solid #e6ebf4;
+  border-bottom: 2px solid transparent;
+  border-radius: 7px 7px 0 0;
+  background: #f7f9fd;
+}
+.page-S03 .code-panel .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active {
+  border-bottom-color: #1555ff;
+  background: #fff;
+  font-weight: 600;
+}
+.page-S03 .code-panel .ant-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #172137;
+}
 .page-S03 .code-editor {
   min-height: 0;
+  background: linear-gradient(90deg, #f6f8fc 80px, #fff 80px);
 }
 .page-S03 .line-numbers {
+  width: 80px;
   overflow: hidden;
-  font-size: 16px;
+  font-size: 17px;
   padding-top: 16px;
+}
+.page-S03 .code-input-surface {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.page-S03 .editor-layout .code-highlight,
+.page-S03 .code-editor .ant-input {
+  margin: 0;
+  padding: 16px 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font:
+    18px/26px Consolas,
+    monospace;
+  font-variant-ligatures: none;
+  letter-spacing: normal;
+  tab-size: 4;
+}
+.page-S03 .editor-layout .code-highlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  white-space: pre;
+}
+.page-S03 .code-highlight code {
+  font: inherit;
+}
+.page-S03 .code-highlight .token-line {
+  width: max-content;
+  min-width: 100%;
+  height: 26px;
 }
 .page-S03 .code-editor .ant-input {
+  position: relative;
+  z-index: 1;
+  width: 100%;
   min-height: 0;
   height: 100%;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  font-size: 17px;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  caret-color: #172137;
+}
+.page-S03 .code-editor .ant-input::selection {
+  background: #78a9ff66;
+}
+.page-S03 .code-empty {
+  margin: auto;
+  padding: 24px;
+}
+.page-S03 .editor-layout > .panel:last-child > .panel-body {
+  padding: 8px 20px 8px 30px;
 }
 .page-S03 .editor-config-row {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .page-S03 .editor-config-row label {
-  font-size: 16px;
+  min-width: 121px;
+  font-size: 17px;
+  font-weight: 500;
+}
+.page-S03 .editor-config-row .ant-select {
+  height: 36px;
+  min-height: 36px;
+  font-size: 17px;
 }
 .page-S03 .editor-layout h3 {
   margin-top: 8px;
   font-size: 16px;
   line-height: 22px;
+}
+.page-S03 .editor-config-row + h3 {
+  margin-top: 20px;
 }
 .page-S03 .editor-layout pre {
   min-height: 0;
@@ -89,16 +261,17 @@
   white-space: pre;
 }
 .page-S03 .editor-layout pre[aria-label="输入Schema预览"] {
-  height: 40px;
+  height: 32px;
 }
 .page-S03 .editor-layout pre[aria-label="输出Schema预览"] {
-  height: 128px;
+  height: 148px;
 }
 .page-S03 .network-scope {
   min-height: 30px;
   padding: 4px 12px;
   line-height: 20px;
   overflow-wrap: anywhere;
+  font-size: 15px;
 }
 .page-S03 .editor-validation {
   min-height: 72px;
@@ -121,6 +294,13 @@
 }
 .page-S03 .editor-validation .ant-alert-icon {
   font-size: 32px;
+}
+.page-S03 .editor-validation.ant-alert-success {
+  border-color: #d5efe0;
+  background: #f0fff7;
+}
+.page-S03 .editor-validation.ant-alert-success .ant-alert-icon {
+  color: #00bc40;
 }
 .page-S04 .breadcrumb {
   margin-bottom: 16px;
@@ -262,28 +442,38 @@
     flex: 1;
     gap: 8px;
   }
-  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08) .brand strong {
+  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08)
+    .brand
+    strong {
     font-size: 18px;
   }
-  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08) .topbar-actions {
+  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08)
+    .topbar-actions {
     flex-shrink: 0;
     gap: 6px;
   }
-  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08) .workspace-button {
+  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08)
+    .workspace-button {
     padding: 0 8px;
     gap: 6px;
     font-size: 0;
   }
-  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08) .workspace-button b {
+  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08)
+    .workspace-button
+    b {
     font-size: 12px;
   }
-  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08) .main-content {
+  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08)
+    .main-content {
     padding: 80px 12px 20px;
   }
   .page-S03 .editor-title {
     align-items: flex-start;
     flex-direction: column;
     gap: 12px;
+  }
+  .page-S03 .workspace-button {
+    width: auto;
   }
   .page-S03 .editor-title h2 {
     font-size: 18px;

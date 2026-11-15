@@ -139,6 +139,18 @@ try {
   const code = page.getByRole("textbox", { name: "脚本代码", exact: true });
   const originalCode = await code.inputValue();
   await expect(code).toHaveAttribute("wrap", "off");
+  await expect(page.locator(".code-highlight .keyword").first()).toHaveCSS(
+    "color",
+    "rgb(0, 0, 255)",
+  );
+  await expect(page.locator(".code-highlight .string").first()).toHaveCSS(
+    "color",
+    "rgb(208, 0, 0)",
+  );
+  await expect(page.locator(".code-highlight .number").first()).toHaveCSS(
+    "color",
+    "rgb(0, 128, 0)",
+  );
   await page.getByRole("button", { name: "校验", exact: true }).click();
   await expect(page.getByText("清单校验成功", { exact: true })).toBeVisible();
   const schema = page.getByRole("region", {
@@ -162,6 +174,16 @@ try {
     JSON.stringify(editorLayout),
   );
   report.layouts.S03 = editorLayout;
+  const configBounds = await page
+    .locator(".network-scope")
+    .evaluate((element) => ({
+      bottom: element.getBoundingClientRect().bottom,
+      panelBottom: element.closest(".panel").getBoundingClientRect().bottom,
+    }));
+  assert(
+    configBounds.bottom < configBounds.panelBottom,
+    JSON.stringify(configBounds),
+  );
   const schemaSize = await schema.evaluate((element) => ({
     client: element.clientHeight,
     scroll: element.scrollHeight,
@@ -205,6 +227,29 @@ try {
       page.locator(".line-numbers").evaluate((element) => element.scrollTop),
     )
     .toBe(await code.evaluate((element) => element.scrollTop));
+  await expect
+    .poll(() =>
+      page.locator(".code-highlight").evaluate((element) => element.scrollTop),
+    )
+    .toBe(await code.evaluate((element) => element.scrollTop));
+  const literal =
+    '# <img src=x onerror="window.sourceExecuted=true"> ' +
+    "消息 long_column ".repeat(120);
+  await code.fill(literal);
+  await code.press("Control+End");
+  await expect
+    .poll(() => code.evaluate((element) => element.scrollLeft))
+    .toBeGreaterThan(0);
+  await expect
+    .poll(() =>
+      page.locator(".code-highlight").evaluate((element) => element.scrollLeft),
+    )
+    .toBe(await code.evaluate((element) => element.scrollLeft));
+  await expect(code).toHaveValue(literal);
+  await expect(page.locator(".code-highlight")).toContainText("<img src=x");
+  await expect(page.locator(".code-highlight img")).toHaveCount(0);
+  assert.equal(await page.evaluate(() => window.sourceExecuted), undefined);
+  await code.fill(longCode);
   await selectFile("main.py");
   await expect(code).toHaveValue(originalCode);
   assert.equal(
@@ -215,6 +260,31 @@ try {
   );
   report.checks.push(
     "New file creation preserves duplicate names and source content, and line numbers follow long-source scrolling and reset per file",
+  );
+  report.checks.push(
+    "Editable syntax colors match the reference while vertical and horizontal highlights follow source scrolling and uploaded markup remains literal text",
+  );
+
+  async function closeTab(file) {
+    await page
+      .getByRole("tab", { name: file, exact: true })
+      .locator("..")
+      .getByRole("button", { name: "关闭文件页签", exact: true })
+      .click();
+  }
+  await closeTab("helper.py");
+  await expect(code).toHaveValue(originalCode);
+  await closeTab("main.py");
+  await expect(
+    page.getByText("选择文件查看和编辑", { exact: true }),
+  ).toBeVisible();
+  await expect(code).toHaveCount(0);
+  await selectFile("helper.py");
+  await expect(code).toHaveValue(longCode);
+  await selectFile("main.py");
+  await expect(code).toHaveValue(originalCode);
+  report.checks.push(
+    "File tabs switch and close independently, closing the last tab preserves all source buffers and reopening restores unsaved file content",
   );
 
   await selectFile("manifest.json");

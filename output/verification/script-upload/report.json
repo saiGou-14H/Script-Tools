@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T00:47:25.638Z",
+  "date": "2026-11-15T01:11:16.744Z",
   "checks": [
     "unauthenticated listing rejected",
     "CSRF and publisher qualification enforced",

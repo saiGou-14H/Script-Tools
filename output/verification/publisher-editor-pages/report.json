@@ -1,9 +1,11 @@
 {
-  "date": "2026-11-15T00:48:04.035Z",
+  "date": "2026-11-15T01:10:25.261Z",
   "checks": [
     "Editor entry selection honors an existing declared entrypoint and safely retains malformed or missing manifests",
     "Script panels and the validated status fit the reference viewport while complete publisher schemas remain keyboard-scrollable",
     "New file creation preserves duplicate names and source content, and line numbers follow long-source scrolling and reset per file",
+    "Editable syntax colors match the reference while vertical and horizontal highlights follow source scrolling and uploaded markup remains literal text",
+    "File tabs switch and close independently, closing the last tab preserves all source buffers and reopening restores unsaved file content",
     "Configuration edits preserve malformed JSON and unrelated manifest fields, and script route changes reset file and validation state",
     "Version tabs retain URL state, copies contain a full digest, RJSF and scheduling validate inputs, and different versions retain their own evidence and form state",
     "Product fields retain contract length limits and publisher-defined parameters, with counters contained inside their textareas",
@@ -38,8 +40,8 @@
       "region_width": 366,
       "region_scroll": 366,
       "brand_right": 155.953125,
-      "workspace_left": 236,
-      "workspace_right": 338
+      "workspace_left": 234,
+      "workspace_right": 336
     },
     "S04-mobile": {
       "width": 390,

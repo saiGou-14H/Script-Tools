@@ -314,6 +314,9 @@ try {
     "apps/web/src/styles/dashboards.css",
     "apps/web/src/main.tsx",
     "apps/web/src/pages/ScriptEditor.tsx",
+    "apps/web/src/components/SourceCodeEditor.tsx",
+    "apps/web/package.json",
+    "package-lock.json",
     "apps/web/src/pages/PublisherScripts.tsx",
     "apps/web/src/pages/PublisherProducts.tsx",
     "apps/web/src/publisher-preview.tsx",
@@ -399,6 +402,12 @@ try {
         route += "?workspace=" + role.id;
       await page.goto(base + route);
       await ready(page, role.id, id);
+      if (id === "S03") {
+        await page.getByRole("button", { name: "校验", exact: true }).click();
+        await expect(
+          page.getByText("清单校验成功", { exact: true }),
+        ).toBeVisible();
+      }
       await capture(key);
       const bytes = await readFile(path.join(output, key + ".png"));
       assert.equal(bytes.readUInt32BE(16), reference.width);
@@ -424,6 +433,9 @@ try {
         reference_file: reference.file,
         reference_sha256: reference.sha256,
         screenshot_sha256: sha256(bytes),
+        ...(id === "S03"
+          ? { capture_state: "manifest_structure_checked_through_ui" }
+          : {}),
         viewport: { width: reference.width, height: reference.height },
         layout,
         visual_acceptance: "pending",
