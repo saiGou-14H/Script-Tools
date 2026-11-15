@@ -51,7 +51,7 @@ export class ScriptService {
     );
   }
 
-  private async publisher(
+  async requirePublisher(
     connection: SqlConnection,
     owner: string,
     lock = false,
@@ -201,7 +201,7 @@ export class ScriptService {
   }
 
   async list(owner: string) {
-    await this.publisher(this.database, owner);
+    await this.requirePublisher(this.database, owner);
     const result = await this.database.query(
       `SELECT s.id,s.name,s.description,v.id AS version_id,v.version,v.revision,v.content_status,v.content_hash,v.manifest,v.updated_at
       FROM travel.scripts s JOIN LATERAL (SELECT * FROM travel.script_versions WHERE script_id=s.id AND owner_user_id=$1 AND source_object_id IS NOT NULL ORDER BY created_at DESC,id DESC LIMIT 1) v ON true
@@ -230,7 +230,7 @@ export class ScriptService {
   }
 
   async source(owner: string, version: string) {
-    await this.publisher(this.database, owner);
+    await this.requirePublisher(this.database, owner);
     const row = await this.ownVersion(this.database, owner, version);
     const payload = (
       await this.database.query(
@@ -282,7 +282,7 @@ export class ScriptService {
     if (!key || key.length > 200)
       fail("INVALID_REQUEST", "请提供有效幂等请求标识");
     return this.database.transaction(async (connection) => {
-      await this.publisher(connection, owner, true);
+      await this.requirePublisher(connection, owner, true);
       const scope = {
         owner,
         method: version ? "PATCH" : "POST",

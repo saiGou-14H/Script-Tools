@@ -43,6 +43,24 @@ for name in re.findall(r'\./07-完整系统数据库设计.md#table-([a-z-]+)',d
 ck('RJSF为优先验证候选' in dev and '当前仍为待验证' in dev,'RJSF status overclaim')
 ck(('两连接' in dev or '多连接' in dev) and '多连接' in db,'live concurrency limitation missing')
 if issues:raise SystemExit('FAIL:\n'+'\n'.join(issues))
-report={'date':'2026-11-14','result':'PASS','checks':checks,'pages':len(catalog['pages']),'actions':len(catalog['actions']),'requirements':61,'commercial_rules':16,'tables':len(ddl),'fields':field_count,'documents':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [root/'06-详细开发设计.md',root/'07-完整系统数据库设计.md']},'limit':'Static coverage and dictionary/DDL alignment; not live implementation acceptance'}
+report = {
+    'date': '2026-11-14',
+    'result': 'PASS',
+    'checks': checks,
+    'pages': len(catalog['pages']),
+    'actions': len(catalog['actions']),
+    'requirements': 61,
+    'commercial_rules': 16,
+    'tables': len(ddl),
+    'fields': field_count,
+    'source_hash_normalization': 'LF',
+    'documents': {
+        document.name: hashlib.sha256(
+            document.read_bytes().replace(b'\r\n', b'\n')
+        ).hexdigest()
+        for document in [root/'06-详细开发设计.md', root/'07-完整系统数据库设计.md']
+    },
+    'limit': 'Static coverage and dictionary/DDL alignment; not live implementation acceptance',
+}
 (root.parent/'output/verification/detailed-design-coverage.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print(f'PASS: {checks} design coverage checks; {len(ddl)} tables, {field_count} fields, 66 pages, 102 actions, 61 requirements and 16 commercial rules.')

@@ -21,6 +21,8 @@ import { AdminMetadataService } from "./admin/admin-metadata.service";
 import { PublicTravelService } from "./public-travel.service";
 import { ScriptController } from "./scripts/script.controller";
 import { ScriptService } from "./scripts/script.service";
+import { PublisherExecutionController } from "./publisher/publisher-execution.controller";
+import { PublisherExecutionService } from "./publisher/publisher-execution.service";
 
 @Module({
   controllers: [
@@ -31,6 +33,7 @@ import { ScriptService } from "./scripts/script.service";
     AccountController,
     AdminMetadataController,
     ScriptController,
+    PublisherExecutionController,
   ],
   providers: [
     DatabaseService,
@@ -46,6 +49,7 @@ import { ScriptService } from "./scripts/script.service";
     AdminMetadataService,
     PublicTravelService,
     ScriptService,
+    PublisherExecutionService,
     { provide: APP_GUARD, useClass: AuthGuard },
   ],
 })

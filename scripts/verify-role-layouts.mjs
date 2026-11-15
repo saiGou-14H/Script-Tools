@@ -325,6 +325,13 @@ try {
     "apps/web/src/styles/consumer.css",
     "apps/web/src/pages/Checkout.tsx",
     "apps/web/src/pages/ConfigureService.tsx",
+    "apps/web/src/pages/PublisherExecution.tsx",
+    "apps/web/src/lib/publisher-execution.ts",
+    "apps/web/src/styles/publisher-execution.css",
+    "apps/control-api/src/publisher/publisher-execution.controller.ts",
+    "apps/control-api/src/publisher/publisher-execution.service.ts",
+    "apps/control-api/src/scripts/script.service.ts",
+    "apps/control-api/src/app.module.ts",
   ]) {
     report.source_sha256[file] = sha256(
       (await readFile(file, "utf8")).replaceAll("\r\n", "\n"),

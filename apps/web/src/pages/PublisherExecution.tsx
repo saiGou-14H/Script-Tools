@@ -9,14 +9,71 @@ import {
   InputNumber,
   Modal,
   Select,
+  Spin,
   Table,
   Tabs,
   Typography,
 } from "antd";
-import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import {
+  CheckCircleFilled,
+  CloseCircleFilled,
+  PlusOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import { Link, useSearchParams } from "react-router-dom";
 import { useWorkspace } from "../context";
 import { Notice, PageHeading, Panel, Status } from "../components/ui";
+import {
+  deploymentModeLabels,
+  executionRecordLabels,
+  recordDuration,
+  usePublisherRecord,
+  usePublisherRecords,
+  type PublisherDeploymentRecord,
+  type PublisherExecutionRecord,
+} from "../lib/publisher-execution";
+import { ApiError } from "../api";
+
+interface BuildRecord {
+  id: string;
+  script: string;
+  version: string;
+  status: string;
+  duration: string;
+  metadata?: PublisherExecutionRecord;
+}
+
+function buildRecord(record: PublisherExecutionRecord): BuildRecord {
+  return {
+    id: record.id,
+    script: record.script_name,
+    version: record.version,
+    status: record.status,
+    duration: recordDuration(record.duration_ms),
+    metadata: record,
+  };
+}
+
+function RecordStatus({ status }: { status: string }) {
+  const success = ["SUCCEEDED", "READY"].includes(status);
+  const failed = ["FAILED", "TIMED_OUT", "CLOSED_UNRESOLVED"].includes(status);
+  return (
+    <Status
+      tone={
+        success
+          ? "green"
+          : failed
+            ? "red"
+            : ["CANCELLED", "EXPIRED"].includes(status)
+              ? "gray"
+              : "orange"
+      }
+    >
+      {success ? <CheckCircleFilled /> : failed ? <CloseCircleFilled /> : "···"}{" "}
+      {executionRecordLabels[status] || status}
+    </Status>
+  );
+}
 
 const buildFixtures = [
   {
@@ -65,6 +122,7 @@ export function BuildsPage() {
   const prototype = bootstrap.data_mode === "prototype";
   const applied = {
     script: params.get("script") || "",
+    script_id: params.get("script_id") || "",
     version: params.get("version") || "",
     status: params.get("status") || "",
   };
@@ -72,27 +130,66 @@ export function BuildsPage() {
   useEffect(() => {
     setFilters({
       script: params.get("script") || "",
+      script_id: params.get("script_id") || "",
       version: params.get("version") || "",
       status: params.get("status") || "",
     });
   }, [params]);
   const { message, modal } = App.useApp();
-  const all =
-    prototype
-      ? tab === "build"
-        ? buildFixtures
-        : trialFixtures
-      : [];
-  const rows = all.filter(
-    (item) =>
-      (!applied.script || item.script === applied.script) &&
-      (!applied.version || item.version === applied.version) &&
-      (!applied.status || item.status === applied.status),
+  const search = new URLSearchParams();
+  const textQuery = params.get("q") || "";
+  if (textQuery) search.set("q", textQuery);
+  if (applied.script) search.set("script_name", applied.script);
+  if (applied.script_id) search.set("script_id", applied.script_id);
+  if (applied.version) search.set("version", applied.version);
+  if (applied.status) search.set("status", applied.status);
+  const resource = tab === "build" ? "builds" : "test-runs";
+  const records = usePublisherRecords<PublisherExecutionRecord>(
+    resource,
+    search.toString(),
+    !prototype,
   );
   const requested = params.get("record");
+  const detail = usePublisherRecord<PublisherExecutionRecord>(
+    resource,
+    requested,
+    !prototype,
+  );
+  const all: BuildRecord[] = prototype
+    ? tab === "build"
+      ? buildFixtures
+      : trialFixtures
+    : records.data?.pages.flatMap((page) => page.items.map(buildRecord)) || [];
+  function matchesFilters(item: BuildRecord) {
+    return (
+      (!applied.script || item.script === applied.script) &&
+      (!applied.script_id ||
+        item.metadata?.script_id === applied.script_id.toLowerCase()) &&
+      (!applied.version || item.version === applied.version) &&
+      (!applied.status || item.status === applied.status) &&
+      (!textQuery ||
+        [item.id, item.script, item.version]
+          .join(" ")
+          .toLowerCase()
+          .includes(textQuery.toLowerCase()))
+    );
+  }
+  const rows = all.filter(matchesFilters);
+  const selected = detail.data ? buildRecord(detail.data) : undefined;
+  const selectedMatches = selected && matchesFilters(selected);
+  const scriptOptions = new Map<
+    string,
+    { value: string; label: string; title: string }
+  >();
+  for (const row of all) {
+    const id = prototype ? row.script : row.metadata!.script_id;
+    const label = prototype ? row.script : `${row.script} · ${id.slice(0, 8)}`;
+    scriptOptions.set(id, { value: id, label, title: `${row.script} ${id}` });
+  }
   const defaultId = tab === "build" ? "B032" : "TEST081";
   const item = requested
-    ? rows.find((row) => row.id === requested)
+    ? rows.find((row) => row.id === requested) ||
+      (selectedMatches ? selected : undefined)
     : rows.find((row) => row.id === defaultId) || rows[0];
   function selectRecord(id: string) {
     const next = new URLSearchParams(params);
@@ -108,32 +205,37 @@ export function BuildsPage() {
     }
     setParams(next);
   }
-  function label(status: string) {
-    return status === "SUCCEEDED"
-      ? "✓ 成功"
-      : status === "FAILED"
-        ? "× 失败"
-        : "··· 排队中";
-  }
   return (
     <div className="publisher-builds-page">
       <PageHeading
         title="构建与测试记录"
         extra={
-          <Status tone="gray">
-            {prototype ? "本地示例" : "构建服务待接入"}
-          </Status>
+          <Status tone="gray">{prototype ? "本地示例" : "本人记录"}</Status>
         }
       />
-      {!prototype && (
-        <Notice>构建、测试证据与开发配额服务待接入，当前记录暂不可用。</Notice>
+      {!prototype && records.isError && (
+        <Alert
+          className="publisher-record-error"
+          type="error"
+          showIcon
+          title="记录加载失败"
+          description={records.error.message}
+          action={<Button onClick={() => void records.refetch()}>重试</Button>}
+        />
       )}
       <Panel>
         <Tabs
           activeKey={tab}
           onChange={(value) => {
             const next = new URLSearchParams(params);
-            for (const key of ["script", "version", "status", "record", "tab"])
+            for (const key of [
+              "script",
+              "script_id",
+              "version",
+              "status",
+              "record",
+              "tab",
+            ])
               next.delete(key);
             if (value === "trial") next.set("tab", "trial");
             setParams(next);
@@ -147,24 +249,23 @@ export function BuildsPage() {
           <b>脚本</b>
           <Select
             aria-label="构建脚本"
-            value={filters.script}
-            disabled={!prototype}
+            value={filters.script_id || filters.script}
             onChange={(script) =>
-              setFilters((previous) => ({ ...previous, script }))
+              setFilters((previous) => ({
+                ...previous,
+                script: prototype ? script : "",
+                script_id: prototype ? "" : script,
+              }))
             }
             options={[
               { value: "", label: "全部脚本" },
-              ...[...new Set(all.map((row) => row.script))].map((value) => ({
-                value,
-                label: value,
-              })),
+              ...scriptOptions.values(),
             ]}
           />
           <b>版本</b>
           <Select
             aria-label="构建版本"
             value={filters.version}
-            disabled={!prototype}
             onChange={(version) =>
               setFilters((previous) => ({ ...previous, version }))
             }
@@ -180,23 +281,21 @@ export function BuildsPage() {
           <Select
             aria-label="构建状态"
             value={filters.status}
-            disabled={!prototype}
             onChange={(status) =>
               setFilters((previous) => ({ ...previous, status }))
             }
             options={[
               { value: "", label: "全部状态" },
-              { value: "SUCCEEDED", label: "成功" },
-              { value: "FAILED", label: "失败" },
-              { value: "QUEUED", label: "排队中" },
+              ...(tab === "build"
+                ? ["SUCCEEDED", "FAILED", "QUEUED", "RUNNING", "CANCELLED"]
+                : Object.keys(executionRecordLabels)
+              ).map((value) => ({
+                value,
+                label: executionRecordLabels[value],
+              })),
             ]}
           />
-          <Button
-            type="primary"
-            aria-label="查询构建记录"
-            disabled={!prototype}
-            onClick={query}
-          >
+          <Button type="primary" aria-label="查询构建记录" onClick={query}>
             查询
           </Button>
         </div>
@@ -205,14 +304,16 @@ export function BuildsPage() {
             <Table
               rowKey="id"
               dataSource={rows}
+              loading={!prototype && records.isFetching}
               pagination={false}
-              scroll={{ x: 850 }}
+              scroll={{ x: 850, y: prototype ? undefined : 480 }}
               rowClassName={(row) =>
                 row.id === item?.id ? "selected-build" : ""
               }
               columns={[
                 {
                   title: tab === "build" ? "构建编号" : "试运行编号",
+                  width: prototype ? 140 : 330,
                   dataIndex: "id",
                   render: (value) => (
                     <Button
@@ -225,38 +326,27 @@ export function BuildsPage() {
                     </Button>
                   ),
                 },
-                { title: "脚本名称", dataIndex: "script" },
-                { title: "版本", dataIndex: "version" },
+                { title: "脚本名称", dataIndex: "script", width: 180 },
+                { title: "版本", dataIndex: "version", width: 123 },
                 {
                   title: "状态",
+                  width: 163,
                   dataIndex: "status",
-                  render: (value) => (
-                    <Status
-                      tone={
-                        value === "SUCCEEDED"
-                          ? "green"
-                          : value === "FAILED"
-                            ? "red"
-                            : "orange"
-                      }
-                    >
-                      {label(value)}
-                    </Status>
-                  ),
+                  render: (value) => <RecordStatus status={value} />,
                 },
-                { title: "耗时", dataIndex: "duration" },
+                { title: "耗时", dataIndex: "duration", width: 134 },
                 {
                   title: "操作",
                   render: (_, row) =>
                     row.status === "QUEUED" ? (
                       <Button
                         type="link"
+                        disabled={!prototype}
                         aria-label={`取消${row.id}`}
                         onClick={() =>
                           modal.confirm({
                             title: "取消排队作业",
-                            content:
-                              `${row.id} 的取消作业接口待接入，可在详情查看排队状态。`,
+                            content: `${row.id} 的取消作业接口待接入，可在详情查看排队状态。`,
                             okText: "了解",
                             cancelText: "返回",
                           })
@@ -272,9 +362,20 @@ export function BuildsPage() {
                 },
               ]}
             />
+            {!prototype && records.hasNextPage && (
+              <Button
+                className="publisher-record-more"
+                loading={records.isFetchingNextPage}
+                onClick={() => void records.fetchNextPage()}
+              >
+                加载更多记录
+              </Button>
+            )}
           </div>
           <section className="build-detail">
-            {item ? (
+            {!prototype && requested && detail.isFetching ? (
+              <Spin />
+            ) : item ? (
               <>
                 <h2>
                   {tab === "build" ? "构建详情" : "试运行详情"}　{item.id}
@@ -287,25 +388,67 @@ export function BuildsPage() {
                 </p>
                 <p>
                   状态　
-                  <Status
-                    tone={
-                      item.status === "FAILED"
-                        ? "red"
-                        : item.status === "SUCCEEDED"
-                          ? "green"
-                          : "orange"
-                    }
-                  >
-                    {label(item.status)}
-                  </Status>
+                  <RecordStatus status={item.status} />
                 </p>
                 <hr />
-                {item.status === "FAILED" ? (
+                {item.metadata ? (
+                  <div className="execution-record-metadata">
+                    <dl>
+                      <dt>版本编号</dt>
+                      <dd>{item.metadata.script_version_id}</dd>
+                      <dt>创建时间</dt>
+                      <dd>{item.metadata.created_at}</dd>
+                      <dt>开始时间</dt>
+                      <dd>{item.metadata.started_at || "未登记"}</dd>
+                      <dt>结束时间</dt>
+                      <dd>{item.metadata.finished_at || "未登记"}</dd>
+                      {tab === "build" ? (
+                        <>
+                          <dt>制品摘要</dt>
+                          <dd>{item.metadata.artifact_digest || "未登记"}</dd>
+                        </>
+                      ) : (
+                        <>
+                          <dt>测试证据</dt>
+                          <dd>
+                            {item.metadata.test_passed == null
+                              ? "尚无判定"
+                              : item.metadata.test_passed
+                                ? "通过"
+                                : "未通过"}
+                          </dd>
+                          <dt>实测模式</dt>
+                          <dd>
+                            {deploymentModeLabels[
+                              item.metadata.tested_execution_mode || ""
+                            ] || "未登记"}
+                          </dd>
+                        </>
+                      )}
+                      {item.metadata.failure_code && (
+                        <>
+                          <dt>错误代码</dt>
+                          <dd>{item.metadata.failure_code}</dd>
+                        </>
+                      )}
+                    </dl>
+                    <Notice>
+                      {item.metadata.has_log_segments
+                        ? "已登记日志分段，日志正文读取待接入。"
+                        : "当前未登记日志分段。"}
+                    </Notice>
+                    {tab === "build" && item.status === "FAILED" && (
+                      <Button type="primary" disabled icon={<ReloadOutlined />}>
+                        重新构建
+                      </Button>
+                    )}
+                  </div>
+                ) : item.status === "FAILED" ? (
                   <>
                     <h3>错误信息（已脱敏）</h3>
                     <Alert
                       type="error"
-                        showIcon
+                      showIcon
                       title="构建过程异常，依赖锁缺失，请检查依赖配置。"
                     />
                     <h3>修复建议</h3>
@@ -318,11 +461,9 @@ export function BuildsPage() {
                     </Notice>
                     <Button
                       type="primary"
-                        icon={<ReloadOutlined aria-hidden />}
+                      icon={<ReloadOutlined aria-hidden />}
                       onClick={() =>
-                        void message.info(
-                          `${item.id} 的构建服务待接入`,
-                        )
+                        void message.info(`${item.id} 的构建服务待接入`)
                       }
                     >
                       重新构建
@@ -352,14 +493,27 @@ export function BuildsPage() {
             ) : (
               <Empty
                 description={
-                  !prototype
-                    ? "构建详情待接入"
-                    : requested
-                      ? `记录 ${requested} 不存在或不在当前筛选范围内`
-                      : "当前筛选无记录"
+                  requested
+                    ? `记录 ${requested} 不存在或不在当前筛选范围内`
+                    : "当前筛选无记录"
                 }
               />
             )}
+            {!prototype &&
+              detail.isError &&
+              !(
+                detail.error instanceof ApiError && detail.error.status === 404
+              ) && (
+                <Alert
+                  type="error"
+                  showIcon
+                  title="记录详情加载失败"
+                  description={detail.error.message}
+                  action={
+                    <Button onClick={() => void detail.refetch()}>重试</Button>
+                  }
+                />
+              )}
           </section>
         </div>
       </Panel>
@@ -367,13 +521,50 @@ export function BuildsPage() {
   );
 }
 
-const deploymentFixtures = [
+interface DeploymentRecord {
+  id: string;
+  script: string;
+  version: string;
+  category: string;
+  digest: string | null;
+  mode: string;
+  status: string;
+  service: string;
+  metadata?: PublisherDeploymentRecord;
+}
+
+function deploymentRecord(record: PublisherDeploymentRecord): DeploymentRecord {
+  return {
+    id: record.id,
+    script: record.script_name,
+    version: record.version,
+    category: "",
+    digest: record.artifact_digest,
+    mode:
+      deploymentModeLabels[record.configured_execution_mode || ""] || "未登记",
+    status: record.status,
+    service:
+      record.services
+        .map((item) => item.title + (item.is_current ? "" : "（历史关联）"))
+        .join("、") || "未关联",
+    metadata: record,
+  };
+}
+
+function deploymentResources(record: DeploymentRecord) {
+  return record.metadata
+    ? `${record.metadata.cpu ?? "未登记"} CPU　${record.metadata.memory_mib ?? "未登记"} MiB`
+    : "1 CPU　512 MB";
+}
+
+const deploymentFixtures: DeploymentRecord[] = [
   {
     id: "table",
     script: "表格清洗",
     version: "v1.2",
     category: "数据清洗",
-    digest: "sha256:8f3e9a2d67bd4b76c8a841085df181f1ce8d7a0b48f762f443ed6919cfaf2c31",
+    digest:
+      "sha256:8f3e9a2d67bd4b76c8a841085df181f1ce8d7a0b48f762f443ed6919cfaf2c31",
     mode: "Docker",
     status: "READY",
     service: "表格清洗",
@@ -383,7 +574,8 @@ const deploymentFixtures = [
     script: "文件处理",
     version: "v0.4",
     category: "文件处理",
-    digest: "sha256:4b7c1d50174e9db83c08abccf19bfd8e7a4c0db0192f9f507faf2129f634e6ac",
+    digest:
+      "sha256:4b7c1d50174e9db83c08abccf19bfd8e7a4c0db0192f9f507faf2129f634e6ac",
     mode: "Docker",
     status: "FAILED",
     service: "未关联",
@@ -393,7 +585,8 @@ const deploymentFixtures = [
     script: "景点预约",
     version: "v1.0",
     category: "景点预约适配",
-    digest: "sha256:9d2e5f7a2768d2d8cdf87a2aa2cb13df876bb4886ad3ad2846012d1b0aa90dc7",
+    digest:
+      "sha256:9d2e5f7a2768d2d8cdf87a2aa2cb13df876bb4886ad3ad2846012d1b0aa90dc7",
     mode: "KVM",
     status: "READY",
     service: "免费景点预约",
@@ -403,23 +596,40 @@ const deploymentFixtures = [
 export function DeploymentsPage() {
   const { bootstrap } = useWorkspace();
   const [params, setParams] = useSearchParams();
-  const selected = params.get("deployment") || "table";
+  const requested = params.get("deployment");
   const prototype = bootstrap.data_mode === "prototype";
   const [creating, setCreating] = useState(false);
-  const [configuration, setConfiguration] = useState<Record<string, unknown> | null>(
-    null,
-  );
+  const [configuration, setConfiguration] = useState<Record<
+    string,
+    unknown
+  > | null>(null);
   const [form] = Form.useForm();
   const mode = Form.useWatch("mode", form);
   const { modal, message } = App.useApp();
-  const rows = prototype ? deploymentFixtures : [];
-  const item = rows.find((row) => row.id === selected);
+  const records = usePublisherRecords<PublisherDeploymentRecord>(
+    "deployments",
+    "",
+    !prototype,
+  );
+  const detail = usePublisherRecord<PublisherDeploymentRecord>(
+    "deployments",
+    requested,
+    !prototype,
+  );
+  const rows = prototype
+    ? deploymentFixtures
+    : records.data?.pages.flatMap((page) => page.items.map(deploymentRecord)) ||
+      [];
+  const selected = requested || (prototype ? "table" : rows[0]?.id || "");
+  const item =
+    rows.find((row) => row.id === selected) ||
+    (detail.data ? deploymentRecord(detail.data) : undefined);
   function selectDeployment(id: string) {
     const next = new URLSearchParams(params);
     next.set("deployment", id);
     setParams(next);
   }
-  function stop(deployment: (typeof deploymentFixtures)[number]) {
+  function stop(deployment: DeploymentRecord) {
     modal.confirm({
       title: "停用部署影响预览",
       content: `${deployment.script} ${deployment.version} 停用将停止新售卖，并处理存量权益的履约或补偿。影响预览与停用作业接口待接入，受影响订单及权益数量待计算。`,
@@ -458,13 +668,18 @@ export function DeploymentsPage() {
         title="部署管理"
         description="管理脚本的运行部署，配置运行环境与资源，支持启停与重试。"
         extra={
-          <Status tone="gray">
-            {prototype ? "本地示例" : "部署服务待接入"}
-          </Status>
+          <Status tone="gray">{prototype ? "本地示例" : "本人记录"}</Status>
         }
       />
-      {!prototype && (
-        <Notice>部署、资源模板与配额服务待接入，当前可用性和用量暂不可用。</Notice>
+      {!prototype && records.isError && (
+        <Alert
+          className="publisher-record-error"
+          type="error"
+          showIcon
+          title="部署记录加载失败"
+          description={records.error.message}
+          action={<Button onClick={() => void records.refetch()}>重试</Button>}
+        />
       )}
       <div className="deployments-columns">
         <Panel className="deployments-list">
@@ -485,53 +700,81 @@ export function DeploymentsPage() {
             rowKey="id"
             pagination={false}
             dataSource={rows}
-            scroll={{ x: 1030 }}
+            loading={!prototype && records.isFetching}
+            scroll={{ x: 1030, y: prototype ? undefined : 480 }}
             rowClassName={(row) =>
               row.id === selected ? "selected-deployment" : ""
             }
             columns={[
               {
                 title: "脚本版本",
+                width: prototype ? undefined : 220,
                 render: (_, row) => (
                   <>
-                    <Link
-                      className="dark-link"
-                      to={`/publisher/versions/${row.id}`}
-                    >
-                      <b>{row.script} {row.version}</b>
-                    </Link>
-                    <small>
-                      <Status>{row.category}</Status>
-                    </small>
+                    {prototype ? (
+                      <Link
+                        className="dark-link"
+                        to={`/publisher/versions/${row.id}`}
+                      >
+                        <b>
+                          {row.script} {row.version}
+                        </b>
+                      </Link>
+                    ) : (
+                      <b>
+                        {row.script} {row.version}
+                      </b>
+                    )}
+                    {row.category && (
+                      <small>
+                        <Status>{row.category}</Status>
+                      </small>
+                    )}
                   </>
                 ),
               },
               {
                 title: "镜像摘要",
                 dataIndex: "digest",
-                render: (value) => (
-                  <Typography.Text
-                    title={value}
-                    copyable={{
-                      text: value,
-                      tooltips: ["复制完整示例摘要", "已复制"],
-                    }}
-                  >
-                    {value.slice(0, 15)}...
-                  </Typography.Text>
-                ),
+                render: (value: string | null) =>
+                  value ? (
+                    <Typography.Text
+                      title={value}
+                      copyable={{
+                        text: value,
+                        tooltips: [
+                          prototype ? "复制完整示例摘要" : "复制完整制品摘要",
+                          "已复制",
+                        ],
+                      }}
+                    >
+                      {value.slice(0, 15)}...
+                    </Typography.Text>
+                  ) : (
+                    "未登记"
+                  ),
               },
               {
                 title: "运行模式",
                 dataIndex: "mode",
                 render: (value) => <Status tone="gray">{value}</Status>,
               },
-              { title: "资源", render: () => "1 CPU　512 MB" },
+              { title: "资源", render: (_, row) => deploymentResources(row) },
               {
                 title: "状态",
                 dataIndex: "status",
                 render: (value) => (
-                  <Status tone={value === "READY" ? "green" : "red"}>
+                  <Status
+                    tone={
+                      value === "READY"
+                        ? "green"
+                        : value === "FAILED" || value === "DEGRADED"
+                          ? "red"
+                          : value === "STOPPED"
+                            ? "gray"
+                            : "orange"
+                    }
+                  >
                     ● {value}
                   </Status>
                 ),
@@ -540,7 +783,7 @@ export function DeploymentsPage() {
                 title: "服务",
                 dataIndex: "service",
                 render: (value, row) =>
-                  row.id === "files" ? (
+                  !prototype || row.id === "files" ? (
                     <Status>{value}</Status>
                   ) : (
                     <Link to={`/publisher/services/${row.id}/edit`}>
@@ -552,19 +795,22 @@ export function DeploymentsPage() {
                 title: "操作",
                 render: (_, row) => (
                   <div className="text-actions">
-                    <Button type="link" onClick={() => selectDeployment(row.id)}>
+                    <Button
+                      type="link"
+                      onClick={() => selectDeployment(row.id)}
+                    >
                       详情
                     </Button>
                     <Button
                       type="link"
-                      disabled={row.status !== "READY"}
+                      disabled={!prototype || row.status !== "READY"}
                       onClick={() => stop(row)}
                     >
                       停用
                     </Button>
                     <Button
                       type="link"
-                      disabled={row.status !== "FAILED"}
+                      disabled={!prototype || row.status !== "FAILED"}
                       onClick={() =>
                         void message.info(
                           `${row.script} ${row.version} 的部署重试接口待接入`,
@@ -578,36 +824,87 @@ export function DeploymentsPage() {
               },
             ]}
           />
+          {!prototype && records.hasNextPage && (
+            <Button
+              className="publisher-record-more"
+              loading={records.isFetchingNextPage}
+              onClick={() => void records.fetchNextPage()}
+            >
+              加载更多记录
+            </Button>
+          )}
         </Panel>
         <aside>
           <Panel title="部署详情">
-            {item ? (
+            {!prototype && requested && detail.isFetching ? (
+              <Spin />
+            ) : item ? (
               <dl>
                 <dt>脚本版本</dt>
                 <dd>
                   <b>
                     {item.script} {item.version}
                   </b>{" "}
-                  <Status tone={item.status === "READY" ? "green" : "red"}>
+                  <Status
+                    tone={
+                      item.status === "READY"
+                        ? "green"
+                        : item.status === "FAILED" || item.status === "DEGRADED"
+                          ? "red"
+                          : "gray"
+                    }
+                  >
                     {item.status}
                   </Status>
                 </dd>
                 <dt>运行模式</dt>
                 <dd>{item.mode}</dd>
                 <dt>资源</dt>
-                <dd>1 CPU　512 MB</dd>
+                <dd>{deploymentResources(item)}</dd>
                 <dt>服务</dt>
                 <dd>{item.service}</dd>
+                {item.metadata && (
+                  <>
+                    <dt>资源模板</dt>
+                    <dd>
+                      {item.metadata.resource_profile_name} v
+                      {item.metadata.resource_profile_version}
+                    </dd>
+                    <dt>最近健康检查</dt>
+                    <dd>{item.metadata.last_health_at || "未登记"}</dd>
+                    <dt>健康证据</dt>
+                    <dd>
+                      {item.metadata.has_health_evidence ? "已登记" : "未登记"}
+                    </dd>
+                    <dt>制品对象</dt>
+                    <dd>
+                      {item.metadata.artifact_available ? "可用" : "当前不可用"}
+                    </dd>
+                  </>
+                )}
               </dl>
             ) : (
               <Empty
                 description={
-                  prototype
-                    ? `部署 ${selected} 不存在或已失效`
-                    : "部署详情待接入"
+                  selected ? `部署 ${selected} 不存在或已失效` : "暂无部署记录"
                 }
               />
             )}
+            {!prototype &&
+              detail.isError &&
+              !(
+                detail.error instanceof ApiError && detail.error.status === 404
+              ) && (
+                <Alert
+                  type="error"
+                  showIcon
+                  title="部署详情加载失败"
+                  description={detail.error.message}
+                  action={
+                    <Button onClick={() => void detail.refetch()}>重试</Button>
+                  }
+                />
+              )}
           </Panel>
           <Panel title="资源限额">
             <dl>
@@ -619,15 +916,17 @@ export function DeploymentsPage() {
           </Panel>
           <Panel title="日志">
             <pre className="deployment-log">
-              {item?.status === "READY"
-                ? "[INFO] 启动运行环境...\n[INFO] 加载脚本依赖完成\n[INFO] 服务已就绪，开始提供请求"
-                : item
-                  ? "[ERROR] 固定制品依赖检查未通过\n[INFO] 部署等待修复"
-                  : "部署日志待载入"}
+              {!prototype
+                ? "部署日志正文待接入"
+                : item?.status === "READY"
+                  ? "[INFO] 启动运行环境...\n[INFO] 加载脚本依赖完成\n[INFO] 服务已就绪，开始提供请求"
+                  : item
+                    ? "[ERROR] 固定制品依赖检查未通过\n[INFO] 部署等待修复"
+                    : "部署日志待载入"}
             </pre>
             <div className="row-actions">
               <Button
-                disabled={item?.status !== "FAILED"}
+                disabled={!prototype || item?.status !== "FAILED"}
                 onClick={() =>
                   void message.info(
                     `${item?.script} ${item?.version} 的部署重试接口待接入`,
@@ -637,7 +936,7 @@ export function DeploymentsPage() {
                 重试
               </Button>
               <Button
-                disabled={item?.status !== "READY"}
+                disabled={!prototype || item?.status !== "READY"}
                 onClick={() => item && stop(item)}
               >
                 停用
@@ -720,7 +1019,12 @@ export function DeploymentsPage() {
             label="CPU核数"
             rules={[
               { required: true },
-              { type: "number", min: 1, max: 4, message: "CPU核数须在1至4之间" },
+              {
+                type: "number",
+                min: 1,
+                max: 4,
+                message: "CPU核数须在1至4之间",
+              },
             ]}
           >
             <InputNumber aria-label="CPU核数" min={1} max={4} />

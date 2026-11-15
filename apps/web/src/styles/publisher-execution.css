@@ -1,6 +1,76 @@
 .app-shell:is(.page-S05, .page-S06) .main-content {
   padding-bottom: 20px;
 }
+.app-shell:is(.page-S05, .page-S06) .breadcrumb {
+  font-size: 16px;
+}
+.app-shell:is(.page-S05, .page-S06) .page-heading h1 {
+  font-size: 28px;
+}
+.app-shell:is(.page-S05, .page-S06) .nav-item {
+  font-size: 17px;
+}
+.page-S05 .page-heading {
+  margin-bottom: 15px;
+}
+.page-S05 .build-detail {
+  padding-bottom: 22px;
+}
+.publisher-record-error {
+  margin-bottom: 16px;
+}
+.publisher-record-more {
+  margin: 14px;
+}
+.execution-record-metadata dl {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.execution-record-metadata dd {
+  overflow-wrap: anywhere;
+}
+.page-S05 .build-detail .status {
+  font-size: 15px;
+  border-radius: 20px;
+  padding: 3px 12px;
+}
+.page-S05 .build-filters .ant-select .ant-select-content {
+  font-size: 16px;
+}
+.page-S05 .build-detail .notice {
+  border: 1px solid #d5e2ff;
+  border-radius: 8px;
+  align-items: flex-start;
+}
+.page-S05 .build-detail .notice > .anticon {
+  margin-top: 6px;
+  color: #1555ff;
+}
+.page-S05 .build-records .ant-table-cell:nth-child(2) {
+  font-weight: 600;
+}
+.page-S06 .deployments-list .ant-table-cell,
+.page-S06 .deployments-list .ant-typography,
+.page-S06 .deployments-columns aside dl {
+  font-size: 16px;
+}
+.page-S06 .deployments-columns aside dd {
+  font-weight: 600;
+}
+.page-S06 .deployments-list .ant-btn-link {
+  font-size: 16px;
+}
+.page-S06 .deployment-log {
+  font-size: 14px;
+}
+.page-S06 .deployments-columns aside .ant-alert-title {
+  font-size: 15px;
+}
+.page-S06 .deployments-columns aside .ant-alert-description {
+  font-size: 14px;
+}
 .app-shell:is(.page-S05, .page-S06) .global-search {
   left: 38%;
   width: 31.2%;
@@ -32,7 +102,7 @@
   line-height: 1.4;
 }
 .page-S06 .deployments-columns aside .panel:last-child .panel-body {
-  padding-bottom: 10px;
+  padding-bottom: 6px;
 }
 .page-S06 .deployment-log {
   min-height: 105px;
@@ -51,6 +121,7 @@
   width: 94px;
 }
 .page-S05 .build-records .ant-table-thead > tr > th {
+  padding-block: 13px;
   font-weight: 600;
 }
 .page-S05 .build-records .ant-table-row > td {
@@ -82,7 +153,22 @@
   margin-top: 100px;
 }
 .page-S06 .page-heading {
-  margin-bottom: 18px;
+  margin-bottom: 7px;
+}
+.page-S06 .deployments-columns {
+  margin-top: 7px;
+}
+.page-S05 .global-search.ant-input-affix-wrapper,
+.page-S06 .global-search.ant-input-affix-wrapper {
+  height: 40px;
+}
+.page-S05 .global-search input,
+.page-S06 .global-search input {
+  font-size: 16px;
+}
+.page-S06 .global-search.ant-input-affix-wrapper {
+  left: 38.8%;
+  width: 28.2%;
 }
 .page-S06 .deployments-list .panel-body {
   padding-bottom: 20px;
@@ -147,7 +233,7 @@
   margin-inline-end: 8px;
 }
 .page-S06 .deployments-columns aside .ant-alert-title {
-  font-size: 13px;
+  font-size: 15px;
   line-height: 18px;
 }
 .page-S06 .deployments-columns aside .ant-alert-description {
@@ -173,6 +259,7 @@
   .page-S05 .build-filters .ant-select:nth-of-type(2),
   .page-S05 .build-filters .ant-select:nth-of-type(3) {
     width: calc(100% - 65px);
+    margin-right: 0;
   }
   .page-S05 .build-filters > b {
     min-width: 40px;

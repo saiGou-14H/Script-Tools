@@ -21,6 +21,7 @@
 
 - [脚本开发规范1.1](./08-脚本开发规范.md#script-development)可作为单个Markdown交给脚本开发者，包含完整输入输出示例及[设计模式](./08-脚本开发规范.md#design-patterns)。[天安门城楼迁移规范](./08-脚本开发规范.md#tiananmen-migration)给出模块划分、状态转换和接入样例，manifest2.1多语言扩展处于待实施草案阶段。
 - 私有脚本上传、草稿修改及源码读取已持久化，支持.script.json多文件包和页面刷新恢复。天安门城楼适配版已保存为示例发布者本人的1.0.0草稿，验证范围见[适配与上传记录](./05-测试验收与验证记录.md#script-adapter-upload)。
+- 构建、AUTHOR_TEST试运行和部署已接入本人元数据查询，支持签名分页、分页外详情与刷新恢复。接口字段见[发布者执行记录契约](./03-接口协议.md#publisher-execution-api)，验证范围见[执行记录报告](../output/verification/publisher-records/report.json)。
 - 开发从[完整实施设计](./06-详细开发设计.md)阅读业务流程、全部页面/操作和事务，再按[数据库字典与DDL](./07-完整系统数据库设计.md)实现；两份文档的验证范围见[本次检查记录](./05-测试验收与验证记录.md#detailed-design-results)。
 
 - 前端已确认采用 **React + TypeScript + Vite + Ant Design**；动态参数表单优先验证 **RJSF**，通过兼容性验证后再确定版本和接入方式。四工作区采用同一技术栈，详见[前端工程基线](./02-系统架构与详细设计.md#frontend)、[表单契约](./03-接口协议.md#schema-form)和[专项验收](./05-测试验收与验证记录.md#frontend-tests)。

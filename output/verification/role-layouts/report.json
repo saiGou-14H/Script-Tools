@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T23:11:53.164Z",
+  "date": "2026-11-15T00:01:18.869Z",
   "data_source": "isolated development seed",
   "viewport_source": "individual reference manifest dimensions",
   "visual_acceptance": "pending",
@@ -179,7 +179,7 @@
       "route": "/",
       "reference_file": "01-游客/P01-平台首页.png",
       "reference_sha256": "3253dbd59cf35ce6084369c7237e28274305c10dea2f2be12cbc98e248b5236e",
-      "screenshot_sha256": "107273758d68b5c2f21b8e7a1b07a3515946334a7af8907babebc12611cba90a",
+      "screenshot_sha256": "a1fe36eec33c1ba78396dadf7f13be8e5d274226263a71f0df067610715491be",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -850,7 +850,7 @@
       "route": "/me/pending",
       "reference_file": "02-消费者/C13-待处理事项.png",
       "reference_sha256": "e6a1298dcd4f3da1e354ebc7212405c06712b3dfa11b761017e22dd4ae8589e9",
-      "screenshot_sha256": "b9b7d0082aa08efbd8a4c362a0fc9dea3134edd1167f48141f8539a7d281ba4c",
+      "screenshot_sha256": "4761911de7ee3ce309776e04a53cd560d7bd6217aaa7b942323d587c89ec9c10",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1194,7 +1194,7 @@
       "route": "/publisher/scripts",
       "reference_file": "03-脚本发布者/S02-我的脚本.png",
       "reference_sha256": "7784b9b46b15556830d538fa6d53520e379b12c6e158d86ee90f984c6666f18f",
-      "screenshot_sha256": "ac04e5c7a1aab7e523a2fb0a519d4c50b84c9d09de567292744b2a83e5a3f3a2",
+      "screenshot_sha256": "3f2abf3f9f5b4ed445cd357586d9ce6e658a72d931df5deb301874295631d9ea",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -1277,7 +1277,7 @@
       "route": "/publisher/builds",
       "reference_file": "03-脚本发布者/S05-构建与测试记录.png",
       "reference_sha256": "03440217455f227f8b75b77a3fc6d7a73947cab99acffc12eaa9b96725f549df",
-      "screenshot_sha256": "09dfd7c760e3fd6b9d666d70baa89179a6802d5dc85ba007107f4db24326caf7",
+      "screenshot_sha256": "fcc76c2708399bd3094a66be203ec0feb08976a5975e5416a5d6716114ef3d1e",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1303,7 +1303,7 @@
       "route": "/publisher/deployments",
       "reference_file": "03-脚本发布者/S06-部署管理.png",
       "reference_sha256": "4ddb220686edb41ad1d888620a9a5bf0dabe87683c13690af5e554421f2a704f",
-      "screenshot_sha256": "fa176395f3669442faf8959c7f5ca892bfe3323c14fca35d6d3f1adfced11523",
+      "screenshot_sha256": "65ede00afae2995191da1ac7e2d2d3fe0a75ca3105daa94003bf3bbb0c68d7c8",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1600,7 +1600,7 @@
       "route": "/me/settings/account?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/C21-账户设置.png",
       "reference_sha256": "05f5bea2c8dfe63eacd5360d5721c809e296d79eef69a1087ae33e771c12d542",
-      "screenshot_sha256": "483d566fbac2a210e739cc0bd33b2dde322e5989a34f36b71b197976ec1e9185",
+      "screenshot_sha256": "e45f2f63417b1e6640a585c56ae08a4adf760740f3a795abd31792a033eabbcc",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1629,7 +1629,7 @@
       "route": "/help?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/P06-使用帮助.png",
       "reference_sha256": "d5cd9e9d8414514542ac3ce18fc1c7809f179e0f292d06ae34f179cb1f93a15e",
-      "screenshot_sha256": "b361eb969509cf9cdf8ff826262b5aae49e42176db4cf1ddb3d89eaf114786d8",
+      "screenshot_sha256": "968e9fabb738abd8a0c1b113dc988420e0d4784256bcb260f491bc182322fa4f",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -2173,7 +2173,7 @@
       "route": "/admin/recovery",
       "reference_file": "04-平台管理员/O20-备份与清理.png",
       "reference_sha256": "d72dffcb141adab395397ff91960f9c38f14b33901feaa5f8338c41d17244b78",
-      "screenshot_sha256": "4a602c5b58921d0f0fea9b0c366e78fed33ffe4d1e059a0a1d93920ec4a39807",
+      "screenshot_sha256": "b005e07eccbd94c09f94996962fa5c8ea43e0040fface5e9b110eacb897badfb",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -2281,11 +2281,11 @@
     }
   ],
   "errors": [],
-  "build_sha256": "be9ba309430a437ddcf9cb4d8730529d6acc0f8a7b859633f5e65718d131b8e3",
+  "build_sha256": "89743e33a5adc24832a0d8c8c86e568cfe81a28938feccb4dbd444b50fee293a",
   "source_sha256": {
     "apps/web/src/pages/PublisherHome.tsx": "c4e6110c2b4ca075150179528a1af443d45a8c07730648d75a148100609abdbf",
     "apps/web/src/pages/AdminHome.tsx": "9316fc19b65bcc1c794debad93e1ece382aa10d601e88d5cfac97359ddcbd1f5",
-    "apps/web/src/components/Shell.tsx": "0ce5b0630e5c435980bb5e44300be7889cbbbcbb38ccada437275885239ca0a8",
+    "apps/web/src/components/Shell.tsx": "84d30e2edce6a8e8887251c359d1d644e8165c56f5d92ecef2c7727a769d69f4",
     "apps/web/src/components/ui.tsx": "157ffd11d4af51586321bf95bb4d02324aa944c0e00dafbd5d5eee91ba643993",
     "apps/web/src/styles/dashboards.css": "492670dd28518d2ed3766c72735df4752d0211acf47884a86981dfeff61c0a43",
     "apps/web/src/main.tsx": "a7b87c680a00610dd3273d5862033ca8f4a306d506856edf2c10e6078c96716a",
@@ -2293,14 +2293,21 @@
     "apps/web/src/pages/PublisherScripts.tsx": "080f589caf991c1093a8cddee6d31745d7b7205d576824065bdc934d8bb30384",
     "apps/web/src/pages/PublisherProducts.tsx": "2bc3828f10c93b7dc24306fd0237869bc8593aa2319fa264c6c4cdd2068c4e44",
     "apps/web/src/publisher-preview.tsx": "886e3047eb633692539eccecc625c98ccf50d73791b744b0843b900855a93d02",
-    "apps/web/src/styles/publisher-editors.css": "b0e6d588706a68ac7636af139c4d1ae18f79c9fd6133865b245ab9ec3eac81db",
+    "apps/web/src/styles/publisher-editors.css": "56799033f5a0b3f01b3471ee466efb61b86a0bae3706d5f8acb7ac4a62ec6ca6",
     "apps/web/src/lib/script-editor.ts": "c4bd8b093d832a4797f74a34637014c00b3187c23546ecff848063d309fad248",
     "apps/web/src/lib/schema-validator.ts": "b38bebbeec590b102e8ba46c1c894d4b68379bcd24ff2437ccf70c7fc2845372",
     "apps/web/src/components/SchemaInput.tsx": "50273a710890149de2f4d03d97677ea042c8ad8d016de0ce7291b7d243cf82c0",
     "apps/web/src/styles/schema-input.css": "76be6f61b22672ea8ffac5ac7e6b911aa9f6eef5af85b0057f8b7518bd267347",
     "apps/web/src/styles/consumer.css": "f1cb66ffb0d3c252813802a3d677578a11765f752fadc011f2d8e41930c76f7d",
     "apps/web/src/pages/Checkout.tsx": "fb22176cd7bd3fc74b282aa60b634bb8dcb5852d31d3b4a7df783675c29c2aec",
-    "apps/web/src/pages/ConfigureService.tsx": "16060362656823364e0daf4d6b20c29ce33f30206bd32d3ea9da73709be1f4f8"
+    "apps/web/src/pages/ConfigureService.tsx": "16060362656823364e0daf4d6b20c29ce33f30206bd32d3ea9da73709be1f4f8",
+    "apps/web/src/pages/PublisherExecution.tsx": "0fb3a24667f54204ecaaf8cf7e404436319ad87ac4702f7e5db2a1cbb74e85bf",
+    "apps/web/src/lib/publisher-execution.ts": "82d40d0e96788c1e7d6c97568869ca6b34210f94bc1ca164236cff22d35c4b88",
+    "apps/web/src/styles/publisher-execution.css": "f0879fc8ae97cca5cce2ec3733ed9a078d95f8e987dd00d5fbdce2087007e917",
+    "apps/control-api/src/publisher/publisher-execution.controller.ts": "6a4618360af2dc4cf8ff517f71b87b9f912c07b8740af422559e79a0a03e3470",
+    "apps/control-api/src/publisher/publisher-execution.service.ts": "302870d41fafbfa1a06822ed697bbb4ff0f524ac5a63aea306c3ae204fd7236e",
+    "apps/control-api/src/scripts/script.service.ts": "2996fa0ab048f4f00e59a3517413166d9e23496604268fca9c1ff2c057bd330c",
+    "apps/control-api/src/app.module.ts": "479d4dfd68924c33499605a80a71e7a183085ca933443eddb5f82a0311597c17"
   },
   "source_hash_normalization": "LF",
   "result": "PASS"

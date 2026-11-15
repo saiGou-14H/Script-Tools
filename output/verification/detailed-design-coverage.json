@@ -8,9 +8,10 @@
   "commercial_rules": 16,
   "tables": 145,
   "fields": 1755,
+  "source_hash_normalization": "LF",
   "documents": {
-    "06-详细开发设计.md": "42bc98d93726b6050ce3d080fdd72032084028106aea557df9b47c5df56237a5",
-    "07-完整系统数据库设计.md": "add047d1a2573fe85e8682e575ea9c7c685ab8d1577a46ef09f09a0389b1ea8e"
+    "06-详细开发设计.md": "a706ab00462fc56606e3665da63ee54646d3186d74b310e03ccb93fcee01758f",
+    "07-完整系统数据库设计.md": "99d11fdfc942bb53a4d4f6d72583cee98674ab255e81111cf29815dcbd85ec71"
   },
   "limit": "Static coverage and dictionary/DDL alignment; not live implementation acceptance"
 }

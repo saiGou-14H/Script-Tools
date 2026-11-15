@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-14T23:58:02.637Z",
+  "checks": [
+    "Build, test-run and deployment projections retain every stored state, independent evidence, exact quantities and private-data boundaries",
+    "HTTP queries require a session and reject cross-owner records, unsupported filters, repeated values and conflicting version paths",
+    "Signed keyset pages retain all microsecond-tied rows and bind resource and filters; wildcard searches remain literal",
+    "Disabled publisher profiles lose metadata access through the same owner check used by source drafts",
+    "Expired and mismatched artifact objects remain unavailable while retired immutable profiles retain historical resource quantities",
+    "The normal LIVE build route loads actual owner rows, paginates and restores an explicitly selected record beyond its first page",
+    "The reference header search queries owner build versions, preserves URL text and clears the previous record selection",
+    "Same-named scripts remain independently selectable by their UUID and restore the same filtered script after reload",
+    "Successful author-test run status keeps the separately stored failed test verdict and actual tested mode",
+    "LIVE deployment details restore an off-page identity, immutable resources and unavailable object state with operational controls awaiting their backend",
+    "Failed metadata reads expose retry feedback and recover through the existing page entry",
+    "Both LIVE metadata routes retain long identities, exact quantities, internally scrollable tables and distinct header controls at 390px",
+    "PostgreSQL verifies owner projections, every state, independent test verdicts and exact historical resources in a fully rolled-back transaction"
+  ],
+  "screenshots": [
+    "PUBLISHER-S05-live",
+    "PUBLISHER-S06-live",
+    "PUBLISHER-S05-live-mobile",
+    "PUBLISHER-S06-live-mobile"
+  ],
+  "errors": [],
+  "scope": "isolated metadata and browser checks; optional PostgreSQL transaction rollback",
+  "postgresql": {
+    "server_version": "18.7",
+    "transaction": "rolled_back",
+    "synthetic_script_removed": true
+  },
+  "result": "PASS"
+}

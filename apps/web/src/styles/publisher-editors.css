@@ -250,34 +250,34 @@
   }
 }
 @media (max-width: 700px) {
-  .app-shell:is(.page-S03, .page-S04, .page-S08) {
+  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08) {
     --sidebar-width: 0px;
   }
-  .app-shell:is(.page-S03, .page-S04, .page-S08) .topbar {
+  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08) .topbar {
     padding: 0 12px;
     gap: 8px;
   }
-  .app-shell:is(.page-S03, .page-S04, .page-S08) .brand {
+  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08) .brand {
     min-width: 0;
     flex: 1;
     gap: 8px;
   }
-  .app-shell:is(.page-S03, .page-S04, .page-S08) .brand strong {
+  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08) .brand strong {
     font-size: 18px;
   }
-  .app-shell:is(.page-S03, .page-S04, .page-S08) .topbar-actions {
+  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08) .topbar-actions {
     flex-shrink: 0;
     gap: 6px;
   }
-  .app-shell:is(.page-S03, .page-S04, .page-S08) .workspace-button {
+  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08) .workspace-button {
     padding: 0 8px;
     gap: 6px;
     font-size: 0;
   }
-  .app-shell:is(.page-S03, .page-S04, .page-S08) .workspace-button b {
+  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08) .workspace-button b {
     font-size: 12px;
   }
-  .app-shell:is(.page-S03, .page-S04, .page-S08) .main-content {
+  .app-shell:is(.page-S03, .page-S04, .page-S05, .page-S06, .page-S08) .main-content {
     padding: 80px 12px 20px;
   }
   .page-S03 .editor-title {

@@ -223,16 +223,15 @@ try {
 
   const live = await session(true);
   await live.goto(base + "/publisher/builds?record=B032");
-  await expect(live.locator(".build-records .ant-table-row")).toHaveCount(0);
-  await expect(live.locator(".build-detail")).toContainText("构建详情待接入");
-  await expect(live.getByRole("button", { name: "查询构建记录", exact: true })).toBeDisabled();
+  await expect(live.locator(".build-records")).not.toContainText("B032");
+  await expect(live.locator(".build-detail")).toContainText("记录 B032 不存在或不在当前筛选范围内");
+  await expect(live.getByRole("button", { name: "查询构建记录", exact: true })).toBeEnabled();
   await live.goto(base + "/publisher/deployments?deployment=table");
   await expect(live.getByRole("button", { name: "创建部署", exact: true })).toBeDisabled();
-  await expect(live.locator(".deployments-list .ant-table-row")).toHaveCount(0);
-  await expect(live.locator(".deployments-columns aside")).toContainText("部署详情待接入");
+  await expect(live.locator(".deployments-columns aside")).toContainText("部署 table 不存在或已失效");
   await expect(live.locator(".deployments-columns aside")).not.toContainText("3 CPU");
   await expect(live.locator(".deployments-columns aside")).not.toContainText("0 CPU");
-  report.checks.push("live build and deployment views expose pending integration with unavailable details and unknown resource quotas");
+  report.checks.push("live build and deployment views query owner metadata and retain unavailable selections and unknown resource quotas");
 
   await page.setViewportSize({ width: 390, height: 844 });
   for (const route of ["/publisher/builds", "/publisher/deployments"]) {

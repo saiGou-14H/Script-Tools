@@ -48,7 +48,7 @@ export async function startVerificationApp(name) {
     app.useGlobalInterceptors(new EnvelopeInterceptor());
     app.useGlobalFilters(new HttpErrorFilter());
     await app.listen(0, "127.0.0.1");
-    return { url: await app.getUrl(), close };
+    return { url: await app.getUrl(), app, close };
   } catch (error) {
     await close();
     throw error;

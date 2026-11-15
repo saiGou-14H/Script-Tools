@@ -508,6 +508,12 @@ export function Shell({ pageId }: { pageId: PageId }) {
           <span>通用脚本服务平台</span>
         </Link>
         <Input
+          key={pageId === "S05" ? location.search : undefined}
+          defaultValue={
+            pageId === "S05"
+              ? new URLSearchParams(location.search).get("q") || ""
+              : undefined
+          }
           ref={searchRef}
           className="global-search"
           prefix={<SearchOutlined />}
@@ -515,21 +521,32 @@ export function Shell({ pageId }: { pageId: PageId }) {
           placeholder={
             pageId === "P06"
               ? "搜索功能、文档或常见问题"
-              : pageId === "S01"
-                ? "搜索脚本、服务或订单"
-              : role === "ADMIN"
-                ? "搜索订单、用户、服务或预约编号"
-                : quickSearch
-                  ? "搜索脚本、工具或景点"
-                  : "搜索脚本、服务或订单"
+              : pageId === "S05"
+                ? "搜索脚本、版本或构建编号"
+                : pageId === "S01"
+                  ? "搜索脚本、服务或订单"
+                  : role === "ADMIN"
+                    ? "搜索订单、用户、服务或预约编号"
+                    : quickSearch
+                      ? "搜索脚本、工具或景点"
+                      : "搜索脚本、服务或订单"
           }
-          onPressEnter={(event) =>
+          onPressEnter={(event) => {
+            if (pageId === "S05") {
+              const search = new URLSearchParams(location.search);
+              const text = event.currentTarget.value.trim();
+              if (text) search.set("q", text);
+              else search.delete("q");
+              search.delete("record");
+              navigate(`/publisher/builds?${search}`);
+              return;
+            }
             navigate(
               pageId === "P06"
                 ? `/help?workspace=${role}&q=${encodeURIComponent(event.currentTarget.value)}`
                 : `${role === "ADMIN" ? "/admin/orders" : "/market"}?q=${encodeURIComponent(event.currentTarget.value)}`,
-            )
-          }
+            );
+          }}
         />
         <div className="topbar-actions">
           <Dropdown

@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T13:22:45.403Z",
+  "date": "2026-11-14T23:58:20.742Z",
   "checks": [
     "build and deployment reference regions and sidebar help fit 1814 by 868",
     "applied build filters and selection survive reload while unavailable or filtered selections retain their own identity",
@@ -9,7 +9,7 @@
     "deployment copy returns the complete local example digest, related links use its own version and service, and stop impact stays pending calculation",
     "deployment configuration previews its selected ready version, complete digest and resource values, and editing clears stale validation evidence",
     "Docker, KVM and TCG remain separate execution modes and TCG requires explicit consent after switching away and back",
-    "live build and deployment views expose pending integration with unavailable details and unknown resource quotas",
+    "live build and deployment views query owner metadata and retain unavailable selections and unknown resource quotas",
     "both routes fit 390px with internally scrollable tables and preview actions issue no business mutations or browser exceptions"
   ],
   "screenshots": [
@@ -23,10 +23,10 @@
       "height": 868,
       "main": {
         "x": 281,
-        "y": 332.65625,
+        "y": 335.171875,
         "width": 1494,
-        "height": 493.640625,
-        "bottom": 826.296875
+        "height": 491.640625,
+        "bottom": 826.8125
       },
       "help": {
         "x": 10,
@@ -41,10 +41,10 @@
       "height": 868,
       "main": {
         "x": 244,
-        "y": 199.3125,
+        "y": 195.828125,
         "width": 1556,
-        "height": 646.390625,
-        "bottom": 845.703125
+        "height": 649.8125,
+        "bottom": 845.640625
       },
       "help": {
         "x": 10,
