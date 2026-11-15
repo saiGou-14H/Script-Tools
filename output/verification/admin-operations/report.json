@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T11:56:20.255Z",
+  "date": "2026-11-15T16:21:37.174Z",
   "checks": [
     "all eight infrastructure and platform pages render within the reference viewport with complete navigation",
     "rate and pool-drain previews preserve occupied capacity while pending work remains visible",
@@ -65,13 +65,13 @@
       "id": "O19",
       "width": 1814,
       "height": 868,
-      "helpBottom": 826.90625
+      "helpBottom": 835.34375
     },
     {
       "id": "O20",
       "width": 1814,
       "height": 868,
-      "helpBottom": 851.90625
+      "helpBottom": 864.53125
     }
   ],
   "errors": [],

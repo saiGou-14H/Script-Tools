@@ -42,6 +42,17 @@ const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
       C08: "plus-circle", C10: "list", C12: "data-storage", C13: "warning",
       C16: "mail", C19: "history",
     },
+    O19: {
+      O03: "stack", O05: "market", O06: "file", O10: "bars", O11: "team",
+      O12: "ticket", O13: "stack", O14: "settings", O15: "line-chart",
+      O16: "file", O17: "send", O20: "data-storage", C21: "user",
+    },
+    O20: {
+      O02: "team", O03: "cube", O04: "bars", O05: "sliders", O21: "clock",
+      O06: "file", O08: "exclamation", O10: "reconciliation", O11: "order",
+      O12: "order", O13: "cube", O14: "cube", O15: "clock",
+      O16: "file", O17: "send", O19: "shield", O20: "data-storage", C21: "user",
+    },
     P05: {
       C04: "file", C06: "stack", C22: "ticket-stub", C10: "list",
       C12: "file", C13: "clock", C16: "message",
@@ -610,6 +621,8 @@ export function Shell({ pageId }: { pageId: PageId }) {
         >
           {pageId === "O01" ? (
             <Icon name="send-solid" />
+          ) : ["O19", "O20"].includes(pageId) ? (
+            <Icon name="code-brackets" />
           ) : (
             <span className="brand-code">&lt;/&gt;</span>
           )}
@@ -690,6 +703,8 @@ export function Shell({ pageId }: { pageId: PageId }) {
                     ? role === "GUEST"
                       ? "当前身份："
                       : "当前工作区："
+                    : pageId === "O19"
+                      ? "当前工作区："
                     : pageId === "C01"
                       ? "工作区："
                     : ["P01", "P04"].includes(pageId)
@@ -879,6 +894,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
                       roles.find((item) => item.id === role)!.home as PageId,
                     )}
                   >
+                    {pageId === "O20" && <Icon name="home" />}
                     {(pageId === "P06" ? "首页" : breadcrumbRoot) ||
                       (role === "GUEST"
                         ? "平台首页"
@@ -888,7 +904,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
                             ? "我的脚本"
                             : "首页")}
                   </Link>
-                  <span>›</span>
+                  <span>{["O19", "O20"].includes(pageId) ? "/" : "›"}</span>
                 </>
               )}
               <strong>{pages[pageId].title}</strong>

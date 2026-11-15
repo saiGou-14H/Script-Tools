@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T19:36:26.501Z",
+  "date": "2026-11-15T16:26:08.817Z",
   "checks": [
     "HTTP access separates observability.manage delivery metadata from runtime.manage configuration records and rechecks updated management grants",
     "Delivery metadata retains six transport states, independent read and expiry times, zero attempts, latest sending evidence and repeated-output source identity while masking receipts and excluding message, target and policy bodies",

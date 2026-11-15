@@ -94,7 +94,7 @@ export function AdminAccessLivePage() {
           {governanceCapabilities.map(([capability, text]) => (
             <article key={capability}>
               <span className="governance-capability-icon" aria-hidden>
-                {"</>"}
+                <Icon name="code-brackets" />
               </span>
               <span>
                 <h3>{capability}</h3>
@@ -317,6 +317,7 @@ export function AdminAccessLivePage() {
       </div>
       <Notice>权限维护与会话签发继续按账号、范围及修订校验。</Notice>
       <Modal
+        className="governance-dialog"
         title="授权记录详情"
         open={Boolean(selectedId)}
         onCancel={() => update("grant")}
@@ -378,6 +379,7 @@ export function AdminAccessLivePage() {
         )}
       </Modal>
       <Modal
+        className="governance-dialog"
         title="本人限时排障会话"
         open={sessionsOpen}
         onCancel={() => update("sessions")}
@@ -776,6 +778,7 @@ export function AdminRecoveryLivePage() {
         </div>
       </div>
       <Modal
+        className="governance-dialog"
         title="备份清单元数据"
         open={Boolean(backupId) && view === "backups"}
         onCancel={() => update("backup")}

@@ -22,10 +22,7 @@
   border-radius: 6px;
   background: linear-gradient(120deg, #e2ecff, #d2e2ff);
   color: #1555ff;
-  font:
-    25px/1 Consolas,
-    monospace;
-  letter-spacing: -3px;
+  font-size: 27px;
 }
 .admin-access-columns .panel-heading {
   padding-top: 8px;
@@ -165,7 +162,272 @@
 .governance-live .grant-capabilities {
   min-width: 0;
 }
+.app-shell:is(.page-O19, .page-O20) .brand {
+  min-width: 0;
+}
+.page-O19 .brand strong {
+  font-size: 20px;
+}
+.page-O19 .brand > .anticon {
+  font-size: 28px;
+}
+.page-O19 .global-search {
+  left: 32.1%;
+  width: 31.8%;
+}
+.page-O19 .nav-item {
+  font-size: 14px;
+  height: 27.7px;
+}
+.page-O19 .nav-group {
+  margin-bottom: 2px;
+}
+.page-O19 .workspace-button {
+  color: #17223b;
+  border-color: #cbd5e6;
+}
+.app-shell:is(.page-O19, .page-O20) .breadcrumb {
+  font-size: 14px;
+}
+.page-O20 .breadcrumb > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+.page-O19 .admin-access-banner {
+  background: linear-gradient(110deg, #e9f0ff, #d9d9ff);
+}
+.page-O19 .admin-access-banner::after {
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 108% 160%, #aebcfa55 45%, transparent 45.3%),
+    radial-gradient(ellipse at 106% 185%, #bac5fa55 50%, transparent 50.3%);
+  clip-path: none;
+}
+.page-O19 .admin-access-banner .page-heading {
+  position: relative;
+  z-index: 1;
+}
+.page-O19 .admin-capability-matrix .panel-body > div {
+  grid-template-columns:
+    minmax(0, 1.07fr) repeat(2, minmax(0, 1fr)) minmax(0, 1.03fr)
+    minmax(0, 1.07fr);
+}
+.page-O19 .admin-capability-matrix article {
+  min-width: 0;
+}
+.page-O19 .admin-capability-matrix article > span:last-child {
+  min-width: 0;
+}
+.page-O19 .admin-capability-matrix p {
+  line-height: 18px;
+}
+.page-O19 .admin-capability-matrix h3 {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.page-O19 .admin-access-columns {
+  grid-template-columns: minmax(0, 0.956fr) minmax(0, 1.044fr);
+}
+.page-O19 .admin-access-columns .panel-heading {
+  min-height: 43px;
+  padding-top: 8px;
+}
+.page-O19 .admin-access-columns .grant-capabilities {
+  min-width: 0;
+  max-width: none;
+}
+.app-shell:is(.page-O19, .page-O20) .ant-table-measure-row {
+  visibility: hidden;
+  height: 0;
+}
+.app-shell:is(.page-O19, .page-O20) .ant-table-measure-row > td {
+  padding: 0 !important;
+  border: 0;
+  height: 0;
+}
+.page-O19 .admin-access-columns .ant-table-cell {
+  overflow-wrap: anywhere;
+}
+.page-O19 .admin-access-columns .ant-table .ant-btn {
+  white-space: normal;
+  height: auto;
+  font-size: 14px;
+}
+.page-O19 .admin-access-columns .panel-heading .ant-btn-text {
+  font-weight: 600;
+}
+.page-O19 .admin-access-page > .notice,
+.page-O19 .admin-access-columns .notice {
+  background: linear-gradient(110deg, #e3efff, #cfe2ff);
+}
+.page-O20 .main-content {
+  padding-top: 77px;
+}
+.page-O20 .brand strong {
+  font-size: 23px;
+}
+.page-O20 .brand > span:last-child {
+  font-size: 20px;
+  color: #141d38;
+  padding-left: 12px;
+}
+.page-O20 .brand > .anticon {
+  font-size: 32px;
+}
+.page-O20 .global-search {
+  left: 37.5%;
+  width: 25.7%;
+}
+.page-O20 .workspace-button {
+  min-width: 138px;
+  height: 37px;
+  font-weight: 600;
+}
+.page-O20 .nav-item {
+  height: 27.5px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.page-O20 .sidebar {
+  padding-top: 14px;
+}
+.page-O20 .nav-group {
+  margin-bottom: 6px;
+}
+.page-O20 .nav-group:nth-child(-n + 3) {
+  margin-bottom: 9px;
+}
+.page-O20 .nav-group:nth-child(2) {
+  margin-bottom: 10.5px;
+}
+.page-O20 .nav-group:nth-child(4),
+.page-O20 .nav-group:nth-child(5) {
+  margin-bottom: 2px;
+}
+.page-O20 .nav-group:last-child .nav-group-label {
+  height: 12px;
+  padding-block: 0;
+  font-size: 12px;
+  line-height: 12px;
+}
+.page-O20 .nav-group-label {
+  font-size: 13px;
+}
+.page-O20 .admin-backup-banner {
+  height: auto;
+  min-height: 120px;
+}
+.page-O20 .admin-backup-banner > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.page-O20 .admin-backup-banner .ant-btn {
+  flex-shrink: 0;
+  font-weight: 600;
+}
+.page-O20 .admin-backup-banner .ant-btn-default {
+  color: #1555ff;
+  border-color: #6683ff;
+  background: linear-gradient(white, #f0f3ff);
+}
+.page-O20 .backup-status-row .status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  border: 1px solid #d0eddd;
+}
+.page-O20 .backup-status-row .status-orange {
+  border-color: #f8e7ce;
+}
+.page-O20 .backup-status-row .status .anticon {
+  font-size: 20px;
+}
+.page-O20 .admin-recovery-columns {
+  grid-template-columns: minmax(0, 1.83fr) minmax(0, 1fr);
+}
+.page-O20 .admin-recovery-columns .ant-table-thead > tr > th,
+.page-O20 .admin-recovery-columns .ant-table-tbody > tr > td {
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+.page-O20 .admin-recovery-columns .ant-table .status {
+  font-size: 14px;
+  padding-inline: 9px;
+}
+.page-O20 .admin-recovery-columns .ant-table .ant-btn {
+  font-size: 17px;
+  height: auto;
+  white-space: normal;
+  text-align: left;
+}
+.page-O20 .backup-scope .panel-body > span:last-child,
+.page-O20 .recovery-steps article > span,
+.page-O20 .recovery-steps .notice > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.page-O20 .recovery-steps .panel-body {
+  padding-bottom: 13px;
+}
+.page-O20 .recovery-steps article > b {
+  flex-shrink: 0;
+}
+.page-O20 .recovery-steps .notice > .anticon {
+  align-self: flex-start;
+  margin-top: 2px;
+  color: #1555ff;
+}
+.governance-dialog .ant-table-cell,
+.governance-dialog .ant-descriptions-item-content {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1700px) {
+  .page-O19 .admin-capability-matrix .panel-body > div {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  }
+  .page-O19 .admin-capability-matrix article {
+    padding: 13px 15px;
+    gap: 15px;
+  }
+  .page-O19 .admin-capability-matrix h3 {
+    font-size: 16px;
+  }
+  .page-O20 .admin-backup-banner {
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+  .page-O20 .admin-backup-banner > span {
+    flex-basis: calc(100% - 134px);
+  }
+  .page-O20 .admin-backup-banner .ant-btn {
+    margin-left: 0;
+  }
+}
+@media (max-width: 1400px) {
+  .app-shell:is(.page-O19, .page-O20) .brand > span:last-child {
+    display: none;
+  }
+  .page-O19 .global-search,
+  .page-O20 .global-search {
+    left: 28%;
+    width: 35%;
+  }
+  .page-O19 .admin-access-columns,
+  .page-O20 .admin-recovery-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 1200px) {
+  .app-shell:is(.page-O19, .page-O20) .global-search {
+    display: none;
+  }
+}
 @media (max-width: 760px) {
+  .app-shell:is(.page-O19, .page-O20) .sidebar {
+    display: none;
+  }
   .app-shell.admin-workspace:is(.page-O19, .page-O20) {
     --sidebar-width: 0px;
   }

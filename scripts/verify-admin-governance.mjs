@@ -51,10 +51,108 @@ const report = {
   screenshots: [],
   layouts: {},
   errors: [],
+  visual_acceptance: "pending",
 };
 const contexts = [];
 let app, server, browser, page, connection;
 
+const layoutWidths = [
+  ...new Set([
+    ...Array.from({ length: 41 }, (_, index) => 390 + index * 37),
+    700,
+    701,
+    760,
+    761,
+    1000,
+    1001,
+    1100,
+    1101,
+    1200,
+    1201,
+    1400,
+    1401,
+    1700,
+    1701,
+    1814,
+    1870,
+  ]),
+].sort((a, b) => a - b);
+async function governanceLayout(target) {
+  return target.evaluate(() => {
+    const rect = (selector) =>
+      document.querySelector(selector).getBoundingClientRect();
+    const brand = rect(".brand"),
+      actions = rect(".topbar-actions"),
+      search = rect(".global-search");
+    const selectors = [
+      ".admin-access-banner",
+      ".admin-capability-matrix article",
+      ".admin-capability-matrix h3",
+      ".admin-access-columns > .panel",
+      ".panel-heading",
+      ".admin-backup-banner",
+      ".backup-status-row",
+      ".backup-scope",
+      ".backup-scope h3",
+      ".backup-scope p",
+      ".recovery-steps",
+      ".recovery-steps article",
+      ".recovery-steps .notice",
+    ];
+    return {
+      width: innerWidth,
+      document_width: document.documentElement.scrollWidth,
+      header_overlap: brand.right > actions.left,
+      search_overlap:
+        search.width > 0 &&
+        (brand.right > search.left || search.right > actions.left),
+      clipped: [...document.querySelectorAll(selectors.join(","))]
+        .filter(
+          (element) =>
+            element.scrollWidth > element.clientWidth + 1 ||
+            element.scrollHeight > element.clientHeight + 1,
+        )
+        .map((element) => element.className),
+    };
+  });
+}
+async function checkGovernanceWidths(target, key) {
+  report.layouts[key] = [];
+  for (const width of layoutWidths) {
+    await target.setViewportSize({ width, height: 868 });
+    const layout = await governanceLayout(target);
+    assert.equal(layout.document_width, layout.width);
+    assert.equal(layout.header_overlap, false);
+    assert.equal(layout.search_overlap, false);
+    assert.deepEqual(layout.clipped, [], JSON.stringify(layout));
+    report.layouts[key].push(layout);
+  }
+  await target.setViewportSize({ width: 1814, height: 868 });
+}
+async function checkReferenceRegions(target, key, expected) {
+  const actual = await target.evaluate(
+    (selectors) =>
+      Object.fromEntries(
+        selectors.map((selector) => {
+          const rect = document.querySelector(selector).getBoundingClientRect();
+          return [
+            selector,
+            { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+          ];
+        }),
+      ),
+    Object.keys(expected),
+  );
+  for (const [selector, fields] of Object.entries(expected)) {
+    for (const [axis, value] of Object.entries(fields)) {
+      assert(
+        Math.abs(actual[selector][axis] - value) <= 3,
+        `${key} ${selector} ${axis}: ${actual[selector][axis]} / ${value}`,
+      );
+    }
+  }
+  report.layouts[key] = { tolerance_px: 3, expected, actual };
+}
 async function fixtures(database) {
   async function insert(table, values) {
     const record = { id: randomUUID(), ...values },
@@ -667,6 +765,63 @@ try {
   }
   await page.goto(web + "/admin/access");
   await capture("ADMIN-O19");
+  await checkReferenceRegions(page, "O19-reference", {
+    ".admin-access-banner": { x: 248, y: 105, width: 1546, height: 97 },
+    ".admin-capability-matrix": { x: 248, y: 224, width: 1546, height: 159 },
+    ".admin-access-columns > .panel:first-child": {
+      x: 248,
+      y: 405,
+      width: 730,
+      height: 392,
+    },
+    ".admin-access-columns > .panel:last-child": {
+      x: 995,
+      y: 405,
+      width: 799,
+      height: 392,
+    },
+    ".admin-access-page > .notice": { x: 248, y: 812, width: 1546, height: 38 },
+  });
+  await checkGovernanceWidths(page, "O19-prototype-widths");
+  await page.setViewportSize({ width: 390, height: 868 });
+  const grantScroll = page
+    .locator(".admin-access-columns > .panel")
+    .first()
+    .locator(".ant-table-content");
+  await grantScroll.evaluate((element) => {
+    element.scrollLeft = element.scrollWidth;
+  });
+  const mobileAction = await page
+    .locator(".admin-access-columns tbody .ant-btn")
+    .first()
+    .evaluate((button) => {
+      const bounds = button.getBoundingClientRect();
+      const viewport = button
+        .closest(".ant-table-content")
+        .getBoundingClientRect();
+      return {
+        left: bounds.left,
+        right: bounds.right,
+        start: viewport.left,
+        end: viewport.right,
+      };
+    });
+  assert(
+    mobileAction.left >= mobileAction.start - 1 &&
+      mobileAction.right <= mobileAction.end + 1,
+  );
+  await page.setViewportSize({ width: 1814, height: 868 });
+  report.checks.push(
+    "O19 calibrates five principal reference regions within three pixels and retains untruncated capability cards, separated header controls and reachable grant actions across 55 distinct widths",
+  );
+  await page.locator(".global-search input").fill("订单 检索_%&");
+  await page.locator(".global-search input").press("Enter");
+  await page.waitForURL((url) => url.pathname === "/admin/orders");
+  assert.equal(new URL(page.url()).searchParams.get("q"), "订单 检索_%&");
+  report.checks.push(
+    "governance header search keeps the existing order-search entry and preserves the complete query through normal navigation",
+  );
+
   await page.goto(web + "/admin/access?grant=ops");
   await expect(
     page
@@ -704,6 +859,23 @@ try {
   );
   await page.goto(web + "/admin/recovery");
   await capture("ADMIN-O20");
+  await checkReferenceRegions(page, "O20-reference", {
+    ".admin-backup-banner": { x: 249, y: 180, width: 1545, height: 120 },
+    ".backup-status-row": { x: 249, y: 320, width: 1545, height: 46 },
+    ".admin-recovery-columns > .panel": {
+      x: 249,
+      y: 387,
+      width: 989,
+      height: 462,
+    },
+    ".backup-scope": { x: 1253, y: 387, width: 541, height: 146 },
+    ".recovery-steps": { x: 1253, y: 546, width: 541, height: 302 },
+  });
+  await checkGovernanceWidths(page, "O20-prototype-widths");
+  report.checks.push(
+    "O20 calibrates five principal reference regions within three pixels and retains natural banner flow, status icons and internally scrolling policy rows across 55 distinct widths",
+  );
+
   await page.goto(web + "/admin/recovery?dialog=retention");
   await expect(
     page.getByRole("dialog").getByLabel("日志总保留天数", { exact: true }),
@@ -862,6 +1034,111 @@ try {
     );
     report.layouts[id] = { left: box.x, width: box.width };
   }
+  for (const [route, key] of [
+    ["/admin/access", "O19-live-widths"],
+    ["/admin/recovery", "O20-live-widths"],
+  ]) {
+    await page.goto(web + route);
+    await expect(page.locator(".governance-live")).toBeVisible();
+    await checkGovernanceWidths(page, key);
+  }
+  report.checks.push(
+    "both live governance pages retain the same 55-width layout coverage with real metadata queries and independently reported grant, backup and drill facts",
+  );
+
+  const controlled = await browser.newContext({
+    viewport: { width: 1814, height: 868 },
+  });
+  await controlled.request.post(web + "/api/v1/auth/login", {
+    data: { email: "admin@example.invalid", password: "TravelTools2026!" },
+  });
+  await controlled.route("**/api/v1/bootstrap", async (route) => {
+    const body = await (await route.fetch()).json();
+    body.data.data_mode = "live";
+    await route.fulfill({ json: body });
+  });
+  const longMask = "masked-account-".repeat(25);
+  const longCapability =
+    "publisher.extension." + "continuous-process-capability-".repeat(15);
+  await controlled.route("**/api/v1/admin/role-grants?**", async (route) => {
+    const body = await (await route.fetch()).json();
+    assert(body.data.length);
+    body.data = [
+      {
+        ...body.data[0],
+        account_mask: longMask,
+        capabilities: [longCapability, "access.manage"],
+        reason: "readable-reason-".repeat(30),
+        revision: "9223372036854775807",
+      },
+    ];
+    body.next_cursor = null;
+    await route.fulfill({ json: body });
+  });
+  await controlled.route(
+    "**/api/v1/admin/data-access-sessions?**",
+    async (route) => {
+      const body = await (await route.fetch()).json();
+      assert(body.data.length);
+      body.data[0].scope_count = "9223372036854775807";
+      body.data[0].ticket_ref = "long-ticket-reference-".repeat(20);
+      await route.fulfill({ json: body });
+    },
+  );
+  const longPage = await controlled.newPage();
+  longPage.on("pageerror", (error) => report.errors.push(error.message));
+  await longPage.goto(web + "/admin/access");
+  await expect(
+    longPage.getByRole("button", { name: longMask, exact: true }),
+  ).toBeVisible();
+  await expect(longPage.locator(".grant-capabilities code").first()).toHaveText(
+    longCapability,
+  );
+  await checkGovernanceWidths(longPage, "O19-long-metadata-widths");
+  await longPage.getByRole("button", { name: longMask, exact: true }).click();
+  await expect(longPage.getByRole("dialog")).toContainText(
+    "9223372036854775807",
+  );
+  await longPage
+    .getByRole("button", { name: "关闭授权详情", exact: true })
+    .click();
+  await longPage
+    .getByRole("button", { name: "限时排障会话记录", exact: true })
+    .click();
+  await expect(longPage.getByRole("dialog")).toContainText(
+    "9223372036854775807",
+  );
+  for (const width of [390, 761, 1814]) {
+    await longPage.setViewportSize({ width, height: 868 });
+    const layout = await longPage.getByRole("dialog").evaluate((element) => ({
+      width: document.documentElement.scrollWidth,
+      clipped_cells: [
+        ...element.querySelectorAll(
+          ".ant-table-cell,.ant-descriptions-item-content",
+        ),
+      ].filter(
+        (cell) =>
+          cell.scrollWidth > cell.clientWidth + 1 ||
+          cell.scrollHeight > cell.clientHeight + 1,
+      ).length,
+    }));
+    assert.equal(layout.width, width);
+    assert.equal(layout.clipped_cells, 0);
+  }
+  await longPage
+    .getByRole("button", { name: "关闭会话记录", exact: true })
+    .click();
+  await longPage.setViewportSize({ width: 1814, height: 868 });
+  await longPage.screenshot({
+    path: path.join(output, "ADMIN-O19-long-metadata.png"),
+    fullPage: true,
+    animations: "disabled",
+  });
+  report.screenshots.push("ADMIN-O19-long-metadata");
+  report.checks.push(
+    "controlled long account masks and capability names wrap fully across 55 widths, and long ticket references and signed-64-bit grant revisions and session scope counts remain readable in their metadata dialogs",
+  );
+  await controlled.close();
   assert.deepEqual(await snapshot(), before);
   assert.deepEqual(report.errors, []);
   report.checks.push(

@@ -450,7 +450,7 @@ export function AdminAccessPage() {
           {governanceCapabilities.map(([capability, text]) => (
             <article key={capability}>
               <span className="governance-capability-icon" aria-hidden>
-                {"</>"}
+                <Icon name="code-brackets" />
               </span>
               <span>
                 <h3>{capability}</h3>
@@ -472,12 +472,14 @@ export function AdminAccessPage() {
           <p>查看账号权限、授权范围与有效期。最后有效权限管理员受到保护。</p>
           <Table<GrantPreview>
             rowKey="id"
+            tableLayout="fixed"
             dataSource={activeGrants}
             scroll={{ x: 690 }}
             pagination={false}
             columns={[
               {
                 title: "账号（掩码）",
+                width: "25%",
                 render: (_, row) => (
                   <span>
                     {row.mask} <Status>{row.label}</Status>
@@ -486,6 +488,7 @@ export function AdminAccessPage() {
               },
               {
                 title: "已授权能力",
+                width: "41%",
                 render: (_, row) => (
                   <div className="grant-capabilities">
                     {row.capabilities.map((item) => (
@@ -496,10 +499,12 @@ export function AdminAccessPage() {
               },
               {
                 title: "授权到期",
+                width: "19%",
                 render: (_, row) => row.expiresAt || "长期有效",
               },
               {
                 title: "操作",
+                width: "15%",
                 render: (_, row) =>
                   row.ownerId === bootstrap.user?.id ? (
                     "—"
@@ -532,6 +537,7 @@ export function AdminAccessPage() {
           </p>
           <Table
             rowKey="id"
+            tableLayout="fixed"
             dataSource={auditRows}
             scroll={{ x: 740 }}
             pagination={
@@ -540,13 +546,13 @@ export function AdminAccessPage() {
                 : false
             }
             columns={[
-              { title: "对象", dataIndex: "object", width: "25%" },
-              { title: "动作", dataIndex: "action", width: 110 },
+              { title: "对象", dataIndex: "object", width: "26%" },
+              { title: "动作", dataIndex: "action", width: 132 },
               { title: "理由", dataIndex: "reason" },
               {
                 title: "结果",
                 dataIndex: "result",
-                width: 82,
+                width: 114,
                 render: (value) => (
                   <Status tone={value === "成功" ? "green" : "blue"}>
                     {value}
@@ -772,10 +778,12 @@ export function AdminRecoveryPage() {
       </div>
       <div className="backup-status-row">
         <Status tone={enabled ? "green" : "gray"}>
-          {enabled ? "✓ 最近备份成功" : "备份状态待采集"}
+          <Icon name={enabled ? "check-solid" : "clock"} />
+          {enabled ? "最近备份成功" : "备份状态待采集"}
         </Status>
         <Status tone={planned ? "blue" : "orange"}>
-          {planned ? "恢复演练已登记" : "ⓘ 恢复演练未执行"}
+          <Icon name={planned ? "clock" : "exclamation"} />
+          {planned ? "恢复演练已登记" : "恢复演练未执行"}
         </Status>
       </div>
       <div className="admin-recovery-columns">
@@ -788,6 +796,7 @@ export function AdminRecoveryPage() {
         >
           <Table
             rowKey="id"
+            tableLayout="fixed"
             dataSource={policyRows}
             scroll={{ x: 944 }}
             pagination={false}
