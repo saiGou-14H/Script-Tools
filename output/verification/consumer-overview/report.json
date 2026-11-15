@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T05:51:44.411Z",
+  "date": "2026-11-15T06:58:11.969Z",
   "checks": [
     "personal overview requires authentication, returns its effective window and as_of, preserves integer counts and rejects owner selection and invalid dates",
     "current running counters retain a continuous run created before the history window, while history totals respect the window and another owner's task stays excluded",

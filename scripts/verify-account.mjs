@@ -9,7 +9,7 @@ import { chromium, expect, request } from "@playwright/test";
 import { Pool } from "pg";
 import { preview } from "vite";
 
-loadEnvFile(".env");
+loadEnvFile(path.resolve(process.argv[2] || ".env"));
 const root = process.cwd(),
   output = path.resolve("output/verification/account-pages"),
   localRoot = path.resolve(".local");

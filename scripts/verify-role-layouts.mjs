@@ -337,6 +337,7 @@ try {
     "apps/web/src/styles/execution.css",
     "apps/web/src/pages/Outputs.tsx",
     "apps/web/src/pages/Personal.tsx",
+    "apps/web/src/pages/Notifications.tsx",
     "apps/web/src/lib/consumer-preview.ts",
     "apps/web/src/styles/outputs.css",
     "apps/web/src/styles/personal.css",

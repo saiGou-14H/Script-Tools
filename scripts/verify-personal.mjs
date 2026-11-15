@@ -1,16 +1,32 @@
+import assert from "node:assert/strict";
 import { chromium, expect } from "@playwright/test";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { preview } from "vite";
 
 const output = path.resolve("output/verification/personal-pages");
 await mkdir(output, { recursive: true });
+const root = path.resolve("apps/web");
+const server = await preview({
+  root,
+  configFile: path.join(root, "vite.config.ts"),
+  preview: {
+    host: "127.0.0.1",
+    port: 0,
+    strictPort: true,
+    proxy: { "/api": { target: "http://127.0.0.1:3001" } },
+  },
+});
+const address = server.httpServer.address();
+assert.ok(address && typeof address === "object");
+const base = `http://127.0.0.1:${address.port}`;
 const browser = await chromium.launch();
 const context = await browser.newContext({
   viewport: { width: 1814, height: 868 },
 });
-const base = "http://127.0.0.1:5174";
 const report = {
   date: new Date().toISOString(),
+  render_source: "production build",
   checks: [],
   screenshots: [],
   errors: [],
@@ -208,14 +224,22 @@ try {
   await menu("城市与景点");
   await page.getByRole("button", { name: "北京", exact: true }).click();
   await expect(page.locator(".attraction-grid > section")).toHaveCount(1);
-  await page.getByPlaceholder("搜索景点名称").fill("不存在");
+  await page
+    .getByRole("textbox", { name: "搜索景点名称", exact: true })
+    .fill("不存在");
   await expect(page.getByText("暂无匹配的景点")).toBeVisible();
   await menu("使用帮助");
-  await page
-    .getByPlaceholder("搜索帮助内容，如“退款规则”、“服务费”")
-    .fill("未达成");
+  const helpSearch = page.getByRole("textbox", {
+    name: "搜索帮助内容",
+    exact: true,
+  });
+  await helpSearch.fill("未达成");
+  await helpSearch.press("Enter");
   await expect(page.locator(".ant-collapse-item")).toHaveCount(1);
-  await expect(page.locator(".help-answer")).toContainText(
+  await page
+    .getByRole("button", { name: "未达成目标怎么退款？", exact: true })
+    .click();
+  await expect(page.locator(".help-answer:visible")).toContainText(
     "以购买前展示并固定的发布者规则为准。",
   );
   report.checks.push(
@@ -242,6 +266,9 @@ try {
   process.exitCode = 1;
 } finally {
   await browser.close();
+  await server.close();
+  if (report.result === "PASS")
+    await rm(path.join(output, "failure.png"), { force: true });
   await writeFile(
     path.join(output, "report.json"),
     JSON.stringify(report, null, 2),

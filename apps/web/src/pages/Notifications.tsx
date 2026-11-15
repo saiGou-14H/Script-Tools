@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Alert, App, Button, Checkbox, Form, Input, Modal, Switch } from "antd";
 import {
   CheckCircleFilled,
@@ -18,12 +18,14 @@ export function NotificationsPage() {
   const [params, setParams] = useSearchParams();
   const categories = ["全部", "交易", "运行", "退款", "系统"];
   const requested = params.get("category") || "全部";
-  const category = categories.includes(requested) ? requested : "全部";
+  const validCategory = categories.includes(requested);
+  const category = requested;
   const unreadOnly = params.get("read") === "unread";
   const prototype = bootstrap.data_mode === "prototype";
   const all = prototype ? notificationFixtures : [];
   const rows = all.filter(
     (item) =>
+      validCategory &&
       (category === "全部" || item.category === category) &&
       (!unreadOnly || !readNotificationIds.has(item.id)),
   );
@@ -87,6 +89,20 @@ export function NotificationsPage() {
           仅看未读
         </Checkbox>
       </div>
+      {!validCategory && (
+        <Alert
+          className="notification-integration-note"
+          type="warning"
+          showIcon
+          title="消息分类不可用"
+          description="请选择现有消息分类。"
+          action={
+            <Button onClick={() => filter("category", null)}>
+              查看全部消息
+            </Button>
+          }
+        />
+      )}
       <Panel className="notification-list">
         {rows.length ? (
           rows.map((item) => (
@@ -119,9 +135,11 @@ export function NotificationsPage() {
           <p className="empty-list">
             {!prototype
               ? "消息列表待接入"
-              : unreadOnly
-                ? "暂无未读消息"
-                : "暂无此类消息"}
+              : !validCategory
+                ? "暂无可显示的消息"
+                : unreadOnly
+                  ? "暂无未读消息"
+                  : "暂无此类消息"}
           </p>
         )}
       </Panel>
@@ -164,9 +182,24 @@ export function NotificationSettingsPage() {
   const { mask: email, verified } = prototype
     ? notificationEmail
     : { mask: "", verified: false };
-  const [editingEmail, setEditingEmail] = useState(false);
+  const [params, setParams] = useSearchParams();
+  const editingEmail = prototype && params.get("dialog") === "email";
   const [form] = Form.useForm();
   const { message } = App.useApp();
+  const dirty =
+    prototype &&
+    emailEvents.some(
+      ({ key }) => events.includes(key) !== emailEventKeys.includes(key),
+    );
+  useLayoutEffect(() => {
+    form.resetFields();
+  }, [editingEmail, form]);
+  function setEditingEmail(open: boolean) {
+    const next = new URLSearchParams(params);
+    if (open) next.set("dialog", "email");
+    else next.delete("dialog");
+    setParams(next);
+  }
   function saveEmail(values: { email: string }) {
     if (!prototype) return;
     const [name, domain] = values.email.trim().split("@");
@@ -204,7 +237,9 @@ export function NotificationSettingsPage() {
           <p>用于接收服务事件的邮件提醒。邮箱需完成验证后才能接收通知。</p>
           <div className="email-binding">
             <span>
-              {verified ? "已验证邮箱" : email ? "待验证邮箱" : "通知邮箱"}　
+              <span>
+                {verified ? "已验证邮箱" : email ? "待验证邮箱" : "通知邮箱"}
+              </span>
               <b>{email || "尚未绑定"}</b>
             </span>
             <Button
@@ -268,21 +303,29 @@ export function NotificationSettingsPage() {
         <Status tone="gray">后续功能（未启用）</Status>
       </Panel>
       <footer
-        className={`notification-save-bar ${verified && prototype ? "has-test-example" : "is-unconfigured"}`}
+        className={`notification-save-bar ${verified && prototype && !dirty ? "has-test-example" : "is-unconfigured"}`}
       >
-        <div>
-          {verified && prototype ? (
+        <div role="status">
+          {verified && prototype && !dirty ? (
             <CheckCircleFilled />
           ) : (
             <InfoCircleOutlined />
           )}
-          <b>{verified && prototype ? "本地示例　投递成功" : "邮件通知配置"}</b>
+          <b>
+            {dirty
+              ? "通知偏好尚未保存"
+              : verified && prototype
+                ? "本地示例　投递成功"
+                : "邮件通知配置"}
+          </b>
           <span>
-            {verified && prototype
-              ? `示例收件地址 ${email}，实际邮件渠道待接入。`
-              : prototype
-                ? "完成邮箱验证后，可按已保存的事件偏好接收通知。"
-                : "邮件绑定、验证与订阅服务接入后，可配置事件提醒。"}
+            {dirty
+              ? "点击保存设置后生效。"
+              : verified && prototype
+                ? `示例收件地址 ${email}，实际邮件渠道待接入。`
+                : prototype
+                  ? "完成邮箱验证后，可按已保存的事件偏好接收通知。"
+                  : "邮件绑定、验证与订阅服务接入后，可配置事件提醒。"}
           </span>
         </div>
         <Button
@@ -308,7 +351,7 @@ export function NotificationSettingsPage() {
         onOk={() => form.submit()}
         okText="保存邮箱"
         cancelText="取消"
-        destroyOnHidden
+        forceRender
       >
         <Form form={form} layout="vertical" onFinish={saveEmail}>
           <Form.Item
@@ -316,7 +359,11 @@ export function NotificationSettingsPage() {
             label="通知邮箱"
             rules={[
               { required: true, message: "请输入邮箱" },
-              { type: "email", message: "请输入有效的邮箱地址" },
+              {
+                transform: (value: string) => value?.trim(),
+                type: "email",
+                message: "请输入有效的邮箱地址",
+              },
             ]}
           >
             <Input />

@@ -73,12 +73,12 @@ export const notificationFixtures = [
   {
     id: "booking",
     category: "系统",
-    icon: "ticket",
+    icon: "ticket-stub",
     color: "purple",
     title: "预约结果待核验",
     description: "预约请求已提交，结果仍待核验，请查看原预约进度。",
     action: "查看结果",
-    to: "/me/pending?category=待核验",
+    to: "/me/pending?category=待核验&dialog=verify&item=booking",
   },
 ];
 

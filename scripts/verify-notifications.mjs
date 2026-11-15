@@ -234,10 +234,36 @@ try {
     "result, payment and refund notification actions select their existing output, order and refund records while reading preserves the original pending refund facts",
   );
 
+  await messages();
+  await page
+    .locator(".notification-list article")
+    .filter({ hasText: "预约结果待核验" })
+    .getByRole("button", { name: "查看结果", exact: true })
+    .click();
+  await expect(page.getByRole("dialog")).toContainText("核验原预约");
+  await expect(page.getByRole("dialog")).toContainText("2026-11-15");
+  await page.reload();
+  await expect(page.getByRole("dialog")).toContainText("核验原预约");
+  await messages("?category=unknown&read=unread");
+  await expect(page.getByText("消息分类不可用", { exact: true })).toBeVisible();
+  await expect(page.locator(".notification-list article")).toHaveCount(0);
+  await page.getByRole("button", { name: "查看全部消息", exact: true }).click();
+  assert.equal(new URL(page.url()).searchParams.get("read"), "unread");
+  await expect(page.locator(".notification-list article")).toHaveCount(3);
+  report.checks.push(
+    "booking notifications open the matching verification snapshot through refresh, and invalid message categories expose recovery while retaining the unread filter",
+  );
+
   await settings();
   await page.getByRole("switch", { name: "支付确认", exact: true }).click();
   await page.getByRole("switch", { name: "待补充", exact: true }).click();
+  await expect(page.locator(".notification-save-bar")).toContainText(
+    "通知偏好尚未保存",
+  );
   await page.getByRole("button", { name: "保存设置", exact: true }).click();
+  await expect(page.locator(".notification-save-bar")).not.toContainText(
+    "通知偏好尚未保存",
+  );
   await messages();
   await settings();
   await expect(
@@ -282,6 +308,32 @@ try {
   assert.deepEqual(mutations, []);
   report.checks.push(
     "preview event settings require an explicit save, cancelled email edits clear their input, new addresses remain masked and unverified, and the preview workflow keeps external mutations separate",
+  );
+
+  await page.getByRole("button", { name: "修改邮箱", exact: true }).click();
+  assert.equal(new URL(page.url()).searchParams.get("dialog"), "email");
+  await page
+    .getByLabel("通知邮箱", { exact: true })
+    .fill("unsubmitted@example.invalid");
+  await page.reload();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await expect(page.getByLabel("通知邮箱", { exact: true })).toHaveValue("");
+  await page.goBack();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await page.goForward();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page
+    .getByLabel("通知邮箱", { exact: true })
+    .fill("  trimmed@example.invalid  ");
+  await page.getByRole("button", { name: "保存邮箱", exact: true }).click();
+  await expect(
+    page.getByText("t***@example.invalid", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "发送测试", exact: true }),
+  ).toBeDisabled();
+  report.checks.push(
+    "email dialog navigation survives refresh and browser history, unsubmitted addresses clear on reopen, and surrounding whitespace is trimmed before email validation and masking",
   );
 
   const live = await session(true);

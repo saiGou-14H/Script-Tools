@@ -204,7 +204,7 @@
   color: #65718b;
 }
 .page-C14 .page-heading {
-  margin-bottom: 25px;
+  margin-bottom: 23px;
 }
 .page-C14 .breadcrumb {
   margin-bottom: 14px;
@@ -218,7 +218,7 @@
   font-size: 16px;
 }
 .page-C14 .nav-item {
-  height: 30.5px;
+  height: 30.75px;
 }
 .page-C14 .nav-group-label {
   padding-top: 6px;
@@ -280,6 +280,7 @@
 }
 .credentials-columns .panel-heading .ant-btn {
   height: 40px;
+  min-width: 130px;
   font-size: 15px;
 }
 .credentials-columns .panel-body {
@@ -427,6 +428,9 @@
   padding: 12px 24px;
   min-height: 78px;
 }
+.traveler-list article.is-editing {
+  border-color: #7397ff;
+}
 .traveler-avatar {
   width: 42px;
   height: 42px;
@@ -443,7 +447,8 @@
 }
 .traveler-list small {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 0;
+  line-height: 20px;
   font-size: 14px;
   position: relative;
   padding-left: 30px;
@@ -458,7 +463,11 @@
 .traveler-list b {
   display: block;
   font-size: 16px;
+  line-height: 24px;
   padding-left: 30px;
+}
+.traveler-list article > .status {
+  justify-self: start;
 }
 .traveler-list article > div:not(.traveler-actions) {
   border-left: 1px solid #e1e7f1;
@@ -475,17 +484,17 @@
   font-size: 16px;
 }
 .travelers-columns > .panel .panel-heading {
-  padding: 18px 23px 10px;
+  padding: 18px 23px 6px;
   border: 0;
 }
 .travelers-columns > .panel .panel-heading h2 {
   font-size: 22px;
 }
 .travelers-columns > .panel .panel-body {
-  padding: 4px 24px 27px;
+  padding: 0 24px 27px;
 }
 .travelers-columns .ant-form-item {
-  margin-bottom: 7px;
+  margin-bottom: 9px;
 }
 .travelers-columns .traveler-default-field {
   margin-bottom: 16px;
@@ -493,8 +502,8 @@
 .travelers-columns .ant-form-item-label {
   padding-bottom: 6px;
 }
-.travelers-columns .ant-form-item-label label {
-  font-weight: 500;
+.travelers-columns .ant-form .ant-form-item-label > label {
+  font-weight: 600;
   font-size: 16px;
 }
 .travelers-columns .ant-input,
@@ -683,6 +692,7 @@
 }
 .notification-hero .ant-btn {
   height: 42px;
+  min-width: 148px;
   font-size: 17px;
   border-color: #8fa8ff;
   color: #1555ff;
@@ -865,7 +875,12 @@
   font-size: 14px;
 }
 .email-binding > span {
+  display: inline-flex;
+  gap: 18px;
   margin-right: 10px;
+}
+.email-binding b {
+  overflow-wrap: anywhere;
 }
 .email-binding b {
   color: #131e32;

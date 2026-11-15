@@ -1,5 +1,6 @@
 {
-  "date": "2026-11-14T11:20:55.131Z",
+  "date": "2026-11-15T06:56:05.687Z",
+  "render_source": "production build",
   "checks": [
     "consumer personal and public pages render at all 12 routes",
     "credential required validation, masking, route persistence and revocation work",

@@ -1,5 +1,5 @@
 import { pendingFixtures } from "../lib/consumer-preview";
-import { useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import {
   App,
   Alert,
@@ -23,9 +23,13 @@ import {
   PlusOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useWorkspace } from "../context";
-import { usePrototype, type CredentialRow } from "../prototype";
+import {
+  usePrototype,
+  type CredentialRow,
+  type TravelerRow,
+} from "../prototype";
 import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
 
 export function PendingActionsPage() {
@@ -224,16 +228,44 @@ export function CredentialsPage() {
   const prototype = bootstrap.data_mode === "prototype";
   const { credentials, setCredentials: setRows } = usePrototype();
   const rows = prototype ? credentials : [];
-  const [editing, setEditing] = useState<CredentialRow | "new">();
+  const [params, setParams] = useSearchParams();
+  const dialog = params.get("dialog");
+  const selectedCredential = rows.find(
+    (row) => row.id === params.get("credential"),
+  );
+  const editing = !prototype
+    ? undefined
+    : dialog === "new"
+      ? "new"
+      : dialog === "update" && selectedCredential && !selectedCredential.revoked
+        ? selectedCredential
+        : undefined;
+  const bindingCredential =
+    dialog === "bindings" ? selectedCredential : undefined;
+  const invalidDialog = !!dialog && !editing && !bindingCredential;
   const [form] = Form.useForm();
   const { modal, message } = App.useApp();
-  const navigate = useNavigate();
-  function open(row: CredentialRow | "new") {
+  useLayoutEffect(() => {
     form.resetFields();
-    form.setFieldsValue(
-      row === "new" ? { kind: "接口凭据" } : { name: row.name, kind: row.kind },
-    );
-    setEditing(row);
+    if (editing)
+      form.setFieldsValue(
+        editing === "new"
+          ? { kind: "接口凭据" }
+          : { name: editing.name, kind: editing.kind },
+      );
+  }, [editing, form]);
+  function closeDialog() {
+    const next = new URLSearchParams(params);
+    next.delete("dialog");
+    next.delete("credential");
+    setParams(next);
+  }
+  function open(row: CredentialRow | "new") {
+    const next = new URLSearchParams(params);
+    next.set("dialog", row === "new" ? "new" : "update");
+    if (row === "new") next.delete("credential");
+    else next.set("credential", row.id);
+    setParams(next);
   }
   function save(values: { name: string; kind: string; secret: string }) {
     if (bootstrap.data_mode !== "prototype") {
@@ -271,7 +303,7 @@ export function CredentialsPage() {
         ),
       );
     form.resetFields();
-    setEditing(undefined);
+    closeDialog();
     void message.success("凭据预览已更新");
   }
   function revoke(row: CredentialRow) {
@@ -289,43 +321,10 @@ export function CredentialsPage() {
     });
   }
   function showBindings(row: CredentialRow) {
-    const dialog = modal.info({
-      title: `${row.name}的绑定任务`,
-      content: row.bindingRefs?.length ? (
-        <div className="credential-binding-list">
-          {row.bindingRefs.map((binding) => (
-            <p key={binding.taskId}>
-              <a
-                href={`/me/tasks/${binding.taskId}`}
-                onClick={(event) => {
-                  dialog.destroy();
-                  if (
-                    event.button === 0 &&
-                    !event.ctrlKey &&
-                    !event.metaKey &&
-                    !event.shiftKey &&
-                    !event.altKey
-                  ) {
-                    event.preventDefault();
-                    navigate(`/me/tasks/${binding.taskId}`);
-                  }
-                }}
-              >
-                {binding.title}
-              </a>
-              <span>
-                绑定 v{binding.version} · 当前 v{row.version}
-              </span>
-            </p>
-          ))}
-          {row.revoked && <Status tone="red">凭据已撤销</Status>}
-        </div>
-      ) : (
-        <Empty
-          description={row.bindings ? "绑定任务明细待接入" : "暂无绑定任务"}
-        />
-      ),
-    });
+    const next = new URLSearchParams(params);
+    next.set("dialog", "bindings");
+    next.set("credential", row.id);
+    setParams(next);
   }
   return (
     <div className="credentials-page">
@@ -350,6 +349,16 @@ export function CredentialsPage() {
           showIcon
           title="凭据管理接口待接入"
           description="凭据读取、版本保存、绑定及受控验证服务接入后可在此管理本人凭据。"
+        />
+      )}
+      {invalidDialog && (
+        <Alert
+          className="personal-integration-note"
+          type="warning"
+          showIcon
+          title="凭据操作不可用"
+          description="请返回凭据列表选择可用记录。"
+          action={<Button onClick={closeDialog}>返回凭据列表</Button>}
         />
       )}
       <div className="credentials-columns">
@@ -480,7 +489,7 @@ export function CredentialsPage() {
         open={!!editing}
         onCancel={() => {
           form.resetFields();
-          setEditing(undefined);
+          closeDialog();
         }}
         onOk={() => form.submit()}
         okText="保存凭据"
@@ -508,7 +517,11 @@ export function CredentialsPage() {
             name="secret"
             label="凭据内容"
             rules={[
-              { required: true, message: "请输入新的完整凭据" },
+              {
+                required: true,
+                whitespace: true,
+                message: "请输入新的完整凭据",
+              },
               { max: 8192 },
             ]}
           >
@@ -516,6 +529,42 @@ export function CredentialsPage() {
           </Form.Item>
           <Notice>更新后生成新的凭据版本，原任务需要明确选择新版本。</Notice>
         </Form>
+      </Modal>
+      <Modal
+        title={
+          bindingCredential ? `${bindingCredential.name}的绑定任务` : "绑定任务"
+        }
+        open={!!bindingCredential}
+        onCancel={closeDialog}
+        footer={
+          <Button type="primary" onClick={closeDialog}>
+            知道了
+          </Button>
+        }
+      >
+        {bindingCredential?.bindingRefs?.length ? (
+          <div className="credential-binding-list">
+            {bindingCredential.bindingRefs.map((binding) => (
+              <p key={binding.taskId}>
+                <Link to={`/me/tasks/${binding.taskId}`}>{binding.title}</Link>
+                <span>
+                  绑定 v{binding.version} · 当前 v{bindingCredential.version}
+                </span>
+              </p>
+            ))}
+            {bindingCredential.revoked && (
+              <Status tone="red">凭据已撤销</Status>
+            )}
+          </div>
+        ) : (
+          <Empty
+            description={
+              bindingCredential?.bindings
+                ? "绑定任务明细待接入"
+                : "暂无绑定任务"
+            }
+          />
+        )}
       </Modal>
     </div>
   );
@@ -536,13 +585,34 @@ export function TravelersPage() {
   const prototype = bootstrap.data_mode === "prototype";
   const { travelers, setTravelers: setRows } = usePrototype();
   const rows = prototype ? travelers : [];
-  const [editing, setEditing] = useState<string>();
+  const [params, setParams] = useSearchParams();
+  const editing = params.get("traveler") || undefined;
   const selectedTraveler = rows.find((row) => row.id === editing);
   const [form] = Form.useForm();
   const { modal, message } = App.useApp();
-  function reset() {
+  const initializedTravelerId = useRef<string | undefined>(undefined);
+  function initializeForm(row?: TravelerRow, selection = row?.id || "new") {
+    initializedTravelerId.current = selection;
     form.resetFields();
-    setEditing(undefined);
+    if (row)
+      form.setFieldsValue({
+        kind: row.identityType || "身份证",
+        isDefault: row.isDefault,
+      });
+  }
+  useLayoutEffect(() => {
+    const selection = editing || "new";
+    if (initializedTravelerId.current !== selection)
+      initializeForm(selectedTraveler, selection);
+  }, [editing, selectedTraveler, form]);
+  function clearSelection() {
+    const next = new URLSearchParams(params);
+    next.delete("traveler");
+    setParams(next);
+  }
+  function reset() {
+    initializeForm();
+    clearSelection();
   }
   function save(values: {
     name: string;
@@ -551,7 +621,7 @@ export function TravelersPage() {
     kind: string;
     isDefault: boolean;
   }) {
-    if (bootstrap.data_mode !== "prototype") {
+    if (bootstrap.data_mode !== "prototype" || (editing && !selectedTraveler)) {
       void message.info("出行人保存接口尚未配置");
       return;
     }
@@ -575,7 +645,8 @@ export function TravelersPage() {
       );
       return editing ? updated : [...updated, record];
     });
-    reset();
+    if (editing) clearSelection();
+    else reset();
     void message.success(editing ? "出行人资料已更新" : "出行人资料已添加");
   }
   return (
@@ -627,7 +698,10 @@ export function TravelersPage() {
           </Button>
           <div className="traveler-list">
             {rows.map((row) => (
-              <article key={row.id}>
+              <article
+                key={row.id}
+                className={row.id === editing ? "is-editing" : undefined}
+              >
                 <span className="traveler-avatar">
                   <UserOutlined />
                 </span>
@@ -650,12 +724,10 @@ export function TravelersPage() {
                     type="link"
                     icon={<EditOutlined aria-hidden />}
                     onClick={() => {
-                      setEditing(row.id);
-                      form.resetFields();
-                      form.setFieldsValue({
-                        kind: row.identityType,
-                        isDefault: row.isDefault,
-                      });
+                      initializeForm(row);
+                      const next = new URLSearchParams(params);
+                      next.set("traveler", row.id);
+                      setParams(next);
                     }}
                   >
                     编辑
@@ -695,7 +767,17 @@ export function TravelersPage() {
           )}
         </div>
         <Panel title={editing ? "更新出行人资料" : "添加出行人资料"}>
-          {editing && (
+          {editing && !selectedTraveler && (
+            <Alert
+              className="personal-integration-note"
+              type="warning"
+              showIcon
+              title="出行人资料不可用"
+              description="请重新选择出行人或新建资料。"
+              action={<Button onClick={reset}>新建出行人</Button>}
+            />
+          )}
+          {selectedTraveler && (
             <p className="traveler-edit-note">
               正在更新 {selectedTraveler?.name} 的 v
               {selectedTraveler?.version || 1} 资料，请重新填写完整信息。
@@ -706,7 +788,7 @@ export function TravelersPage() {
             layout="vertical"
             initialValues={{ kind: "身份证", isDefault: true }}
             onFinish={save}
-            disabled={!prototype}
+            disabled={!prototype || (!!editing && !selectedTraveler)}
           >
             <Form.Item
               name="name"
@@ -760,7 +842,12 @@ export function TravelersPage() {
                   whitespace: true,
                   message: "请输入完整的证件号码",
                 },
-                { min: 6, max: 40 },
+                {
+                  transform: (value: string) => value?.trim(),
+                  min: 6,
+                  max: 40,
+                  message: "请输入6至40位的证件号码",
+                },
                 { pattern: /^[^*•]+$/u, message: "请输入完整的证件号码" },
               ]}
             >

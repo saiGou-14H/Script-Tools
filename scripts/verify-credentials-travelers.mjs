@@ -96,6 +96,11 @@ async function capture(id) {
         ".credentials-columns > .panel:last-child,.travelers-columns > .panel",
       ),
       help: bounds(".sidebar .nav-group:last-child .nav-item"),
+      credential_action: bounds(
+        ".credentials-columns .panel-heading .ant-btn-primary",
+      ),
+      name_input: bounds(".travelers-columns input#name"),
+      default_contact: bounds(".traveler-list article > .status"),
     };
   });
   report.layouts[id] = layout;
@@ -103,6 +108,14 @@ async function capture(id) {
   assert.equal(layout.height, 868);
   assert.ok(layout.help.bottom <= 868);
   assert.ok(layout.detail.bottom <= 868);
+  if (id === "USER-C14") assert.ok(layout.credential_action.width >= 130);
+  if (id === "USER-C15") {
+    assert.ok(Math.abs(layout.name_input.y - 290) <= 2);
+    assert.ok(layout.default_contact.width < 100);
+    await expect(
+      page.locator('.travelers-columns label[for="name"]'),
+    ).toHaveCSS("font-size", "16px");
+  }
 }
 function credential(name) {
   return page
@@ -161,11 +174,50 @@ try {
   );
 
   await menu("凭据管理");
+  await credential("邮箱服务token")
+    .getByRole("button", { name: "更新", exact: true })
+    .click();
+  assert.equal(new URL(page.url()).searchParams.get("credential"), "email");
+  await page.getByLabel("凭据内容", { exact: true }).fill("temporary-secret");
+  await page.reload();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await expect(page.getByLabel("凭据内容", { exact: true })).toHaveValue("");
+  await page.goBack();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await page.goForward();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await expect(page.getByLabel("凭据内容", { exact: true })).toHaveValue("");
+  await page.getByRole("button", { name: "取消", exact: true }).click();
+  await credential("邮箱服务token")
+    .getByRole("button", { name: /查看绑定/ })
+    .click();
+  await page.reload();
+  await expect(page.getByRole("dialog")).toContainText(
+    "邮箱服务token的绑定任务",
+  );
+  await expect(page.getByRole("dialog").getByRole("link")).toHaveCount(2);
+  await page.getByRole("button", { name: "知道了", exact: true }).click();
+  await page.goto(base + "/me/credentials?dialog=update&credential=missing");
+  await expect(page.getByText("凭据操作不可用", { exact: true })).toBeVisible();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await page.getByRole("button", { name: "返回凭据列表", exact: true }).click();
+  assert.equal(new URL(page.url()).searchParams.has("credential"), false);
+  report.checks.push(
+    "credential editing and binding selection survive refresh and browser history, secret drafts clear on reopen, and missing records offer list recovery",
+  );
+
   await page.getByRole("button", { name: "新增凭据", exact: true }).click();
   await page.getByRole("button", { name: "保存凭据", exact: true }).click();
   await expect(
     page.getByText("请输入新的完整凭据", { exact: true }),
   ).toBeVisible();
+  await page.getByLabel("名称", { exact: true }).fill("空白凭据");
+  await page.getByLabel("凭据内容", { exact: true }).fill("   ");
+  await page.getByRole("button", { name: "保存凭据", exact: true }).click();
+  await expect(
+    page.getByText("请输入新的完整凭据", { exact: true }),
+  ).toBeVisible();
+  await expect(credential("空白凭据")).toHaveCount(0);
   await page.getByLabel("名称", { exact: true }).fill("  ");
   await page.getByLabel("凭据内容", { exact: true }).fill("x7");
   await page.getByRole("button", { name: "保存凭据", exact: true }).click();
@@ -219,7 +271,10 @@ try {
     .click();
   await expect(page).toHaveURL(/\/me\/tasks\/data$/);
   await expect(page.getByRole("dialog")).toHaveCount(0);
-  await expect(page.locator(".main-content")).toContainText("SO-20261113-003");
+  await expect(
+    page.getByRole("heading", { name: /^公开数据整理/ }),
+  ).toBeVisible();
+  await expect(page.locator(".main-content")).toContainText("RUN083");
   await menu("凭据管理");
   await credential("邮箱服务token")
     .getByRole("button", { name: "撤销", exact: true })
@@ -246,6 +301,39 @@ try {
   );
 
   await menu("出行人资料");
+  await traveler("李*")
+    .getByRole("button", { name: "编辑", exact: true })
+    .click();
+  assert.equal(new URL(page.url()).searchParams.get("traveler"), "1");
+  await page.getByLabel("姓名", { exact: true }).fill("临时资料");
+  await page.reload();
+  await expect(page.locator(".traveler-edit-note")).toContainText("李*");
+  await expect(page.getByLabel("姓名", { exact: true })).toHaveValue("");
+  await traveler("张*")
+    .getByRole("button", { name: "编辑", exact: true })
+    .click();
+  await page.goBack();
+  await expect(page.locator(".traveler-edit-note")).toContainText("李*");
+  await page.goForward();
+  await expect(page.locator(".traveler-edit-note")).toContainText("张*");
+  await page.goto(base + "/me/travelers?traveler=missing");
+  await expect(
+    page.getByText("出行人资料不可用", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "更新资料", exact: true }),
+  ).toBeDisabled();
+  await page
+    .locator(".personal-integration-note")
+    .getByRole("button", { name: "新建出行人", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "添加资料", exact: true }),
+  ).toBeEnabled();
+  report.checks.push(
+    "traveler selection survives refresh and browser history while unsubmitted personal fields clear, and an unavailable edit target requires explicit recovery",
+  );
+
   await page.getByRole("button", { name: "添加资料", exact: true }).click();
   await expect(page.getByText("请输入姓名", { exact: true })).toBeVisible();
   await fillTraveler("赵明", "+     ", "3301********1234");
@@ -255,6 +343,11 @@ try {
   ).toBeVisible();
   await expect(
     page.getByText("请输入完整的证件号码", { exact: true }),
+  ).toBeVisible();
+  await fillTraveler("赵明", "13800123456", " 123 ");
+  await page.getByRole("button", { name: "添加资料", exact: true }).click();
+  await expect(
+    page.getByText("请输入6至40位的证件号码", { exact: true }),
   ).toBeVisible();
   await fillTraveler("赵明", "+86 13800123456", "P73210945", "护照");
   await page.getByRole("button", { name: "添加资料", exact: true }).click();
@@ -270,7 +363,9 @@ try {
     .click();
   await expect(page.locator(".traveler-edit-note")).toContainText("v1");
   await expect(
-    page.locator(".travelers-columns .ant-select").getByText("护照", { exact: true }),
+    page
+      .locator(".travelers-columns .ant-select")
+      .getByText("护照", { exact: true }),
   ).toBeVisible();
   await expect(page.getByLabel("姓名", { exact: true })).toHaveValue("");
   await expect(page.getByLabel("证件号码", { exact: true })).toHaveValue("");
@@ -282,9 +377,14 @@ try {
     .click();
   await expect(page.locator(".traveler-edit-note")).toContainText("v2");
   await expect(
-    page.locator(".travelers-columns .ant-select").getByText("护照", { exact: true }),
+    page
+      .locator(".travelers-columns .ant-select")
+      .getByText("护照", { exact: true }),
   ).toBeVisible();
   await page.getByRole("button", { name: "重置", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "添加资料", exact: true }),
+  ).toBeVisible();
   report.checks.push(
     "traveler forms reject masked identities and invalid phones, save only masked preview values, retain the selected passport type across edits, advance the same record to v2 and keep one selected default contact",
   );
@@ -338,6 +438,9 @@ try {
   await expect(live.locator(".credentials-columns .ant-table-row")).toHaveCount(
     0,
   );
+  await live.goto(base + "/me/credentials?dialog=new");
+  await expect(live.getByRole("dialog")).toHaveCount(0);
+  await expect(live.getByText("凭据操作不可用", { exact: true })).toBeVisible();
   await live.goto(base + "/me/travelers");
   await expect(
     live.getByText("出行人资料接口待接入", { exact: true }),

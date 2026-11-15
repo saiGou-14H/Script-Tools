@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T05:54:56.648Z",
+  "date": "2026-11-15T06:46:58.059Z",
   "checks": [
     "the task, task-detail, run-list and run-detail reference regions fit 1814 by 868 with visible help navigation",
     "task scope persists across reload and the pause preview exposes its integration status while the active task remains inspectable",
