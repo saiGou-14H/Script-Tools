@@ -5,7 +5,7 @@ import {
   FileTextOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useWorkspace } from "../context";
 import { Status, TileIcon } from "../components/ui";
 import { Icon } from "../components/Icon";
@@ -13,8 +13,10 @@ import { ServicePurchaseButton } from "../components/ServicePurchaseButton";
 import {
   serviceAvailable,
   serviceDate,
+  serviceDeployment,
   serviceDuration,
   serviceVersion,
+  marketReturnPath,
 } from "../lib/service-display";
 import { currency, useServices } from "./Market";
 import { parameterExamples } from "../lib/schema-parameters";
@@ -23,6 +25,12 @@ export function ServiceDetailPage() {
   const { data = [], isPending, error, refetch } = useServices();
   const { bootstrap, role } = useWorkspace();
   const { id } = useParams();
+  const [params, setParams] = useSearchParams();
+  const requestedTab = params.get("tab");
+  const tab =
+    requestedTab && ["intro", "io", "rules"].includes(requestedTab)
+      ? requestedTab
+      : "intro";
   const guest = role === "GUEST";
   const service =
     data.find((item) => item.id === id) ||
@@ -45,7 +53,12 @@ export function ServiceDetailPage() {
     bootstrap.data_mode === "prototype" &&
     service.input_schema_digest === "schema-table";
   const available = serviceAvailable(service);
-  const examples = parameterExamples(service.input_schema, service.input_ui_schema?.["ui:order"] || [], tableExample);
+  const deployed = service.deployment_status === "READY";
+  const examples = parameterExamples(
+    service.input_schema,
+    service.input_ui_schema?.["ui:order"] || [],
+    tableExample,
+  );
   const workflow = tableExample
     ? [
         { title: "上传数据", text: "上传CSV文件" },
@@ -66,7 +79,9 @@ export function ServiceDetailPage() {
   const title = <h1>脚本服务详情</h1>;
   const breadcrumb = (
     <div className="retail-breadcrumb">
-      <Link to="/market">脚本市场</Link>
+      <Link to={marketReturnPath(params.get("returnTo")) || "/market"}>
+        脚本市场
+      </Link>
       <span>/</span>
       <span>{service.title}</span>
     </div>
@@ -95,8 +110,8 @@ export function ServiceDetailPage() {
         部署状态
       </dt>
       <dd>
-        <Status tone={available ? "green" : "gray"}>
-          {available ? "已部署" : service.availability?.reason || "部署不可用"}
+        <Status tone={deployed ? "green" : "gray"}>
+          {serviceDeployment(service)}
         </Status>
       </dd>
       <dt>
@@ -141,9 +156,9 @@ export function ServiceDetailPage() {
               <div className="retail-publisher-line">
                 <span>发布者　{service.delivery_policy.publisher_name}</span>
                 <Status>{serviceVersion(service)}</Status>
-                <Status tone={available ? "green" : "gray"}>
-                  <CheckOutlined />
-                  {available ? "已部署" : "当前不可用"}
+                <Status tone={deployed ? "green" : "gray"}>
+                  {deployed && <CheckOutlined />}
+                  {serviceDeployment(service)}
                 </Status>
               </div>
               <p>{service.description}</p>
@@ -151,7 +166,13 @@ export function ServiceDetailPage() {
           </header>
           <section className="service-explanation-card">
             <Tabs
-              defaultActiveKey="intro"
+              activeKey={tab}
+              onChange={(value) => {
+                const next = new URLSearchParams(params);
+                if (value === "intro") next.delete("tab");
+                else next.set("tab", value);
+                setParams(next);
+              }}
               items={[
                 {
                   key: "intro",
@@ -208,6 +229,7 @@ export function ServiceDetailPage() {
                               }
                               pagination={false}
                               size="small"
+                              scroll={{ x: guest ? 560 : 520 }}
                               columns={[
                                 {
                                   title: guest ? "参数项" : "参数",
@@ -282,9 +304,19 @@ export function ServiceDetailPage() {
                   children: (
                     <div className="service-schema-tab">
                       <h2>输入Schema</h2>
-                      <pre>{JSON.stringify(service.input_schema, null, 2)}</pre>
+                      <pre
+                        role="region"
+                        aria-label="服务输入Schema"
+                        tabIndex={0}
+                      >
+                        {JSON.stringify(service.input_schema, null, 2)}
+                      </pre>
                       <h2>输出Schema</h2>
-                      <pre>
+                      <pre
+                        role="region"
+                        aria-label="服务输出Schema"
+                        tabIndex={0}
+                      >
                         {service.output_schema === undefined
                           ? "发布版本尚未提供输出Schema"
                           : JSON.stringify(service.output_schema, null, 2)}
@@ -323,7 +355,9 @@ export function ServiceDetailPage() {
             </div>
             <ul className="purchase-service-benefits">
               {[
-                "包含一次完整服务及同次必要接续",
+                guest
+                  ? "包含一次完整服务及同次必要接续"
+                  : "包含一次完整服务及同次必要接续（本次服务未完成前继续处理不再额外收费）",
                 service.refund_policy.summary,
                 "未执行可全额退服务费",
               ].map((text) => (
@@ -352,7 +386,7 @@ export function ServiceDetailPage() {
                 </h2>
                 <ul>
                   <li>本服务按次付费，每次提供一次完整服务。</li>
-                  <li>如涉及门票，票价与脚本服务费分别展示。</li>
+                  <li>门票0元的预约场景，脚本服务按页面标价另行付费。</li>
                   <li>交付范围及退款规则在购买前展示，并按成交合同执行。</li>
                 </ul>
               </section>

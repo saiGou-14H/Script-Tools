@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T20:39:27.506Z",
+  "date": "2026-11-15T04:10:31.103Z",
   "baseURL": "http://127.0.0.1:5174",
   "checks": [
     "public catalog returns unique published services with immutable release content, version, schemas, integer price and duration strings, timestamps and purchase availability",
@@ -26,7 +26,7 @@
       "x": 252,
       "y": 111.421875,
       "width": 1542,
-      "height": 463.984375,
+      "height": 441.390625,
       "documentWidth": 1814,
       "documentHeight": 868
     },
@@ -34,7 +34,7 @@
       "x": 265,
       "y": 88,
       "width": 1529,
-      "height": 764.484375,
+      "height": 767.203125,
       "documentWidth": 1814,
       "documentHeight": 868
     },
@@ -50,7 +50,7 @@
       "x": 238,
       "y": 74,
       "width": 1556,
-      "height": 521.015625,
+      "height": 521.109375,
       "documentWidth": 1814,
       "documentHeight": 868
     },
@@ -58,7 +58,7 @@
       "x": 238,
       "y": 72,
       "width": 1556,
-      "height": 790.046875,
+      "height": 793.359375,
       "documentWidth": 1814,
       "documentHeight": 868
     },
@@ -74,7 +74,7 @@
       "x": 238,
       "y": 74,
       "width": 1556,
-      "height": 774.84375,
+      "height": 772.828125,
       "documentWidth": 1814,
       "documentHeight": 868
     }

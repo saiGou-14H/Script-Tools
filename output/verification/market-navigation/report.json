@@ -1,0 +1,58 @@
+{
+  "date": "2026-11-15T04:03:38.047Z",
+  "checks": [
+    "GUEST reference regions, filter and sort reload, service tabs, general/travel return paths and purchase identity remain consistent",
+    "USER reference regions, filter and sort reload, service tabs, general/travel return paths and purchase identity remain consistent",
+    "Six deployment states and unknown legacy values retain their own labels while purchase policy independently controls entry availability",
+    "Decimal-string prices retain BIGINT order and precision, Boolean schemas stay literal and complete long output schemas remain keyboard-scrollable",
+    "Catalog errors expose retry and recover actual rows, while unknown service identities remain explicit",
+    "Eight controlled service records retain the consumer reference's two-row card layout using unchanged service contracts",
+    "Guest and consumer cards and detail schemas fit 390px while retaining custom titles, categories and publisher strings",
+    "Market return context accepts its own local route and unsupported tab values display the introduction"
+  ],
+  "screenshots": [
+    "GUEST-P02",
+    "GUEST-P03",
+    "USER-P02",
+    "USER-P03",
+    "USER-P02-eight-service-fixture",
+    "GUEST-P03-mobile",
+    "USER-P03-mobile"
+  ],
+  "errors": [],
+  "layouts": {
+    "GUEST-P02": {
+      "width": 1813,
+      "scroll_width": 1813,
+      "height": 868,
+      "viewport_height": 868
+    },
+    "GUEST-P03": {
+      "width": 1813,
+      "scroll_width": 1813,
+      "height": 868,
+      "viewport_height": 868
+    },
+    "USER-P02": {
+      "width": 1815,
+      "scroll_width": 1815,
+      "height": 867,
+      "viewport_height": 867
+    },
+    "USER-P03": {
+      "width": 1814,
+      "scroll_width": 1814,
+      "height": 867,
+      "viewport_height": 867
+    },
+    "USER-P02-eight-service-fixture": {
+      "width": 1815,
+      "scroll_width": 1815,
+      "height": 867,
+      "viewport_height": 867
+    }
+  },
+  "scope": "isolated public catalog, production-built role routes and controlled catalog responses",
+  "visual_acceptance": "pending",
+  "result": "PASS"
+}

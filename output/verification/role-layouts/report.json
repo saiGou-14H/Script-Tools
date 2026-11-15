@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T01:14:10.812Z",
+  "date": "2026-11-15T04:09:23.144Z",
   "data_source": "isolated development seed",
   "viewport_source": "individual reference manifest dimensions",
   "visual_acceptance": "pending",
@@ -211,7 +211,7 @@
       "route": "/market",
       "reference_file": "01-游客/P02-脚本市场.png",
       "reference_sha256": "048bab5654ab6eb86ca935fc0dc16ff7451963f5e3e45708ac495a258d466d90",
-      "screenshot_sha256": "d2fed9692dd11102d1b5130f10514581d92d7250d2b5df520e4ba6c70e1e17c9",
+      "screenshot_sha256": "d684e5338f7764186c26ade198ec19c0cb5fa3251f2c4eb4252482d240cc5ab0",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -240,7 +240,7 @@
       "route": "/services/demo",
       "reference_file": "01-游客/P03-脚本服务详情.png",
       "reference_sha256": "3ffa797be00e05b3270a35edf9ae104ff45c9ce0078496fb15b9dd5192624105",
-      "screenshot_sha256": "9007a7a1c6bc6b674cca2fa53e3e1bc77c232e45f458b7dc1aa06cee5fa092f7",
+      "screenshot_sha256": "08dd9ce657abe9c550f56b4e36b8ebceb65fdcaf67f6c8ea62bde0b419510cbb",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -417,7 +417,7 @@
       "route": "/market",
       "reference_file": "02-消费者/P02-脚本市场.png",
       "reference_sha256": "0fa6c0a6c0203406c932cb286720d0f4b557356f485b68d4dcff169cf7bf1ab6",
-      "screenshot_sha256": "401262245c5efda9b840b520c71b720fe4ad4fdffab5e0ab56dff9822836678e",
+      "screenshot_sha256": "88fafdbb7ad6de098bcdf62c22f012903d0a36055544929390888e475758096d",
       "viewport": {
         "width": 1815,
         "height": 867
@@ -447,7 +447,7 @@
       "route": "/services/demo",
       "reference_file": "02-消费者/P03-脚本服务详情.png",
       "reference_sha256": "002f3c8717e425fc5be78f34874686141ee66bd1d161ba9614afbcde6c6d550d",
-      "screenshot_sha256": "cb959ff4b5c46bfc0754343bba37027d059ee4fe23f9e164a5549b496d80ba20",
+      "screenshot_sha256": "4942bba7d374fb11c74a434568eda078b565c8415e0a6de0ad35b202f3a6efd4",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -456,7 +456,7 @@
         "width": 1601,
         "scroll_width": 1601,
         "document_width": 1814,
-        "document_height": 868,
+        "document_height": 867,
         "headings": [
           "脚本服务详情",
           "表格清洗",
@@ -1194,7 +1194,7 @@
       "route": "/publisher/scripts",
       "reference_file": "03-脚本发布者/S02-我的脚本.png",
       "reference_sha256": "7784b9b46b15556830d538fa6d53520e379b12c6e158d86ee90f984c6666f18f",
-      "screenshot_sha256": "505a963aad65e32f4460edca47aef92b43c7d9fdbf9a8e7cb84d401a9afd59ee",
+      "screenshot_sha256": "28d8c00641398295ea71d4d6227c388653f62b486212b525ed6d570030980a71",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -1219,7 +1219,7 @@
       "route": "/publisher/scripts/demo/edit",
       "reference_file": "03-脚本发布者/S03-脚本编辑.png",
       "reference_sha256": "8c7bb4a03966ef5e1056f32f670051f5536d19dc6ec9454e8e16979f36c94190",
-      "screenshot_sha256": "5a9b8ac83b7dfaad03aad0f842add1d102ecb1c086ab8bce1a00235fd0a468ba",
+      "screenshot_sha256": "cb742ea5ced96de38437fe82669b7961b294743cdde8c5d5364703003426b985",
       "capture_state": "manifest_structure_checked_through_ui",
       "viewport": {
         "width": 1815,
@@ -1248,7 +1248,7 @@
       "route": "/publisher/versions/demo",
       "reference_file": "03-脚本发布者/S04-版本与测试.png",
       "reference_sha256": "b45758505dbd08073327601165293761fa12fc52de67ffd33577e2e8b4c3a5cf",
-      "screenshot_sha256": "782d61629761342db672803f33a6bb1bc3103dd5443fac6b92b18aaf8cd42343",
+      "screenshot_sha256": "2607f732d0e8d2b2c58d7c792c34466b9e46855d0faed6a27e78d44931986d8b",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -1278,7 +1278,7 @@
       "route": "/publisher/builds",
       "reference_file": "03-脚本发布者/S05-构建与测试记录.png",
       "reference_sha256": "03440217455f227f8b75b77a3fc6d7a73947cab99acffc12eaa9b96725f549df",
-      "screenshot_sha256": "9e34f48361406f71c389a12df733434d8b27a9fcd172f545fd90ad621064af05",
+      "screenshot_sha256": "fcc76c2708399bd3094a66be203ec0feb08976a5975e5416a5d6716114ef3d1e",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1524,7 +1524,7 @@
       "route": "/publisher/settlements/demo",
       "reference_file": "03-脚本发布者/S14-结算详情.png",
       "reference_sha256": "1e04f0fabe406bc6ce1da901e0d267314dd10e1189116b6f664a6be75926814e",
-      "screenshot_sha256": "1b2f0156d5b510f6f425a3126b9ea8b7ec1e7847eade556246902492c193be67",
+      "screenshot_sha256": "02663190c7bb4ae4358fda11135078395a17c6689a76bbc292770a6936842227",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1549,7 +1549,7 @@
       "route": "/publisher/settings",
       "reference_file": "03-脚本发布者/S15-发布者设置.png",
       "reference_sha256": "dcc323547c2f6989796592302c25e36415d89454b74e02ec761a46d69d8a9789",
-      "screenshot_sha256": "44faf37a9d3682c1420539fb265024f94525e1c8fe0cbfac1cd3026fe8198f78",
+      "screenshot_sha256": "add2b024f04eb2a20035467c2cbe1002c8283fd305fc6f3f5aed66282297f25a",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -1601,7 +1601,7 @@
       "route": "/me/settings/account?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/C21-账户设置.png",
       "reference_sha256": "05f5bea2c8dfe63eacd5360d5721c809e296d79eef69a1087ae33e771c12d542",
-      "screenshot_sha256": "aee2fd02fe761965d03777ffc5ac463c4d703ca51399bd8720e5e3c49c47b67b",
+      "screenshot_sha256": "e45f2f63417b1e6640a585c56ae08a4adf760740f3a795abd31792a033eabbcc",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1630,7 +1630,7 @@
       "route": "/help?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/P06-使用帮助.png",
       "reference_sha256": "d5cd9e9d8414514542ac3ce18fc1c7809f179e0f292d06ae34f179cb1f93a15e",
-      "screenshot_sha256": "d6a1cc07ab6a3519810f3d9a494c4141853eaf970c0b6c9b35b9ec92151b0909",
+      "screenshot_sha256": "968e9fabb738abd8a0c1b113dc988420e0d4784256bcb260f491bc182322fa4f",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -2118,7 +2118,7 @@
       "route": "/admin/settings",
       "reference_file": "04-平台管理员/O18-平台设置.png",
       "reference_sha256": "98679295baff171f06123ab31dc9c83c45f54ce4e5e54f71f54a919fbca5d2eb",
-      "screenshot_sha256": "a5a1608023da581633284257306495a235321bb9b43b2cade8fd4db4cd7b98ea",
+      "screenshot_sha256": "295c91e51d030761af7dd829521b648e4b802fc45c0b2cfd7c0e18397f33b69e",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -2174,7 +2174,7 @@
       "route": "/admin/recovery",
       "reference_file": "04-平台管理员/O20-备份与清理.png",
       "reference_sha256": "d72dffcb141adab395397ff91960f9c38f14b33901feaa5f8338c41d17244b78",
-      "screenshot_sha256": "b005e07eccbd94c09f94996962fa5c8ea43e0040fface5e9b110eacb897badfb",
+      "screenshot_sha256": "4a602c5b58921d0f0fea9b0c366e78fed33ffe4d1e059a0a1d93920ec4a39807",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -2229,7 +2229,7 @@
       "route": "/me/settings/account?workspace=ADMIN",
       "reference_file": "04-平台管理员/C21-账户设置.png",
       "reference_sha256": "4c19673067227af6a547e9e5a5e65485b22c6b5632d2758b15ca596191e0a1be",
-      "screenshot_sha256": "aeef88a46d6d4e9118bb3afeb3f421d815a45cb1af79a8c4dc762d86296a69cb",
+      "screenshot_sha256": "37e655ac3ea4e1a903203f32e0145c20b99a5c9458316127f71a39c9911a4375",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -2282,11 +2282,11 @@
     }
   ],
   "errors": [],
-  "build_sha256": "b2170fc2a2fabb2c15beaa4d8114a58b0fc1eb1f38c2e7fcb6fbc7cf67de506a",
+  "build_sha256": "bd90b1341cc2377f7623081c99860102dd7d9268941c9eb2bb99d3dd95df6043",
   "source_sha256": {
     "apps/web/src/pages/PublisherHome.tsx": "c4e6110c2b4ca075150179528a1af443d45a8c07730648d75a148100609abdbf",
     "apps/web/src/pages/AdminHome.tsx": "9316fc19b65bcc1c794debad93e1ece382aa10d601e88d5cfac97359ddcbd1f5",
-    "apps/web/src/components/Shell.tsx": "77f8e913bb61feb24d64a5085cec3498e588d0af0aedb0a7eb01816ddb13b0e1",
+    "apps/web/src/components/Shell.tsx": "6136061016833fe46c1a5719f0e7e2b514881237f1ee4c9a339aa72f039f2625",
     "apps/web/src/components/ui.tsx": "157ffd11d4af51586321bf95bb4d02324aa944c0e00dafbd5d5eee91ba643993",
     "apps/web/src/styles/dashboards.css": "492670dd28518d2ed3766c72735df4752d0211acf47884a86981dfeff61c0a43",
     "apps/web/src/main.tsx": "39cf82ad38c20fe0f7ea414950308e3c374e1174c36ead00d4824b41536811d4",
@@ -2316,7 +2316,12 @@
     "apps/control-api/src/scripts/script-version-query.service.ts": "d8d2837ed805559fb07bf1889034cd3dcdbfcf2670f7a19c0fa5fe8893e8ef4f",
     "apps/control-api/src/publisher/artifact-metadata.ts": "48027a1beba62df6d5f69d691e7d55008ea88b4f9128e6c8a223a5d0587df3d8",
     "apps/web/src/lib/script-versions.ts": "f3a987986092074dc2e2be3f8939fa76b2d623e124ca279448274a7a835fde48",
-    "apps/web/src/styles/script-versions.css": "6b4de9360101d602d1cc3825d3a8860fbc8b845bab6ff327f7e89927d3c6520e"
+    "apps/web/src/styles/script-versions.css": "6b4de9360101d602d1cc3825d3a8860fbc8b845bab6ff327f7e89927d3c6520e",
+    "apps/web/src/pages/Market.tsx": "2aca696bf98f7f75427e5705d39f58198eb05082321a4c44bcac6f48751f0303",
+    "apps/web/src/pages/ServiceDetail.tsx": "08fa71449cc78df06d375e150046a93585c5b0fdba00661b0f7560ecd2284bc0",
+    "apps/web/src/pages/TravelService.tsx": "e8e152bac8410c7ff954dcfd1b1fee53e4f1064a9f296706954dc1388b2f6e92",
+    "apps/web/src/lib/service-display.ts": "4532a84f8eb1d43d5542f27a56fd28ea20757a4618ca39e3f24127e1ba800034",
+    "apps/web/src/styles/retail.css": "1480d70607429f894a1b9d109c0c8e981f0ad78d6daaa947c7aa8034f06ee64e"
   },
   "source_hash_normalization": "LF",
   "result": "PASS"

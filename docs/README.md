@@ -22,6 +22,7 @@
 - [脚本开发规范1.1](./08-脚本开发规范.md#script-development)可作为单个Markdown交给脚本开发者，包含完整输入输出示例及[设计模式](./08-脚本开发规范.md#design-patterns)。[天安门城楼迁移规范](./08-脚本开发规范.md#tiananmen-migration)给出模块划分、状态转换和接入样例，manifest2.1多语言扩展处于待实施草案阶段。
 - 私有脚本上传、草稿修改及源码读取已持久化，支持.script.json多文件包和页面刷新恢复。天安门城楼适配版已保存为示例发布者本人的1.0.0草稿，验证范围见[适配与上传记录](./05-测试验收与验证记录.md#script-adapter-upload)。
 - 脚本编辑页已补齐可编辑语法高亮、文件页签切换与关闭，以及关闭后恢复未保存源码。工具栏、配置区域、文件树与侧栏继续按原型校准，验证见[编辑器专项报告](../output/verification/publisher-editor-pages/report.json)。
+- 脚本市场和服务详情已校准游客、消费者布局，搜索、分类、排序及详情页签支持URL恢复，普通服务和景点服务可返回原市场筛选。状态规则见[市场页面状态](./03-接口协议.md#market-page-state)，验证见[市场导航报告](../output/verification/market-navigation/report.json)。
 - 构建、AUTHOR_TEST试运行和部署已接入本人元数据查询，支持签名分页、分页外详情与刷新恢复。接口字段见[发布者执行记录契约](./03-接口协议.md#publisher-execution-api)，验证范围见[执行记录报告](../output/verification/publisher-records/report.json)。
 - S04已接入本人固定版本及动作查询，历史版本、动作参数和测试证据按URL对应，支持未保存输入确认及主动刷新。字段见[固定版本契约](./03-接口协议.md#script-version-api)，验证范围见[版本页面报告](../output/verification/script-version-pages/report.json)。
 - 开发从[完整实施设计](./06-详细开发设计.md)阅读业务流程、全部页面/操作和事务，再按[数据库字典与DDL](./07-完整系统数据库设计.md)实现；两份文档的验证范围见[本次检查记录](./05-测试验收与验证记录.md#detailed-design-results)。

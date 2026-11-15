@@ -38,6 +38,7 @@
 }
 .role-USER.page-P03 .main-content {
   padding-top: 72px;
+  padding-bottom: 0;
 }
 .page-P05 .main-content {
   padding-left: 25px;
@@ -58,6 +59,10 @@
 .role-USER.page-P03 .global-search {
   left: 36.8%;
   width: 28.5%;
+}
+.role-USER.page-P02 .global-search {
+  left: 34.16%;
+  width: 33.8%;
 }
 .page-P02 .brand,
 .page-P03 .brand,
@@ -100,28 +105,36 @@
   padding-bottom: 10px;
 }
 .role-GUEST.page-P02 .nav-item {
-  height: 43px;
+  height: 41px;
   font-size: 16px;
+  padding-inline: 15px;
+  gap: 12px;
 }
 .role-GUEST.page-P02 .nav-group {
-  margin-bottom: 22px;
+  margin-bottom: 12px;
 }
 .role-GUEST.page-P02 .nav-group-label {
   font-size: 14px;
-  padding-bottom: 10px;
+  padding-bottom: 8px;
+  padding-left: 14px;
 }
 .role-USER.page-P02 .nav-item,
 .role-USER.page-P03 .nav-item {
   height: 31px;
+  gap: 16px;
+  font-weight: 500;
 }
 .role-USER.page-P02 .nav-group,
 .role-USER.page-P03 .nav-group {
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 .role-USER.page-P02 .nav-group-label,
 .role-USER.page-P03 .nav-group-label {
   padding-top: 7px;
   padding-bottom: 5px;
+  padding-left: 13px;
+  font-size: 13px;
+  line-height: 19px;
 }
 .market-page .page-heading {
   margin-bottom: 18px;
@@ -133,11 +146,12 @@
   gap: 16px;
 }
 .guest-market .market-toolbar > .ant-input-affix-wrapper {
-  width: 32%;
+  width: 490px;
   max-width: 490px;
+  height: 40px;
 }
 .guest-market .category-buttons {
-  gap: 10px;
+  gap: 12px;
 }
 .guest-market .service-grid {
   gap: 12px;
@@ -151,10 +165,12 @@
 }
 .guest-market .service-card-top h2 {
   font-size: 16px;
+  line-height: 22px;
 }
 .guest-market .service-card-top p {
-  font-size: 12px;
+  font-size: 13px;
   margin-top: 7px;
+  line-height: 18px;
 }
 .guest-market .service-card-top > .tile-icon {
   width: 42px;
@@ -164,10 +180,11 @@
 }
 .guest-market .service-card-metrics {
   margin-top: 14px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
+  padding-top: 7px;
 }
 .guest-market .service-card-delivery p {
-  font-size: 11px;
+  font-size: 12px;
 }
 .consumer-market .page-heading {
   margin-bottom: 11px;
@@ -183,75 +200,93 @@
   display: flex;
   align-items: center;
   gap: 28px;
-  padding: 20px 24px;
-  background: linear-gradient(110deg, #eaf0ff, #dce5ff 60%, #d6d8fb);
+  padding: 20px 34px;
+  background:
+    radial-gradient(ellipse at 75% 180%, #b9c9ff66 0 46%, transparent 46%),
+    linear-gradient(110deg, #eaf0ff, #dce5ff 60%, #d6d8fb);
   border: 1px solid #dae3ff;
   border-radius: 12px;
   margin-bottom: 11px;
   overflow: hidden;
+  position: relative;
 }
 .consumer-market-banner > div:first-child {
   flex: 1;
 }
 .consumer-market-banner h2 {
-  color: #0d38a5;
-  font-size: 23px;
+  color: #0c1734;
+  font-size: 25px;
   margin-bottom: 7px;
 }
 .consumer-market-banner p {
   color: #40547f;
-  font-size: 13px;
+  font-size: 15px;
 }
 .consumer-market-banner ul {
   list-style: none;
   margin: 0;
   padding: 0;
   color: #3c4b71;
-  font-size: 12px;
-  line-height: 1.9;
+  font-size: 14px;
+  line-height: 22px;
+  padding-left: 30px;
+  border-left: 1px solid #d8def8;
+  flex: 0 1 580px;
 }
 .consumer-market-banner li .anticon {
   color: #2462ff;
   margin-right: 8px;
 }
 .market-script-art {
-  background: linear-gradient(140deg, #fafbff, #abb8fc);
-  border: 3px solid #bdc7fc;
+  background: linear-gradient(140deg, #87b3ff, #4a73ff);
+  border: 1px solid #96b6ff;
   border-radius: 12px;
-  color: #7793fb;
-  padding: 8px;
-  font-size: 30px;
+  color: #fff;
+  padding: 0;
+  font-size: 42px;
   line-height: 1.2;
   font-weight: 700;
-  transform: rotate(-8deg);
-  box-shadow: 7px 7px 0 #aeb9f46b;
+  transform: rotate(9deg);
+  box-shadow:
+    inset 0 1px 5px #ffffff77,
+    0 10px 16px #839df077;
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 82px;
+  height: 70px;
+  margin-left: 22px;
+  margin-right: 94px;
 }
 .consumer-market .market-toolbar {
   margin-bottom: 16px;
   min-height: 64px;
-  padding: 12px 14px;
+  padding: 10px 2px;
   gap: 12px;
 }
 .consumer-market .market-toolbar > .ant-input-affix-wrapper {
-  width: 31%;
-  height: 36px;
+  width: 520px;
+  height: 40px;
 }
 .consumer-market .category-buttons {
-  gap: 9px;
+  gap: 8px;
 }
 .consumer-market .category-buttons .ant-btn {
-  height: 31px;
+  width: 92px;
+  height: 36px;
   padding-inline: 13px;
 }
 .consumer-market .sort-control .ant-select {
+  width: 340px;
   min-width: 130px;
 }
 .consumer-market .service-grid {
-  gap: 14px;
+  gap: 10px;
   align-items: stretch;
 }
 .consumer-market-card {
-  padding: 16px 16px 13px;
+  padding: 10px 18px 13px;
   min-height: 238px;
   display: flex;
   flex-direction: column;
@@ -259,38 +294,42 @@
 .consumer-market-card-title {
   display: flex;
   align-items: flex-start;
-  gap: 9px;
+  gap: 22px;
   position: relative;
   padding-right: 0;
   min-height: 53px;
 }
 .consumer-market-card-title > .tile-icon {
-  width: 38px;
-  height: 38px;
-  font-size: 22px;
+  width: 48px;
+  height: 48px;
+  font-size: 29px;
   flex-shrink: 0;
   border-radius: 10px;
 }
 .consumer-market-card-title > div {
   min-width: 0;
+  flex: 1;
 }
 .consumer-market-card-title h2 {
-  font-size: 16px;
-  line-height: 1.25;
+  font-size: 17px;
+  line-height: 24px;
   padding-top: 1px;
-  padding-right: 56px;
+  padding-right: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .consumer-market-card-title p {
   color: #67738b;
-  font-size: 11px;
+  font-size: 13px;
   margin-top: 4px;
   line-height: 1.4;
 }
-.consumer-market-card-title > .status {
-  position: absolute;
-  right: 0;
-  top: 2px;
-  font-size: 10px;
+.consumer-market-heading > .status {
+  max-width: 45%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  flex-shrink: 0;
+  font-size: 12px;
   padding-inline: 5px;
 }
 .consumer-market-price {
@@ -303,7 +342,7 @@
 }
 .consumer-market-price > small {
   font-weight: 400;
-  font-size: 11px;
+  font-size: 14px;
   margin-left: 6px;
   color: #52607d;
 }
@@ -315,10 +354,11 @@
   display: flex;
   justify-content: space-between;
   gap: 5px;
-  font-size: 10px;
+  font-size: 12px;
   color: #64728c;
-  margin: 8px 0 9px;
+  margin: 4px 0 8px;
   flex-wrap: wrap;
+  line-height: 17px;
 }
 .consumer-market-card-meta .anticon {
   color: #929cb0;
@@ -330,14 +370,14 @@
   align-items: flex-start;
   gap: 7px;
   color: #4e5c77;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.6;
   margin-bottom: 7px;
 }
 .consumer-market-delivery .status,
 .consumer-market-refund .status {
-  font-size: 10px;
-  line-height: 17px;
+  font-size: 12px;
+  line-height: 18px;
   padding-inline: 5px;
 }
 .consumer-market-card > a {
@@ -348,7 +388,7 @@
   color: #1654ff;
   height: 30px;
   border-color: #9ab5ff;
-  font-size: 12px;
+  font-size: 14px;
 }
 .retail-breadcrumb {
   display: flex;
@@ -400,6 +440,15 @@
   border-radius: 17px;
   font-size: 56px;
   flex-shrink: 0;
+}
+.retail-service-banner > div {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.retail-publisher-line > span {
+  min-width: 0;
+  max-width: 100%;
 }
 .retail-service-banner h2 {
   font-size: 29px;
@@ -560,7 +609,7 @@
   > tr
   > th {
   background: #f1f3f8;
-  font-size: 12px;
+  font-size: var(--service-parameter-header-size);
   padding: 7px 10px;
 }
 .service-detail-page
@@ -570,7 +619,7 @@
   > tr
   > td {
   padding: 8px 10px;
-  font-size: 13px;
+  font-size: var(--service-parameter-body-size);
 }
 .service-parameter-examples .ant-table-thead > tr > th::before {
   display: none;
@@ -593,7 +642,7 @@
   margin-top: 3px;
 }
 .member-service .service-introduction {
-  padding: 28px 27px 11px;
+  padding: 26px 27px 10px;
 }
 .member-service .service-usage ol {
   gap: 50px;
@@ -699,6 +748,7 @@
   font-size: 37px;
   font-weight: 700;
   line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 .retail-service-price > small {
   font-size: 18px;
@@ -779,8 +829,9 @@
   line-height: 1.65;
 }
 .retail-purchase-notice li {
-  font-size: 14px;
+  font-size: 15px;
   margin-bottom: 5px;
+  line-height: 24px;
 }
 .retail-purchase-information .service-basic-details {
   margin: 10px 0 0;
@@ -809,6 +860,8 @@
   background: #f5f7fb;
   border-radius: 8px;
   padding: 15px;
+  max-height: 420px;
+  overflow: auto;
 }
 .service-rules-tab h2 {
   margin: 14px 0 7px;
@@ -1223,20 +1276,21 @@
 }
 .guest-service .service-usage ol {
   gap: 30px;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 .guest-service .service-usage li {
   flex: 0 1 auto;
   gap: 15px;
 }
 .guest-service .service-usage li strong {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
 }
 .guest-service .service-limit-strip {
-  margin-top: 19px;
+  margin-top: 23px;
   margin-bottom: 0;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 22px;
 }
 .guest-service .service-limit-strip > span {
   border-radius: 24px;
@@ -1252,7 +1306,7 @@
 .guest-service .service-example-and-delivery > section {
   border: 1px solid #e8edf5;
   border-radius: 10px;
-  padding: 12px 13px;
+  padding: 6px 13px 8px;
 }
 .guest-service .service-parameter-examples .ant-table {
   font-size: 15px;
@@ -1266,19 +1320,19 @@
 }
 .guest-service .service-delivery-standards li {
   font-size: 15px;
-  padding-block: 8px;
+  padding-block: 9px;
 }
 .guest-service .service-delivery-standards li .anticon {
   font-size: 20px;
 }
 .guest-service .purchase-service-benefits {
-  margin-top: 15px;
-  margin-bottom: 20px;
+  margin-top: 17px;
+  margin-bottom: 22px;
   padding: 13px;
 }
 .guest-service .purchase-service-benefits li {
   font-size: 16px;
-  padding-block: 6px;
+  padding-block: 4px;
   line-height: 1.65;
   gap: 13px;
 }
@@ -1293,9 +1347,11 @@
   font-size: 16px;
   gap: 15px 20px;
   padding-top: 17px;
+  grid-template-columns: 130px minmax(0, 1fr);
 }
 .guest-service .retail-purchase-card {
   padding-top: 15px;
+  padding-bottom: 14px;
 }
 .guest-travel-service .travel-service-heading h1 {
   margin-top: 20px;
@@ -1304,6 +1360,218 @@
 .checkout-travel-context {
   margin-bottom: 16px;
 }
+
+.role-GUEST.page-P02 .nav-item > .anticon {
+  font-size: 20px;
+}
+.app-shell.role-USER:is(.page-P02, .page-P03) .sidebar {
+  padding: 6px 6px 8px 8px;
+}
+.page-P02 .page-heading p {
+  font-size: 16px;
+  line-height: 22px;
+}
+.role-USER.page-P02 .page-heading p {
+  font-size: 14px;
+}
+.role-GUEST.page-P02 .brand strong {
+  font-size: 22px;
+}
+.role-GUEST.page-P02 .brand > span:last-child {
+  font-size: 14px;
+}
+.role-GUEST.page-P02 .global-search {
+  left: 37.4%;
+  width: 30.9%;
+  max-width: 560px;
+}
+.app-shell:is(.page-P02, .page-P03) .global-search input,
+.app-shell:is(.page-P02, .page-P03) .global-search input::placeholder {
+  font-size: 14px;
+  color: #354561;
+}
+.guest-market .market-category-label {
+  margin-left: 24px;
+}
+.guest-market .category-buttons .ant-btn {
+  width: 102px;
+  height: 36px;
+  padding-inline: 12px;
+  font-size: 16px;
+}
+.guest-market .category-buttons .ant-btn:first-child {
+  width: 80px;
+}
+.guest-market .sort-control {
+  margin-right: 80px;
+  gap: 12px;
+}
+.guest-market .sort-control .ant-select {
+  width: 185px;
+  height: 40px;
+}
+.market-page .market-toolbar > span,
+.market-page .sort-control {
+  font-size: 16px;
+  white-space: nowrap;
+}
+.market-page .market-toolbar input::placeholder {
+  color: #46536b;
+}
+.market-page .sort-control .ant-select {
+  font-size: 16px;
+}
+.market-page .category-buttons {
+  min-width: 0;
+}
+.market-page .category-buttons .ant-btn > span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.market-page .service-card h2,
+.market-page .service-card p,
+.consumer-market-card-meta > span,
+.market-page .service-card-metrics b {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.market-page .service-card h2 {
+  white-space: normal;
+}
+.market-page .service-card-top h2 .status {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.market-page .service-card-metrics > div {
+  min-width: 0;
+}
+.market-page .service-card-top > div {
+  min-width: 0;
+}
+.guest-market .service-card-metrics small {
+  font-size: 12px;
+  line-height: 17px;
+  margin-bottom: 2px;
+}
+.guest-market .service-card-metrics p,
+.guest-market .service-card-metrics b {
+  line-height: 24px;
+}
+.guest-market .service-card-metrics b {
+  font-size: 13px;
+}
+.guest-market .service-card-delivery {
+  padding-top: 8px;
+}
+.guest-market .service-card-delivery p:nth-child(2) {
+  padding-right: 90px;
+}
+.guest-market .service-card-delivery .ant-btn {
+  font-size: 14px;
+  height: 32px;
+}
+.guest-market .result-count {
+  font-size: 16px;
+  line-height: 23px;
+}
+.consumer-market .market-category-label {
+  margin-left: 28px;
+}
+.consumer-market .category-buttons .ant-btn:first-child {
+  width: 70px;
+}
+.consumer-market-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.market-script-art::after {
+  content: "";
+  position: absolute;
+  width: 106px;
+  height: 17px;
+  left: -12px;
+  bottom: -13px;
+  border-radius: 50%;
+  background: #d4dfff;
+  box-shadow: 0 6px 10px #acbdf366;
+  z-index: -1;
+}
+.service-detail-page {
+  --service-parameter-header-size: 14px;
+  --service-parameter-body-size: 14px;
+}
+.guest-service {
+  --service-parameter-header-size: 16px;
+  --service-parameter-body-size: 16px;
+}
+.guest-service .service-detail-heading h1 {
+  margin-bottom: 25px;
+}
+.guest-service .service-introduction {
+  padding-top: 19px;
+  padding-bottom: 16px;
+}
+.guest-service .service-parameter-examples h2 {
+  margin-bottom: 10px;
+}
+.guest-service .service-explanation-card .ant-tabs-tab {
+  font-size: 20px;
+  padding: 16px 12px 15px;
+}
+.service-detail-page.guest-service
+  .service-parameter-examples
+  .ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th {
+  padding: 5px 14px;
+}
+.service-detail-page.guest-service
+  .service-parameter-examples
+  .ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > td {
+  padding: 9px 14px;
+}
+.service-parameter-examples .status {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: inherit;
+}
+.service-parameter-examples .ant-table-cell {
+  overflow-wrap: anywhere;
+}
+.member-service .retail-purchase-card {
+  padding: 14px 20px 18px;
+}
+.member-service .purchase-service-benefits {
+  margin: 6px 0 14px;
+}
+.member-service .purchase-service-benefits li {
+  font-size: 14px;
+  line-height: 22px;
+}
+.member-service .retail-purchase-notice {
+  padding-block: 19px;
+}
+.member-service .retail-purchase-information {
+  padding-block: 13px;
+}
+.member-service .retail-purchase-information .service-basic-details {
+  font-size: 14px;
+  line-height: 20px;
+}
+.service-schema-tab pre:focus-visible {
+  outline: 2px solid #1555ff;
+  outline-offset: -2px;
+}
+
 @media (max-width: 1400px) {
   .retail-detail-columns,
   .member-service .retail-detail-columns {
@@ -1315,6 +1583,12 @@
   }
   .consumer-market-banner {
     gap: 16px;
+  }
+  .guest-market .sort-control {
+    margin-right: 0;
+  }
+  .market-page .market-category-label {
+    margin-left: 0;
   }
   .market-script-art {
     display: none;
@@ -1408,6 +1682,17 @@
   }
   .market-page .category-buttons {
     flex-wrap: wrap;
+  }
+  .market-page .sort-control {
+    width: 100%;
+    margin-left: 0;
+    padding-left: 0;
+    border-left: 0;
+  }
+  .market-page .sort-control .ant-select {
+    width: auto;
+    min-width: 0;
+    flex: 1;
   }
   .retail-service-banner {
     padding: 16px;

@@ -12,7 +12,11 @@ import { Icon } from "../components/Icon";
 import { Status } from "../components/ui";
 import { ServicePurchaseButton } from "../components/ServicePurchaseButton";
 import { readTravelContext, usePublicAttraction } from "../lib/public-travel";
-import { serviceAvailable, serviceDuration } from "../lib/service-display";
+import {
+  marketReturnPath,
+  serviceAvailable,
+  serviceDuration,
+} from "../lib/service-display";
 import { currency, useServices } from "./Market";
 
 export function TravelServicePage() {
@@ -85,8 +89,10 @@ export function TravelServicePage() {
     if (!linkedService) return <Empty description="该景点未关联此服务" />;
   }
   const back = params.get("returnTo");
+  const marketBack = marketReturnPath(back);
   const backPath =
-    back === "/travel" || back?.startsWith("/travel?") ? back : "/travel";
+    marketBack ||
+    (back === "/travel" || back?.startsWith("/travel?") ? back : "/travel");
   const available =
     serviceAvailable(service) && (!attraction || attraction.open);
   const name = attraction
@@ -157,7 +163,7 @@ export function TravelServicePage() {
     >
       <div className="travel-service-heading">
         <div className="retail-breadcrumb">
-          <Link to={backPath}>城市与景点</Link>
+          <Link to={backPath}>{marketBack ? "脚本市场" : "城市与景点"}</Link>
           <span>/</span>
           <span>
             {attraction

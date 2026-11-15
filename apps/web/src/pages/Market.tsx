@@ -1,7 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Alert, Button, Empty, Input, Select, Skeleton } from "antd";
-import { CheckOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  CheckCircleFilled,
+  CheckOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../api";
 import type { Service } from "../types";
@@ -10,6 +14,7 @@ import { Icon } from "../components/Icon";
 import {
   serviceAvailable,
   serviceDate,
+  serviceDeployment,
   servicePath,
 } from "../lib/service-display";
 import { useWorkspace } from "../context";
@@ -28,21 +33,26 @@ export function currency(amount: string) {
 export function ServiceCard({
   service,
   compact = false,
+  returnTo,
 }: {
   service: Service;
   compact?: boolean;
+  returnTo?: string;
 }) {
   const available = serviceAvailable(service);
+  const deployed = service.deployment_status === "READY";
   if (compact)
     return (
       <article className="service-card consumer-market-card">
         <div className="consumer-market-card-title">
           <TileIcon name={service.delivery_policy.icon} />
           <div>
-            <h2>{service.title}</h2>
+            <div className="consumer-market-heading">
+              <h2>{service.title}</h2>
+              <Status>{service.category}</Status>
+            </div>
             <p>{service.description}</p>
           </div>
-          <Status>{service.category}</Status>
         </div>
         <div className="consumer-market-price">
           {currency(service.amount_minor).replace(/\.00$/, "")}
@@ -67,7 +77,7 @@ export function ServiceCard({
           <Status tone="purple">退款规则</Status>
           {service.refund_policy.summary}
         </p>
-        <Link to={servicePath(service)}>
+        <Link to={servicePath(service, returnTo)}>
           <Button block>查看详情</Button>
         </Link>
       </article>
@@ -100,8 +110,8 @@ export function ServiceCard({
         <div>
           <small>部署状态</small>
           <b>
-            <i className={`dot ${available ? "green" : "gray"}`} />
-            {available ? "已部署" : "暂不可用"}
+            <i className={`dot ${deployed ? "green" : "gray"}`} />
+            {serviceDeployment(service)}
           </b>
         </div>
       </div>
@@ -114,7 +124,7 @@ export function ServiceCard({
           <Status tone="purple">退款规则</Status>
           {service.refund_policy.summary}
         </p>
-        <Link to={servicePath(service)}>
+        <Link to={servicePath(service, returnTo)}>
           <Button type="primary">查看详情</Button>
         </Link>
       </div>
@@ -123,13 +133,24 @@ export function ServiceCard({
 }
 
 export function MarketPage() {
-  const { data = [], isPending, error } = useServices();
+  const { data = [], isPending, error, refetch } = useServices();
   const { role } = useWorkspace();
   const consumer = role !== "GUEST";
-  const [params] = useSearchParams();
-  const [query, setQuery] = useState(params.get("q") || "");
-  const [category, setCategory] = useState(params.get("category") || "全部");
-  const [sort, setSort] = useState("recent");
+  const [params, setParams] = useSearchParams();
+  const query = params.get("q") || "";
+  const category = params.get("category") || "全部";
+  const sort = params.get("sort") === "price" ? "price" : "recent";
+  function updateFilter(key: "q" | "category" | "sort", value: string) {
+    const next = new URLSearchParams(params);
+    if (
+      !value ||
+      (key === "category" && value === "全部") ||
+      (key === "sort" && value === "recent")
+    )
+      next.delete(key);
+    else next.set(key, value);
+    setParams(next, { replace: key === "q" });
+  }
   const categories = [
     ...new Set([
       "全部",
@@ -140,10 +161,6 @@ export function MarketPage() {
       ...data.map((service) => service.category),
     ]),
   ];
-  useEffect(() => {
-    setQuery(params.get("q") || "");
-    setCategory(params.get("category") || "全部");
-  }, [params]);
   const services = useMemo(
     () =>
       data
@@ -205,7 +222,7 @@ export function MarketPage() {
               "未达目标的退款规则在购买前展示，成交后固定",
             ].map((text) => (
               <li key={text}>
-                <CheckOutlined />
+                <CheckCircleFilled />
                 {text}
               </li>
             ))}
@@ -221,27 +238,28 @@ export function MarketPage() {
           prefix={<SearchOutlined />}
           placeholder="搜索用途或服务，如：表格清洗、文件批量处理"
           value={query}
-          onChange={(event) => setQuery(event.target.value)}
+          onChange={(event) => updateFilter("q", event.target.value)}
           allowClear
         />
-        <span>分类</span>
+        <span className="market-category-label">分类：</span>
         <div className="category-buttons">
           {categories.map((item) => (
             <Button
               key={item}
+              title={item}
               type={category === item ? "primary" : "default"}
-              onClick={() => setCategory(item)}
+              onClick={() => updateFilter("category", item)}
             >
               {item}
             </Button>
           ))}
         </div>
         <div className="sort-control">
-          <span>排序</span>
+          <span>排序：</span>
           <Select
             aria-label="服务排序"
             value={sort}
-            onChange={setSort}
+            onChange={(value) => updateFilter("sort", value)}
             options={[
               { value: "recent", label: "最近更新" },
               { value: "price", label: "价格从低到高" },
@@ -249,13 +267,16 @@ export function MarketPage() {
           />
         </div>
       </div>
-      {!consumer && <p className="result-count">共 {services.length} 个服务</p>}
+      {!consumer && !isPending && !error && (
+        <p className="result-count">共 {services.length} 个服务</p>
+      )}
       {error ? (
         <Alert
           type="error"
           title="服务暂时无法加载"
           description={error.message}
           showIcon
+          action={<Button onClick={() => void refetch()}>重试</Button>}
         />
       ) : isPending ? (
         <Skeleton active />
@@ -266,6 +287,7 @@ export function MarketPage() {
               key={service.id}
               service={service}
               compact={consumer}
+              returnTo={`/market${params.size ? `?${params}` : ""}`}
             />
           ))}
         </div>

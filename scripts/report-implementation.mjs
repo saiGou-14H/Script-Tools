@@ -71,6 +71,7 @@ const browserReports = [
   "output/verification/schema-input-pages/report.json",
   "output/verification/publisher-records/report.json",
   "output/verification/script-version-pages/report.json",
+  "output/verification/market-navigation/report.json",
 ];
 const screenshots = new Set();
 const browserResults = [];
@@ -139,6 +140,7 @@ const report = {
     production_postgresql_verified: false,
   },
   implementation_notes: [
+    "Guest and consumer market cards, filters, header/sidebar regions, banner and detail purchase panels have been aligned with their individual references. Search, category and integer-price sorting persist in the URL, detail tabs survive reload and market return context survives both general-service and travel-service navigation. Deployment labels retain all six stored states while purchase policy independently controls the entry button, with legacy availability fallback preserved. Full Boolean and long schemas remain keyboard-accessible, while long custom titles, categories and publisher names fit mobile layouts. Catalog counts, timestamps and publisher-defined fields come from actual responses. A controlled eight-service response verifies the reference's two-row consumer layout without changing stored catalog data. Final fidelity acceptance remains pending.",
     "Publisher S03 now renders editable Python, JavaScript and JSON syntax colors with prism-react-renderer 2.4.1 using React text nodes. Source, highlights and line numbers share scroll positions and reset on file changes. Independent file tabs can close and reopen unsaved buffers without removing files from the saved source package. Toolbar sizes, code gutter, selected file rows, configuration spacing, successful-validation colors and sidebar/header details have been aligned against the reference. The role capture explicitly performs the actual manifest check to reproduce the reference's validated state. Complete publisher schemas remain scrollable and feedback retains the actual scope of local validation. Final fidelity acceptance remains pending.",
     "Publisher S04 now loads owner-scoped fixed versions and action schemas through its normal route. Signed history pagination, exact version/action URLs and cross-links retain the selected resource. Draft manifest schemas and registered immutable actions preserve overrides, inheritance, Boolean schemas and custom names. Unsaved form switches and explicit revision refreshes require confirmation, while background focus and failed refreshes preserve input. Latest builds, bound artifact registration, independent author-test verdicts and deployment/current-service states retain their own facts. New-version writers, version-aware source editing, self-use execution and service creation remain pending. Synthetic browser and fully rolled-back PostgreSQL checks cover these reads, with all final visual acceptances still open.",
     "All catalog page definitions have initial components. Individual fidelity acceptance and complete interaction coverage remain in progress.",

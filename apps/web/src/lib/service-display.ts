@@ -5,6 +5,24 @@ export function serviceAvailable(service: Service) {
     service.availability?.can_purchase ?? service.deployment_status === "READY"
   );
 }
+export function serviceDeployment(service: Service) {
+  const labels: Record<string, string> = {
+    PENDING: "部署待处理",
+    DEPLOYING: "部署中",
+    READY: "已部署",
+    FAILED: "部署失败",
+    DEGRADED: "部署降级",
+    STOPPED: "部署已停止",
+  };
+  return Object.hasOwn(labels, service.deployment_status)
+    ? labels[service.deployment_status]
+    : "部署状态未登记";
+}
+export function marketReturnPath(value?: string | null) {
+  return value === "/market" || value?.startsWith("/market?")
+    ? value
+    : undefined;
+}
 export function serviceVersion(service: Service) {
   if (!service.script_version) return "—";
   return service.script_version.startsWith("v")
@@ -27,10 +45,13 @@ export function serviceDuration(value?: number | string) {
   if (seconds % 60n === 0n) return `${seconds / 60n}分钟`;
   return `${seconds}秒`;
 }
-export function servicePath(service: Service) {
-  return service.scene_key === "travel"
-    ? `/travel/attractions/${service.id}`
-    : `/services/${service.id}`;
+export function servicePath(service: Service, returnTo?: string) {
+  const path =
+    service.scene_key === "travel"
+      ? `/travel/attractions/${service.id}`
+      : `/services/${service.id}`;
+  const back = marketReturnPath(returnTo);
+  return back ? `${path}?${new URLSearchParams({ returnTo: back })}` : path;
 }
 export function checkoutPath(
   service: Service,

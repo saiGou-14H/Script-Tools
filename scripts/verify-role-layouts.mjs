@@ -340,6 +340,11 @@ try {
     "apps/control-api/src/publisher/artifact-metadata.ts",
     "apps/web/src/lib/script-versions.ts",
     "apps/web/src/styles/script-versions.css",
+    "apps/web/src/pages/Market.tsx",
+    "apps/web/src/pages/ServiceDetail.tsx",
+    "apps/web/src/pages/TravelService.tsx",
+    "apps/web/src/lib/service-display.ts",
+    "apps/web/src/styles/retail.css",
   ]) {
     report.source_sha256[file] = sha256(
       (await readFile(file, "utf8")).replaceAll("\r\n", "\n"),

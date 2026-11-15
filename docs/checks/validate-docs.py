@@ -24,6 +24,7 @@ delivery_targets.update((root.parent/'output/verification'/name).resolve() for n
 delivery_targets.add((root.parent/'output/verification/schema-input-pages/report.json').resolve())
 delivery_targets.add((root.parent/'output/verification/publisher-records/report.json').resolve())
 delivery_targets.add((root.parent/'output/verification/script-version-pages/report.json').resolve())
+delivery_targets.add((root.parent/'output/verification/market-navigation/report.json').resolve())
 expected_files = {
     'README.md', '01-产品需求与功能设计.md', '02-系统架构与详细设计.md',
     '03-接口协议.md', '04-部署运维与监控手册.md',
