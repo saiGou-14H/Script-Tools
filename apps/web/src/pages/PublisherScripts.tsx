@@ -53,13 +53,28 @@ import type { RJSFSchema } from "@rjsf/utils";
 
 export function ScriptsPage() {
   const { scripts, createScript, loading, loadError } = usePublisherPreview();
+  const { bootstrap } = useWorkspace();
+  const [params] = useSearchParams();
+  const query = (params.get("q") || "").trim().toLocaleLowerCase();
+  const records = scripts.filter((script) =>
+    `${script.title} ${script.purpose} ${scriptVersionLabel(script.version)}`
+      .toLocaleLowerCase()
+      .includes(query),
+  );
   const [creating, setCreating] = useState(false);
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { message } = App.useApp();
   return (
     <div className="publisher-scripts-page">
-      <PageHeading title="我的脚本" />
+      <PageHeading
+        title="我的脚本"
+        extra={
+          bootstrap.data_mode === "prototype" ? (
+            <Status>含本地示例</Status>
+          ) : undefined
+        }
+      />
       <div className="publisher-script-toolbar">
         <Upload
           accept=".py,.js,.mjs,.cjs,.json"
@@ -112,19 +127,30 @@ export function ScriptsPage() {
         <Table
           loading={loading}
           rowKey="id"
-          dataSource={scripts}
+          dataSource={records}
           pagination={false}
+          scroll={{ x: 1491, y: "calc(100vh - 380px)" }}
           columns={[
             {
               title: "名称",
               dataIndex: "title",
+              width: 160,
+              ellipsis: true,
+              onCell: (record) => ({ title: record.title }),
               render: (value) => <b>{value}</b>,
             },
-            { title: "用途", dataIndex: "purpose" },
-            { title: "最新版本", dataIndex: "version" },
+            { title: "用途", dataIndex: "purpose", width: 280, ellipsis: true },
+            {
+              title: "最新版本",
+              dataIndex: "version",
+              width: 130,
+              ellipsis: true,
+              render: scriptVersionLabel,
+            },
             {
               title: "内容状态",
               dataIndex: "contentStatus",
+              width: 165,
               render: (value) => (
                 <Status
                   tone={
@@ -142,6 +168,7 @@ export function ScriptsPage() {
             {
               title: "构建状态",
               dataIndex: "buildStatus",
+              width: 196,
               render: (value) => (
                 <Status
                   tone={
@@ -163,11 +190,13 @@ export function ScriptsPage() {
             {
               title: "部署",
               dataIndex: "deployed",
+              width: 150,
               render: (value) =>
                 value ? <Status tone="green">部署可用</Status> : "—",
             },
             {
               title: "操作",
+              width: 410,
               render: (_, row) => (
                 <div className="text-actions">
                   <Link to={`/publisher/scripts/${row.id}/edit`}>编辑</Link>
@@ -175,7 +204,9 @@ export function ScriptsPage() {
                   <Link to={`/publisher/deployments?script=${row.id}`}>
                     部署
                   </Link>
-                  <Link to={`/publisher/services/${row.id}/edit`}>
+                  <Link
+                    to={`/publisher/services/new/edit?script=${encodeURIComponent(row.id)}`}
+                  >
                     创建服务
                   </Link>
                   <Link to={`/publisher/versions/${row.id}?tab=self`}>
@@ -222,6 +253,10 @@ export function ScriptsPage() {
       </Modal>
     </div>
   );
+}
+
+function scriptVersionLabel(value: string) {
+  return /^\d/.test(value) ? "v" + value : value;
 }
 
 const tableVersionPreview = {

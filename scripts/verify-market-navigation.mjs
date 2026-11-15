@@ -108,7 +108,8 @@ try {
       { exact: true },
     );
     await search.fill("全部");
-    assert.equal(new URL(page.url()).searchParams.get("q"), "全部");
+    await expect.poll(() => new URL(page.url()).searchParams.get("q")).toBe("全部");
+    await expect(page.locator(".global-search input")).toHaveValue("全部");
     await search.fill(table.title);
     await page
       .locator(".category-buttons")

@@ -256,6 +256,72 @@ try {
     "new products bind the chosen owner script and retain its schema, while publication requires an explicit price and readiness checks",
   );
 
+  const createdFromScript = [];
+  let selectedScriptId;
+  for (const name of ["同脚本独立商品A", "同脚本独立商品B"]) {
+    await page
+      .locator(".sidebar")
+      .getByRole("link", { name: "我的脚本", exact: true })
+      .click();
+    await expect(
+      page.getByRole("heading", { name: "我的脚本", exact: true }),
+    ).toBeVisible();
+    const search = page.locator(".global-search input");
+    await search.fill("v0.4");
+    await search.press("Enter");
+    const scriptRow = page.locator(".publisher-scripts-list .ant-table-row");
+    await expect(scriptRow).toHaveCount(1);
+    selectedScriptId = await scriptRow.getAttribute("data-row-key");
+    assert.ok(selectedScriptId);
+    await scriptRow
+      .getByRole("link", { name: "创建服务", exact: true })
+      .click();
+    await expect(page).toHaveURL(
+      base +
+        "/publisher/services/new/edit?script=" +
+        encodeURIComponent(selectedScriptId),
+    );
+    await expect(page.locator(".product-input-preview")).toContainText(
+      "输出格式",
+    );
+    await page.getByLabel("服务名称", { exact: true }).fill(name);
+    await page.getByRole("button", { name: "保存草稿", exact: true }).click();
+    const productRow = page
+      .locator(".product-list .ant-table-row")
+      .filter({ hasText: name });
+    await expect(productRow).toContainText("未定价");
+    createdFromScript.push(await productRow.getAttribute("data-row-key"));
+  }
+  assert.ok(createdFromScript.every((id) => id && id !== selectedScriptId));
+  assert.notEqual(createdFromScript[0], createdFromScript[1]);
+  await expect(
+    page
+      .locator(".product-list .ant-table-row")
+      .filter({ hasText: "同脚本独立商品" }),
+  ).toHaveCount(2);
+  report.checks.push(
+    "the script-list creation entry gives each draft its own product identity while retaining the selected owner script and declared schema",
+  );
+
+  await page.goto(
+    base +
+      "/publisher/services/new/edit?script=" +
+      encodeURIComponent(selectedScriptId),
+  );
+  await expect(page.getByText("文件处理 v0.4", { exact: true })).toBeVisible();
+  await page.reload();
+  await expect(page.locator(".product-input-preview")).toContainText(
+    "输出格式",
+  );
+  await page.goto(base + "/publisher/services/new/edit?script=missing");
+  await expect(
+    page.getByText("服务或关联脚本不存在或已失效", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByLabel("服务名称", { exact: true })).toHaveCount(0);
+  report.checks.push(
+    "new-product links restore their initial script on reload and unavailable script identities stay explicit",
+  );
+
   await page.goto(base + "/publisher/orders?source=verification");
   await expect(page.locator(".sales-summary strong")).toHaveText([
     "2",

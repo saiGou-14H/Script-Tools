@@ -1,13 +1,18 @@
 {
-  "date": "2026-11-15T09:56:23.580Z",
+  "date": "2026-11-15T11:00:09.754Z",
   "checks": [
     "public home retains the reference columns, recommendations, categories, workflow and purchase guidance within the reference viewport",
+    "catalog header search restores reload and browser history and follows the page search while global submission retains its existing all-category scope",
     "home categories filter the market, repeated global searches refresh the current route, and publishing opens the publisher sign-in entry",
     "GUEST shared pages retain the requested workspace on a direct page load",
     "unknown resources do not substitute another service and paid orders cannot be cancelled as unpaid",
     "USER shared pages retain the requested workspace on a direct page load",
+    "owner-script search matches names, descriptions and displayed versions, restores its URL state and opens a fresh product bound to that script while longer lists scroll internally and preserve mobile access",
+    "publisher build search restores its URL value, preserves applied filters, clears obsolete selection and retains keyboard focus on submit",
     "PUBLISHER shared pages retain the requested workspace on a direct page load",
-    "ADMIN shared pages retain the requested workspace on a direct page load"
+    "administrator order search restores direct links and history and follows the existing clear-search action",
+    "ADMIN shared pages retain the requested workspace on a direct page load",
+    "all four help workspaces keep header drafts separate until submission and restore committed keywords through URLs, history and page-level clearing"
   ],
   "screenshots": [
     "GUEST-P01",

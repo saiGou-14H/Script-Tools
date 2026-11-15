@@ -7,7 +7,7 @@ import {
   Tooltip,
   type InputRef,
 } from "antd";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   BellOutlined,
   DownOutlined,
@@ -376,6 +376,13 @@ export function Shell({ pageId }: { pageId: PageId }) {
   const { unreadNotificationCount } = usePrototype();
   const navigate = useNavigate();
   const location = useLocation();
+  const searchQuery = ["P02", "P06", "S02", "S05", "O06"].includes(pageId)
+    ? new URLSearchParams(location.search).get("q") || ""
+    : "";
+  const [searchText, setSearchText] = useState(searchQuery);
+  useEffect(() => {
+    setSearchText(searchQuery);
+  }, [location.pathname, searchQuery, role]);
   const searchRef = useRef<InputRef>(null);
   const quickSearch = (["P02", "P03", "P04", "C02"].includes(pageId) && role === "USER") || [
     "S01",
@@ -590,12 +597,8 @@ export function Shell({ pageId }: { pageId: PageId }) {
           <span>通用脚本服务平台</span>
         </Link>
         <Input
-          key={pageId === "S05" ? location.search : undefined}
-          defaultValue={
-            pageId === "S05"
-              ? new URLSearchParams(location.search).get("q") || ""
-              : undefined
-          }
+          value={searchText}
+          onChange={(event) => setSearchText(event.target.value)}
           ref={searchRef}
           className="global-search"
           prefix={<SearchOutlined />}
@@ -603,26 +606,28 @@ export function Shell({ pageId }: { pageId: PageId }) {
           placeholder={
             pageId === "P06"
               ? "搜索功能、文档或常见问题"
-              : pageId === "S05"
-                ? "搜索脚本、版本或构建编号"
-                : pageId === "S15"
-                  ? "搜索脚本、服务商品、订单或帮助内容"
-                  : pageId === "S01"
-                    ? "搜索脚本、服务或订单"
-                    : role === "ADMIN"
-                      ? "搜索订单、用户、服务或预约编号"
-                      : quickSearch
-                        ? "搜索脚本、工具或景点"
-                        : "搜索脚本、服务或订单"
+              : pageId === "S02"
+                ? "搜索脚本名称、用途或版本号"
+                : pageId === "S05"
+                  ? "搜索脚本、版本或构建编号"
+                  : pageId === "S15"
+                    ? "搜索脚本、服务商品、订单或帮助内容"
+                    : pageId === "S01"
+                      ? "搜索脚本、服务或订单"
+                      : role === "ADMIN"
+                        ? "搜索订单、用户、服务或预约编号"
+                        : quickSearch
+                          ? "搜索脚本、工具或景点"
+                          : "搜索脚本、服务或订单"
           }
           onPressEnter={(event) => {
-            if (pageId === "S05") {
+            if (pageId === "S02" || pageId === "S05") {
               const search = new URLSearchParams(location.search);
               const text = event.currentTarget.value.trim();
               if (text) search.set("q", text);
               else search.delete("q");
-              search.delete("record");
-              navigate(`/publisher/builds?${search}`);
+              if (pageId === "S05") search.delete("record");
+              navigate(`${pageId === "S02" ? "/publisher/scripts" : "/publisher/builds"}?${search}`);
               return;
             }
             navigate(

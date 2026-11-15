@@ -77,6 +77,14 @@ async function ready(page, role, id) {
     page.locator(`.app-shell.role-${role}.page-${id}`),
   ).toBeVisible();
   await expect(page.locator(".main-content .ant-skeleton")).toHaveCount(0);
+  if (id === "S02") {
+    await expect(
+      page.locator(".publisher-scripts-list .ant-spin-spinning"),
+    ).toHaveCount(0);
+    await expect(
+      page.locator(".publisher-scripts-page .ant-alert-error"),
+    ).toHaveCount(0);
+  }
   await expect(page.locator(".main-content h1").first()).toBeVisible();
   await page.evaluate(async () => {
     await document.fonts.ready;
@@ -453,6 +461,19 @@ try {
       assert.equal(bytes.readUInt32BE(16), reference.width);
       assert.equal(bytes.readUInt32BE(20), reference.height);
       const layout = await dimensions(page);
+      if (key === "PUBLISHER-S02" || key === "ADMIN-O01") {
+        assert(
+          layout.document_height <= reference.height,
+          JSON.stringify({
+            key,
+            height: layout.document_height,
+            viewport: reference.height,
+          }),
+        );
+        report.checks.push(
+          `${key} retains all content within the reference viewport height`,
+        );
+      }
       assert(
         layout.document_width <= reference.width &&
           layout.scroll_width <= layout.width + 1,

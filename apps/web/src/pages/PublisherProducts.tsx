@@ -8,6 +8,7 @@ import {
   Modal,
   Radio,
   Select,
+  Skeleton,
   Table,
   Tabs,
 } from "antd";
@@ -229,19 +230,42 @@ export function ProductsPage() {
 
 export function ProductEditorPage() {
   const { id = "demo" } = useParams();
-  return <ProductEditor key={id} id={id} />;
+  const [params] = useSearchParams();
+  const script = id === "new" ? params.get("script") || undefined : undefined;
+  return (
+    <ProductEditor
+      key={JSON.stringify([id, script])}
+      id={id}
+      initialScriptId={script}
+    />
+  );
 }
 
-function ProductEditor({ id }: { id: string }) {
+function ProductEditor({
+  id,
+  initialScriptId,
+}: {
+  id: string;
+  initialScriptId?: string;
+}) {
   const { bootstrap } = useWorkspace();
-  const { products, scripts, pricePlans, profile, saveProduct, productDrafts } =
-    usePublisherPreview();
+  const {
+    products,
+    scripts,
+    pricePlans,
+    profile,
+    saveProduct,
+    productDrafts,
+    loading,
+  } = usePublisherPreview();
   const currentProduct = products.find(
     (item) => item.id === (id === "demo" ? "table" : id),
   );
   const product = productDrafts[currentProduct?.id || id] || currentProduct;
   const [scriptId, setScriptId] = useState(
-    product?.scriptId || (id === "new" ? scripts[0]?.id : id),
+    product?.scriptId ||
+      initialScriptId ||
+      (id === "new" ? scripts[0]?.id : id),
   );
   const script = scripts.find((item) => item.id === scriptId);
   const productId = useRef(
@@ -253,6 +277,7 @@ function ProductEditor({ id }: { id: string }) {
   const navigate = useNavigate();
   if (bootstrap.data_mode !== "prototype")
     return <Empty description="商品发布服务待接入，编辑资料暂不可用" />;
+  if (!script && loading) return <Skeleton active />;
   if (!script) return <Empty description="服务或关联脚本不存在或已失效" />;
   const plans = pricePlans
     .filter((item) => item.serviceId === product?.id)

@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T09:55:31.743Z",
+  "date": "2026-11-15T11:01:16.564Z",
   "data_source": "isolated development seed",
   "viewport_source": "individual reference manifest dimensions",
   "visual_acceptance": "pending",
@@ -39,6 +39,7 @@
     "USER-C22 renders its authorized role route at the reference viewport",
     "USER-P06 renders its authorized role route at the reference viewport",
     "PUBLISHER-S01 renders its authorized role route at the reference viewport",
+    "PUBLISHER-S02 retains all content within the reference viewport height",
     "PUBLISHER-S02 renders its authorized role route at the reference viewport",
     "PUBLISHER-S03 renders its authorized role route at the reference viewport",
     "PUBLISHER-S04 renders its authorized role route at the reference viewport",
@@ -60,6 +61,7 @@
     "PUBLISHER dashboard fits the reference desktop height",
     "PUBLISHER dashboard uses internal table scrolling at 390px",
     "PUBLISHER live dashboard exposes pending integrations with empty data and neutral indicators",
+    "ADMIN-O01 retains all content within the reference viewport height",
     "ADMIN-O01 renders its authorized role route at the reference viewport",
     "ADMIN-O02 renders its authorized role route at the reference viewport",
     "ADMIN-O03 renders its authorized role route at the reference viewport",
@@ -269,7 +271,7 @@
       "route": "/travel",
       "reference_file": "01-游客/P04-城市与景点.png",
       "reference_sha256": "998c6f2eebbb0098a600fcdac56b2f0232caeead739fa4d6853276abf033a4a1",
-      "screenshot_sha256": "16c53d67af68605e064c32759887eb83aec4ba56a1d505fd52eaa7bffad8fe9a",
+      "screenshot_sha256": "29497ff5a3cbbab7aaeb3e8c705cc0f1e143c1695b27de5b3e0b21fd8d4975d4",
       "viewport": {
         "width": 1815,
         "height": 867
@@ -850,7 +852,7 @@
       "route": "/me/pending",
       "reference_file": "02-消费者/C13-待处理事项.png",
       "reference_sha256": "e6a1298dcd4f3da1e354ebc7212405c06712b3dfa11b761017e22dd4ae8589e9",
-      "screenshot_sha256": "7eabd6b1d5b56be3c04e4f57403ff31b6b98a58559bde710d0705722abe6706c",
+      "screenshot_sha256": "976a823d09a4f62c738354ecdbc3636d629f3592a8b3a0b39274bd5f85dbe5de",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1076,7 +1078,7 @@
       "route": "/me/settings/account",
       "reference_file": "02-消费者/C21-账户设置.png",
       "reference_sha256": "949661ac95f410ffd640fef89f7e84fc3ff906d27751289bba8fb8ac4d11c302",
-      "screenshot_sha256": "65795f584a60bef4f7cf00c8970595d6a2789f562a71f658c21fb1345ed0c0f5",
+      "screenshot_sha256": "5c3d768539d31f93b15bbb1ff2fb18e3d3fefeb42fb0cb1ee509e9bbc4a854e3",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1194,7 +1196,7 @@
       "route": "/publisher/scripts",
       "reference_file": "03-脚本发布者/S02-我的脚本.png",
       "reference_sha256": "7784b9b46b15556830d538fa6d53520e379b12c6e158d86ee90f984c6666f18f",
-      "screenshot_sha256": "5e4671d826fb48803d6a65791304d6909bc322557275a7bf90721db8a87c316d",
+      "screenshot_sha256": "243c52f8307448f927be665487c299b424b2632d03c644bb4572e5fdf8a79aaa",
       "viewport": {
         "width": 1814,
         "height": 867
@@ -1203,7 +1205,7 @@
         "width": 1574,
         "scroll_width": 1574,
         "document_width": 1814,
-        "document_height": 894,
+        "document_height": 867,
         "headings": [
           "我的脚本"
         ],
@@ -1332,7 +1334,7 @@
       "route": "/publisher/services",
       "reference_file": "03-脚本发布者/S07-服务商品.png",
       "reference_sha256": "f562270f5c32dcb7ad39ed2a091d5de57461e2e97762d8512d8614f0719ac9ba",
-      "screenshot_sha256": "4ee5d2acace345a90302afd2f0fb3e690372255d0b8d911d417902d7003bab5a",
+      "screenshot_sha256": "cc3a3588b3c2161fa9c3ffc648b4999945c42ceb6dc8f4266d883a2ee71fcbf3",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1549,7 +1551,7 @@
       "route": "/publisher/settings",
       "reference_file": "03-脚本发布者/S15-发布者设置.png",
       "reference_sha256": "dcc323547c2f6989796592302c25e36415d89454b74e02ec761a46d69d8a9789",
-      "screenshot_sha256": "e31fbc0ccc7d6b7362e6e49426e4c3620dafa02cac0d0a98229d4b85bffa04ce",
+      "screenshot_sha256": "570e3db11b5bbaea6d74e08353aceb0e9afe9d5f581740023a606ef84930821a",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -1576,7 +1578,7 @@
       "route": "/publisher/imports",
       "reference_file": "03-脚本发布者/S16-来源与同步.png",
       "reference_sha256": "87d38b402123896526758389cd80a04e846aec2421789ac019edb6919ec05314",
-      "screenshot_sha256": "c2cd2b99cad6914214738a4920f89265814ac11b08a31c9381d7365d00f84c72",
+      "screenshot_sha256": "78f80548792f1654a5a3355f39e97234ee421db49194f9e95c05940f191df2a8",
       "viewport": {
         "width": 1812,
         "height": 868
@@ -1601,7 +1603,7 @@
       "route": "/me/settings/account?workspace=PUBLISHER",
       "reference_file": "03-脚本发布者/C21-账户设置.png",
       "reference_sha256": "05f5bea2c8dfe63eacd5360d5721c809e296d79eef69a1087ae33e771c12d542",
-      "screenshot_sha256": "4415b44492943eb29e8d61d51a26f00677cb54a20a80fe7968223ee33ac747da",
+      "screenshot_sha256": "1abb12bbde69e46998273b34b3aa8c787051c090e9bde8eff087d6b9764f8d76",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -1659,7 +1661,7 @@
       "route": "/admin",
       "reference_file": "04-平台管理员/O01-运营总览.png",
       "reference_sha256": "ffc75574ff2e95fab603385f1db669a7b3aa9cdcaaec24ef406e8be00bf4bbbd",
-      "screenshot_sha256": "8b6ed27eb451ccfee1ec1689f06724dc6a919c7546d9bd794b040dd439d73a5d",
+      "screenshot_sha256": "385b1f1efe929fc8928ffd7fa7063d27f34a28ab43fcf04db208483ee001f496",
       "viewport": {
         "width": 1815,
         "height": 867
@@ -1668,7 +1670,7 @@
         "width": 1617,
         "scroll_width": 1617,
         "document_width": 1815,
-        "document_height": 873,
+        "document_height": 867,
         "headings": [
           "运营总览",
           "交易趋势",
@@ -2229,7 +2231,7 @@
       "route": "/me/settings/account?workspace=ADMIN",
       "reference_file": "04-平台管理员/C21-账户设置.png",
       "reference_sha256": "4c19673067227af6a547e9e5a5e65485b22c6b5632d2758b15ca596191e0a1be",
-      "screenshot_sha256": "dd988d285ab79723916f9dce94dad872cdbbaa2054db09d91ce6430298642cf1",
+      "screenshot_sha256": "fdacd0e1564271078b77934d8714946ecc733cefd51e41b513d28a25506c8f80",
       "viewport": {
         "width": 1813,
         "height": 868
@@ -2282,19 +2284,19 @@
     }
   ],
   "errors": [],
-  "build_sha256": "963268112227d3459c897bee4d3326b18d1eac472e7a02b47d182967a83a4304",
+  "build_sha256": "eb1c0acffaf4147d4ba10bca6caf6f52d5c293d509b1757412686410deaa25a8",
   "source_sha256": {
     "apps/web/src/pages/PublisherHome.tsx": "c4e6110c2b4ca075150179528a1af443d45a8c07730648d75a148100609abdbf",
-    "apps/web/src/pages/PublisherFinance.tsx": "2a4d3699cb05def79dc4fe926f8fe1b3a2ebd983168ebe96d85523674bfb2fb7",
+    "apps/web/src/pages/PublisherFinance.tsx": "e799c0d9eaae017daf2f4e94f82d9265cabee7806199ff1bd278c5dce1211ee9",
     "apps/web/src/pages/PublisherAccess.tsx": "3ebe1483a59be92e24a62971e0f0adc17767b53cb2159cdeb41732e180f4cc72",
     "apps/web/src/components/PublisherProfileEditor.tsx": "80666f9106ba2f8834fe078ec5fa98c9f8f1b2ee005edd04fa2b8c5e7e9a53d8",
-    "apps/web/src/styles/publisher.css": "9146bede749261a12076e24d61dfe4e1627812c5038762505732a16b50c6a912",
+    "apps/web/src/styles/publisher.css": "7928008fa86c80be34d25fd6da460f141176079bce5bc3286292b1c8b16e75f4",
     "apps/web/src/styles/publisher-finance.css": "4330f6312cb2d76c08aa0f3121689e36fe34f1a14d02cd4482fa239aad7e3ec3",
     "apps/web/src/lib/publisher-finance-preview.ts": "cf5620237f6acc8ae86085a046f69e17fee796981700ea918d37587fd51e658c",
     "apps/control-api/src/publisher/publisher-profile.controller.ts": "31efc67557d346b7c1acca0050078a018ead665668d0843e664a46009b022c89",
     "apps/control-api/src/publisher/publisher-profile.service.ts": "46168a11c3ae4f6c79bbf628a656644274691144c1dd3e0ffc05196052b520c9",
     "apps/web/src/pages/AdminHome.tsx": "9316fc19b65bcc1c794debad93e1ece382aa10d601e88d5cfac97359ddcbd1f5",
-    "apps/web/src/components/Shell.tsx": "0f94978bf374477d6c572f2b594ca931cc7304a259576c225ebc521849d14157",
+    "apps/web/src/components/Shell.tsx": "4610f4a8376c4ef302e4834175a7afa21b5cb1c7bab6e6db1b3c17fa23565d8f",
     "apps/web/src/router.tsx": "13835e3616169904e8bb7a8ca97e168ce0498b35c6ad7ca1b551380e0495baf6",
     "apps/web/src/context.tsx": "3f9c2cb25f58c2aacc222cd6eba9719b61618821db92309151547baab052890d",
     "apps/web/src/styles.css": "c894d789e31ff592c70d6b1ef94b1a031dba775d21cf942e2ecd1ece66f6a6b6",
@@ -2303,14 +2305,14 @@
     "apps/control-api/src/account/account.controller.ts": "34a335b05cd2f90c6cd42f11d8c44cb4078100bbb144e49f49ff39c1a5c7618d",
     "apps/control-api/src/account/account.service.ts": "95a5de8b87154cf907164c6d98d233a045a745cabf918ffc0b1974439a960ad4",
     "apps/web/src/components/ui.tsx": "fda1383297ec6bdd3f64a9ca9d2ece2f4c9555ca7175341b15ae24cb274e2323",
-    "apps/web/src/styles/dashboards.css": "492670dd28518d2ed3766c72735df4752d0211acf47884a86981dfeff61c0a43",
+    "apps/web/src/styles/dashboards.css": "3eb132a29c3b4228c1e4c495bff02f2659103ea2955c1455b88823c0180ebb6e",
     "apps/web/src/main.tsx": "39cf82ad38c20fe0f7ea414950308e3c374e1174c36ead00d4824b41536811d4",
     "apps/web/src/pages/ScriptEditor.tsx": "3c59c39577884eb4c892df21494a7baac8371194b9c420d77d173d47ea9293bb",
     "apps/web/src/components/SourceCodeEditor.tsx": "a73d17031aad4f6752b54ff2e6c9d10ff7772c74e9789dbe63cd6a347499dfa0",
     "apps/web/package.json": "5f1cb5a6f30cbdc12f92169e60142e2a6f5d15bc4dcc5f58082e15447b2d97dd",
     "package-lock.json": "8d9ef4230098093b60d365f69f932908751b23d500c5d29665b2585348aa25b6",
-    "apps/web/src/pages/PublisherScripts.tsx": "a277aed74a18fc7cde005a7892ac3a6b8430569e26d79ff62b4874c52bb881d8",
-    "apps/web/src/pages/PublisherProducts.tsx": "2bc3828f10c93b7dc24306fd0237869bc8593aa2319fa264c6c4cdd2068c4e44",
+    "apps/web/src/pages/PublisherScripts.tsx": "37127808b9382e056d337c69bd569007ec8de2c83367b7034f5fcdf1893d6d74",
+    "apps/web/src/pages/PublisherProducts.tsx": "474021dfbca7c359dd71c8339b7a8446206e1bbf915d9f2f385112e5667799b5",
     "apps/web/src/publisher-preview.tsx": "59bb9488e53aae4fee2bfd72d05addb29765cb8985c061cf427bbf4a2b2e60aa",
     "apps/web/src/styles/publisher-editors.css": "9b4f49529c54d3d482f6f175aab9ea10d1e70b5d30bf83ef5ec667f9c1e78bb7",
     "apps/web/src/lib/script-editor.ts": "c4bd8b093d832a4797f74a34637014c00b3187c23546ecff848063d309fad248",

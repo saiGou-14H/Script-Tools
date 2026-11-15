@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T20:04:37.845Z",
+  "date": "2026-11-15T11:05:07.905Z",
   "checks": [
     "The anonymous public help endpoint returns a versioned six-question/five-category catalog and explicit unconfigured support state, rejects unsupported query parameters and exposes no account fields",
     "GUEST help retains its own reference layout and navigation, searches all categories including account security, restores filters and exact accordion state from URL, preserves help search workspace and restores the unconfigured-support dialog on desktop and 390px screens",

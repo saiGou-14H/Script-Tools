@@ -140,25 +140,43 @@
 }
 .page-S02 .main-content {
   padding-top: 90px;
+  padding-left: 25px;
+  padding-right: 20px;
+}
+.page-S02 .page-heading h1 {
+  font-size: 30px;
+}
+.page-S02 .global-search.ant-input-affix-wrapper {
+  left: 35.2%;
+  width: 29.7%;
+  max-width: none;
 }
 .publisher-script-toolbar {
   display: flex;
   gap: 22px;
-  margin: 24px 0 20px;
+  margin: 24px 0 22px;
 }
 .publisher-script-toolbar .ant-btn {
-  height: 44px;
-  font-size: 17px;
-  padding: 0 24px;
+  height: 42px;
+  font-size: 18px;
+  padding: 0 25px;
+}
+.publisher-script-toolbar .ant-btn-primary {
+  min-width: 154px;
+}
+.publisher-script-toolbar > .ant-btn {
+  padding-inline: 22px;
+  border-color: #6689ff;
+  color: #1555ff;
 }
 .publisher-scripts-list .panel-body {
-  padding: 22px 16px 32px;
+  padding: 22px 15px 36px;
 }
 .publisher-scripts-list .ant-table {
   font-size: 17px;
 }
 .publisher-scripts-list .ant-table-thead > tr > th {
-  padding: 15px 14px;
+  padding: 11px 14px;
   background: #f3f5fa;
   font-size: 18px;
 }
@@ -166,7 +184,7 @@
   display: none;
 }
 .publisher-scripts-list .ant-table-tbody > tr > td {
-  padding: 22px 14px;
+  padding: 20px 14px;
 }
 .publisher-scripts-list .status {
   border-radius: 24px;

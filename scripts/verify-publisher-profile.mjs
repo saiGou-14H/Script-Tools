@@ -1056,6 +1056,9 @@ try {
     prototypePage.getByLabel("公开昵称", { exact: true }),
   ).toHaveValue("数据工坊");
   await expect(prototypePage.getByRole("checkbox")).toHaveCount(0);
+  await expect(
+    prototypePage.getByText(/联系邮箱、收款账户与技术验证为本地预览/),
+  ).toBeVisible();
   await prototypePage.evaluate(() => document.fonts.ready);
   report.settings_layout = await prototypePage.evaluate(() => {
     const rect = (selector) => {

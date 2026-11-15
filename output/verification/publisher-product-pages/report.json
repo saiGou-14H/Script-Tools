@@ -1,11 +1,13 @@
 {
-  "date": "2026-11-15T09:53:39.491Z",
+  "date": "2026-11-15T11:00:30.926Z",
   "checks": [
     "all four reference regions and sidebar help fit 1814 by 868",
     "product status selection survives reload and preserves unrelated URL parameters",
     "selected consumer preview uses its own schema and immutable release, draft and price edits preserve the sale until explicit publication",
     "editor and price forms reset to the selected resource across SPA routing and browser history",
     "new products bind the chosen owner script and retain its schema, while publication requires an explicit price and readiness checks",
+    "the script-list creation entry gives each draft its own product identity while retaining the selected owner script and declared schema",
+    "new-product links restore their initial script on reload and unavailable script identities stay explicit",
     "sales service, date and fulfillment filters survive reload and recompute the same masked-owner records",
     "schema examples preserve zero, false, nested values and publisher-required fields, and release capture clones the source schema and price facts",
     "live metadata stays unavailable on all four routes and missing product identities show their own empty state",

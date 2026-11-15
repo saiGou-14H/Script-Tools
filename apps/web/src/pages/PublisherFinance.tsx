@@ -577,7 +577,8 @@ export function PublisherSettingsPage() {
       </div>
       <Notice>
         变更仅作用于新打款，在途使用原快照。
-        {prototype && "联系邮箱为本地预览，公开联系说明随服务简介保存。"}
+        {prototype &&
+          "联系邮箱、收款账户与技术验证为本地预览。公开联系说明随服务简介保存。"}
       </Notice>
       {!prototype && <Notice>收款资料与技术验证接口待接入。</Notice>}
       <Button
