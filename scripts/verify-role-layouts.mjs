@@ -332,6 +332,11 @@ try {
     "apps/control-api/src/publisher/publisher-execution.service.ts",
     "apps/control-api/src/scripts/script.service.ts",
     "apps/control-api/src/app.module.ts",
+    "apps/control-api/src/scripts/script.controller.ts",
+    "apps/control-api/src/scripts/script-version-query.service.ts",
+    "apps/control-api/src/publisher/artifact-metadata.ts",
+    "apps/web/src/lib/script-versions.ts",
+    "apps/web/src/styles/script-versions.css",
   ]) {
     report.source_sha256[file] = sha256(
       (await readFile(file, "utf8")).replaceAll("\r\n", "\n"),

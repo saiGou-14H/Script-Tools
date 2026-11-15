@@ -12,6 +12,7 @@ export interface PublisherExecutionRecord {
   script_name: string;
   version: string;
   status: string;
+  action?: string;
   duration_ms?: string | null;
   started_at?: string | null;
   finished_at?: string | null;

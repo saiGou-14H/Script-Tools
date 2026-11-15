@@ -138,6 +138,8 @@ export function BuildsPage() {
   const { message, modal } = App.useApp();
   const search = new URLSearchParams();
   const textQuery = params.get("q") || "";
+  const actionFilter = tab === "trial" ? params.get("action") || "" : "";
+  if (actionFilter) search.set("action", actionFilter);
   if (textQuery) search.set("q", textQuery);
   if (applied.script) search.set("script_name", applied.script);
   if (applied.script_id) search.set("script_id", applied.script_id);
@@ -166,6 +168,7 @@ export function BuildsPage() {
       (!applied.script_id ||
         item.metadata?.script_id === applied.script_id.toLowerCase()) &&
       (!applied.version || item.version === applied.version) &&
+      (!actionFilter || item.metadata?.action === actionFilter) &&
       (!applied.status || item.status === applied.status) &&
       (!textQuery ||
         [item.id, item.script, item.version]
@@ -235,6 +238,7 @@ export function BuildsPage() {
               "status",
               "record",
               "tab",
+              "action",
             ])
               next.delete(key);
             if (value === "trial") next.set("tab", "trial");
@@ -245,6 +249,22 @@ export function BuildsPage() {
             { key: "trial", label: "试运行记录" },
           ]}
         />
+        {actionFilter && (
+          <div className="build-action-filter">
+            <span>当前动作　{actionFilter}</span>
+            <Button
+              size="small"
+              onClick={() => {
+                const next = new URLSearchParams(params);
+                next.delete("action");
+                next.delete("record");
+                setParams(next);
+              }}
+            >
+              清除动作筛选
+            </Button>
+          </div>
+        )}
         <div className="build-filters">
           <b>脚本</b>
           <Select
@@ -327,7 +347,21 @@ export function BuildsPage() {
                   ),
                 },
                 { title: "脚本名称", dataIndex: "script", width: 180 },
-                { title: "版本", dataIndex: "version", width: 123 },
+                {
+                  title: "版本",
+                  dataIndex: "version",
+                  width: 123,
+                  render: (value, row) =>
+                    row.metadata ? (
+                      <Link
+                        to={`/publisher/versions/${row.metadata.script_id}?${new URLSearchParams({ version_id: row.metadata.script_version_id, tab: "version" })}`}
+                      >
+                        {value}
+                      </Link>
+                    ) : (
+                      value
+                    ),
+                },
                 {
                   title: "状态",
                   width: 163,
@@ -606,9 +640,12 @@ export function DeploymentsPage() {
   const [form] = Form.useForm();
   const mode = Form.useWatch("mode", form);
   const { modal, message } = App.useApp();
+  const versionFilter = params.get("script_version_id");
+  const search = new URLSearchParams();
+  if (versionFilter) search.set("script_version_id", versionFilter);
   const records = usePublisherRecords<PublisherDeploymentRecord>(
     "deployments",
-    "",
+    search.toString(),
     !prototype,
   );
   const detail = usePublisherRecord<PublisherDeploymentRecord>(
@@ -623,7 +660,11 @@ export function DeploymentsPage() {
   const selected = requested || (prototype ? "table" : rows[0]?.id || "");
   const item =
     rows.find((row) => row.id === selected) ||
-    (detail.data ? deploymentRecord(detail.data) : undefined);
+    (detail.data &&
+    (!versionFilter ||
+      detail.data.script_version_id === versionFilter.toLowerCase())
+      ? deploymentRecord(detail.data)
+      : undefined);
   function selectDeployment(id: string) {
     const next = new URLSearchParams(params);
     next.set("deployment", id);
@@ -721,9 +762,14 @@ export function DeploymentsPage() {
                         </b>
                       </Link>
                     ) : (
-                      <b>
-                        {row.script} {row.version}
-                      </b>
+                      <Link
+                        className="dark-link"
+                        to={`/publisher/versions/${row.metadata!.script_id}?${new URLSearchParams({ version_id: row.metadata!.script_version_id, tab: "version" })}`}
+                      >
+                        <b>
+                          {row.script} {row.version}
+                        </b>
+                      </Link>
                     )}
                     {row.category && (
                       <small>

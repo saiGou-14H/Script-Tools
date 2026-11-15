@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-14T23:58:52.264Z",
+  "date": "2026-11-15T00:47:44.172Z",
   "checks": [
     "Draft 2020-12 and explicit draft-07 schemas retain their declared validation semantics",
     "Purchased-service configuration preserves null, false, zero, arrays and strings through its normal preview entry",

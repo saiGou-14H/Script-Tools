@@ -23,6 +23,7 @@ import { ScriptController } from "./scripts/script.controller";
 import { ScriptService } from "./scripts/script.service";
 import { PublisherExecutionController } from "./publisher/publisher-execution.controller";
 import { PublisherExecutionService } from "./publisher/publisher-execution.service";
+import { ScriptVersionQueryService } from "./scripts/script-version-query.service";
 
 @Module({
   controllers: [
@@ -50,6 +51,7 @@ import { PublisherExecutionService } from "./publisher/publisher-execution.servi
     PublicTravelService,
     ScriptService,
     PublisherExecutionService,
+    ScriptVersionQueryService,
     { provide: APP_GUARD, useClass: AuthGuard },
   ],
 })

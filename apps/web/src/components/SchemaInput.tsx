@@ -23,10 +23,11 @@ type Props = Omit<
   schema: RJSFSchema | boolean;
   formData: unknown;
   onChange(value: unknown): void;
+  onEdit?(): void;
 };
 
 export const SchemaInput = forwardRef<SchemaInputHandle, Props>(
-  function SchemaInput({ schema, formData, onChange, ...props }, ref) {
+  function SchemaInput({ schema, formData, onChange, onEdit, ...props }, ref) {
     const form = useRef<CoreForm>(null);
     const [jsonMode, setJsonMode] = useState(false);
     const [rawInput, setRawInput] = useState(
@@ -127,7 +128,10 @@ export const SchemaInput = forwardRef<SchemaInputHandle, Props>(
               aria-label="JSON参数输入"
               rows={4}
               value={rawInput}
-              onChange={(event) => setRawInput(event.target.value)}
+              onChange={(event) => {
+                setRawInput(event.target.value);
+                onEdit?.();
+              }}
             />
           </Form.Item>
         ) : (
@@ -137,7 +141,10 @@ export const SchemaInput = forwardRef<SchemaInputHandle, Props>(
             schema={schema as RJSFSchema}
             validator={validatorForSchema(schema)}
             formData={formData}
-            onChange={(event) => onChange(event.formData)}
+            onChange={(event, id) => {
+              onChange(event.formData);
+              if (id) onEdit?.();
+            }}
           />
         )}
         {!forceJSON && (

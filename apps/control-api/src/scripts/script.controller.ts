@@ -6,16 +6,59 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   Res,
 } from "@nestjs/common";
 import { Response } from "express";
 import { AppRequest } from "../common/http";
 import { ScriptService } from "./script.service";
+import { ScriptVersionQueryService } from "./script-version-query.service";
+import { invalidQuery } from "../common/pagination.service";
 
 @Controller("api/v1")
 export class ScriptController {
-  constructor(private readonly scripts: ScriptService) {}
+  constructor(
+    private readonly scripts: ScriptService,
+    private readonly versions: ScriptVersionQueryService,
+  ) {}
+
+  @Get("scripts/:id/versions")
+  versionsForScript(
+    @Req() request: AppRequest,
+    @Param("id") id: string,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    response.setHeader("Cache-Control", "no-store");
+    return this.versions.list(request.user!.id, id, query);
+  }
+
+  @Get("script-versions/:id")
+  async version(
+    @Req() request: AppRequest,
+    @Param("id") id: string,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    if (Object.keys(query).length) invalidQuery("版本详情不接受查询参数");
+    response.setHeader("Cache-Control", "no-store");
+    const version = await this.versions.get(request.user!.id, id);
+    response.setHeader("ETag", `"${version.revision}"`);
+    return version;
+  }
+
+  @Get("script-versions/:id/actions")
+  async actions(
+    @Req() request: AppRequest,
+    @Param("id") id: string,
+    @Query() query: Record<string, unknown>,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    if (Object.keys(query).length) invalidQuery("动作定义不接受查询参数");
+    response.setHeader("Cache-Control", "no-store");
+    return (await this.versions.get(request.user!.id, id)).actions;
+  }
 
   @Get("me/scripts")
   async list(

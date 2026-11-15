@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   App,
   Alert,
@@ -31,9 +32,24 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import { usePublisherPreview } from "../publisher-preview";
+import {
+  usePublisherPreview,
+  type PublisherScript,
+} from "../publisher-preview";
 import { Notice, PageHeading, Panel, Status, TileIcon } from "../components/ui";
 import { useWorkspace } from "../context";
+import { api, ApiError } from "../api";
+import {
+  usePublisherRecords,
+  type PublisherExecutionRecord,
+  executionRecordLabels,
+} from "../lib/publisher-execution";
+import type {
+  ScriptActionMetadata,
+  ScriptVersionMetadata,
+  ScriptVersionSummary,
+} from "../lib/script-versions";
+import type { RJSFSchema } from "@rjsf/utils";
 
 export function ScriptsPage() {
   const { scripts, createScript, loading, loadError } = usePublisherPreview();
@@ -219,16 +235,237 @@ const versionTabs = ["version", "test", "self", "impact"];
 
 export function VersionTestsPage() {
   const { id = "demo" } = useParams();
-  return <VersionTests key={id} id={id} />;
+  const { bootstrap } = useWorkspace();
+  return bootstrap.data_mode === "prototype" ? (
+    <VersionTests key={id} id={id} />
+  ) : (
+    <LiveVersionTests key={id} id={id} />
+  );
 }
 
-function VersionTests({ id }: { id: string }) {
+interface LiveVersionState {
+  version: ScriptVersionMetadata;
+  action: ScriptActionMetadata | undefined;
+  actionName: string | null;
+  versions: ScriptVersionSummary[];
+  hasMoreVersions: boolean;
+  loadingMore: boolean;
+  loadMore(): void;
+  switchVersion(id: string): void;
+  switchAction(name: string): void;
+  refresh(): void;
+  latestTest: PublisherExecutionRecord | undefined;
+  testing: boolean;
+  testError: Error | null;
+  retryTests(): void;
+  loadError: Error | null;
+  retryMetadata(): void;
+}
+
+function LiveTestSummary({ live }: { live: LiveVersionState }) {
+  if (live.testing) return <Spin />;
+  if (live.testError)
+    return (
+      <Alert
+        type="error"
+        showIcon
+        title="试运行记录加载失败"
+        description={live.testError.message}
+        action={<Button onClick={live.retryTests}>重试</Button>}
+      />
+    );
+  if (!live.latestTest)
+    return (
+      <Notice>
+        {live.action
+          ? "当前动作尚无试运行记录。"
+          : "选择动作后读取对应试运行记录。"}
+      </Notice>
+    );
+  const test = live.latestTest;
+  const route = new URLSearchParams({
+    tab: "trial",
+    script_id: live.version.script_id,
+    version: live.version.version,
+    action: live.action!.name,
+    record: test.id,
+  });
+  return (
+    <div className="version-live-test">
+      <p>运行状态　{executionRecordLabels[test.status] || test.status}</p>
+      <p>动作　{live.action!.name}</p>
+      <p>
+        测试判定　
+        {test.test_passed == null ? (
+          "尚无判定"
+        ) : (
+          <Status tone={test.test_passed ? "green" : "red"}>
+            {test.test_passed ? "通过" : "未通过"}
+          </Status>
+        )}
+      </p>
+      <Link to={`/publisher/builds?${route}`}>查看本次试运行</Link>
+    </div>
+  );
+}
+
+function LiveVersionTests({ id }: { id: string }) {
+  const { bootstrap } = useWorkspace();
+  const [params, setParams] = useSearchParams();
+  const versions = usePublisherRecords<ScriptVersionSummary>(
+    `scripts/${encodeURIComponent(id)}/versions`,
+    "",
+    true,
+  );
+  const choices = versions.data?.pages.flatMap((page) => page.items) || [];
+  const requested = params.get("version_id");
+  const versionId = requested === null ? choices[0]?.id : requested;
+  useEffect(() => {
+    if (requested === null && versionId) {
+      const next = new URLSearchParams(params);
+      next.set("version_id", versionId);
+      setParams(next, { replace: true });
+    }
+  }, [requested, versionId, params, setParams]);
+  const metadata = useQuery({
+    queryKey: [
+      "script-version",
+      bootstrap.user?.id,
+      bootstrap.user?.security_revision,
+      versionId,
+    ],
+    enabled: versionId !== undefined,
+    retry: false,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    queryFn: ({ signal }) =>
+      api<ScriptVersionMetadata>(
+        `/script-versions/${encodeURIComponent(versionId!)}`,
+        { signal },
+      ),
+  });
+  const version = metadata.data;
+  const actionName =
+    params.get("action") ??
+    version?.default_action ??
+    (version?.actions.length === 1 ? version.actions[0].name : null);
+  const action = version?.actions.find((item) => item.name === actionName);
+  const testSearch = new URLSearchParams();
+  if (versionId) testSearch.set("script_version_id", versionId);
+  if (action) testSearch.set("action", action.name);
+  const belongsToScript = version?.script_id.toLowerCase() === id.toLowerCase();
+  const tests = usePublisherRecords<PublisherExecutionRecord>(
+    "test-runs",
+    testSearch.toString(),
+    !!version && belongsToScript && !!action,
+  );
+  if ((versions.isLoading && versionId === undefined) || metadata.isLoading)
+    return <Spin />;
+  if (
+    (versions.isError && !versions.data && !version) ||
+    (metadata.isError && !metadata.data)
+  ) {
+    const error = metadata.error || versions.error;
+    if (error instanceof ApiError && error.status === 404)
+      return <Empty description="脚本版本不存在或已失效" />;
+    return (
+      <Alert
+        type="error"
+        showIcon
+        title="版本资料加载失败"
+        description={error?.message}
+        action={
+          <Button
+            onClick={() => {
+              void versions.refetch();
+              if (versionId) void metadata.refetch();
+            }}
+          >
+            重试
+          </Button>
+        }
+      />
+    );
+  }
+  if (!version || !belongsToScript)
+    return <Empty description="所选版本不存在或不属于当前脚本" />;
+  const options = choices.some((item) => item.id === version.id)
+    ? choices
+    : [version, ...choices];
+  const changeIdentity = (key: "version_id" | "action", value: string) => {
+    const next = new URLSearchParams(params);
+    next.set("version_id", version.id);
+    next.set(key, value);
+    if (key === "version_id") next.delete("action");
+    setParams(next);
+  };
+  const live: LiveVersionState = {
+    version,
+    action,
+    actionName,
+    versions: options,
+    hasMoreVersions: !!versions.hasNextPage,
+    loadingMore: versions.isFetchingNextPage,
+    loadMore: () => {
+      void versions.fetchNextPage();
+    },
+    switchVersion: (value) => changeIdentity("version_id", value),
+    switchAction: (value) => changeIdentity("action", value),
+    refresh: () => {
+      void metadata.refetch();
+    },
+    latestTest: action ? tests.data?.pages[0]?.items[0] : undefined,
+    testing: !!action && tests.isFetching,
+    testError: action ? tests.error : null,
+    retryTests: () => {
+      void tests.refetch();
+    },
+    loadError: metadata.error || versions.error,
+    retryMetadata: () => {
+      void versions.refetch();
+      void metadata.refetch();
+    },
+  };
+  return (
+    <VersionTests
+      key={`${version.id}:${version.revision}:${actionName || ""}`}
+      id={id}
+      live={live}
+    />
+  );
+}
+
+function VersionTests({ id, live }: { id: string; live?: LiveVersionState }) {
   const { bootstrap } = useWorkspace();
   const [params, setParams] = useSearchParams();
   const { scripts, loading } = usePublisherPreview();
-  const script = scripts.find(
+  const previewScript = scripts.find(
     (item) => item.id === (id === "demo" ? "table" : id),
   );
+  const script:
+    | (Omit<
+        PublisherScript,
+        "contentStatus" | "buildStatus" | "inputSchema"
+      > & {
+        contentStatus: string;
+        buildStatus: string;
+        inputSchema: RJSFSchema | boolean | null;
+      })
+    | undefined = live
+    ? {
+        id: live.version.script_id,
+        title: live.version.script_name,
+        purpose: live.version.description,
+        version: live.version.version,
+        contentStatus: live.version.content_status,
+        buildStatus: live.version.latest_build_status || "NOT_BUILT",
+        sourceDigest: live.version.source_digest || undefined,
+        inputSchema: live.action?.input_schema ?? null,
+        deployed: live.version.deployment_states.some(
+          (item) => item.status === "READY",
+        ),
+      }
+    : previewScript;
   const requestedTab = params.get("tab") || "self";
   const tab = versionTabs.includes(requestedTab) ? requestedTab : "self";
   const [input, setInput] = useState<unknown>(
@@ -239,13 +476,22 @@ function VersionTests({ id }: { id: string }) {
   const [schedule, setSchedule] = useState("manual");
   const [onceAt, setOnceAt] = useState<dayjs.Dayjs | null>(null);
   const [cron, setCron] = useState("0 9 * * *");
-  const [authorized, setAuthorized] = useState(true);
+  const [authorized, setAuthorized] = useState(!live);
   const [preview, setPreview] = useState(false);
+  const [dirty, setDirty] = useState(false);
   const form = useRef<SchemaInputHandle>(null);
   const { message, modal } = App.useApp();
-  if (loading) return <Spin />;
+  if (!live && loading) return <Spin />;
   if (!script) return <Empty description="脚本版本不存在或已失效" />;
-  const ready = script.buildStatus === "SUCCEEDED";
+  const ready = live
+    ? live.version.content_status === "READY" &&
+      live.version.artifact_available &&
+      live.version.artifact_build_status === "SUCCEEDED"
+    : script.buildStatus === "SUCCEEDED";
+  const buildSucceeded = script.buildStatus === "SUCCEEDED";
+  const schemaAvailable =
+    (!live || !!live.action?.input_schema_available) &&
+    script.inputSchema !== null;
   const inputSchema = script.inputSchema;
   const recordedVersion =
     bootstrap.data_mode === "prototype" &&
@@ -259,6 +505,7 @@ function VersionTests({ id }: { id: string }) {
       ? sourceDigest
       : recordedVersion?.sourceDigest;
   function validateConfiguration() {
+    if (!schemaAvailable) return false;
     if (!form.current?.validateForm()) return false;
     setInput(form.current.getValue());
     if (schedule === "once" && (!onceAt || onceAt.valueOf() <= Date.now())) {
@@ -271,6 +518,19 @@ function VersionTests({ id }: { id: string }) {
     }
     return true;
   }
+  function changeSelection(change: () => void) {
+    if (!dirty) {
+      change();
+      return;
+    }
+    modal.confirm({
+      title: "切换版本或动作",
+      content: "当前配置有未保存输入。继续后将加载目标定义，请核对参数与授权。",
+      okText: "切换并重新填写",
+      cancelText: "继续编辑",
+      onOk: change,
+    });
+  }
   return (
     <div className="version-tests-page">
       <PageHeading
@@ -281,6 +541,20 @@ function VersionTests({ id }: { id: string }) {
           </Status>
         }
       />
+      {live?.loadError && (
+        <Alert
+          className="publisher-record-error"
+          type="error"
+          showIcon
+          title="版本资料刷新失败"
+          description={live.loadError.message}
+          action={
+            <Button onClick={() => changeSelection(live.retryMetadata)}>
+              重试
+            </Button>
+          }
+        />
+      )}
       <div className="version-banner">
         <TileIcon name="code" />
         <div>
@@ -289,12 +563,18 @@ function VersionTests({ id }: { id: string }) {
             <Status tone={ready ? "green" : "purple"}>
               {script.contentStatus}
             </Status>{" "}
-            <Status tone={ready ? "blue" : "red"}>
-              {ready
-                ? "构建成功"
-                : script.buildStatus === "FAILED"
-                  ? "构建失败"
-                  : "尚未构建"}
+            <Status
+              tone={
+                buildSucceeded
+                  ? "blue"
+                  : script.buildStatus === "FAILED"
+                    ? "red"
+                    : "gray"
+              }
+            >
+              {script.buildStatus === "NOT_BUILT"
+                ? "尚未构建"
+                : `${live ? "最近构建" : "构建"}${executionRecordLabels[script.buildStatus] || script.buildStatus}`}
             </Status>
           </h2>
           <p>
@@ -335,34 +615,84 @@ function VersionTests({ id }: { id: string }) {
           <Panel title="本人自用配置">
             <Form.Item label="本人版本" colon={false}>
               <Select
-                value={script.version}
-                options={[
-                  {
-                    value: script.version,
-                    label: `${script.version}（${ready ? "构建成功" : "尚未就绪"}）`,
-                  },
-                ]}
-                disabled
+                aria-label="本人固定版本"
+                value={live?.version.id || script.version}
+                options={
+                  live
+                    ? live.versions.map((item) => ({
+                        value: item.id,
+                        label: `${item.version}（${item.content_status}）`,
+                      }))
+                    : [
+                        {
+                          value: script.version,
+                          label: `${script.version}（${ready ? "构建成功" : "尚未就绪"}）`,
+                        },
+                      ]
+                }
+                disabled={!live}
+                onChange={(value) => {
+                  if (live && value !== live.version.id)
+                    changeSelection(() => live.switchVersion(value));
+                }}
               />
             </Form.Item>
-            <SchemaInput
-              ref={form}
-              schema={inputSchema}
-              formData={input}
-              uiSchema={{ "ui:submitButtonOptions": { norender: true } }}
-              onChange={setInput}
-              showErrorList={false}
-              formContext={{
-                labelCol: { flex: "125px" },
-                wrapperCol: { flex: 1 },
-                colon: false,
-              }}
-            />
+            {live?.hasMoreVersions && (
+              <Button
+                className="version-load-more"
+                loading={live.loadingMore}
+                onClick={live.loadMore}
+              >
+                加载更多版本
+              </Button>
+            )}
+            {live && (live.version.actions.length > 1 || !live.action) && (
+              <Form.Item label="执行动作" colon={false}>
+                <Select
+                  aria-label="自用执行动作"
+                  value={live.actionName || undefined}
+                  placeholder="选择脚本动作"
+                  options={live.version.actions.map((item) => ({
+                    value: item.name,
+                    label: `${item.title}（${item.name}）`,
+                  }))}
+                  onChange={(value) => {
+                    if (value !== live.actionName)
+                      changeSelection(() => live.switchAction(value));
+                  }}
+                />
+              </Form.Item>
+            )}
+            {schemaAvailable && inputSchema !== null ? (
+              <SchemaInput
+                ref={form}
+                schema={inputSchema}
+                formData={input}
+                uiSchema={{ "ui:submitButtonOptions": { norender: true } }}
+                onChange={setInput}
+                onEdit={() => setDirty(true)}
+                showErrorList={false}
+                formContext={{
+                  labelCol: { flex: "125px" },
+                  wrapperCol: { flex: 1 },
+                  colon: false,
+                }}
+              />
+            ) : (
+              <Notice>
+                {live?.action
+                  ? "当前动作参数Schema不可用，请核对版本定义。"
+                  : "请选择当前版本已声明的动作。"}
+              </Notice>
+            )}
             <div className="self-schedule">
               <label>执行计划</label>
               <Radio.Group
                 value={schedule}
-                onChange={(event) => setSchedule(event.target.value)}
+                onChange={(event) => {
+                  setSchedule(event.target.value);
+                  setDirty(true);
+                }}
               >
                 <Radio value="manual">立即执行</Radio>
                 <Radio value="once">指定时间</Radio>
@@ -374,7 +704,10 @@ function VersionTests({ id }: { id: string }) {
                 aria-label="自用执行时间"
                 showTime
                 value={onceAt}
-                onChange={setOnceAt}
+                onChange={(value) => {
+                  setOnceAt(value);
+                  setDirty(true);
+                }}
               />
             )}{" "}
             {schedule === "cron" && (
@@ -382,21 +715,27 @@ function VersionTests({ id }: { id: string }) {
                 aria-label="Cron表达式"
                 placeholder="Cron表达式，例如 0 9 * * *"
                 value={cron}
-                onChange={(event) => setCron(event.target.value)}
+                onChange={(event) => {
+                  setCron(event.target.value);
+                  setDirty(true);
+                }}
               />
             )}
             <div className="self-authorization">
               <label>本人授权</label>
               <Checkbox
                 checked={authorized}
-                onChange={(event) => setAuthorized(event.target.checked)}
+                onChange={(event) => {
+                  setAuthorized(event.target.checked);
+                  setDirty(true);
+                }}
               >
                 仅本人使用（不对外提供服务）
               </Checkbox>
             </div>
             <div className="self-configuration-actions">
               <Button
-                disabled={inputSchema === false}
+                disabled={!schemaAvailable || inputSchema === false}
                 onClick={() => {
                   if (validateConfiguration()) setPreview(true);
                 }}
@@ -405,7 +744,12 @@ function VersionTests({ id }: { id: string }) {
               </Button>
               <Button
                 type="primary"
-                disabled={!authorized || !ready || inputSchema === false}
+                disabled={
+                  !authorized ||
+                  !ready ||
+                  !schemaAvailable ||
+                  inputSchema === false
+                }
                 onClick={() => {
                   if (validateConfiguration())
                     void message.info("自用调度接口尚未接通，未创建Run");
@@ -420,9 +764,17 @@ function VersionTests({ id }: { id: string }) {
           </Panel>
           <aside>
             <Panel
-              title={ready && recordedVersion ? "最近测试通过" : "最近测试状态"}
+              title={
+                live
+                  ? "最近试运行"
+                  : ready && recordedVersion
+                    ? "最近测试通过"
+                    : "最近测试状态"
+              }
             >
-              {ready && recordedVersion ? (
+              {live ? (
+                <LiveTestSummary live={live} />
+              ) : ready && recordedVersion ? (
                 <div className="version-test-success">
                   <CheckCircleFilled />
                   <div>
@@ -442,9 +794,13 @@ function VersionTests({ id }: { id: string }) {
               )}
               <Button
                 type="primary"
-                disabled={!ready}
+                disabled={!ready || !schemaAvailable || inputSchema === false}
                 onClick={() =>
-                  void message.info("测试执行器尚未接入，保留已有原型测试记录")
+                  void message.info(
+                    live
+                      ? "测试执行器尚未接入"
+                      : "测试执行器尚未接入，保留已有原型测试记录",
+                  )
                 }
               >
                 运行测试
@@ -464,12 +820,22 @@ function VersionTests({ id }: { id: string }) {
                   : "当前版本自用任务元数据待接入。"}
               </Notice>
               <div className="version-management-actions">
-                <Link to={`/publisher/deployments?script=${script.id}`}>
+                <Link
+                  to={
+                    live
+                      ? `/publisher/deployments?${new URLSearchParams({ script_version_id: live.version.id })}`
+                      : `/publisher/deployments?script=${script.id}`
+                  }
+                >
                   <Button>去部署</Button>
                 </Link>
-                <Link to={`/publisher/services/${script.id}/edit`}>
-                  <Button>创建服务</Button>
-                </Link>
+                {live ? (
+                  <Button disabled>创建服务</Button>
+                ) : (
+                  <Link to={`/publisher/services/${script.id}/edit`}>
+                    <Button>创建服务</Button>
+                  </Link>
+                )}
                 <Button
                   danger
                   disabled={!recordedVersion}
@@ -503,14 +869,53 @@ function VersionTests({ id }: { id: string }) {
               <pre>{JSON.stringify(script.inputSchema, null, 2)}</pre>
             </dd>
           </dl>
-          <Link to={`/publisher/scripts/${script.id}/edit`}>
-            <Button>编辑新草稿</Button>
-          </Link>
+          {live && (
+            <>
+              <p>固定版本编号　{live.version.id}</p>
+              <p>
+                已绑定构建状态　{live.version.artifact_build_status || "未绑定"}
+              </p>
+              <p>
+                制品对象登记　
+                {live.version.artifact_available ? "可用" : "当前不可用"}
+              </p>
+              <p>
+                关联部署状态　
+                {live.version.deployment_states
+                  .map((item) => `${item.status} ${item.count}`)
+                  .join("、") || "暂无关联"}
+              </p>
+              <p>
+                当前服务状态　
+                {live.version.current_service_states
+                  .map((item) => `${item.status} ${item.count}`)
+                  .join("、") || "暂无关联"}
+              </p>
+              <Button onClick={() => changeSelection(live.refresh)}>
+                刷新版本资料
+              </Button>
+            </>
+          )}
+          {!live ? (
+            <Link to={`/publisher/scripts/${script.id}/edit`}>
+              <Button>编辑新草稿</Button>
+            </Link>
+          ) : (
+            <Button disabled>编辑新草稿</Button>
+          )}
         </Panel>
       ) : tab === "test" ? (
         <Panel title="构建与试运行">
-          <p>构建状态　{ready ? "构建成功" : "构建未就绪"}</p>
-          <Link to="/publisher/builds">
+          <p>
+            构建状态　{executionRecordLabels[script.buildStatus] || "尚未构建"}
+          </p>
+          <Link
+            to={
+              live
+                ? `/publisher/builds?${new URLSearchParams({ script_id: live.version.script_id, version: live.version.version, ...(live.version.latest_build_id ? { record: live.version.latest_build_id } : {}) })}`
+                : "/publisher/builds"
+            }
+          >
             <Button>查看构建与测试记录</Button>
           </Link>
         </Panel>
@@ -519,7 +924,13 @@ function VersionTests({ id }: { id: string }) {
           <Notice>
             发布新版本后，已有订单继续引用成交时固定的版本与价格快照。
           </Notice>
-          <Link to="/publisher/deployments">
+          <Link
+            to={
+              live
+                ? `/publisher/deployments?${new URLSearchParams({ script_version_id: live.version.id })}`
+                : "/publisher/deployments"
+            }
+          >
             <Button>查看关联部署</Button>
           </Link>
         </Panel>
@@ -536,6 +947,13 @@ function VersionTests({ id }: { id: string }) {
         <pre>
           {JSON.stringify(
             {
+              ...(live
+                ? {
+                    script_version_id: live.version.id,
+                    action: live.action?.name,
+                    schema_digest: live.action?.input_schema_digest,
+                  }
+                : {}),
               input,
               schedule: {
                 type: schedule,

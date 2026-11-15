@@ -38,6 +38,7 @@ import "./styles/attractions.css";
 import "./styles/dashboards.css";
 import "./styles/publisher-editors.css";
 import "./styles/schema-input.css";
+import "./styles/script-versions.css";
 
 const client = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },

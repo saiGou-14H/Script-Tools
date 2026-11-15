@@ -1,0 +1,24 @@
+.build-action-filter {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  overflow-wrap: anywhere;
+}
+.build-action-filter > span {
+  min-width: 0;
+}
+.version-load-more {
+  margin-bottom: 12px;
+}
+.version-live-test p {
+  margin-bottom: 12px;
+}
+.page-S04 .version-tests-page > .panel pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.page-S04 .version-tests-page > .panel p {
+  overflow-wrap: anywhere;
+}

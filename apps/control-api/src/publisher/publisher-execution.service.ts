@@ -6,6 +6,7 @@ import {
   uuidPattern,
 } from "../common/pagination.service";
 import { ScriptService } from "../scripts/script.service";
+import { artifactRegistrationAvailable } from "./artifact-metadata";
 
 export type PublisherRecordKind = "builds" | "test-runs" | "deployments";
 
@@ -63,9 +64,7 @@ const resources = {
         THEN x.runtime_snapshot->>'execution_mode' ELSE NULL END AS configured_execution_mode,
       CASE WHEN p.limits->>'cpu' ~ '^(0|[1-9][0-9]*)([.][0-9]+)?$' THEN p.limits->>'cpu' ELSE NULL END AS cpu,
       CASE WHEN p.limits->>'memory_mib' ~ '^(0|[1-9][0-9]*)$' THEN p.limits->>'memory_mib' ELSE NULL END AS memory_mib,
-      COALESCE(b.script_version_id=x.script_version_id AND b.status='SUCCEEDED' AND b.artifact_digest=a.digest
-        AND a.digest ~ '^(sha256:)?[a-f0-9]{64}$' AND regexp_replace(a.digest,'^sha256:','')=o.sha256
-        AND o.status='READY' AND o.deleted_at IS NULL AND (o.expires_at IS NULL OR o.expires_at>now()),false) AS artifact_available,
+      ${artifactRegistrationAvailable("x.script_version_id")} AS artifact_available,
       (x.health_evidence NOT IN ('null'::jsonb,'{}'::jsonb,'[]'::jsonb)) AS has_health_evidence,
       COALESCE((SELECT jsonb_agg(to_jsonb(linked) ORDER BY linked.title,linked.id) FROM (
         SELECT service.id,service.title,service.status,COALESCE(bool_or(service.current_release_id=release.id),false) AS is_current
@@ -137,6 +136,7 @@ export class PublisherExecutionService {
       "status",
       "limit",
       "cursor",
+      "action",
     ];
     if (Object.keys(query).some((key) => !allowed.includes(key)))
       invalidQuery("包含不支持的记录筛选参数");
@@ -148,6 +148,10 @@ export class PublisherExecutionService {
       return value;
     }
     const q = scalar("q");
+    const isTest = kind === "test-runs";
+    if (query.action !== undefined && !isTest)
+      invalidQuery("当前记录类型不支持动作筛选");
+    const action = isTest ? scalar("action", 128) : null;
     const name = scalar("script_name", 120);
     const scriptId = scalar("script_id")?.toLowerCase() || null;
     if (scriptId && !uuidPattern.test(scriptId))
@@ -172,7 +176,16 @@ export class PublisherExecutionService {
     const scope = JSON.stringify([
       owner,
       kind,
-      { q, name, scriptId, version, status, versionId, limit },
+      {
+        q,
+        name,
+        scriptId,
+        version,
+        status,
+        versionId,
+        limit,
+        ...(action ? { action } : {}),
+      },
       record,
     ]);
     const cursor = await this.pagination.decode(scope, query.cursor);
@@ -188,6 +201,7 @@ export class PublisherExecutionService {
         AND ($7::uuid IS NULL OR x.id=$7)
         AND ($8::timestamptz IS NULL OR (x.created_at,x.id)<($8,$9::uuid))
         AND ($11::uuid IS NULL OR v.script_id=$11)
+        ${isTest ? "AND ($12::text IS NULL OR x.action=$12)" : ""}
       ORDER BY x.created_at DESC,x.id DESC LIMIT $10`,
       [
         owner,
@@ -201,6 +215,7 @@ export class PublisherExecutionService {
         cursor?.id || null,
         limit + 1,
         scriptId,
+        ...(isTest ? [action] : []),
       ],
     );
     return this.pagination.page(scope, result.rows, limit);
