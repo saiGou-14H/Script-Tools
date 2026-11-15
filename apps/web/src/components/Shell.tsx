@@ -31,6 +31,14 @@ const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
       P02: "order", C04: "file", C06: "layers", C22: "ticket",
       C12: "folder", C13: "clock", C16: "message",
     },
+    C02: {
+      C04: "cart", C06: "layers", C22: "ticket", C12: "folder",
+      C13: "clock", C16: "message", C17: "bell",
+    },
+    C03: {
+      C04: "file", C06: "order", C22: "ticket", C12: "chart",
+      C13: "clock", C16: "message", C17: "bell",
+    },
     S03: {
       S07: "order", S09: "money", S10: "calendar", S05: "layers",
       S06: "cube", S11: "chart", S12: "history", S13: "database", C21: "user",
@@ -308,7 +316,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
   const navigate = useNavigate();
   const location = useLocation();
   const searchRef = useRef<InputRef>(null);
-  const quickSearch = (["P02", "P03", "P04"].includes(pageId) && role === "USER") || [
+  const quickSearch = (["P02", "P03", "P04", "C02"].includes(pageId) && role === "USER") || [
     "S01",
     "C05",
     "C06",

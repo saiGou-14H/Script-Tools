@@ -327,6 +327,7 @@ try {
     "apps/web/src/styles/schema-input.css",
     "apps/web/src/styles/consumer.css",
     "apps/web/src/pages/Checkout.tsx",
+    "apps/web/src/prototype.tsx",
     "apps/web/src/pages/ConfigureService.tsx",
     "apps/web/src/pages/PublisherExecution.tsx",
     "apps/web/src/lib/publisher-execution.ts",

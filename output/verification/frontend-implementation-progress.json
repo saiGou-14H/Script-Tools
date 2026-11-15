@@ -1,6 +1,6 @@
 {
   "project_name": "Script Tools",
-  "updated_at": "2026-11-15T04:12:35.248Z",
+  "updated_at": "2026-11-15T04:51:49.773Z",
   "goal_status": "active",
   "target": {
     "page_definitions": 66,
@@ -137,7 +137,7 @@
     {
       "report": "output/verification/consumer-pages/report.json",
       "result": "PASS",
-      "checks": 6
+      "checks": 10
     },
     {
       "report": "output/verification/personal-pages/report.json",
@@ -322,7 +322,7 @@
     {
       "report": "output/verification/schema-input-pages/report.json",
       "result": "PASS",
-      "checks": 6
+      "checks": 7
     },
     {
       "report": "output/verification/publisher-records/report.json",

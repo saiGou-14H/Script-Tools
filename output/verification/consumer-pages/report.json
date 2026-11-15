@@ -1,9 +1,13 @@
 {
-  "date": "2026-11-15T04:08:22.338Z",
+  "date": "2026-11-15T04:49:04.220Z",
   "checks": [
+    "same-turn prototype submissions preserve one cloned snapshot, cancellation replay and separate purchase intents",
     "confirm terms and submit once creates a prototype order and opens cashier",
     "payment query preserves pending state without a trusted receipt",
+    "prototype deadline ticks from an absolute expiry and reaching zero preserves unconfirmed payment facts",
     "cancelling unpaid preview order updates order list and closed filter",
+    "legacy orders expose missing snapshot fields and paid orders retain their contract with cancellation disabled",
+    "checkout and cashier fit a 390px viewport through their normal routes",
     "purchased entitlement filters and task navigation work",
     "run detail keeps logs, outputs and notification states in their own tabs",
     "new consumer pages render without browser exceptions"
@@ -16,6 +20,18 @@
     "USER-C06",
     "USER-C11"
   ],
+  "layouts": {
+    "USER-C02": {
+      "width": 1814,
+      "height": 868,
+      "helpBottom": 845.0625
+    },
+    "USER-C03": {
+      "width": 1814,
+      "height": 868,
+      "helpBottom": 859.90625
+    }
+  },
   "errors": [],
   "result": "PASS"
 }

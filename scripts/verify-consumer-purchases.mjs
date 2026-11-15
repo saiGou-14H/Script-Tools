@@ -390,6 +390,12 @@ try {
   await frozen.getByRole("button", { name: "提交订单", exact: true }).click();
   await expect(frozen.locator(".page-heading h1")).toHaveText("收银台");
   const orderId = new URL(frozen.url()).pathname.split("/")[2];
+  await expect(frozen.locator(".refund-rule-highlight")).toHaveText(
+    "成交快照退款规则",
+  );
+  await expect(frozen.locator(".cashier-order-strip")).toContainText(
+    "92233720368547758.07",
+  );
   catalogChanged = true;
   await frozen
     .locator(".sidebar")
@@ -411,6 +417,13 @@ try {
     "成交快照退款规则",
   );
   await expect(frozen.locator(".contract-definition")).toContainText("10天");
+  await frozen.getByRole("button", { name: "去支付", exact: true }).click();
+  await expect(frozen.locator(".refund-rule-highlight")).toHaveText(
+    "成交快照退款规则",
+  );
+  await expect(frozen.locator(".cashier-order-strip")).toContainText(
+    "92233720368547758.07",
+  );
   report.checks.push(
     "new preview orders preserve their purchased service contract and BIGINT amount across later catalog changes",
   );

@@ -19,8 +19,13 @@ export interface PreviewOrder {
   amountMinor: string;
   payment: "PAID" | "UNPAID";
   fulfillment:
-    "AVAILABLE" | "RUNNING" | "WAITING_PAYMENT" | "CLOSED" | "COMPLETED";
+    | "AVAILABLE"
+    | "RUNNING"
+    | "WAITING_PAYMENT"
+    | "CLOSED"
+    | "COMPLETED";
   createdAt: string;
+  paymentExpiresAt?: string;
   serviceId?: string;
   input?: unknown;
   schemaDigest?: string;
@@ -212,9 +217,18 @@ const PrototypeContext = createContext<PrototypeContextValue | null>(null);
 
 export function PrototypeProvider({ children }: { children: ReactNode }) {
   const { bootstrap } = useWorkspace();
-  const [orders, setOrders] = useState<PreviewOrder[]>(
-    bootstrap.data_mode === "prototype" ? initialOrders : [],
+  const [orders, setOrders] = useState<PreviewOrder[]>(() =>
+    bootstrap.data_mode === "prototype"
+      ? initialOrders.map((order) => ({
+          ...order,
+          paymentExpiresAt:
+            order.payment === "UNPAID"
+              ? new Date(Date.now() + 10 * 60_000).toISOString()
+              : undefined,
+        }))
+      : [],
   );
+  const ordersRef = useRef(orders);
   const [readNotificationIds, setReadNotificationIds] = useState(
     new Set(["refund"]),
   );
@@ -269,7 +283,7 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
     if (bootstrap.data_mode !== "prototype")
       throw new Error("当前环境需要配置交易接口");
     const id = `PREVIEW-${requestKey}`;
-    const existing = orders.find((order) => order.id === id);
+    const existing = ordersRef.current.find((order) => order.id === id);
     if (existing) return existing;
     if (!serviceAvailable(service)) throw new Error("服务当前不可购买");
     const order: PreviewOrder = {
@@ -282,24 +296,23 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
       payment: "UNPAID",
       fulfillment: "WAITING_PAYMENT",
       createdAt: serviceDate(new Date().toISOString()),
+      paymentExpiresAt: new Date(Date.now() + 10 * 60_000).toISOString(),
       serviceId: service.id,
       input: structuredClone(input),
       schemaDigest: service.input_schema_digest,
       serviceSnapshot: structuredClone(service),
     };
-    setOrders((previous) =>
-      previous.some((item) => item.id === id) ? previous : [order, ...previous],
-    );
+    ordersRef.current = [order, ...ordersRef.current];
+    setOrders(ordersRef.current);
     return order;
   }
   function cancelUnpaidOrder(id: string) {
-    setOrders((previous) =>
-      previous.map((order) =>
-        order.id === id && order.payment === "UNPAID"
-          ? { ...order, fulfillment: "CLOSED" }
-          : order,
-      ),
+    ordersRef.current = ordersRef.current.map((order) =>
+      order.id === id && order.payment === "UNPAID"
+        ? { ...order, fulfillment: "CLOSED" }
+        : order,
     );
+    setOrders(ordersRef.current);
   }
   return (
     <PrototypeContext.Provider

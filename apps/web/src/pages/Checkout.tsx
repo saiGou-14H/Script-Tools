@@ -22,7 +22,11 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import { findPreviewOrder, usePrototype } from "../prototype";
+import {
+  findPreviewOrder,
+  usePrototype,
+  type PreviewOrder,
+} from "../prototype";
 import { useWorkspace } from "../context";
 import { PageHeading, Panel, Status, TileIcon } from "../components/ui";
 import { useServices, currency } from "./Market";
@@ -69,6 +73,7 @@ export function CheckoutPage() {
     service?.id,
     service?.release_id,
     service?.price_plan_id,
+    service?.input_schema_digest,
     bootstrap.data_mode,
   ]);
   if (isPending) return <Skeleton active />;
@@ -95,13 +100,18 @@ export function CheckoutPage() {
     bootstrap.data_mode === "prototype" &&
     service.input_schema_digest === "schema-table" &&
     typeof service.input_schema === "object";
-  const exampleErrors = tableExample
-    ? validatorForSchema(service.input_schema).validateFormData(
-        tableExampleInput,
-        service.input_schema as RJSFSchema,
-      ).errors
-    : [];
-  const hasTableExample = tableExample && exampleErrors.length === 0;
+  let hasTableExample = false;
+  if (tableExample) {
+    try {
+      hasTableExample =
+        validatorForSchema(service.input_schema).validateFormData(
+          tableExampleInput,
+          service.input_schema as RJSFSchema,
+        ).errors.length === 0;
+    } catch {
+      // SchemaInput renders compilation errors and blocks submission.
+    }
+  }
   function submit() {
     if (!service || !accepted || !available) return;
     if (!hasTableExample && !form.current?.validateForm()) return;
@@ -161,7 +171,7 @@ export function CheckoutPage() {
               <div>
                 <b>输入文件</b>
                 <span>
-                  <TileIcon name="file" color="purple" />
+                  <span className="checkout-file-format">CSV</span>
                   <span>
                     <strong>客户数据-示例.csv</strong>
                     <small>CSV · 12.3 KB</small>
@@ -196,6 +206,7 @@ export function CheckoutPage() {
                 />
               )}
               <SchemaInput
+                key={`${service.id}-${service.release_id}-${service.price_plan_id}-${service.input_schema_digest}`}
                 ref={form}
                 schema={service.input_schema}
                 uiSchema={{
@@ -291,6 +302,34 @@ export function CheckoutPage() {
 const paymentPixels = [
   0, 1, 3, 5, 7, 9, 12, 13, 16, 18, 19, 22, 24, 26, 29, 31, 34, 35,
 ];
+
+function PaymentDeadline({ order }: { order: PreviewOrder }) {
+  const [now, setNow] = useState(Date.now);
+  const expiresAt = Date.parse(order.paymentExpiresAt || "");
+  const isWaiting =
+    order.payment === "UNPAID" && order.fulfillment !== "CLOSED";
+  useEffect(() => {
+    if (!isWaiting || !Number.isFinite(expiresAt)) return;
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, [isWaiting, expiresAt]);
+  if (order.payment === "PAID")
+    return <div className="payment-countdown">支付已确认</div>;
+  if (!isWaiting) return <div className="payment-countdown">订单已关闭</div>;
+  if (!Number.isFinite(expiresAt))
+    return <div className="payment-countdown">支付期限待载入</div>;
+  const seconds = Math.max(0, Math.ceil((expiresAt - now) / 1000));
+  const remaining = `${Math.floor(seconds / 60)
+    .toString()
+    .padStart(2, "0")}:${(seconds % 60).toString().padStart(2, "0")}`;
+  return (
+    <div className="payment-countdown" role="timer" aria-live="off">
+      {seconds > 0 ? "支付剩余时间" : "支付期限已到"}
+      <strong>{remaining}</strong>
+    </div>
+  );
+}
+
 export function CashierPage() {
   const { orderId } = useParams();
   const { orders, cancelUnpaidOrder } = usePrototype();
@@ -304,6 +343,10 @@ export function CashierPage() {
   const navigate = useNavigate();
   if (!order) return <Empty description="订单不存在或已失效" />;
   const amount = currency(order.amountMinor);
+  const refundRule =
+    order.contract?.refundRule ||
+    order.serviceSnapshot?.refund_policy.summary ||
+    "退款规则待载入";
   function cancel() {
     if (!order) return;
     modal.confirm({
@@ -348,9 +391,9 @@ export function CashierPage() {
                   value={channel}
                   onChange={(event) => setChannel(event.target.value)}
                 >
-                  <Radio.Button value="demo-a">
+                  <Radio value="demo-a">
                     <WalletOutlined /> 示例支付渠道A
-                  </Radio.Button>
+                  </Radio>
                 </Radio.Group>
               </section>
               <section className="payment-illustration">
@@ -366,18 +409,20 @@ export function CashierPage() {
                   ))}
                 </div>
                 <b>支付界面示意</b>
-                <div className="payment-countdown">
-                  支付剩余时间 <strong>09:42</strong>
-                </div>
+                <PaymentDeadline key={order.id} order={order} />
               </section>
               <section className="payment-status">
                 <p>支付状态</p>
                 <Status tone={order.payment === "PAID" ? "green" : "orange"}>
-                  <ClockCircleOutlined />{" "}
-                  {order.fulfillment === "CLOSED"
-                    ? "订单已关闭"
-                    : order.payment === "PAID"
-                      ? "已支付"
+                  {order.payment === "PAID" ? (
+                    <CheckCircleFilled />
+                  ) : (
+                    <ClockCircleOutlined />
+                  )}{" "}
+                  {order.payment === "PAID"
+                    ? "已支付"
+                    : order.fulfillment === "CLOSED"
+                      ? "订单已关闭"
                       : "等待支付"}
                 </Status>
                 <Button
@@ -430,7 +475,7 @@ export function CashierPage() {
               <dt>服务名称</dt>
               <dd>{order.title}</dd>
               <dt>服务类型</dt>
-              <dd>数据/文件工具</dd>
+              <dd>{order.serviceSnapshot?.category || "服务类型待载入"}</dd>
               <dt>下单日期</dt>
               <dd>{order.createdAt}</dd>
               <dt>应付金额</dt>
@@ -439,7 +484,7 @@ export function CashierPage() {
           </Panel>
           <Panel title="退款规则">
             <p>本服务未达目标时的退款规则，由发布者选择并在购买前展示。</p>
-            <div className="refund-rule-highlight">目标未达成全退服务费。</div>
+            <div className="refund-rule-highlight">{refundRule}</div>
           </Panel>
         </aside>
       </div>

@@ -188,6 +188,16 @@ try {
   report.checks.push(
     "Unresolvable definitions expose editable JSON and validation feedback while retaining the application route",
   );
+  await page.goto(base + "/checkout?service=" + table.id);
+  await expect(
+    page.getByText("参数Schema无法编译，请核对定义。", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "提交订单", exact: true }).click();
+  await expect(page).toHaveURL(/\/checkout\?service=/);
+  assert.deepEqual(report.errors, []);
+  report.checks.push(
+    "Checkout rejects an unresolvable publisher schema before using the table example and keeps editable validation feedback",
+  );
   report.result = "PASS";
 } catch (error) {
   report.result = "FAIL";

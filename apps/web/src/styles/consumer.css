@@ -1,3 +1,24 @@
+@media (min-width: 1001px) {
+  .app-shell.page-C02 .global-search {
+    left: 34.4%;
+    width: 33.4%;
+    max-width: 606px;
+  }
+  .app-shell.page-C03 .global-search {
+    left: 33.8%;
+    width: 35.4%;
+    max-width: 643px;
+  }
+}
+.app-shell.page-C02 .nav-item {
+  height: 31.5px;
+  font-size: 16px;
+  gap: 17px;
+}
+.app-shell.page-C03 .nav-item {
+  font-size: 16px;
+  gap: 17px;
+}
 .page-C02 {
   --sidebar-width: 230px;
   --header-height: 56px;
@@ -70,6 +91,8 @@
 }
 .checkout-service > div:nth-child(2) {
   flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .checkout-service h2 {
   font-size: 23px;
@@ -84,8 +107,8 @@
 }
 .checkout-service > .muted {
   text-align: right;
-  white-space: nowrap;
-  font-size: 13px;
+  font-size: 15px;
+  overflow-wrap: anywhere;
 }
 .checkout-contract h3 {
   margin: 14px 0 12px;
@@ -126,14 +149,32 @@
   align-items: center;
   gap: 15px;
   padding: 7px 18px;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 22px;
+  min-width: 0;
+  flex-wrap: wrap;
+  overflow-wrap: anywhere;
 }
 .checkout-input-summary .tile-icon {
   width: 42px;
   height: 43px;
   font-size: 24px;
 }
+.checkout-file-format {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 43px;
+  border-radius: 9px;
+  background: #e9e1ff;
+  color: #4d2deb;
+  font-size: 14px;
+  font-weight: 700;
+}
 .checkout-input-summary small {
+  font-size: 14px;
+  line-height: 20px;
   display: block;
   margin-top: 3px;
 }
@@ -246,6 +287,8 @@
   --header-height: 62px;
 }
 .page-C03 .main-content {
+  padding-top: calc(var(--header-height) + 21px);
+  padding-bottom: 14px;
   padding-left: 34px;
   padding-right: 24px;
 }
@@ -256,7 +299,7 @@
   align-items: start;
 }
 .cashier-info {
-  padding: 13px 24px;
+  padding: 11px 24px;
   background: linear-gradient(110deg, #e8edff, #e2e6ff);
   color: #1835dc;
   border: 1px solid #bbcaff;
@@ -266,24 +309,34 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 19px;
 }
 .cashier-info .anticon {
   font-size: 23px;
+}
+.cashier-main {
+  margin-bottom: 14px;
 }
 .cashier-main .panel-body {
   padding: 24px 26px;
 }
 .cashier-order-strip {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1.28fr) minmax(0, 1fr) minmax(0, 1fr) minmax(
+      0,
+      0.8fr
+    );
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding-bottom: 23px;
+  padding-bottom: 17px;
   border-bottom: 1px solid #e3e8f1;
-  font-size: 15px;
+  font-size: 18px;
+  line-height: 28px;
 }
 .cashier-order-strip > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
   border-right: 1px solid #dce2ef;
   padding-right: 20px;
 }
@@ -296,24 +349,35 @@
 }
 .cashier-order-strip strong {
   font-size: 29px;
+  line-height: 40px;
   color: #1555ff;
 }
 .payment-content {
   display: grid;
-  grid-template-columns: 1.1fr 1.4fr 1.08fr;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.36fr) minmax(0, 1.05fr);
   padding-top: 30px;
-  min-height: 315px;
+  min-height: 312px;
 }
 .payment-content > section + section {
   border-left: 1px solid #e7ecf6;
 }
+.payment-channel {
+  padding: 0 30px 0 4px;
+}
+.payment-channel .ant-radio-group {
+  display: block;
+}
 .payment-channel h2 {
   font-size: 21px;
-  margin: 0 0 25px;
+  margin: -14px 0 25px;
 }
-.payment-channel .ant-radio-button-wrapper {
+.payment-channel .ant-radio-wrapper {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  width: 100%;
   height: 61px;
-  line-height: 59px;
+  line-height: normal;
   border: 2px solid #3366ff;
   color: #162345;
   font-size: 18px;
@@ -327,14 +391,15 @@
   margin-right: 10px;
   vertical-align: middle;
 }
-.payment-channel .ant-radio-button-wrapper-checked::before {
-  content: "◉";
-  position: static;
-  display: inline;
-  color: #1555ff;
-  font-size: 23px;
-  margin-right: 14px;
-  background: none;
+.payment-channel .ant-radio-wrapper > span:last-child {
+  display: flex;
+  align-items: center;
+  padding-inline-start: 18px;
+  font-weight: 600;
+}
+.payment-channel .ant-radio-inner {
+  width: 22px;
+  height: 22px;
 }
 .payment-illustration {
   display: flex;
@@ -358,8 +423,17 @@
   content: "";
   position: absolute;
   inset: 13px;
-  border: 3px dashed #9aa5b6;
-  border-radius: 10px;
+  background:
+    linear-gradient(#9aa5b6, #9aa5b6) left top / 22px 3px,
+    linear-gradient(#9aa5b6, #9aa5b6) left top / 3px 22px,
+    linear-gradient(#9aa5b6, #9aa5b6) right top / 22px 3px,
+    linear-gradient(#9aa5b6, #9aa5b6) right top / 3px 22px,
+    linear-gradient(#9aa5b6, #9aa5b6) left bottom / 22px 3px,
+    linear-gradient(#9aa5b6, #9aa5b6) left bottom / 3px 22px,
+    linear-gradient(#9aa5b6, #9aa5b6) right bottom / 22px 3px,
+    linear-gradient(#9aa5b6, #9aa5b6) right bottom / 3px 22px;
+  background-repeat: no-repeat;
+  border-radius: 5px;
 }
 .payment-code i {
   border-radius: 1px;
@@ -374,14 +448,17 @@
 }
 .payment-countdown {
   background: #eaf2ff;
-  padding: 7px 32px;
+  padding: 4px 28px;
+  line-height: 36px;
   border-radius: 24px;
   color: #5d6c84;
   font-size: 17px;
 }
 .payment-countdown strong {
   color: #1555ff;
-  font-size: 25px;
+  font-size: 29px;
+  line-height: 36px;
+  font-variant-numeric: tabular-nums;
   margin-left: 15px;
 }
 .payment-status {
@@ -389,14 +466,16 @@
   flex-direction: column;
   align-items: center;
   padding: 22px 0 0 30px;
-  gap: 16px;
+  gap: 10px;
 }
 .payment-status > p {
-  font-size: 19px;
+  font-size: 20px;
+  line-height: 28px;
 }
 .payment-status > .status {
-  font-size: 19px;
-  padding: 10px 20px;
+  font-size: 20px;
+  line-height: 28px;
+  padding: 6px 18px;
   border-radius: 24px;
 }
 .payment-status > .ant-btn {
@@ -407,13 +486,19 @@
 }
 .payment-status > .ant-btn-primary {
   color: #fff;
-  margin-top: 23px;
+  margin-top: 36px;
+}
+.payment-status > .ant-btn + .ant-btn {
+  margin-top: 6px;
+}
+.cashier-reminder {
+  margin-bottom: 0;
 }
 .cashier-reminder .panel-body {
   background: linear-gradient(100deg, #f0f5ff, #e9f1ff);
   margin: 5px;
   border-radius: 8px;
-  padding: 12px 20px;
+  padding: 16px 20px;
 }
 .cashier-reminder h3 {
   font-size: 18px;
@@ -425,39 +510,49 @@
 .cashier-reminder ul {
   margin: 13px 0 0;
   padding-left: 25px;
-  line-height: 1.9;
-  font-size: 14px;
+  line-height: 26px;
+  font-size: 16px;
 }
 .cashier-reminder li::marker {
   color: #1555ff;
 }
+.cashier-grid > aside .panel-heading {
+  padding: 12px 22px;
+}
 .cashier-grid > aside .panel-heading h2 {
-  font-size: 23px;
+  font-size: 22px;
 }
 .cashier-grid > aside .panel-body {
-  padding-top: 12px;
+  padding: 10px 22px 12px;
 }
 .cashier-grid > aside dl {
-  display: block;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.7fr);
+  gap: 0;
   margin: 0;
 }
 .cashier-grid > aside dt {
-  float: left;
-  clear: both;
-  padding: 10px 0;
-  font-size: 15px;
+  padding: 8px 0;
+  font-size: 18px;
+  line-height: 24px;
+  border-bottom: 1px solid #edf0f5;
 }
 .cashier-grid > aside dd {
   text-align: right;
-  padding: 10px 0;
+  padding: 8px 0;
   border-bottom: 1px solid #edf0f5;
-  font-size: 16px;
+  font-size: 18px;
+  line-height: 24px;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
+.cashier-grid > aside dt:nth-last-child(2),
 .cashier-grid > aside dd:last-child {
   border: 0;
 }
 .cashier-grid > aside dd.price-blue {
   font-size: 26px;
+  line-height: 36px;
 }
 .cashier-grid > aside .panel-body > p {
   font-size: 15px;
@@ -1278,7 +1373,7 @@
     display: none;
   }
   .cashier-order-strip {
-    flex-wrap: wrap;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
   .payment-content {
     grid-template-columns: 1fr 1fr;
@@ -1288,6 +1383,7 @@
     margin-bottom: 15px;
   }
   .payment-channel h2 {
+    margin-top: 0;
     margin-bottom: 12px;
   }
   .payment-content > .payment-illustration {
@@ -1345,6 +1441,26 @@
   }
 }
 @media (max-width: 700px) {
+  .app-shell:is(.page-C02, .page-C03) .main-content {
+    padding: 80px 12px 22px;
+  }
+  .cashier-order-strip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cashier-order-strip > span {
+    border-right: 0;
+    padding-right: 0;
+  }
+  .payment-channel {
+    padding-right: 0;
+  }
+  .cashier-grid > aside .panel-body {
+    padding-inline: 16px;
+  }
+  .cashier-grid > aside dt,
+  .cashier-grid > aside dd {
+    font-size: 16px;
+  }
   .app-shell:is(.page-C04, .page-C05, .page-C06, .page-C07) .main-content {
     padding: 80px 12px 22px;
   }
