@@ -1,11 +1,15 @@
 {
-  "date": "2026-11-15T13:04:32.755Z",
+  "date": "2026-11-15T13:47:31.335Z",
   "checks": [
+    "GUEST directory follows its individual banner, filters, card and action reference regions with separate ticket/service fees and unavailable purchase controls",
+    "GUEST directory keeps filters, content, fees, actions and header controls unclipped across 53 widths and breakpoint boundaries",
     "GUEST travel detail follows its own reference regions and price reading order while identifying its prototype conditions",
     "GUEST travel detail keeps headings, facts, rule cards, prices and purchase controls unclipped across 49 widths and breakpoint boundaries",
     "GUEST travel purchase entry preserves its selected scene through authentication or checkout and browser return",
     "GUEST travel detail renders long selected conditions and publisher text, independent equal notices and exact BIGINT pricing with the returned service and verification durations",
     "GUEST travel directory restores its own reference layout, keeps city/date/search state through reload and service-detail return, preserves exact attraction identity and uses full-width 390px content",
+    "USER directory follows its individual banner, filters, card and action reference regions with separate ticket/service fees and unavailable purchase controls",
+    "USER directory keeps filters, content, fees, actions and header controls unclipped across 53 widths and breakpoint boundaries",
     "USER travel detail follows its own reference regions and price reading order while identifying its prototype conditions",
     "USER travel detail keeps headings, facts, rule cards, prices and purchase controls unclipped across 49 widths and breakpoint boundaries",
     "USER travel purchase entry preserves its selected scene through authentication or checkout and browser return",
@@ -15,6 +19,8 @@
     "Public query contracts reject malformed, repeated and unknown filters, preserve literal wildcard searches and bind signed keyset cursors to resource, date, filters and page size",
     "PostgreSQL 18 verifies public catalog binding, association projections, exact signed-64-bit prices and microsecond keyset pagination inside a fully rolled-back transaction",
     "LIVE directory pages paginate cities and attractions, restore exact multi-service dialogs, preserve minor-unit price precision and take the selected attraction/date through linked service details and back while unknown bindings remain unavailable",
+    "USER LIVE directory preserves browser-supplied long city and attraction names, descriptions and exact signed-64-bit service fees without clipping across six layouts",
+    "GUEST LIVE directory preserves browser-supplied long city and attraction names, descriptions and exact signed-64-bit service fees without clipping across six layouts",
     "Failed public directory reads expose retryable errors without prototype substitution, and real metadata layouts retain internal width at 390px"
   ],
   "screenshots": [
@@ -30,13 +36,438 @@
     "USER-P05-long",
     "GUEST-P04-live",
     "USER-P05-live",
-    "GUEST-P04-live-mobile"
+    "USER-P04-long",
+    "GUEST-P04-live-mobile",
+    "GUEST-P04-long"
   ],
   "layouts": {
+    "GUEST-P04-regions": [
+      {
+        "selector": ".attractions-banner",
+        "expected": {
+          "x": 292,
+          "y": 215,
+          "width": 1492,
+          "height": 115
+        },
+        "actual": {
+          "x": 292,
+          "y": 215,
+          "width": 1493,
+          "height": 115
+        },
+        "tolerance_px": 3
+      },
+      {
+        "selector": ".attraction-filters",
+        "expected": {
+          "x": 292,
+          "y": 346,
+          "width": 1492,
+          "height": 77
+        },
+        "actual": {
+          "x": 292,
+          "y": 346,
+          "width": 1493,
+          "height": 77
+        },
+        "tolerance_px": 3
+      },
+      {
+        "selector": ".attraction-card",
+        "expected": {
+          "x": 296,
+          "y": 506,
+          "width": 489,
+          "height": 345
+        },
+        "actual": {
+          "x": 296,
+          "y": 506,
+          "width": 487,
+          "height": 347
+        },
+        "tolerance_px": 3
+      }
+    ],
+    "GUEST-P04-responsive": [
+      {
+        "viewport_width": 390,
+        "width": 390,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 700,
+        "width": 700,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 701,
+        "width": 701,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 760,
+        "width": 760,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 761,
+        "width": 761,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1000,
+        "width": 1000,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1001,
+        "width": 1001,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1200,
+        "width": 1200,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1201,
+        "width": 1201,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1300,
+        "width": 1300,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1301,
+        "width": 1301,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1450,
+        "width": 1450,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1451,
+        "width": 1451,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1500,
+        "width": 1500,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1501,
+        "width": 1501,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 427,
+        "width": 427,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 464,
+        "width": 464,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 501,
+        "width": 501,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 538,
+        "width": 538,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 575,
+        "width": 575,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 612,
+        "width": 612,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 649,
+        "width": 649,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 686,
+        "width": 686,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 723,
+        "width": 723,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 797,
+        "width": 797,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 834,
+        "width": 834,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 871,
+        "width": 871,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 908,
+        "width": 908,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 945,
+        "width": 945,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 982,
+        "width": 982,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1019,
+        "width": 1019,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1056,
+        "width": 1056,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1093,
+        "width": 1093,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1130,
+        "width": 1130,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1167,
+        "width": 1167,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1204,
+        "width": 1204,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1241,
+        "width": 1241,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1278,
+        "width": 1278,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1315,
+        "width": 1315,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1352,
+        "width": 1352,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1389,
+        "width": 1389,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1426,
+        "width": 1426,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1463,
+        "width": 1463,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1537,
+        "width": 1537,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1574,
+        "width": 1574,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1611,
+        "width": 1611,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1648,
+        "width": 1648,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1685,
+        "width": 1685,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1722,
+        "width": 1722,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1759,
+        "width": 1759,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1796,
+        "width": 1796,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1833,
+        "width": 1833,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1870,
+        "width": 1870,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      }
+    ],
     "GUEST": {
-      "width": 1814,
-      "height": 868,
-      "helpBottom": 440.421875
+      "width": 1815,
+      "height": 867,
+      "helpBottom": 452.421875
     },
     "GUEST-P05": [
       {
@@ -143,56 +574,56 @@
         "width": 1400,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1000
+        "actions_left": 997.46875
       },
       {
         "viewport_width": 1401,
         "width": 1401,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1001
+        "actions_left": 994.1875
       },
       {
         "viewport_width": 427,
         "width": 427,
         "clipped": [],
         "brand_right": 147.703125,
-        "actions_left": 286.46875
+        "actions_left": 282.1875
       },
       {
         "viewport_width": 464,
         "width": 464,
         "clipped": [],
         "brand_right": 147.703125,
-        "actions_left": 323.46875
+        "actions_left": 319.1875
       },
       {
         "viewport_width": 501,
         "width": 501,
         "clipped": [],
         "brand_right": 147.703125,
-        "actions_left": 360.46875
+        "actions_left": 360.53125
       },
       {
         "viewport_width": 538,
         "width": 538,
         "clipped": [],
         "brand_right": 147.703125,
-        "actions_left": 402
+        "actions_left": 397.53125
       },
       {
         "viewport_width": 575,
         "width": 575,
         "clipped": [],
         "brand_right": 147.703125,
-        "actions_left": 439
+        "actions_left": 434.53125
       },
       {
         "viewport_width": 612,
         "width": 612,
         "clipped": [],
         "brand_right": 147.703125,
-        "actions_left": 476
+        "actions_left": 471.53125
       },
       {
         "viewport_width": 649,
@@ -227,216 +658,671 @@
         "width": 797,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 399
+        "actions_left": 398.40625
       },
       {
         "viewport_width": 834,
         "width": 834,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 436
+        "actions_left": 435.40625
       },
       {
         "viewport_width": 871,
         "width": 871,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 473
+        "actions_left": 472.40625
       },
       {
         "viewport_width": 908,
         "width": 908,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 510
+        "actions_left": 508
       },
       {
         "viewport_width": 945,
         "width": 945,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 546.40625
+        "actions_left": 545
       },
       {
         "viewport_width": 982,
         "width": 982,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 583.40625
+        "actions_left": 582
       },
       {
         "viewport_width": 1019,
         "width": 1019,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 620.40625
+        "actions_left": 616.46875
       },
       {
         "viewport_width": 1056,
         "width": 1056,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 656
+        "actions_left": 649.1875
       },
       {
         "viewport_width": 1093,
         "width": 1093,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 693
+        "actions_left": 686.1875
       },
       {
         "viewport_width": 1130,
         "width": 1130,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 730
+        "actions_left": 723.1875
       },
       {
         "viewport_width": 1167,
         "width": 1167,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 764.46875
+        "actions_left": 760.1875
       },
       {
         "viewport_width": 1204,
         "width": 1204,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 801.46875
+        "actions_left": 790.03125
       },
       {
         "viewport_width": 1241,
         "width": 1241,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 838.46875
+        "actions_left": 827.03125
       },
       {
         "viewport_width": 1278,
         "width": 1278,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 875.46875
+        "actions_left": 864.03125
       },
       {
         "viewport_width": 1315,
         "width": 1315,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 908.1875
+        "actions_left": 890.125
       },
       {
         "viewport_width": 1352,
         "width": 1352,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 945.1875
+        "actions_left": 927.125
       },
       {
         "viewport_width": 1389,
         "width": 1389,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 982.1875
+        "actions_left": 964.125
       },
       {
         "viewport_width": 1426,
         "width": 1426,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1019.1875
+        "actions_left": 990.40625
       },
       {
         "viewport_width": 1463,
         "width": 1463,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1049.03125
+        "actions_left": 1020.53125
       },
       {
         "viewport_width": 1500,
         "width": 1500,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1086.03125
+        "actions_left": 1057.53125
       },
       {
         "viewport_width": 1537,
         "width": 1537,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1123.03125
+        "actions_left": 1090.59375
       },
       {
         "viewport_width": 1574,
         "width": 1574,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1149.125
+        "actions_left": 1125.40625
       },
       {
         "viewport_width": 1611,
         "width": 1611,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1186.125
+        "actions_left": 1161.3125
       },
       {
         "viewport_width": 1648,
         "width": 1648,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1223.125
+        "actions_left": 1198
       },
       {
         "viewport_width": 1685,
         "width": 1685,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1249.40625
+        "actions_left": 1235
       },
       {
         "viewport_width": 1722,
         "width": 1722,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1286.40625
+        "actions_left": 1272
       },
       {
         "viewport_width": 1759,
         "width": 1759,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1323.40625
+        "actions_left": 1309
       },
       {
         "viewport_width": 1796,
         "width": 1796,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1360.40625
+        "actions_left": 1346
       },
       {
         "viewport_width": 1833,
         "width": 1833,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1397.40625
+        "actions_left": 1383
       },
       {
         "viewport_width": 1870,
         "width": 1870,
         "clipped": [],
         "brand_right": 223.09375,
-        "actions_left": 1427.53125
+        "actions_left": 1420
+      }
+    ],
+    "USER-P04-regions": [
+      {
+        "selector": ".attractions-banner",
+        "expected": {
+          "x": 260,
+          "y": 137,
+          "width": 1532,
+          "height": 111
+        },
+        "actual": {
+          "x": 260,
+          "y": 137,
+          "width": 1532,
+          "height": 111
+        },
+        "tolerance_px": 3
+      },
+      {
+        "selector": ".attraction-filters",
+        "expected": {
+          "x": 260,
+          "y": 268,
+          "width": 1532,
+          "height": 78
+        },
+        "actual": {
+          "x": 260,
+          "y": 268,
+          "width": 1532,
+          "height": 78
+        },
+        "tolerance_px": 3
+      },
+      {
+        "selector": ".attraction-card",
+        "expected": {
+          "x": 260,
+          "y": 367,
+          "width": 1532,
+          "height": 135
+        },
+        "actual": {
+          "x": 260,
+          "y": 366,
+          "width": 1532,
+          "height": 135
+        },
+        "tolerance_px": 3
+      },
+      {
+        "selector": ".attraction-image",
+        "expected": {
+          "x": 281,
+          "y": 381,
+          "width": 296,
+          "height": 105
+        },
+        "actual": {
+          "x": 281,
+          "y": 381,
+          "width": 296,
+          "height": 105
+        },
+        "tolerance_px": 3
+      },
+      {
+        "selector": ".attraction-action",
+        "expected": {
+          "x": 1623,
+          "y": 413,
+          "width": 136,
+          "height": 42
+        },
+        "actual": {
+          "x": 1623,
+          "y": 412.5,
+          "width": 136,
+          "height": 42
+        },
+        "tolerance_px": 3
+      }
+    ],
+    "USER-P04-responsive": [
+      {
+        "viewport_width": 390,
+        "width": 390,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 700,
+        "width": 700,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 701,
+        "width": 701,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 760,
+        "width": 760,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 761,
+        "width": 761,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1000,
+        "width": 1000,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1001,
+        "width": 1001,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1200,
+        "width": 1200,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1201,
+        "width": 1201,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1300,
+        "width": 1300,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1301,
+        "width": 1301,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1450,
+        "width": 1450,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1451,
+        "width": 1451,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1500,
+        "width": 1500,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1501,
+        "width": 1501,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 427,
+        "width": 427,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 464,
+        "width": 464,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 501,
+        "width": 501,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 538,
+        "width": 538,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 575,
+        "width": 575,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 612,
+        "width": 612,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 649,
+        "width": 649,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 686,
+        "width": 686,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 723,
+        "width": 723,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 797,
+        "width": 797,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 834,
+        "width": 834,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 871,
+        "width": 871,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 908,
+        "width": 908,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 945,
+        "width": 945,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 982,
+        "width": 982,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1019,
+        "width": 1019,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1056,
+        "width": 1056,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1093,
+        "width": 1093,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1130,
+        "width": 1130,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1167,
+        "width": 1167,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1204,
+        "width": 1204,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1241,
+        "width": 1241,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1278,
+        "width": 1278,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1315,
+        "width": 1315,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1352,
+        "width": 1352,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1389,
+        "width": 1389,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1426,
+        "width": 1426,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1463,
+        "width": 1463,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1537,
+        "width": 1537,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1574,
+        "width": 1574,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1611,
+        "width": 1611,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1648,
+        "width": 1648,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1685,
+        "width": 1685,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1722,
+        "width": 1722,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1759,
+        "width": 1759,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1796,
+        "width": 1796,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1833,
+        "width": 1833,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
+      },
+      {
+        "viewport_width": 1870,
+        "width": 1870,
+        "clipped": [],
+        "header_overlap": false,
+        "search_overlap": false
       }
     ],
     "USER": {
       "width": 1814,
-      "height": 868,
-      "helpBottom": 825
+      "height": 867,
+      "helpBottom": 855
     },
     "USER-P05": [
       {

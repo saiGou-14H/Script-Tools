@@ -22,6 +22,11 @@ import type { Role } from "../types";
 import { usePrototype } from "../prototype";
 import { executionReturnPath } from "../lib/execution-navigation";
 
+const guestAttractionMenuIcons: Partial<Record<PageId, string>> = {
+  P02: "stack",
+  P06: "help",
+};
+
 const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
   {
     P02: {
@@ -60,13 +65,15 @@ const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
     },
     P04: {
       C04: "file",
-      C06: "layers",
-      C22: "ticket",
+      C06: "stack",
+      C22: "ticket-stub",
       C10: "file",
       C12: "chart",
       C13: "clock",
       C16: "message",
       C19: "shield",
+      P02: "store",
+      P06: "book",
     },
     P06: {
       C06: "layers",
@@ -614,23 +621,27 @@ export function Shell({ pageId }: { pageId: PageId }) {
           placeholder={
             pageId === "P06"
               ? "搜索功能、文档或常见问题"
-              : pageId === "P05"
+              : pageId === "P04"
                 ? role === "GUEST"
-                  ? "搜索脚本、工具或景点服务"
-                  : "搜索脚本、工具或景点"
-                : pageId === "S02"
-                  ? "搜索脚本名称、用途或版本号"
-                  : pageId === "S05"
-                    ? "搜索脚本、版本或构建编号"
-                    : pageId === "S15"
-                      ? "搜索脚本、服务商品、订单或帮助内容"
-                      : pageId === "S01"
-                        ? "搜索脚本、服务或订单"
-                        : role === "ADMIN"
-                          ? "搜索订单、用户、服务或预约编号"
-                          : quickSearch
-                            ? "搜索脚本、工具或景点"
-                            : "搜索脚本、服务或订单"
+                  ? "搜索脚本、工具或景点"
+                  : "搜索脚本、工具、景点或功能"
+                : pageId === "P05"
+                  ? role === "GUEST"
+                    ? "搜索脚本、工具或景点服务"
+                    : "搜索脚本、工具或景点"
+                  : pageId === "S02"
+                    ? "搜索脚本名称、用途或版本号"
+                    : pageId === "S05"
+                      ? "搜索脚本、版本或构建编号"
+                      : pageId === "S15"
+                        ? "搜索脚本、服务商品、订单或帮助内容"
+                        : pageId === "S01"
+                          ? "搜索脚本、服务或订单"
+                          : role === "ADMIN"
+                            ? "搜索订单、用户、服务或预约编号"
+                            : quickSearch
+                              ? "搜索脚本、工具或景点"
+                              : "搜索脚本、服务或订单"
           }
           onPressEnter={(event) => {
             if (pageId === "S02" || pageId === "S05") {
@@ -664,6 +675,8 @@ export function Shell({ pageId }: { pageId: PageId }) {
               {pageId === "P05" && role === "USER" && <Icon name="user" />}
               {pageId === "O01"
                 ? ""
+                : pageId === "P04"
+                  ? "当前工作区："
                 : role === "GUEST" && ["P01", "P05", "P07", "P06"].includes(pageId)
                   ? "当前工作区　"
                   : role === "GUEST"
@@ -752,6 +765,9 @@ export function Shell({ pageId }: { pageId: PageId }) {
                     name={
                       (pageId === "C21"
                         ? accountMenuIcons[role]?.[page.id]
+                        : undefined) ||
+                      (pageId === "P04" && role === "GUEST"
+                        ? guestAttractionMenuIcons[page.id]
                         : undefined) ||
                       pageMenuIcons[pageId]?.[page.id] ||
                       pageIcons[page.id] ||

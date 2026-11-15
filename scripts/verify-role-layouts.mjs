@@ -386,6 +386,9 @@ try {
     "apps/web/src/pages/Market.tsx",
     "apps/web/src/pages/ServiceDetail.tsx",
     "apps/web/src/pages/TravelService.tsx",
+    "apps/web/src/pages/Attractions.tsx",
+    "apps/web/src/lib/public-travel.ts",
+    "apps/web/src/styles/attractions.css",
     "apps/web/src/lib/service-display.ts",
     "apps/web/src/styles/retail.css",
   ]) {

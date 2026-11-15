@@ -53,6 +53,204 @@ const report = {
 const contexts = [];
 let app, server, browser, page, connection;
 
+async function directoryLayout(currentPage) {
+  return currentPage.evaluate(() => {
+    const brand = document.querySelector(".brand").getBoundingClientRect();
+    const actions = document
+      .querySelector(".topbar-actions")
+      .getBoundingClientRect();
+    const search = document
+      .querySelector(".global-search")
+      .getBoundingClientRect();
+    return {
+      width: document.documentElement.scrollWidth,
+      clipped: [
+        ...document.querySelectorAll(
+          ".attractions-banner,.attraction-filters,.attraction-city-options,.attraction-card,.attraction-summary,.attraction-card-heading h2,.attraction-fees,.attraction-fees strong,.attraction-rules",
+        ),
+      ]
+        .filter(
+          (element) =>
+            element.scrollWidth > element.clientWidth + 1 ||
+            element.scrollHeight > element.clientHeight + 1,
+        )
+        .map((element) => element.className),
+      header_overlap: brand.right > actions.left,
+      search_overlap:
+        search.width > 0 &&
+        (search.left < brand.right || search.right > actions.left),
+    };
+  });
+}
+
+async function verifyTravelDirectory(currentPage, role) {
+  const viewport = { width: role === "GUEST" ? 1815 : 1814, height: 867 };
+  const regions =
+    role === "GUEST"
+      ? [
+          [".attractions-banner", { x: 292, y: 215, width: 1492, height: 115 }],
+          [".attraction-filters", { x: 292, y: 346, width: 1492, height: 77 }],
+          [".attraction-card", { x: 296, y: 506, width: 489, height: 345 }],
+        ]
+      : [
+          [".attractions-banner", { x: 260, y: 137, width: 1532, height: 111 }],
+          [".attraction-filters", { x: 260, y: 268, width: 1532, height: 78 }],
+          [".attraction-card", { x: 260, y: 367, width: 1532, height: 135 }],
+          [".attraction-image", { x: 281, y: 381, width: 296, height: 105 }],
+          [".attraction-action", { x: 1623, y: 413, width: 136, height: 42 }],
+        ];
+  report.layouts[role + "-P04-regions"] = [];
+  for (const [selector, expected] of regions) {
+    const actual = await currentPage
+      .locator(selector)
+      .first()
+      .evaluate((element) => {
+        const r = element.getBoundingClientRect();
+        return { x: r.x, y: r.y, width: r.width, height: r.height };
+      });
+    for (const coordinate of Object.keys(expected))
+      assert(
+        Math.abs(actual[coordinate] - expected[coordinate]) <= 3,
+        JSON.stringify({ role, selector, expected, actual }),
+      );
+    report.layouts[role + "-P04-regions"].push({
+      selector,
+      expected,
+      actual,
+      tolerance_px: 3,
+    });
+  }
+  await expect(
+    currentPage
+      .locator(".attraction-card")
+      .last()
+      .locator(".attraction-action a"),
+  ).toHaveCount(0);
+  await expect(currentPage.locator(".attraction-fees").first()).toContainText(
+    "¥8.00/次",
+  );
+  report.checks.push(
+    role +
+      " directory follows its individual banner, filters, card and action reference regions with separate ticket/service fees and unavailable purchase controls",
+  );
+  const widths = [
+    ...new Set([
+      390,
+      700,
+      701,
+      760,
+      761,
+      1000,
+      1001,
+      1200,
+      1201,
+      1300,
+      1301,
+      1450,
+      1451,
+      1500,
+      1501,
+      ...Array.from({ length: 41 }, (_, index) => 390 + index * 37),
+    ]),
+  ];
+  const responsive = [];
+  for (const width of widths) {
+    await currentPage.setViewportSize({
+      width,
+      height: width <= 760 ? 844 : 900,
+    });
+    if (role === "USER")
+      await expect(currentPage.locator(".workspace-button")).toHaveCSS(
+        "font-size",
+        width <= 760 ? "0px" : "14px",
+      );
+    const state = await directoryLayout(currentPage);
+    assert(
+      state.width <= width &&
+        state.clipped.length === 0 &&
+        !state.header_overlap &&
+        !state.search_overlap,
+      JSON.stringify({ role, width, ...state }),
+    );
+    responsive.push({ viewport_width: width, ...state });
+  }
+  report.layouts[role + "-P04-responsive"] = responsive;
+  report.checks.push(
+    role +
+      ` directory keeps filters, content, fees, actions and header controls unclipped across ${widths.length} widths and breakpoint boundaries`,
+  );
+  await currentPage.setViewportSize(viewport);
+}
+
+async function verifyLongDirectory(context, currentPage, role, web, fixture) {
+  const title = "展馆" + "venue/".repeat(30);
+  const city = "城市".repeat(30);
+  const description = "公开场馆说明".repeat(40);
+  await context.route("**/api/v1/cities?**", async (route) => {
+    const response = await route.fetch();
+    const body = await response.json();
+    body.data[0].name = city;
+    await route.fulfill({ response, json: body });
+  });
+  await context.route("**/api/v1/attractions?**", async (route) => {
+    const response = await route.fetch();
+    const body = await response.json();
+    for (const row of body.data) {
+      row.name = title;
+      row.city_name = city;
+      row.description = description;
+      for (const service of row.services)
+        service.amount_minor = "9223372036854775807";
+    }
+    await route.fulfill({ response, json: body });
+  });
+  await currentPage.goto(
+    `${web}/travel?city=${fixture.city}&q=${encodeURIComponent("综合%_")}`,
+  );
+  await currentPage.reload();
+  await expect(
+    currentPage.getByRole("button", { name: city, exact: true }),
+  ).toBeVisible();
+  await expect(currentPage.locator(".attraction-card")).toHaveCount(1);
+  await expect(
+    currentPage.locator(".attraction-card-heading h2"),
+  ).toContainText(city + " · " + title);
+  await expect(currentPage.locator(".attraction-summary > p")).toHaveText(
+    description,
+  );
+  await expect(currentPage.locator(".attraction-fees")).toContainText(
+    "¥92233720368547758.07起/次",
+  );
+  for (const width of [1814, 1501, 1201, 1001, 761, 390]) {
+    await currentPage.setViewportSize({ width, height: 844 });
+    if (role === "USER")
+      await expect(currentPage.locator(".workspace-button")).toHaveCSS(
+        "font-size",
+        width <= 760 ? "0px" : "14px",
+      );
+    const state = await directoryLayout(currentPage);
+    assert(
+      state.width <= width &&
+        state.clipped.length === 0 &&
+        !state.header_overlap &&
+        !state.search_overlap,
+      JSON.stringify({ role, width, ...state }),
+    );
+  }
+  await currentPage.screenshot({
+    path: path.join(output, role + "-P04-long.png"),
+    fullPage: true,
+    animations: "disabled",
+  });
+  report.screenshots.push(role + "-P04-long");
+  await context.unroute("**/api/v1/attractions?**");
+  await context.unroute("**/api/v1/cities?**");
+  report.checks.push(
+    role +
+      " LIVE directory preserves browser-supplied long city and attraction names, descriptions and exact signed-64-bit service fees without clipping across six layouts",
+  );
+}
+
 async function verifyTravelDetail(context, currentPage, role, web) {
   const viewport = { width: role === "GUEST" ? 1814 : 1815, height: 867 };
   await currentPage.setViewportSize(viewport);
@@ -553,7 +751,7 @@ try {
   }
   for (const role of ["GUEST", "USER"]) {
     const context = await browser.newContext({
-      viewport: { width: 1814, height: 868 },
+      viewport: { width: role === "GUEST" ? 1815 : 1814, height: 867 },
     });
     if (role === "USER")
       assert.equal(
@@ -588,6 +786,7 @@ try {
           ),
       );
     }
+    await verifyTravelDirectory(page, role);
     await page.screenshot({
       path: path.join(output, role + "-P04.png"),
       fullPage: true,
@@ -602,9 +801,9 @@ try {
         ?.getBoundingClientRect().bottom,
     }));
     report.layouts[role] = layout;
-    assert.equal(layout.width, 1814);
-    assert(layout.height <= 868, role + " desktop height " + layout.height);
-    assert(layout.helpBottom <= 868, role + " navigation");
+    assert.equal(layout.width, role === "GUEST" ? 1815 : 1814);
+    assert(layout.height <= 867, role + " desktop height " + layout.height);
+    assert(layout.helpBottom <= 867, role + " navigation");
     if (role === "USER") {
       await page.keyboard.press("Control+k");
       await expect(page.locator(".global-search input")).toBeFocused();
@@ -1025,6 +1224,7 @@ try {
     animations: "disabled",
   });
   report.screenshots.push("USER-P05-live");
+  await verifyLongDirectory(member, memberPage, "USER", web, fixture);
   await member.close();
 
   await context.route("**/api/v1/attractions?**", (route) =>
@@ -1055,6 +1255,7 @@ try {
     await page.evaluate(() => document.documentElement.scrollWidth),
     390,
   );
+  await verifyLongDirectory(context, page, "GUEST", web, fixture);
   await context.close();
   report.checks.push(
     "Failed public directory reads expose retryable errors without prototype substitution, and real metadata layouts retain internal width at 390px",

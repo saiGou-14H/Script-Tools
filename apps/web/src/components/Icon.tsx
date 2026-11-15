@@ -72,6 +72,7 @@ import {
   BarChartOutlined,
   UnorderedListOutlined,
   LineChartOutlined,
+  ShopOutlined,
 } from "@ant-design/icons";
 
 function PersonFilled({
@@ -105,6 +106,27 @@ function CodeBracketsOutlined({
         strokeLinejoin="round"
       >
         <path d="m7 5-6 7 6 7m10-14 6 7-6 7M14 3l-4 18" />
+      </svg>
+    </span>
+  );
+}
+
+function PlayOutlined({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span className={`anticon ${className}`} {...props}>
+      <svg
+        viewBox="0 0 24 24"
+        width="1em"
+        height="1em"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      >
+        <path d="m5 3 15 9-15 9V3Z" />
       </svg>
     </span>
   );
@@ -266,6 +288,8 @@ function VerifiedTargetOutlined({
 }
 
 const icons = {
+  store: ShopOutlined,
+  "play-outline": PlayOutlined,
   "send-solid": PaperPlaneFilled,
   "check-solid": CheckCircleFilled,
   "refund-box": RefundBoxOutlined,

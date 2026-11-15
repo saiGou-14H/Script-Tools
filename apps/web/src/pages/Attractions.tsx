@@ -167,6 +167,7 @@ export function AttractionsPage() {
   const failed = prototype ? servicesError : attractions.isError;
   const notice = (
     <Notice>
+      {guest && "提示："}
       {prototype
         ? "仅展示示例接入状态，开放以真实渠道验证为准。"
         : "目录按已开放记录展示，日期用于传递预约条件，库存与预约结果待渠道核验。"}
@@ -201,8 +202,8 @@ export function AttractionsPage() {
         </p>
       </div>
       <div className="attraction-filters">
-        <b>{guest ? "选择城市" : "城市"}</b>
-        <div>
+        <b>{guest ? "选择城市：" : "城市："}</b>
+        <div className="attraction-city-options">
           <Button
             aria-label="全部"
             type={!city ? "primary" : "default"}
@@ -230,17 +231,17 @@ export function AttractionsPage() {
           )}
         </div>
         <span className="filter-divider" />
-        <b>{guest ? "选择日期" : "日期"}</b>
+        <b>{guest ? "选择日期：" : "日期："}</b>
         <DatePicker
           value={validDate && date ? dayjs(date) : null}
           onChange={(value) => update({ date: value?.format("YYYY-MM-DD") })}
           allowClear={false}
           aria-label="预约日期"
           prefix={<CalendarOutlined />}
-          suffixIcon={guest ? null : <DownOutlined />}
+          suffix={guest ? null : <DownOutlined />}
         />
         <span className="filter-divider" />
-        {!guest && <b>搜索景点</b>}
+        {!guest && <b>搜索景点：</b>}
         <Input
           prefix={<SearchOutlined />}
           aria-label="搜索景点名称"
@@ -285,6 +286,7 @@ export function AttractionsPage() {
           >
             {rows.map((item) => {
               const closed = prototype && !item.open;
+              const fee = feeLabel(item.services);
               const action = closed ? (
                 !guest && (
                   <Button block disabled>
@@ -317,7 +319,10 @@ export function AttractionsPage() {
                   </div>
                   <div>
                     <span>脚本服务费</span>
-                    <strong>{feeLabel(item.services)}</strong>
+                    <strong>
+                      {fee.replace(/\/次$/, "")}
+                      {fee.endsWith("/次") && <small>/次</small>}
+                    </strong>
                   </div>
                 </div>
               );
@@ -364,24 +369,30 @@ export function AttractionsPage() {
                     <div className="attraction-rules">
                       <p>
                         <Icon name="payment" />
-                        <b>支付</b>　
-                        {!closed && item.services.length
-                          ? `按次付费，${feeLabel(item.services)}`
-                          : "暂不支持购买"}
+                        <b>支付：</b>
+                        <span>
+                          {!closed && item.services.length
+                            ? `按次付费，${feeLabel(item.services)}`
+                            : "暂不支持购买"}
+                        </span>
                       </p>
                       <p>
-                        <Icon name="play" />
-                        <b>执行</b>　
-                        {item.open
-                          ? "由脚本自动完成预约流程"
-                          : closed
-                            ? "暂未开放，无法执行"
-                            : "渠道能力与执行待验证"}
+                        <Icon name="play-outline" />
+                        <b>执行：</b>
+                        <span>
+                          {item.open
+                            ? "由脚本自动完成预约流程"
+                            : closed
+                              ? "暂未开放，无法执行"
+                              : "渠道能力与执行待验证"}
+                        </span>
                       </p>
                       <p>
                         <Icon name="flag" />
-                        <b>目标结果</b>　
-                        {item.open ? "获取预约成功信息" : "暂未开放服务"}
+                        <b>目标结果：</b>
+                        <span>
+                          {item.open ? "获取预约成功信息" : "暂未开放服务"}
+                        </span>
                       </p>
                     </div>
                   )}

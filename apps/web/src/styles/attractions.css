@@ -18,7 +18,7 @@
   margin-bottom: 22px;
 }
 .page-P04 .page-heading p {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 25px;
 }
 .page-P04 .global-search {
@@ -27,30 +27,108 @@
   font-size: 16px;
   height: 40px;
 }
+.role-GUEST.page-P04 .topbar {
+  padding-inline: 32px 24px;
+}
+.role-GUEST.page-P04 .brand strong {
+  font-size: 26px;
+}
+.role-GUEST.page-P04 .brand > span:last-child {
+  font-size: 18px;
+}
+.role-GUEST.page-P04 .global-search input {
+  font-size: 16px;
+}
+.role-GUEST.page-P04 .workspace-button {
+  height: 40px;
+  padding-inline: 0 30px;
+  border: 0;
+  box-shadow: none;
+  background: linear-gradient(#d5deee, #d5deee) right center / 1px 26px
+    no-repeat;
+  font-size: 18px;
+  color: #25334d;
+}
+.role-GUEST.page-P04 .workspace-button > .anticon {
+  display: none;
+}
+.role-GUEST.page-P04 .workspace-button b {
+  font-weight: 500;
+}
+.role-GUEST.page-P04 .topbar-actions > .ant-btn:not(.workspace-button) {
+  width: 88px;
+  height: 40px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.role-GUEST.page-P04 .topbar-actions > .ant-btn-default:not(.workspace-button) {
+  margin-left: 10px;
+  border-color: #7491ff;
+  color: #1555ff;
+}
+.role-USER.page-P04 .topbar {
+  padding-inline: 28px 24px;
+}
+.role-USER.page-P04 .brand strong {
+  font-size: 22px;
+}
+.role-USER.page-P04 .brand > span:last-child {
+  font-size: 15px;
+}
+.role-USER.page-P04 .workspace-button {
+  height: 38px;
+  padding-inline: 18px;
+  border-color: #7390ff;
+  color: #101a32;
+}
+.role-USER.page-P04 .topbar-actions > .ant-btn:not(.workspace-button) {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #e3e9f4;
+}
+.role-USER.page-P04 .topbar-actions > .ant-btn .anticon {
+  font-size: 19px;
+}
 .page-P04 .sidebar {
-  padding: 12px 16px;
+  padding: 18px 16px;
 }
 .page-P04 .nav-group {
-  margin-bottom: 22px;
+  margin-bottom: 25px;
+}
+.role-GUEST.page-P04 .nav-group:nth-child(2) {
+  margin-bottom: 21px;
 }
 .page-P04 .nav-group-label {
   font-size: 16px;
   padding: 10px 18px 9px;
 }
 .page-P04 .nav-item {
-  height: 47px;
+  height: 48px;
   gap: 17px;
-  font-size: 18px;
+  font-size: 19px;
+  font-weight: 600;
   padding: 0 18px;
 }
 .page-P04 .nav-item > .anticon {
   font-size: 21px;
 }
 .attractions-banner {
-  height: 115px;
+  height: auto;
+  min-height: 115px;
   margin: 0 0 16px;
   padding: 18px 35px;
-  background: linear-gradient(110deg, #e2edff, #dfdcff 65%, #beb1ff);
+  background:
+    radial-gradient(
+      ellipse 280px 140px at 80% 135%,
+      #a7b8ff 48%,
+      transparent 49%
+    ),
+    radial-gradient(
+      ellipse 400px 170px at 104% 115%,
+      #b7a2f51c 60%,
+      transparent 61%
+    ),
+    linear-gradient(110deg, #e0ebff, #dddfff 56%, #c0b2fb);
 }
 .attractions-banner h2 {
   font-size: 27px;
@@ -61,11 +139,35 @@
   line-height: 30px;
 }
 .attractions-banner::after {
-  width: 440px;
-  height: 150px;
-  right: -50px;
-  top: 30px;
-  background: #ffffff25;
+  inset: 0;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: inherit;
+  transform: none;
+  background: radial-gradient(
+    ellipse 420px 180px at 80% -60%,
+    #ffffff26 64%,
+    #ffffff70 64.3%,
+    transparent 64.7%
+  );
+}
+.attractions-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 310px 135px at 108% 150%,
+    #ffffff20 96%,
+    #ffffff50 96.5%,
+    transparent 97%
+  );
+  pointer-events: none;
+}
+.attractions-banner > * {
+  position: relative;
+  z-index: 1;
 }
 .attraction-filters {
   min-height: 77px;
@@ -73,13 +175,23 @@
 }
 .attraction-filters > b {
   flex-shrink: 0;
+  white-space: nowrap;
+  font-weight: 500;
 }
 .guest-attractions .attraction-filters > b {
   width: 80px;
 }
-.attraction-filters > div:first-of-type {
-  gap: 10px;
+.attractions-page .attraction-filters .attraction-city-options {
+  display: flex;
+  gap: 11px;
   flex-wrap: wrap;
+}
+.attractions-page .attraction-city-options .ant-btn {
+  height: auto;
+  min-height: 43px;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 .attraction-filters .filter-divider {
   margin-inline: 20px;
@@ -96,6 +208,9 @@
   flex: 1;
   min-width: 200px;
 }
+.guest-attractions .attraction-filters .filter-divider:nth-of-type(2) {
+  margin-inline: 15px;
+}
 .page-P04 .ant-input::placeholder {
   color: #6f7b90;
   opacity: 1;
@@ -104,24 +219,46 @@
   min-height: 47px;
   padding: 10px 20px;
   margin-bottom: 20px;
+  background: linear-gradient(105deg, #e8f0ff, #e5edff);
+  color: #17243e;
+}
+.attractions-page > .notice > .anticon {
+  color: #1555ff;
+  font-size: 20px;
 }
 .attraction-card {
   margin-bottom: 0;
+  border-radius: 16px;
+  box-shadow: 0 1px 2px #153b8610;
 }
 .attraction-card .panel-body {
   padding: 16px 18px;
 }
 .guest-attractions .attraction-card {
-  min-height: 347px;
+  min-height: 345px;
+}
+.guest-attractions .attraction-cards {
+  margin-left: 4px;
+}
+.guest-attractions .attraction-summary > p {
+  margin-bottom: 12px;
+}
+.guest-attractions .attraction-fees,
+.guest-attractions .attraction-rules {
+  margin-bottom: 14px;
 }
 .attraction-card-heading {
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
+  row-gap: 4px;
 }
 .attraction-card-heading h2 {
   margin: 0;
-  font-size: 23px;
+  font-size: 24px;
   line-height: 31px;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .attraction-card-heading .status {
   flex-shrink: 0;
@@ -131,14 +268,17 @@
 }
 .attraction-summary > p {
   margin: 4px 0 10px;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 24px;
   color: #46536b;
 }
 .attraction-fees {
   padding: 10px 18px;
   margin-bottom: 12px;
-  min-height: 80px;
+  min-height: 78px;
+}
+.attraction-fees > div {
+  min-width: 0;
 }
 .attraction-fees > div + div {
   padding-left: 42px;
@@ -146,7 +286,24 @@
 .attraction-fees strong {
   line-height: 34px;
   font-size: 25px;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+}
+.attraction-fees span {
+  display: block;
+  line-height: 22px;
+}
+.attraction-fees small {
+  color: inherit;
+  font-size: 18px;
+  font-weight: 500;
+}
+.attraction-fees strong,
+.attraction-summary {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .attraction-rules {
   min-height: 94px;
@@ -154,9 +311,25 @@
   margin-bottom: 12px;
 }
 .attraction-rules p {
+  display: grid;
+  grid-template-columns: 20px auto minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 8px;
   line-height: 25px;
   margin: 0;
-  font-size: 15px;
+  font-size: 16px;
+  color: #1b263d;
+}
+.attraction-rules p > .anticon {
+  margin-right: 0;
+  align-self: center;
+  font-size: 17px;
+}
+.attraction-rules p > b {
+  white-space: nowrap;
+}
+.attraction-rules p > span:last-child {
+  overflow-wrap: anywhere;
 }
 .attraction-action .ant-btn {
   height: 40px;
@@ -168,20 +341,20 @@
   --header-height: 56px;
 }
 .role-USER.page-P04 .main-content {
-  padding: 80px 22px 14px 30px;
+  padding: 75px 22px 14px 30px;
 }
 .role-USER.page-P04 h1 {
   font-size: 28px;
   line-height: 40px;
 }
 .role-USER.page-P04 .page-heading {
-  margin-bottom: 17px;
+  margin-bottom: 22px;
 }
 .role-USER.page-P04 .sidebar {
   padding: 10px 12px;
 }
 .role-USER.page-P04 .nav-group {
-  margin-bottom: 5px;
+  margin-bottom: 7px;
 }
 .role-USER.page-P04 .nav-group-label {
   font-size: 13px;
@@ -189,8 +362,9 @@
   padding: 4px 18px 3px;
 }
 .role-USER.page-P04 .nav-item {
-  height: 30px;
-  font-size: 15px;
+  height: 31px;
+  font-size: 16px;
+  font-weight: 500;
   gap: 14px;
   padding: 0 20px;
 }
@@ -203,12 +377,29 @@
   height: 38px;
 }
 .member-attractions .attractions-banner {
-  height: 111px;
+  height: auto;
+  min-height: 111px;
   padding: 18px 25px;
   margin-bottom: 20px;
 }
+.member-attractions .attractions-banner::after {
+  background: linear-gradient(
+    150deg,
+    transparent 71%,
+    #ffffff30 71.1%,
+    transparent 71.3%
+  );
+}
+.member-attractions .attractions-banner::before {
+  background: radial-gradient(
+    ellipse 380px 150px at 105% 145%,
+    #ffffff24 79%,
+    #ffffff55 79.5%,
+    transparent 80%
+  );
+}
 .member-attractions .attractions-banner h2 {
-  font-size: 27px;
+  font-size: 28px;
 }
 .member-attractions .attractions-banner h2 span {
   color: #1555ff;
@@ -219,16 +410,28 @@
 }
 .member-attractions .attraction-filters {
   min-height: 78px;
-  gap: 14px;
+  gap: 18px;
   border: 1px solid #e0e7f3;
   margin-bottom: 20px;
 }
-.member-attractions .attraction-filters > div:first-of-type {
+.member-attractions .attraction-filters > b {
+  width: 36px;
+  font-size: 16px;
+}
+.member-attractions .attraction-filters > b:last-of-type {
+  width: 74px;
+}
+.member-attractions .attraction-filters .filter-divider {
+  margin-inline: 24px;
+}
+.member-attractions .attraction-filters .attraction-city-options {
   gap: 8px;
 }
 .member-attractions .attraction-filters .ant-btn {
-  height: 40px;
+  height: auto;
   min-width: 80px;
+  font-size: 16px;
+  min-height: 40px;
 }
 .member-attractions .attraction-filters .ant-picker {
   height: 40px;
@@ -247,15 +450,19 @@
 }
 .attraction-list .panel-body {
   display: grid;
-  grid-template-columns: 296px minmax(0, 1fr) 300px 136px;
+  grid-template-columns: 296px minmax(0, 1fr) 330px 136px;
   align-items: center;
   gap: 20px;
-  padding: 14px 20px;
-  min-height: 132px;
+  padding: 12px 32px 12px 20px;
+  min-height: 129px;
+}
+.attraction-list .attraction-card:first-child .panel-body {
+  min-height: 133px;
+  padding-block: 14px;
 }
 .attraction-image {
   width: 296px;
-  height: 104px;
+  height: 105px;
   display: block;
   object-fit: cover;
   border-radius: 12px;
@@ -272,21 +479,23 @@
 }
 .attraction-list .attraction-summary {
   min-width: 0;
+  align-self: start;
 }
 .attraction-list .attraction-card-heading {
   justify-content: flex-start;
   gap: 20px;
 }
 .attraction-list .attraction-card-heading h2 {
-  font-size: 21px;
+  font-size: 20px;
   line-height: 30px;
 }
 .attraction-list .attraction-card-heading .status {
   font-size: 14px;
   padding: 1px 12px;
+  font-weight: 600;
 }
 .attraction-list .attraction-summary > p {
-  margin: 5px 0 8px;
+  margin: 5px 0 13px;
   line-height: 24px;
 }
 .attraction-tags {
@@ -298,15 +507,16 @@
   margin: 0;
   font-size: 13px;
   padding: 2px 12px;
+  border-radius: 10px;
 }
 .attraction-list .attraction-fees {
-  grid-template-columns: 105px minmax(0, 1fr);
+  grid-template-columns: 120px minmax(0, 1fr);
   min-height: 80px;
   margin: 0;
   border-radius: 0;
   border-left: 1px solid #dce4f0;
   background: transparent;
-  padding: 4px 0 4px 50px;
+  padding: 4px 0 4px 54px;
   align-content: center;
 }
 .attraction-list .attraction-fees > div + div {
@@ -317,6 +527,18 @@
   font-size: 24px;
   color: #10162b;
 }
+.attraction-list .attraction-action .ant-btn:disabled {
+  color: #8190a8;
+  border-color: #dbe1eb;
+  background: #dbe1eb;
+}
+.attraction-list .attraction-action .ant-btn {
+  height: 42px;
+  font-weight: 500;
+}
+.attraction-list .attraction-action .ant-btn-primary {
+  background: linear-gradient(110deg, #1555ff, #2c63ff);
+}
 .attraction-list .attraction-fees > div:first-child strong {
   color: #e5354e;
 }
@@ -324,6 +546,8 @@
   min-height: 42px;
   margin: 0;
   padding: 8px 18px;
+  border: 1px solid #fff;
+  background: linear-gradient(100deg, #eaf0ff, #e2e9ff);
 }
 .attraction-service-choice {
   display: flex;
@@ -354,6 +578,16 @@
     grid-column: 2 / 4;
   }
 }
+@media (max-width: 1300px) {
+  .page-P04 .global-search.ant-input-affix-wrapper {
+    display: none;
+  }
+}
+@media (max-width: 1200px) {
+  .guest-attractions .attraction-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 @media (max-width: 1000px) {
   .attraction-cards {
     grid-template-columns: minmax(0, 1fr);
@@ -379,19 +613,21 @@
   .page-P04 .brand {
     min-width: 0;
   }
-  .page-P04 .brand strong {
+  .role-GUEST.page-P04 .brand strong,
+  .role-USER.page-P04 .brand strong {
     font-size: 17px;
   }
-  .page-P04 .topbar {
+  .role-GUEST.page-P04 .topbar,
+  .role-USER.page-P04 .topbar {
     padding-inline: 16px;
   }
-  .page-P04 .workspace-button {
+  .role-USER.page-P04 .workspace-button {
     font-size: 0;
     gap: 6px;
     padding-inline: 8px;
   }
-  .page-P04 .workspace-button b,
-  .page-P04 .workspace-button .anticon {
+  .role-USER.page-P04 .workspace-button b,
+  .role-USER.page-P04 .workspace-button .anticon {
     font-size: 12px;
   }
   .role-GUEST.page-P04 .workspace-button {
@@ -400,11 +636,22 @@
   .page-P04 .topbar-actions {
     gap: 6px;
   }
+  .role-GUEST.page-P04 .topbar-actions > .ant-btn:not(.workspace-button) {
+    width: auto;
+    height: 34px;
+    padding-inline: 12px;
+    font-size: 14px;
+  }
+  .role-GUEST.page-P04
+    .topbar-actions
+    > .ant-btn-default:not(.workspace-button) {
+    margin-left: 0;
+  }
   .attractions-page .attractions-banner {
     height: auto;
     padding: 20px;
   }
-  .attractions-banner h2 {
+  .attractions-page .attractions-banner h2 {
     font-size: 23px;
     line-height: 32px;
   }
@@ -412,8 +659,11 @@
     font-size: 15px;
     line-height: 25px;
   }
-  .attraction-filters > div:first-of-type {
+  .attractions-page .attraction-filters .attraction-city-options {
     width: 100%;
+  }
+  .guest-attractions .attraction-cards {
+    margin-left: 0;
   }
   .attractions-page .attraction-filters {
     padding: 16px;
@@ -435,6 +685,9 @@
     grid-template-columns: minmax(0, 1fr);
     padding: 16px;
     gap: 14px;
+  }
+  .attraction-list .attraction-card:first-child .panel-body {
+    padding: 16px;
   }
   .attraction-image {
     width: 100%;
