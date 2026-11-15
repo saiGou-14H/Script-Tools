@@ -29,6 +29,7 @@ delivery_targets.add((root.parent/'output/verification/script-version-pages/repo
 delivery_targets.add((root.parent/'output/verification/market-navigation/report.json').resolve())
 delivery_targets.add((root.parent/'output/verification/consumer-pages/report.json').resolve())
 delivery_targets.add((root.parent/'output/verification/admin-governance-pages/report.json').resolve())
+delivery_targets.add((root.parent/'output/verification/publisher-pages/report.json').resolve())
 delivery_targets.add((root.parent/'output/verification/execution-pages/report.json').resolve())
 
 delivery_targets.update((root.parent/'output/verification'/name).resolve() for name in ('shared-pages/report.json','publisher-product-pages/report.json'))

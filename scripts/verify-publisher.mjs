@@ -13,7 +13,95 @@ const report = {
   checks: [],
   screenshots: [],
   errors: [],
+  layouts: {},
+  visual_acceptance: "pending",
 };
+const homeWidths = [
+  ...new Set([
+    ...Array.from({ length: 41 }, (_, index) => 390 + index * 37),
+    700,
+    701,
+    900,
+    901,
+    1000,
+    1001,
+    1300,
+    1301,
+    1450,
+    1451,
+    1700,
+    1701,
+    1814,
+    1870,
+  ]),
+].sort((a, b) => a - b);
+async function homeLayout(target) {
+  return target.evaluate(() => {
+    const rect = (selector) =>
+      document.querySelector(selector).getBoundingClientRect();
+    const brand = rect(".brand"),
+      actions = rect(".topbar-actions"),
+      search = rect(".global-search");
+    const art = rect(".publisher-hero-art");
+    const heroOverlap =
+      art.width > 0 &&
+      [".publisher-banner h1", ".publisher-banner p"].some((selector) => {
+        const content = rect(selector);
+        return (
+          content.right > art.left &&
+          content.top < art.bottom &&
+          content.bottom > art.top
+        );
+      });
+    const selectors = [
+      ".publisher-banner",
+      ".publisher-banner h1",
+      ".publisher-banner p",
+      ".publisher-stats",
+      ".publisher-stats > div",
+      ".publisher-workflow > a > div",
+      ".publisher-service-controls",
+      ".publisher-alert",
+      ".publisher-alert > div",
+      ".publisher-refund",
+      ".publisher-refund > div",
+      ".publisher-income",
+      ".publisher-income > div",
+      ".publisher-income-row",
+      ".panel-heading",
+    ];
+    return {
+      width: innerWidth,
+      document_width: document.documentElement.scrollWidth,
+      hero_overlap: heroOverlap,
+      header_overlap: brand.right > actions.left,
+      search_overlap:
+        search.width > 0 &&
+        (brand.right > search.left || search.right > actions.left),
+      clipped: [...document.querySelectorAll(selectors.join(","))]
+        .filter(
+          (element) =>
+            element.scrollWidth > element.clientWidth + 1 ||
+            element.scrollHeight > element.clientHeight + 1,
+        )
+        .map((element) => element.className),
+    };
+  });
+}
+async function checkHomeWidths(target, name) {
+  report.layouts[name] = [];
+  for (const width of homeWidths) {
+    await target.setViewportSize({ width, height: 868 });
+    const layout = await homeLayout(target);
+    expect(layout.document_width).toBe(width);
+    expect(layout.header_overlap).toBe(false);
+    expect(layout.hero_overlap).toBe(false);
+    expect(layout.search_overlap).toBe(false);
+    expect(layout.clipped, JSON.stringify(layout)).toEqual([]);
+    report.layouts[name].push(layout);
+  }
+  await target.setViewportSize({ width: 1814, height: 868 });
+}
 async function capture(id, route, title) {
   await page.goto(base + route);
   await expect(
@@ -49,6 +137,282 @@ try {
     data: { email: "publisher@example.invalid", password: "TravelTools2026!" },
   });
   expect(login.status()).toBe(200);
+  await capture("PUBLISHER-S01", "/publisher", "发布者工作台");
+  const referenceRegions = {
+    ".publisher-banner": { x: 221, y: 134, width: 1120, height: 132 },
+    ".publisher-stats": { x: 221, y: 282, width: 1120, height: 77 },
+    ".publisher-workflow-panel": { x: 221, y: 371, width: 1122, height: 130 },
+    ".publisher-services": { x: 221, y: 517, width: 1124, height: 342 },
+    ".publisher-alerts-panel": { x: 1357, y: 134, width: 445, height: 169 },
+    ".publisher-refunds-panel": { x: 1357, y: 319, width: 445, height: 207 },
+    ".publisher-income-panel": { x: 1357, y: 541, width: 445, height: 310 },
+  };
+  const actual = await page.evaluate(
+    (selectors) =>
+      Object.fromEntries(
+        selectors.map((selector) => {
+          const rect = document.querySelector(selector).getBoundingClientRect();
+          return [
+            selector,
+            { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+          ];
+        }),
+      ),
+    Object.keys(referenceRegions),
+  );
+  for (const [selector, fields] of Object.entries(referenceRegions)) {
+    for (const [axis, value] of Object.entries(fields)) {
+      expect(
+        Math.abs(actual[selector][axis] - value),
+        selector + " " + axis,
+      ).toBeLessThanOrEqual(3);
+    }
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBe(
+    868,
+  );
+  const expectedNavigation = [
+    117, 191.5, 225, 258, 328, 360.5, 393, 462.5, 495, 563, 595.5, 662, 726.5,
+    790,
+  ];
+  const actualNavigation = await page
+    .locator(".sidebar nav .nav-item")
+    .evaluateAll((links) =>
+      links.map((link) => {
+        const bounds = link.getBoundingClientRect();
+        return {
+          title: link.textContent,
+          center_y: bounds.y + bounds.height / 2,
+        };
+      }),
+    );
+  expect(actualNavigation).toHaveLength(expectedNavigation.length);
+  actualNavigation.forEach((item, index) =>
+    expect(
+      Math.abs(item.center_y - expectedNavigation[index]),
+      item.title,
+    ).toBeLessThanOrEqual(3),
+  );
+  report.layouts.home_navigation_reference = {
+    tolerance_px: 3,
+    expected_center_y: expectedNavigation,
+    actual: actualNavigation,
+  };
+  report.layouts.home_reference = {
+    tolerance_px: 3,
+    expected: referenceRegions,
+    actual,
+  };
+  report.checks.push(
+    "publisher home calibrates seven principal regions against the reference within three pixels and retains its explicitly labeled six-service development data",
+  );
+  await checkHomeWidths(page, "home_responsive");
+  await page.setViewportSize({ width: 390, height: 868 });
+  const table = page.locator(".publisher-services .ant-table-content");
+  await table.evaluate((element) => {
+    element.scrollLeft = element.scrollWidth;
+  });
+  const action = await page
+    .locator(".publisher-services .row-actions a")
+    .first()
+    .evaluate((link) => {
+      const bounds = link.getBoundingClientRect(),
+        viewport = link.closest(".ant-table-content").getBoundingClientRect();
+      return {
+        left: bounds.left,
+        right: bounds.right,
+        start: viewport.left,
+        end: viewport.right,
+      };
+    });
+  expect(action.left).toBeGreaterThanOrEqual(action.start - 1);
+  expect(action.right).toBeLessThanOrEqual(action.end + 1);
+  await table.evaluate((element) => {
+    element.scrollLeft = 0;
+  });
+  await page.screenshot({
+    path: path.join(output, "PUBLISHER-S01-mobile.png"),
+    fullPage: true,
+    animations: "disabled",
+  });
+  report.screenshots.push("PUBLISHER-S01-mobile");
+  await page.setViewportSize({ width: 1814, height: 868 });
+  report.checks.push(
+    "publisher home keeps header controls separate, reflows workflow and summary regions and exposes table actions through internal scrolling across 54 distinct widths",
+  );
+
+  await page
+    .getByRole("textbox", { name: "搜索工作台服务", exact: true })
+    .fill("  航班  ");
+  await expect(page.locator(".publisher-services .ant-table-row")).toHaveCount(
+    1,
+  );
+  await page.getByRole("tab", { name: "在售(4)", exact: true }).click();
+  await page.reload();
+  await expect(
+    page.getByRole("textbox", { name: "搜索工作台服务", exact: true }),
+  ).toHaveValue("  航班  ");
+  await expect(
+    page.getByRole("tab", { name: "在售(4)", exact: true }),
+  ).toHaveAttribute("aria-selected", "true");
+  await page.getByRole("tab", { name: "已下架(1)", exact: true }).click();
+  await expect(page.locator(".publisher-services .ant-table-row")).toHaveCount(
+    0,
+  );
+  await page
+    .locator(".publisher-service-controls .ant-input-clear-icon")
+    .click();
+  await expect(page.locator(".publisher-services .ant-table-row")).toHaveCount(
+    1,
+  );
+  expect(new URL(page.url()).searchParams.has("q")).toBe(false);
+  await page.goBack();
+  await expect(
+    page.getByRole("tab", { name: "在售(4)", exact: true }),
+  ).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator(".publisher-services .ant-table-row")).toHaveCount(
+    1,
+  );
+  report.checks.push(
+    "service name search, sale status, empty intersections, clear and browser history preserve their URL state and matching fixture rows through reload",
+  );
+
+  await page.goto(base + "/publisher");
+  await expect(page.locator(".publisher-workflow > a")).toHaveCount(4);
+  expect(
+    await page
+      .locator(".publisher-workflow > a")
+      .evaluateAll((links) => links.map((link) => link.getAttribute("href"))),
+  ).toEqual([
+    "/publisher/scripts",
+    "/publisher/builds",
+    "/publisher/deployments",
+    "/publisher/services",
+  ]);
+  await page.getByRole("button", { name: "上传脚本", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "我的脚本", exact: true }),
+  ).toBeVisible();
+  await page.goto(base + "/publisher");
+  await page
+    .getByRole("button", { name: "创建服务", exact: true })
+    .first()
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "编辑与上架服务", exact: true }),
+  ).toBeVisible();
+  await page.goto(base + "/publisher");
+  await page.locator(".publisher-services .row-actions a").nth(1).click();
+  await expect(
+    page.getByRole("heading", { name: "部署管理", exact: true }),
+  ).toBeVisible();
+  report.checks.push(
+    "normal upload and creation buttons and prototype workflow and row controls reach their script, build, deployment and service management modules",
+  );
+
+  await page.goto(base + "/publisher");
+  await expect(page.locator(".publisher-services .ant-table-row")).toHaveCount(
+    6,
+  );
+  const longTitle = "发布者自定义脚本服务名称".repeat(12);
+  const longText = "publisher-defined-source-name-".repeat(16);
+  await page.evaluate(
+    ({ longTitle, longText }) => {
+      document.querySelector(".publisher-banner h1").textContent = longTitle;
+      document.querySelector(".publisher-banner p").textContent = longText;
+      document
+        .querySelectorAll(".publisher-stats strong")
+        .forEach((element) => {
+          element.textContent = "9223372036854775807";
+        });
+      document
+        .querySelectorAll(".publisher-workflow small")
+        .forEach((element) => {
+          element.textContent = longText;
+        });
+      document
+        .querySelectorAll(".publisher-service-name b")
+        .forEach((element) => {
+          element.textContent = longTitle;
+          element.title = longTitle;
+        });
+      document
+        .querySelectorAll(
+          ".publisher-services tbody .ant-table-row td:nth-child(2)",
+        )
+        .forEach((element) => {
+          element.textContent = longText + ".py";
+        });
+      document.querySelectorAll(".publisher-alert b").forEach((element) => {
+        element.textContent = longTitle;
+      });
+      document
+        .querySelectorAll(".publisher-refund > div b")
+        .forEach((element) => {
+          element.textContent = longText;
+        });
+      document
+        .querySelectorAll(
+          ".publisher-refund > b,.publisher-income strong,.publisher-income-row > b",
+        )
+        .forEach((element) => {
+          element.textContent = "¥92233720368547758.07";
+        });
+    },
+    { longTitle, longText },
+  );
+  await checkHomeWidths(page, "home_dom_long_content");
+  await page.screenshot({
+    path: path.join(output, "PUBLISHER-S01-long-content.png"),
+    fullPage: true,
+    animations: "disabled",
+  });
+  report.screenshots.push("PUBLISHER-S01-long-content");
+  report.checks.push(
+    "controlled DOM layout stress keeps long names, filenames, descriptions and signed-64-bit numeric text visible across the same 54 widths without asserting a live overview API",
+  );
+
+  const liveContext = await browser.newContext({
+    viewport: { width: 1814, height: 868 },
+  });
+  await liveContext.request.post(base + "/api/v1/auth/login", {
+    data: { email: "publisher@example.invalid", password: "TravelTools2026!" },
+  });
+  await liveContext.route("**/api/v1/bootstrap", async (route) => {
+    const body = await (await route.fetch()).json();
+    body.data.data_mode = "live";
+    await route.fulfill({ json: body });
+  });
+  const livePage = await liveContext.newPage();
+  livePage.on("pageerror", (error) => report.errors.push(error.message));
+  await livePage.goto(base + "/publisher");
+  await expect(
+    livePage.locator(".publisher-services .ant-table-row"),
+  ).toHaveCount(0);
+  await expect(
+    livePage.getByText("发布者服务概况接口待接入", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    livePage.getByText("部署告警接口待接入", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    livePage.getByText("销售退款接口待接入", { exact: true }),
+  ).toBeVisible();
+  await expect(livePage.locator(".publisher-stats strong")).toHaveText([
+    "—",
+    "—",
+    "—",
+    "—",
+  ]);
+  await expect(livePage.getByText("本地开发示例", { exact: true })).toHaveCount(
+    0,
+  );
+  await checkHomeWidths(livePage, "home_live_pending");
+  await liveContext.close();
+  report.checks.push(
+    "live publisher home retains explicit pending-overview feedback, empty sales records and unavailable counters across 54 widths",
+  );
+
   await capture("PUBLISHER-S02", "/publisher/scripts", "我的脚本");
   await capture("PUBLISHER-S04", "/publisher/versions/demo", "版本与测试");
   await page.getByRole("button", { name: "预览", exact: true }).click();

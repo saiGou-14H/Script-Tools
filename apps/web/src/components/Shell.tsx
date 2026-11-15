@@ -70,9 +70,9 @@ const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
       S06: "cube", S11: "chart", S12: "history", S13: "database", C21: "user",
     },
     S01: {
-      S01: "home", S02: "code", S05: "layers", S06: "cube",
-      S07: "order", S09: "ticket", S10: "file", S11: "chart",
-      S12: "audit", S13: "database", C21: "user",
+      S01: "home", S02: "code-brackets", S05: "list", S06: "cube",
+      S07: "store", S09: "ticket", S10: "file", S11: "bars",
+      S12: "line-chart", S13: "data-storage", C21: "user",
     },
     O01: {
       O03: "stack", O05: "stack", O06: "file", O08: "payment",
@@ -619,7 +619,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
           }
           className="brand"
         >
-          {pageId === "O01" ? (
+          {["O01", "S01"].includes(pageId) ? (
             <Icon name="send-solid" />
           ) : ["O19", "O20"].includes(pageId) ? (
             <Icon name="code-brackets" />
@@ -696,8 +696,9 @@ export function Shell({ pageId }: { pageId: PageId }) {
               {pageId === "P02" && role === "GUEST" && <Icon name="user" />}
               {pageId === "P01" && role === "GUEST" && <Icon name="team" />}
               {pageId === "C01" && <Icon name="user" />}
+              {pageId === "S01" && <Icon name="stack" />}
               {
-                pageId === "O01"
+                ["O01", "S01"].includes(pageId)
                   ? ""
                   : pageId === "P02"
                     ? role === "GUEST"
@@ -894,7 +895,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
                       roles.find((item) => item.id === role)!.home as PageId,
                     )}
                   >
-                    {pageId === "O20" && <Icon name="home" />}
+                    {["O20", "S01"].includes(pageId) && <Icon name="home" />}
                     {(pageId === "P06" ? "首页" : breadcrumbRoot) ||
                       (role === "GUEST"
                         ? "平台首页"

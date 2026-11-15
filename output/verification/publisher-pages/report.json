@@ -1,6 +1,12 @@
 {
-  "date": "2026-11-15T11:02:20.961Z",
+  "date": "2026-11-15T17:02:26.392Z",
   "checks": [
+    "publisher home calibrates seven principal regions against the reference within three pixels and retains its explicitly labeled six-service development data",
+    "publisher home keeps header controls separate, reflows workflow and summary regions and exposes table actions through internal scrolling across 54 distinct widths",
+    "service name search, sale status, empty intersections, clear and browser history preserve their URL state and matching fixture rows through reload",
+    "normal upload and creation buttons and prototype workflow and row controls reach their script, build, deployment and service management modules",
+    "controlled DOM layout stress keeps long names, filenames, descriptions and signed-64-bit numeric text visible across the same 54 widths without asserting a live overview API",
+    "live publisher home retains explicit pending-overview feedback, empty sales records and unavailable counters across 54 widths",
     "version self-use form previews publisher-defined fields and requires explicit owner authorization",
     "version, self-use and impact tabs switch without mixing published facts and new drafts",
     "build filters and trial-run tabs update records and the matching selected detail",
@@ -11,11 +17,1487 @@
     "publisher script and execution pages render without browser exceptions"
   ],
   "screenshots": [
+    "PUBLISHER-S01",
+    "PUBLISHER-S01-mobile",
+    "PUBLISHER-S01-long-content",
     "PUBLISHER-S02",
     "PUBLISHER-S04",
     "PUBLISHER-S05",
     "PUBLISHER-S06"
   ],
   "errors": [],
+  "layouts": {
+    "home_navigation_reference": {
+      "tolerance_px": 3,
+      "expected_center_y": [
+        117,
+        191.5,
+        225,
+        258,
+        328,
+        360.5,
+        393,
+        462.5,
+        495,
+        563,
+        595.5,
+        662,
+        726.5,
+        790
+      ],
+      "actual": [
+        {
+          "title": "发布者工作台",
+          "center_y": 116.84375
+        },
+        {
+          "title": "我的脚本",
+          "center_y": 191.1875
+        },
+        {
+          "title": "构建与测试记录",
+          "center_y": 224.1875
+        },
+        {
+          "title": "部署管理",
+          "center_y": 257.1875
+        },
+        {
+          "title": "服务商品",
+          "center_y": 327.53125
+        },
+        {
+          "title": "价格方案",
+          "center_y": 360.53125
+        },
+        {
+          "title": "销售订单",
+          "center_y": 393.53125
+        },
+        {
+          "title": "使用统计",
+          "center_y": 461.875
+        },
+        {
+          "title": "故障诊断",
+          "center_y": 494.875
+        },
+        {
+          "title": "收益与结算",
+          "center_y": 562.21875
+        },
+        {
+          "title": "发布者设置",
+          "center_y": 595.21875
+        },
+        {
+          "title": "来源与同步P1",
+          "center_y": 661.0625
+        },
+        {
+          "title": "账户设置",
+          "center_y": 726.40625
+        },
+        {
+          "title": "使用帮助",
+          "center_y": 789.75
+        }
+      ]
+    },
+    "home_reference": {
+      "tolerance_px": 3,
+      "expected": {
+        ".publisher-banner": {
+          "x": 221,
+          "y": 134,
+          "width": 1120,
+          "height": 132
+        },
+        ".publisher-stats": {
+          "x": 221,
+          "y": 282,
+          "width": 1120,
+          "height": 77
+        },
+        ".publisher-workflow-panel": {
+          "x": 221,
+          "y": 371,
+          "width": 1122,
+          "height": 130
+        },
+        ".publisher-services": {
+          "x": 221,
+          "y": 517,
+          "width": 1124,
+          "height": 342
+        },
+        ".publisher-alerts-panel": {
+          "x": 1357,
+          "y": 134,
+          "width": 445,
+          "height": 169
+        },
+        ".publisher-refunds-panel": {
+          "x": 1357,
+          "y": 319,
+          "width": 445,
+          "height": 207
+        },
+        ".publisher-income-panel": {
+          "x": 1357,
+          "y": 541,
+          "width": 445,
+          "height": 310
+        }
+      },
+      "actual": {
+        ".publisher-banner": {
+          "x": 221,
+          "y": 134.015625,
+          "width": 1120.390625,
+          "height": 132
+        },
+        ".publisher-stats": {
+          "x": 221,
+          "y": 282.015625,
+          "width": 1120.390625,
+          "height": 77
+        },
+        ".publisher-workflow-panel": {
+          "x": 221,
+          "y": 371.015625,
+          "width": 1120.390625,
+          "height": 130.09375
+        },
+        ".publisher-services": {
+          "x": 221,
+          "y": 517.109375,
+          "width": 1123.390625,
+          "height": 340.359375
+        },
+        ".publisher-alerts-panel": {
+          "x": 1357.390625,
+          "y": 134.015625,
+          "width": 444.59375,
+          "height": 170.09375
+        },
+        ".publisher-refunds-panel": {
+          "x": 1357.390625,
+          "y": 320.109375,
+          "width": 444.59375,
+          "height": 204.09375
+        },
+        ".publisher-income-panel": {
+          "x": 1357.390625,
+          "y": 540.203125,
+          "width": 444.59375,
+          "height": 309.796875
+        }
+      }
+    },
+    "home_responsive": [
+      {
+        "width": 390,
+        "document_width": 390,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 427,
+        "document_width": 427,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 464,
+        "document_width": 464,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 501,
+        "document_width": 501,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 538,
+        "document_width": 538,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 575,
+        "document_width": 575,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 612,
+        "document_width": 612,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 649,
+        "document_width": 649,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 686,
+        "document_width": 686,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 700,
+        "document_width": 700,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 701,
+        "document_width": 701,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 723,
+        "document_width": 723,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 760,
+        "document_width": 760,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 797,
+        "document_width": 797,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 834,
+        "document_width": 834,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 871,
+        "document_width": 871,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 900,
+        "document_width": 900,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 901,
+        "document_width": 901,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 908,
+        "document_width": 908,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 945,
+        "document_width": 945,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 982,
+        "document_width": 982,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1000,
+        "document_width": 1000,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1001,
+        "document_width": 1001,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1019,
+        "document_width": 1019,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1056,
+        "document_width": 1056,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1093,
+        "document_width": 1093,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1130,
+        "document_width": 1130,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1167,
+        "document_width": 1167,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1204,
+        "document_width": 1204,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1241,
+        "document_width": 1241,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1278,
+        "document_width": 1278,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1300,
+        "document_width": 1300,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1301,
+        "document_width": 1301,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1315,
+        "document_width": 1315,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1352,
+        "document_width": 1352,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1389,
+        "document_width": 1389,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1426,
+        "document_width": 1426,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1450,
+        "document_width": 1450,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1451,
+        "document_width": 1451,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1463,
+        "document_width": 1463,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1500,
+        "document_width": 1500,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1537,
+        "document_width": 1537,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1574,
+        "document_width": 1574,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1611,
+        "document_width": 1611,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1648,
+        "document_width": 1648,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1685,
+        "document_width": 1685,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1700,
+        "document_width": 1700,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1701,
+        "document_width": 1701,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1722,
+        "document_width": 1722,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1759,
+        "document_width": 1759,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1796,
+        "document_width": 1796,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1814,
+        "document_width": 1814,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1833,
+        "document_width": 1833,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1870,
+        "document_width": 1870,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      }
+    ],
+    "home_dom_long_content": [
+      {
+        "width": 390,
+        "document_width": 390,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 427,
+        "document_width": 427,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 464,
+        "document_width": 464,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 501,
+        "document_width": 501,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 538,
+        "document_width": 538,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 575,
+        "document_width": 575,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 612,
+        "document_width": 612,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 649,
+        "document_width": 649,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 686,
+        "document_width": 686,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 700,
+        "document_width": 700,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 701,
+        "document_width": 701,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 723,
+        "document_width": 723,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 760,
+        "document_width": 760,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 797,
+        "document_width": 797,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 834,
+        "document_width": 834,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 871,
+        "document_width": 871,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 900,
+        "document_width": 900,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 901,
+        "document_width": 901,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 908,
+        "document_width": 908,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 945,
+        "document_width": 945,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 982,
+        "document_width": 982,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1000,
+        "document_width": 1000,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1001,
+        "document_width": 1001,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1019,
+        "document_width": 1019,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1056,
+        "document_width": 1056,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1093,
+        "document_width": 1093,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1130,
+        "document_width": 1130,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1167,
+        "document_width": 1167,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1204,
+        "document_width": 1204,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1241,
+        "document_width": 1241,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1278,
+        "document_width": 1278,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1300,
+        "document_width": 1300,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1301,
+        "document_width": 1301,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1315,
+        "document_width": 1315,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1352,
+        "document_width": 1352,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1389,
+        "document_width": 1389,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1426,
+        "document_width": 1426,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1450,
+        "document_width": 1450,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1451,
+        "document_width": 1451,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1463,
+        "document_width": 1463,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1500,
+        "document_width": 1500,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1537,
+        "document_width": 1537,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1574,
+        "document_width": 1574,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1611,
+        "document_width": 1611,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1648,
+        "document_width": 1648,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1685,
+        "document_width": 1685,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1700,
+        "document_width": 1700,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1701,
+        "document_width": 1701,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1722,
+        "document_width": 1722,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1759,
+        "document_width": 1759,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1796,
+        "document_width": 1796,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1814,
+        "document_width": 1814,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1833,
+        "document_width": 1833,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1870,
+        "document_width": 1870,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      }
+    ],
+    "home_live_pending": [
+      {
+        "width": 390,
+        "document_width": 390,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 427,
+        "document_width": 427,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 464,
+        "document_width": 464,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 501,
+        "document_width": 501,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 538,
+        "document_width": 538,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 575,
+        "document_width": 575,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 612,
+        "document_width": 612,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 649,
+        "document_width": 649,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 686,
+        "document_width": 686,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 700,
+        "document_width": 700,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 701,
+        "document_width": 701,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 723,
+        "document_width": 723,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 760,
+        "document_width": 760,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 797,
+        "document_width": 797,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 834,
+        "document_width": 834,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 871,
+        "document_width": 871,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 900,
+        "document_width": 900,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 901,
+        "document_width": 901,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 908,
+        "document_width": 908,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 945,
+        "document_width": 945,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 982,
+        "document_width": 982,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1000,
+        "document_width": 1000,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1001,
+        "document_width": 1001,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1019,
+        "document_width": 1019,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1056,
+        "document_width": 1056,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1093,
+        "document_width": 1093,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1130,
+        "document_width": 1130,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1167,
+        "document_width": 1167,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1204,
+        "document_width": 1204,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1241,
+        "document_width": 1241,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1278,
+        "document_width": 1278,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1300,
+        "document_width": 1300,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1301,
+        "document_width": 1301,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1315,
+        "document_width": 1315,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1352,
+        "document_width": 1352,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1389,
+        "document_width": 1389,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1426,
+        "document_width": 1426,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1450,
+        "document_width": 1450,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1451,
+        "document_width": 1451,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1463,
+        "document_width": 1463,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1500,
+        "document_width": 1500,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1537,
+        "document_width": 1537,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1574,
+        "document_width": 1574,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1611,
+        "document_width": 1611,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1648,
+        "document_width": 1648,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1685,
+        "document_width": 1685,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1700,
+        "document_width": 1700,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1701,
+        "document_width": 1701,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1722,
+        "document_width": 1722,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1759,
+        "document_width": 1759,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1796,
+        "document_width": 1796,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1814,
+        "document_width": 1814,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1833,
+        "document_width": 1833,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1870,
+        "document_width": 1870,
+        "hero_overlap": false,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      }
+    ]
+  },
+  "visual_acceptance": "pending",
   "result": "PASS"
 }

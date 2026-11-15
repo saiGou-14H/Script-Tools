@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T16:24:31.734Z",
+  "date": "2026-11-15T17:05:02.102Z",
   "checks": [
     "public home retains the reference columns, recommendations, categories, workflow and purchase guidance within the reference viewport",
     "Public home follows seven reference regions and keeps its content and header unclipped across 55 widths and breakpoint boundaries",

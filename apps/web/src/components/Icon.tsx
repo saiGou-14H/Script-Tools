@@ -74,6 +74,7 @@ import {
   UnorderedListOutlined,
   LineChartOutlined,
   ShopOutlined,
+  ExperimentOutlined,
 } from "@ant-design/icons";
 
 function PersonFilled({
@@ -107,6 +108,53 @@ function CodeBracketsOutlined({
         strokeLinejoin="round"
       >
         <path d="m7 5-6 7 6 7m10-14 6 7-6 7M14 3l-4 18" />
+      </svg>
+    </span>
+  );
+}
+
+function TrainOutlined({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span className={`anticon ${className}`} {...props}>
+      <svg
+        viewBox="0 0 24 24"
+        width="1em"
+        height="1em"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <rect x="5" y="2" width="14" height="17" rx="4" />
+        <path d="M5 6h14M5 12h14M12 6v6M8 19l-3 3m11-3 3 3M8 22h8" />
+        <circle cx="8.5" cy="15.5" r="0.7" fill="currentColor" />
+        <circle cx="15.5" cy="15.5" r="0.7" fill="currentColor" />
+      </svg>
+    </span>
+  );
+}
+
+function AirplaneOutlined({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span className={`anticon ${className}`} {...props}>
+      <svg
+        viewBox="0 0 24 24"
+        width="1em"
+        height="1em"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="m22 2-3 8-4 2v7l-2 2-2-6-3 3-3 1 1-3 3-3-6-2 2-2h7l2-4 8-3Z" />
       </svg>
     </span>
   );
@@ -311,6 +359,9 @@ function VerifiedTargetOutlined({
 }
 
 const icons = {
+  train: TrainOutlined,
+  airplane: AirplaneOutlined,
+  experiment: ExperimentOutlined,
   "data-storage": DataStorageOutlined,
   "folder-closed": FolderOutlined,
   store: ShopOutlined,

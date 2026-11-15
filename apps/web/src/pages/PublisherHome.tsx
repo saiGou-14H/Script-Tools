@@ -7,6 +7,7 @@ import {
 import { Link, useSearchParams } from "react-router-dom";
 import { useWorkspace } from "../context";
 import { More, PageHeading, Panel, Status, TileIcon } from "../components/ui";
+import { Icon } from "../components/Icon";
 
 const serviceTabs = ["全部服务", "在售", "待上架", "已下架"];
 
@@ -21,7 +22,7 @@ const services = [
     price: "3.00",
     quantity: 86,
     income: "258.00",
-    icon: "reconciliation",
+    icon: "train",
   },
   {
     id: "flight",
@@ -33,7 +34,7 @@ const services = [
     price: "5.00",
     quantity: 42,
     income: "210.00",
-    icon: "travel",
+    icon: "airplane",
   },
   {
     id: "file",
@@ -81,7 +82,7 @@ const services = [
     price: "3.00",
     quantity: 15,
     income: "45.00",
-    icon: "container",
+    icon: "cube",
   },
 ];
 
@@ -133,16 +134,18 @@ export function PublisherHomePage() {
               </Button>
             </Link>
             <div className="publisher-hero-art" aria-hidden="true">
-              <div className="publisher-hero-screen">&lt;/&gt;</div>
+              <div className="publisher-hero-screen">
+                <Icon name="code-brackets" />
+              </div>
               <div className="publisher-hero-keyboard" />
-              <CloudUploadOutlined />
+              <Icon name="upload-tray" />
             </div>
           </div>
           <div className="publisher-stats">
             {[
-              ["layers", "在售服务", "4", "blue", "↑ 1"],
+              ["stack", "在售服务", "4", "blue", "↑ 1"],
               ["cart", "今日成交", "12", "purple", "↑ +3"],
-              ["database", "待结算", "¥68.00", "orange", ""],
+              ["coins", "待结算", "¥68.00", "orange", ""],
               ["warning", "部署异常", "1", "red", ""],
             ].map(([icon, title, value, color, change]) => (
               <div key={title}>
@@ -157,7 +160,7 @@ export function PublisherHomePage() {
               </div>
             ))}
           </div>
-          <Panel title="脚本到服务流程">
+          <Panel title="脚本到服务流程" className="publisher-workflow-panel">
             <div className="publisher-workflow">
               {[
                 [
@@ -167,7 +170,7 @@ export function PublisherHomePage() {
                   "/publisher/scripts",
                 ],
                 [
-                  "tool",
+                  "experiment",
                   "校验测试",
                   "在线运行测试，验证功能与结果",
                   "/publisher/builds",
@@ -179,7 +182,7 @@ export function PublisherHomePage() {
                   "/publisher/deployments",
                 ],
                 [
-                  "order",
+                  "store",
                   "本人上架",
                   "设置价格与无结果退款政策并上架",
                   "/publisher/services",
@@ -217,6 +220,7 @@ export function PublisherHomePage() {
                 prefix={<SearchOutlined />}
                 placeholder="搜索服务名称"
                 aria-label="搜索工作台服务"
+                allowClear
                 value={query}
                 onChange={(event) => updateFilter("q", event.target.value)}
               />
@@ -232,6 +236,7 @@ export function PublisherHomePage() {
             </div>
             <Table
               size="small"
+              tableLayout="fixed"
               rowKey="id"
               dataSource={data}
               locale={
@@ -244,19 +249,21 @@ export function PublisherHomePage() {
               columns={[
                 {
                   title: "服务名称",
+                  width: "22.5%",
                   dataIndex: "name",
                   render: (value, row) => (
                     <span className="publisher-service-name">
                       <TileIcon name={row.icon} />
-                      <b>{value}</b>
+                      <b title={value}>{value}</b>
                       <Status>示例数据</Status>
                     </span>
                   ),
                 },
-                { title: "所属脚本", dataIndex: "script" },
+                { title: "所属脚本", dataIndex: "script", width: "11.8%" },
                 {
                   title: "运行状态",
                   dataIndex: "runtime",
+                  width: "9.4%",
                   render: (value) => (
                     <Status
                       tone={
@@ -275,6 +282,7 @@ export function PublisherHomePage() {
                 {
                   title: "销售状态",
                   dataIndex: "sales",
+                  width: "8.3%",
                   render: (value) => (
                     <Status
                       tone={
@@ -289,20 +297,27 @@ export function PublisherHomePage() {
                     </Status>
                   ),
                 },
-                { title: "无结果退款政策", dataIndex: "refund" },
+                {
+                  title: "无结果退款政策",
+                  dataIndex: "refund",
+                  width: "12.3%",
+                },
                 {
                   title: "单次价格",
                   dataIndex: "price",
+                  width: "7.4%",
                   render: (value) => `¥${value}`,
                 },
-                { title: "累计销量", dataIndex: "quantity" },
+                { title: "累计销量", dataIndex: "quantity", width: "7.2%" },
                 {
                   title: "累计收入",
                   dataIndex: "income",
+                  width: "8.5%",
                   render: (value) => `¥${value}`,
                 },
                 {
                   title: "操作",
+                  width: "12.6%",
                   render: (_, row) => (
                     <div className="row-actions">
                       <Link to="/publisher/services">管理</Link>
@@ -320,7 +335,11 @@ export function PublisherHomePage() {
           </Panel>
         </div>
         <aside>
-          <Panel title="部署告警" extra={<More to="/publisher/deployments" />}>
+          <Panel
+            title="部署告警"
+            className="publisher-alerts-panel"
+            extra={<More to="/publisher/deployments" />}
+          >
             {(prototype
               ? [
                   ["信息提取与整理工具", "部署运行异常", "今天 10:24", "red"],
@@ -348,7 +367,11 @@ export function PublisherHomePage() {
               />
             )}
           </Panel>
-          <Panel title="销售退款" extra={<More to="/publisher/orders" />}>
+          <Panel
+            title="销售退款"
+            className="publisher-refunds-panel"
+            extra={<More to="/publisher/orders" />}
+          >
             {(prototype
               ? [
                   ["T202501200036", "车票信息查询工具", "3.00", "今天 14:05"],
@@ -361,7 +384,7 @@ export function PublisherHomePage() {
                 className="publisher-refund"
                 key={id}
               >
-                <TileIcon name="sync" color="red" />
+                <TileIcon name="refund" color="red" />
                 <div>
                   <b>订单退款（#{id}）</b>
                   <small>
@@ -382,6 +405,7 @@ export function PublisherHomePage() {
           </Panel>
           <Panel
             title="收益摘要"
+            className="publisher-income-panel"
             extra={<More to="/publisher/earnings">查看结算明细</More>}
           >
             <div className="publisher-income">
@@ -390,15 +414,17 @@ export function PublisherHomePage() {
                 <strong>{prototype ? "¥723.00" : "—"}</strong>
               </div>
               <div>
-                <small>待结算收益 ⓘ</small>
+                <small>
+                  待结算收益 <Icon name="info" />
+                </small>
                 <strong>{prototype ? "¥68.00" : "—"}</strong>
               </div>
             </div>
             {[
-              ["chart", "近期收入趋势（近7天）", "¥136.00", "+18%"],
+              ["bars", "近期收入趋势（近7天）", "¥136.00", "+18%"],
               ["calendar", "今日收入", "¥48.00", ""],
               ["calendar", "昨日收入", "¥48.00", ""],
-              ["chart", "近7日收入", "¥136.00", ""],
+              ["bars", "近7日收入", "¥136.00", ""],
             ].map(([icon, name, value, change]) => (
               <div className="publisher-income-row" key={name}>
                 <TileIcon name={icon} />
