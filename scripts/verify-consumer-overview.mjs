@@ -7,13 +7,14 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { Pool } from "pg";
 import { chromium, expect } from "@playwright/test";
+import { preview } from "vite";
+import { startVerificationApp } from "./verification-app.mjs";
 
-loadEnvFile(".env");
+loadEnvFile(path.resolve(process.argv[2] || ".env"));
 const output = path.resolve("output/verification/consumer-overview");
 await mkdir(output, { recursive: true });
-const base = "http://127.0.0.1:5174";
+let base, application, server, browser;
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-const browser = await chromium.launch();
 const require = createRequire(import.meta.url);
 const {
   MonitoringService,
@@ -30,6 +31,9 @@ const report = {
   screenshots: [],
   errors: [],
   layouts: {},
+  scope:
+    "production-built consumer home and checkout, isolated seed API, controlled overview responses and rolled-back PostgreSQL fixtures",
+  visual_acceptance: "pending",
 };
 let connection;
 async function insert(table, values) {
@@ -87,7 +91,76 @@ async function capture(page, name, selector) {
   expect(report.layouts[name].documentWidth).toBe(1814);
   expect(report.layouts[name].documentHeight).toBe(868);
 }
+async function homeLayout(page) {
+  return page.evaluate(() => {
+    const rect = (selector) =>
+      document.querySelector(selector).getBoundingClientRect();
+    const brand = rect(".brand");
+    const actions = rect(".topbar-actions");
+    const search = rect(".global-search");
+    const selectors = [
+      ".welcome-banner",
+      ".home-stat",
+      ".activity-item",
+      ".activity-item > div",
+      ".pending-home",
+      ".recent-order",
+      ".recent-order > div",
+      ".entry-cards > a",
+      ".recommend-item",
+      ".recommend-item b",
+      ".panel-heading",
+      ".home-service-name",
+    ];
+    return {
+      width: innerWidth,
+      document_width: document.documentElement.scrollWidth,
+      header_overlap: brand.right > actions.left,
+      search_overlap:
+        search.width > 0 &&
+        (brand.right > search.left || search.right > actions.left),
+      clipped: [...document.querySelectorAll(selectors.join(","))]
+        .filter(
+          (element) =>
+            element.scrollWidth > element.clientWidth + 1 ||
+            element.scrollHeight > element.clientHeight + 1,
+        )
+        .map((element) => element.className),
+    };
+  });
+}
+function assertHomeLayout(layout) {
+  assert.equal(layout.document_width, layout.width);
+  assert.equal(layout.header_overlap, false);
+  assert.equal(layout.search_overlap, false);
+  assert.deepEqual(layout.clipped, []);
+}
+async function checkHomeWidths(page, name, widths) {
+  report.layouts[name] = [];
+  for (const width of widths) {
+    await page.setViewportSize({ width, height: 868 });
+    const layout = await homeLayout(page);
+    assertHomeLayout(layout);
+    report.layouts[name].push(layout);
+  }
+}
 try {
+  application = await startVerificationApp("consumer-overview");
+  const root = path.resolve("apps/web");
+  server = await preview({
+    root,
+    configFile: path.join(root, "vite.config.ts"),
+    preview: {
+      host: "127.0.0.1",
+      port: 0,
+      strictPort: true,
+      proxy: { "/api": { target: application.url } },
+    },
+  });
+  const address = server.httpServer.address();
+  assert(address && typeof address === "object");
+  base = `http://127.0.0.1:${address.port}`;
+  browser = await chromium.launch();
   const guest = await browser.newContext();
   expect(
     (await guest.request.get(base + "/api/v1/monitoring/overview")).status(),
@@ -787,6 +860,116 @@ try {
   await prototype.page.goto(base + "/me/home");
   await expect(prototype.page.locator(".recommend-item")).toHaveCount(3);
   await capture(prototype.page, "USER-C01", ".consumer-home");
+  const referenceRegions = {
+    ".welcome-banner": { x: 202, y: 97, width: 1174, height: 171 },
+    ".home-stats": { x: 202, y: 280, width: 1184, height: 83 },
+    ".home-services-panel": { x: 202, y: 373, width: 483, height: 222 },
+    ".home-activity-panel": { x: 695, y: 373, width: 339, height: 222 },
+    ".home-pending-panel": { x: 1046, y: 373, width: 340, height: 222 },
+    ".home-bottom > .panel:first-child": {
+      x: 202,
+      y: 607,
+      width: 645,
+      height: 243,
+    },
+    ".home-results-panel": { x: 857, y: 607, width: 529, height: 243 },
+    ".home-orders-panel": { x: 1398, y: 97, width: 408, height: 315 },
+    ".home-discovery-panel": { x: 1398, y: 424, width: 408, height: 427 },
+  };
+  const measured = await prototype.page.evaluate(
+    (selectors) =>
+      Object.fromEntries(
+        selectors.map((selector) => {
+          const rect = document.querySelector(selector).getBoundingClientRect();
+          return [
+            selector,
+            { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+          ];
+        }),
+      ),
+    Object.keys(referenceRegions),
+  );
+  for (const [selector, expected] of Object.entries(referenceRegions)) {
+    for (const [axis, value] of Object.entries(expected)) {
+      assert(
+        Math.abs(measured[selector][axis] - value) <= 3,
+        `${selector} ${axis}: ${measured[selector][axis]} / ${value}`,
+      );
+    }
+  }
+  report.layouts.home_reference_regions = {
+    tolerance_px: 3,
+    expected: referenceRegions,
+    actual: measured,
+  };
+  report.checks.push(
+    "consumer home calibrates all nine principal regions against the 1814 by 868 reference within three pixels while retaining data-derived counts and records",
+  );
+  const widths = [
+    ...new Set([
+      ...Array.from({ length: 41 }, (_, index) => 390 + index * 37),
+      700,
+      701,
+      1000,
+      1001,
+      1050,
+      1051,
+      1100,
+      1101,
+      1300,
+      1301,
+      1400,
+      1401,
+      1700,
+      1701,
+      1814,
+      1870,
+    ]),
+  ].sort((a, b) => a - b);
+  await checkHomeWidths(prototype.page, "home_responsive", widths);
+  await prototype.page.setViewportSize({ width: 390, height: 868 });
+  for (const selector of [".home-services-panel", ".home-results-panel"]) {
+    const table = prototype.page.locator(selector + " .ant-table-content");
+    await table.evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
+    const action = await prototype.page
+      .locator(selector + " tbody .ant-btn")
+      .first()
+      .evaluate((button) => {
+        const bounds = button.getBoundingClientRect();
+        const viewport = button
+          .closest(".ant-table-content")
+          .getBoundingClientRect();
+        return {
+          left: bounds.left,
+          right: bounds.right,
+          viewport_left: viewport.left,
+          viewport_right: viewport.right,
+        };
+      });
+    assert(
+      action.left >= action.viewport_left - 1 &&
+        action.right <= action.viewport_right + 1,
+    );
+    await table.evaluate((element) => {
+      element.scrollLeft = 0;
+    });
+  }
+  report.checks.push(
+    "mobile table scrolling exposes the selected service action and result download within their own scroll containers",
+  );
+  await prototype.page.screenshot({
+    path: path.join(output, "USER-C01-mobile.png"),
+    fullPage: true,
+    animations: "disabled",
+  });
+  report.screenshots.push("USER-C01-mobile");
+  await prototype.page.setViewportSize({ width: 1814, height: 868 });
+  report.checks.push(
+    "consumer home retains usable navigation, natural card flow and contained tables across 56 distinct widths from 390 to 1870 including every layout boundary",
+  );
+
   await expect(prototype.page.locator(".home-stat").nth(2)).toContainText("2");
   await expect(
     prototype.page.locator(".consumer-sidebar-footer"),
@@ -906,18 +1089,199 @@ try {
   );
   await recovery.context.close();
 
-  const changed = await contextFor();
+  const content = await contextFor(true);
+  const longTitle = "完整的自定义脚本服务与持续运行任务名称".repeat(5);
+  const longText = "publisher-defined-content-".repeat(15);
+  const largeCounts = { ...liveEnvelope.data.counts };
+  for (const key of Object.keys(largeCounts))
+    largeCounts[key] = "9223372036854775807";
+  const controlledOverview = {
+    ...liveEnvelope,
+    data: {
+      ...liveEnvelope.data,
+      counts: largeCounts,
+      services: [
+        {
+          id: "long-entitlement",
+          title: longTitle,
+          description: longText,
+          icon: "__proto__",
+          status: "ACTIVE",
+          order_id: "owned-order",
+          valid_until: new Date().toISOString(),
+          created_at: new Date().toISOString(),
+        },
+      ],
+      orders: [
+        {
+          id: "owned-order",
+          title: longTitle,
+          icon: "table",
+          status: "ACTIVE",
+          amount_minor: "9223372036854775807",
+          currency: "CNY",
+          created_at: new Date().toISOString(),
+        },
+      ],
+      activity: [
+        {
+          id: "owned-run",
+          task_id: "owned-task",
+          task_name: longTitle,
+          status: "RUNNING",
+          updated_at: new Date().toISOString(),
+        },
+      ],
+      pending: [
+        {
+          id: "owned-pending",
+          run_id: "owned-run",
+          task_name: longTitle,
+          reason: longText,
+          created_at: new Date().toISOString(),
+        },
+      ],
+      results: [
+        {
+          id: "owned-output",
+          kind: "file",
+          file_name: longText + ".csv",
+          title: longTitle,
+          task_name: longTitle,
+          run_id: "owned-run",
+          icon: "file",
+          created_at: new Date().toISOString(),
+        },
+      ],
+    },
+  };
+  await content.page.route("**/api/v1/monitoring/overview", (route) =>
+    route.fulfill({ json: controlledOverview }),
+  );
   const catalogEnvelope = await (
+    await content.context.request.get(base + "/api/v1/services")
+  ).json();
+  const recommended = catalogEnvelope.data
+    .filter((item) => item.scene_key !== "travel")
+    .slice(0, 3);
+  recommended[0] = {
+    ...recommended[0],
+    title: longTitle,
+    description: longText,
+    amount_minor: "9223372036854775807",
+    delivery_policy: { ...recommended[0].delivery_policy, icon: "__proto__" },
+    availability: { can_purchase: false, reason: "verification" },
+  };
+  recommended[1] = { ...recommended[1], deployment_status: "STOPPED" };
+  delete recommended[1].availability;
+  recommended[2] = {
+    ...recommended[2],
+    deployment_status: "DEGRADED",
+    availability: { can_purchase: true, reason: null },
+  };
+  let failCatalog = false;
+  let emptyCatalog = false;
+  await content.page.route("**/api/v1/services", (route) =>
+    failCatalog
+      ? route.fulfill({
+          status: 503,
+          json: {
+            error: {
+              code: "UNAVAILABLE",
+              message: "controlled catalog outage",
+            },
+          },
+        })
+      : route.fulfill({
+          json: { ...catalogEnvelope, data: emptyCatalog ? [] : recommended },
+        }),
+  );
+  await content.page.goto(base + "/me/home");
+  await expect(content.page.locator(".home-service-name")).toHaveText(
+    longTitle,
+  );
+  await expect(content.page.locator(".home-stat").first()).toContainText(
+    "9223372036854775807",
+  );
+  await expect(content.page.locator(".recent-order")).toContainText(
+    "¥92233720368547758.07",
+  );
+  await expect(content.page.locator(".recommend-item").first()).toContainText(
+    "¥92233720368547758.07/次",
+  );
+  await expect(
+    content.page.locator(".home-services-panel td.ant-table-cell-ellipsis"),
+  ).toHaveAttribute("title", longText);
+  await expect(content.page.locator(".home-services-panel a")).toHaveAttribute(
+    "href",
+    "/me/orders/owned-order",
+  );
+  await expect(content.page.locator(".pending-home a")).toHaveAttribute(
+    "href",
+    "/me/pending?focus=owned-pending",
+  );
+  await expect(
+    content.page.locator(".home-results-panel td a").first(),
+  ).toHaveAttribute("href", "/me/outputs?output=owned-output");
+  await expect(content.page.locator(".recommend-item .status")).toHaveCount(2);
+  await expect(
+    content.page.locator(".recommend-item").nth(2).locator(".status"),
+  ).toHaveCount(0);
+  await expect(
+    content.page.locator(".recommend-item").first().locator("small"),
+  ).toHaveAttribute("title", longText);
+  report.checks.push(
+    "controlled live summaries preserve signed 64-bit counts and prices, long names and output filenames, full description tooltips and exact owner-scoped links without replacing the actual API fixture counts",
+  );
+  await checkHomeWidths(content.page, "home_long_content", widths);
+  await content.page.setViewportSize({ width: 1814, height: 868 });
+  await content.page.screenshot({
+    path: path.join(output, "USER-C01-long-content.png"),
+    fullPage: true,
+    animations: "disabled",
+  });
+  report.screenshots.push("USER-C01-long-content");
+  report.checks.push(
+    "long continuous-run titles, unbroken descriptions, filenames and maximum signed 64-bit values remain accessible across the same 56 widths with horizontal scrolling confined to the two tables",
+  );
+  report.checks.push(
+    "recommended services respect explicit purchase availability, fall back to deployment status for legacy records, retain explicit availability for degraded deployments and safely render unknown icons",
+  );
+  failCatalog = true;
+  await content.page.reload();
+  await expect(
+    content.page.getByText("推荐服务暂时无法加载", { exact: true }),
+  ).toBeVisible();
+  failCatalog = false;
+  await content.page
+    .getByRole("button", { name: "重试推荐服务", exact: true })
+    .click();
+  await expect(content.page.locator(".recommend-item")).toHaveCount(3);
+  emptyCatalog = true;
+  await content.page.reload();
+  await expect(
+    content.page.getByText("暂无推荐服务", { exact: true }),
+  ).toBeVisible();
+  await expect(content.page.locator(".home-service-name")).toHaveCount(1);
+  report.checks.push(
+    "catalog outages expose a working recommendation retry and an empty catalog retains the independently loaded personal summary",
+  );
+  await content.context.close();
+
+  const changed = await contextFor();
+  const changedCatalogEnvelope = await (
     await changed.context.request.get(base + "/api/v1/services")
   ).json();
-  const service = catalogEnvelope.data.find(
+  const service = changedCatalogEnvelope.data.find(
     (item) => item.input_schema_digest === "schema-table",
   );
   const changedService = structuredClone(service);
   changedService.input_schema.properties.output_format.enum = ["JSON"];
   changedService.input_ui_schema = {};
   await changed.page.route("**/api/v1/services", (route) =>
-    route.fulfill({ json: { ...catalogEnvelope, data: [changedService] } }),
+    route.fulfill({
+      json: { ...changedCatalogEnvelope, data: [changedService] },
+    }),
   );
   await changed.page.goto(base + `/checkout?service=${service.id}`);
   await expect(changed.page.locator(".checkout-schema-change")).toBeVisible();
@@ -955,7 +1319,9 @@ try {
     connection.release();
   }
   await pool.end();
-  await browser.close();
+  await browser?.close();
+  await server?.close();
+  await application?.close();
   await writeFile(
     path.join(output, "report.json"),
     JSON.stringify(report, null, 2),

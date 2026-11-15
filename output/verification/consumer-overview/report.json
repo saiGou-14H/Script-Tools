@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T08:46:40.950Z",
+  "date": "2026-11-15T15:45:50.505Z",
   "checks": [
     "personal overview requires authentication, returns its effective window and as_of, preserves integer counts and rejects owner selection and invalid dates",
     "current running counters retain a continuous run created before the history window, while history totals respect the window and another owner's task stays excluded",
@@ -9,15 +9,24 @@
     "owned funded entitlements respect expiry and revocation, and per-currency service fee and confirmed-refund aggregates preserve signed 64-bit minor-unit precision using rolled-back financial fixtures",
     "text and message output queries paginate as one normalized kind set and reject invalid groups, changed filters and cross-owner cursor replay in a rolled-back PostgreSQL transaction",
     "pending totals exclude expired requests, bounded lists remain deterministic, and historical filters retain current-state counters with all synthetic database changes rolled back",
+    "consumer home calibrates all nine principal regions against the 1814 by 868 reference within three pixels while retaining data-derived counts and records",
+    "mobile table scrolling exposes the selected service action and result download within their own scroll containers",
+    "consumer home retains usable navigation, natural card flow and contained tables across 56 distinct widths from 390 to 1870 including every layout boundary",
     "consumer home restores the reference regions within 1814 by 868, derives preview counts, links each order to its own detail, downloads the selected existing file and opens the corresponding entitlement filter",
     "checkout keeps the reference viewport and a newly cancelled preview order immediately updates the home summary without fabricating a payment confirmation",
     "live home reads the authenticated overview and shows actual empty records while checkout requires explicit terms consent and renders the publisher form",
     "overview errors expose a working retry, and counters above Number.MAX_SAFE_INTEGER retain their exact text",
+    "controlled live summaries preserve signed 64-bit counts and prices, long names and output filenames, full description tooltips and exact owner-scoped links without replacing the actual API fixture counts",
+    "long continuous-run titles, unbroken descriptions, filenames and maximum signed 64-bit values remain accessible across the same 56 widths with horizontal scrolling confined to the two tables",
+    "recommended services respect explicit purchase availability, fall back to deployment status for legacy records, retain explicit availability for degraded deployments and safely render unknown icons",
+    "catalog outages expose a working recommendation retry and an empty catalog retains the independently loaded personal summary",
     "a changed publisher schema invalidates the old example, opens an editable form, blocks missing required fields and accepts corrected parameters through the normal purchase entry"
   ],
   "screenshots": [
     "USER-C01",
-    "USER-C02"
+    "USER-C01-mobile",
+    "USER-C02",
+    "USER-C01-long-content"
   ],
   "errors": [],
   "layouts": {
@@ -25,10 +34,519 @@
       "x": 202,
       "y": 97,
       "width": 1604,
-      "height": 754.921875,
+      "height": 756.3125,
       "documentWidth": 1814,
       "documentHeight": 868
     },
+    "home_reference_regions": {
+      "tolerance_px": 3,
+      "expected": {
+        ".welcome-banner": {
+          "x": 202,
+          "y": 97,
+          "width": 1174,
+          "height": 171
+        },
+        ".home-stats": {
+          "x": 202,
+          "y": 280,
+          "width": 1184,
+          "height": 83
+        },
+        ".home-services-panel": {
+          "x": 202,
+          "y": 373,
+          "width": 483,
+          "height": 222
+        },
+        ".home-activity-panel": {
+          "x": 695,
+          "y": 373,
+          "width": 339,
+          "height": 222
+        },
+        ".home-pending-panel": {
+          "x": 1046,
+          "y": 373,
+          "width": 340,
+          "height": 222
+        },
+        ".home-bottom > .panel:first-child": {
+          "x": 202,
+          "y": 607,
+          "width": 645,
+          "height": 243
+        },
+        ".home-results-panel": {
+          "x": 857,
+          "y": 607,
+          "width": 529,
+          "height": 243
+        },
+        ".home-orders-panel": {
+          "x": 1398,
+          "y": 97,
+          "width": 408,
+          "height": 315
+        },
+        ".home-discovery-panel": {
+          "x": 1398,
+          "y": 424,
+          "width": 408,
+          "height": 427
+        }
+      },
+      "actual": {
+        ".welcome-banner": {
+          "x": 202,
+          "y": 97,
+          "width": 1174,
+          "height": 171
+        },
+        ".home-stats": {
+          "x": 202,
+          "y": 280,
+          "width": 1184,
+          "height": 82
+        },
+        ".home-services-panel": {
+          "x": 202,
+          "y": 372,
+          "width": 483.609375,
+          "height": 222
+        },
+        ".home-activity-panel": {
+          "x": 697.609375,
+          "y": 372,
+          "width": 338.1875,
+          "height": 222
+        },
+        ".home-pending-panel": {
+          "x": 1047.796875,
+          "y": 372,
+          "width": 338.203125,
+          "height": 222
+        },
+        ".home-bottom > .panel:first-child": {
+          "x": 202,
+          "y": 606,
+          "width": 645.15625,
+          "height": 243
+        },
+        ".home-results-panel": {
+          "x": 857.15625,
+          "y": 606,
+          "width": 528.828125,
+          "height": 243
+        },
+        ".home-orders-panel": {
+          "x": 1398,
+          "y": 97,
+          "width": 408,
+          "height": 317.3125
+        },
+        ".home-discovery-panel": {
+          "x": 1398,
+          "y": 426.3125,
+          "width": 408,
+          "height": 427
+        }
+      }
+    },
+    "home_responsive": [
+      {
+        "width": 390,
+        "document_width": 390,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 427,
+        "document_width": 427,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 464,
+        "document_width": 464,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 501,
+        "document_width": 501,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 538,
+        "document_width": 538,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 575,
+        "document_width": 575,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 612,
+        "document_width": 612,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 649,
+        "document_width": 649,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 686,
+        "document_width": 686,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 700,
+        "document_width": 700,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 701,
+        "document_width": 701,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 723,
+        "document_width": 723,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 760,
+        "document_width": 760,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 797,
+        "document_width": 797,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 834,
+        "document_width": 834,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 871,
+        "document_width": 871,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 908,
+        "document_width": 908,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 945,
+        "document_width": 945,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 982,
+        "document_width": 982,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1000,
+        "document_width": 1000,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1001,
+        "document_width": 1001,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1019,
+        "document_width": 1019,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1050,
+        "document_width": 1050,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1051,
+        "document_width": 1051,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1056,
+        "document_width": 1056,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1093,
+        "document_width": 1093,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1100,
+        "document_width": 1100,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1101,
+        "document_width": 1101,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1130,
+        "document_width": 1130,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1167,
+        "document_width": 1167,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1204,
+        "document_width": 1204,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1241,
+        "document_width": 1241,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1278,
+        "document_width": 1278,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1300,
+        "document_width": 1300,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1301,
+        "document_width": 1301,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1315,
+        "document_width": 1315,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1352,
+        "document_width": 1352,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1389,
+        "document_width": 1389,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1400,
+        "document_width": 1400,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1401,
+        "document_width": 1401,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1426,
+        "document_width": 1426,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1463,
+        "document_width": 1463,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1500,
+        "document_width": 1500,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1537,
+        "document_width": 1537,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1574,
+        "document_width": 1574,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1611,
+        "document_width": 1611,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1648,
+        "document_width": 1648,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1685,
+        "document_width": 1685,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1700,
+        "document_width": 1700,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1701,
+        "document_width": 1701,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1722,
+        "document_width": 1722,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1759,
+        "document_width": 1759,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1796,
+        "document_width": 1796,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1814,
+        "document_width": 1814,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1833,
+        "document_width": 1833,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1870,
+        "document_width": 1870,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      }
+    ],
     "USER-C02": {
       "x": 260,
       "y": 107.5625,
@@ -36,7 +554,403 @@
       "height": 751.84375,
       "documentWidth": 1814,
       "documentHeight": 868
-    }
+    },
+    "home_long_content": [
+      {
+        "width": 390,
+        "document_width": 390,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 427,
+        "document_width": 427,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 464,
+        "document_width": 464,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 501,
+        "document_width": 501,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 538,
+        "document_width": 538,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 575,
+        "document_width": 575,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 612,
+        "document_width": 612,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 649,
+        "document_width": 649,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 686,
+        "document_width": 686,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 700,
+        "document_width": 700,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 701,
+        "document_width": 701,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 723,
+        "document_width": 723,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 760,
+        "document_width": 760,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 797,
+        "document_width": 797,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 834,
+        "document_width": 834,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 871,
+        "document_width": 871,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 908,
+        "document_width": 908,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 945,
+        "document_width": 945,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 982,
+        "document_width": 982,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1000,
+        "document_width": 1000,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1001,
+        "document_width": 1001,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1019,
+        "document_width": 1019,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1050,
+        "document_width": 1050,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1051,
+        "document_width": 1051,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1056,
+        "document_width": 1056,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1093,
+        "document_width": 1093,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1100,
+        "document_width": 1100,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1101,
+        "document_width": 1101,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1130,
+        "document_width": 1130,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1167,
+        "document_width": 1167,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1204,
+        "document_width": 1204,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1241,
+        "document_width": 1241,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1278,
+        "document_width": 1278,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1300,
+        "document_width": 1300,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1301,
+        "document_width": 1301,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1315,
+        "document_width": 1315,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1352,
+        "document_width": 1352,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1389,
+        "document_width": 1389,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1400,
+        "document_width": 1400,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1401,
+        "document_width": 1401,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1426,
+        "document_width": 1426,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1463,
+        "document_width": 1463,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1500,
+        "document_width": 1500,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1537,
+        "document_width": 1537,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1574,
+        "document_width": 1574,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1611,
+        "document_width": 1611,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1648,
+        "document_width": 1648,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1685,
+        "document_width": 1685,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1700,
+        "document_width": 1700,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1701,
+        "document_width": 1701,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1722,
+        "document_width": 1722,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1759,
+        "document_width": 1759,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1796,
+        "document_width": 1796,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1814,
+        "document_width": 1814,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1833,
+        "document_width": 1833,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      },
+      {
+        "width": 1870,
+        "document_width": 1870,
+        "header_overlap": false,
+        "search_overlap": false,
+        "clipped": []
+      }
+    ]
   },
+  "scope": "production-built consumer home and checkout, isolated seed API, controlled overview responses and rolled-back PostgreSQL fixtures",
+  "visual_acceptance": "pending",
   "result": "PASS"
 }

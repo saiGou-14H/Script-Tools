@@ -385,6 +385,8 @@ try {
     "apps/web/src/styles/script-versions.css",
     "apps/web/src/pages/Market.tsx",
     "apps/web/src/pages/PublicHome.tsx",
+    "apps/web/src/pages/ConsumerHome.tsx",
+    "apps/web/src/styles/consumer-home.css",
     "apps/web/src/styles/public-home.css",
     "apps/web/src/pages/ServiceDetail.tsx",
     "apps/web/src/pages/TravelService.tsx",

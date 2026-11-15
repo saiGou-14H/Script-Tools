@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-15T15:18:42.477Z",
+  "date": "2026-11-15T15:50:41.922Z",
   "checks": [
     "four order and entitlement routes restore their reference regions and keep sidebar help inside 1814 by 868",
     "order filters persist in the URL and cancellation preserves the selected order across confirmation and closed detail",

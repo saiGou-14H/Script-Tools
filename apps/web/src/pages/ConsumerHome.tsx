@@ -5,6 +5,7 @@ import {
   CheckCircleFilled,
   InfoCircleFilled,
   InfoCircleOutlined,
+  RightOutlined,
 } from "@ant-design/icons";
 import { More, Panel, Status, TileIcon } from "../components/ui";
 import { Icon } from "../components/Icon";
@@ -12,7 +13,11 @@ import { api } from "../api";
 import { useWorkspace } from "../context";
 import { usePrototype } from "../prototype";
 import { currency, useServices } from "./Market";
-import { serviceDate, servicePath } from "../lib/service-display";
+import {
+  serviceAvailable,
+  serviceDate,
+  servicePath,
+} from "../lib/service-display";
 import {
   downloadPreviewOutput,
   outputFixtures,
@@ -240,14 +245,17 @@ export function ConsumerHomePage() {
           </p>
           <Link to="/me/services">
             <Button type="primary">
-              继续使用 <Icon name="play" />
+              继续使用 <RightOutlined />
             </Button>
           </Link>
           <Link to="/market">
             <Button>浏览脚本</Button>
           </Link>
-          <div className="hero-document" aria-hidden="true">
-            <span>&lt;/&gt;</span>
+          <div className="welcome-art" aria-hidden="true">
+            <div className="welcome-document" />
+            <div className="welcome-code">
+              <Icon name="code-brackets" />
+            </div>
           </div>
           {prototype && (
             <span className="home-preview-label">本地开发示例</span>
@@ -256,7 +264,7 @@ export function ConsumerHomePage() {
         <div className="home-stats">
           {[
             {
-              icon: "order",
+              icon: "cart",
               label: "已购待使用",
               value: counts?.unused_entitlements,
               color: "blue",
@@ -305,7 +313,7 @@ export function ConsumerHomePage() {
             className="home-services-panel"
             title={
               <>
-                <TileIcon name="database" />
+                <TileIcon name="list" />
                 我的服务
               </>
             }
@@ -313,6 +321,8 @@ export function ConsumerHomePage() {
           >
             <Table
               size="small"
+              tableLayout="fixed"
+              scroll={{ x: 475 }}
               pagination={false}
               dataSource={services}
               locale={{ emptyText: "暂无已购服务" }}
@@ -320,17 +330,24 @@ export function ConsumerHomePage() {
                 {
                   title: "服务名称",
                   dataIndex: "name",
+                  width: "34%",
                   render: (value, row) => (
-                    <b>
+                    <b className="home-service-name">
                       <TileIcon name={row.icon} />
-                      {value}
+                      <span>{value}</span>
                     </b>
                   ),
                 },
-                { title: "业务目标", dataIndex: "goal", ellipsis: true },
+                {
+                  title: "业务目标",
+                  dataIndex: "goal",
+                  width: "26%",
+                  ellipsis: true,
+                },
                 {
                   title: "状态",
                   dataIndex: "status",
+                  width: "20%",
                   render: (value) => (
                     <Status
                       tone={
@@ -347,6 +364,7 @@ export function ConsumerHomePage() {
                 },
                 {
                   title: "操作",
+                  width: "20%",
                   render: (_, row) => (
                     <Link to={row.to}>
                       <Button size="small">{row.action}</Button>
@@ -360,7 +378,7 @@ export function ConsumerHomePage() {
             className="home-activity-panel"
             title={
               <>
-                <TileIcon name="chart" />
+                <TileIcon name="line-chart" />
                 运行动态
               </>
             }
@@ -423,7 +441,7 @@ export function ConsumerHomePage() {
           <Panel
             title={
               <>
-                <TileIcon name="database" />
+                <TileIcon name="stack" />
                 本次使用说明
               </>
             }
@@ -451,6 +469,8 @@ export function ConsumerHomePage() {
           >
             <Table
               size="small"
+              tableLayout="fixed"
+              scroll={{ x: 500 }}
               pagination={false}
               dataSource={results}
               locale={{ emptyText: "暂无可用产物" }}
@@ -458,13 +478,15 @@ export function ConsumerHomePage() {
                 {
                   title: "任务名称",
                   dataIndex: "task",
+                  width: "18%",
                   render: (value) => <b>{value}</b>,
                 },
-                { title: "业务目标", dataIndex: "goal", ellipsis: true },
-                { title: "完成时间", dataIndex: "time" },
+                { title: "业务目标", dataIndex: "goal", width: "25%" },
+                { title: "完成时间", dataIndex: "time", width: "26%" },
                 {
                   title: "结果文件",
                   dataIndex: "file",
+                  width: "21%",
                   render: (value, row) => (
                     <Link to={`/me/outputs?output=${row.key}`}>
                       <Icon name="file" /> {value}
@@ -473,6 +495,7 @@ export function ConsumerHomePage() {
                 },
                 {
                   title: "操作",
+                  width: "10%",
                   render: (_, row) =>
                     row.output ? (
                       <Button
@@ -546,14 +569,14 @@ export function ConsumerHomePage() {
           className="home-discovery-panel"
           title={
             <>
-              <TileIcon name="shield" />
+              <TileIcon name="lock" />
               发现服务与发布入口
             </>
           }
         >
           <div className="entry-cards">
             <Link to="/market">
-              <TileIcon name="market" />
+              <TileIcon name="store" />
               <div>
                 <b>发现服务</b>
                 <small>按应用场景，快速找到所需工具</small>
@@ -571,7 +594,16 @@ export function ConsumerHomePage() {
             热门服务推荐 <More to="/market">查看更多</More>
           </h3>
           {catalog.error ? (
-            <Alert type="error" title="推荐服务暂时无法加载" showIcon />
+            <Alert
+              type="error"
+              title="推荐服务暂时无法加载"
+              showIcon
+              action={
+                <Button onClick={() => void catalog.refetch()}>
+                  重试推荐服务
+                </Button>
+              }
+            />
           ) : catalog.isPending ? (
             <Skeleton active />
           ) : recommendations.length ? (
@@ -584,7 +616,12 @@ export function ConsumerHomePage() {
                 <TileIcon name={service.delivery_policy.icon} />
                 <div>
                   <b>{service.title}</b>
-                  <small>{service.description}</small>
+                  <small title={service.description}>
+                    {service.description}
+                  </small>
+                  {!serviceAvailable(service) && (
+                    <Status tone="gray">暂不可购买</Status>
+                  )}
                 </div>
                 <b>¥{currency(service.amount_minor)}/次</b>
               </Link>

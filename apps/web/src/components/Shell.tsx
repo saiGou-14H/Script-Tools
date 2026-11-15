@@ -37,6 +37,11 @@ const pageMenuIcons: Partial<Record<PageId, Partial<Record<PageId, string>>>> =
       P02: "order", C04: "file", C06: "layers", C22: "ticket",
       C12: "folder", C13: "clock", C16: "message",
     },
+    C01: {
+      P02: "store", C04: "file", C06: "stack", C22: "ticket-stub",
+      C08: "plus-circle", C10: "list", C12: "data-storage", C13: "warning",
+      C16: "mail", C19: "history",
+    },
     P05: {
       C04: "file", C06: "stack", C22: "ticket-stub", C10: "list",
       C12: "file", C13: "clock", C16: "message",
@@ -677,6 +682,7 @@ export function Shell({ pageId }: { pageId: PageId }) {
               {pageId === "P05" && role === "USER" && <Icon name="user" />}
               {pageId === "P02" && role === "GUEST" && <Icon name="user" />}
               {pageId === "P01" && role === "GUEST" && <Icon name="team" />}
+              {pageId === "C01" && <Icon name="user" />}
               {
                 pageId === "O01"
                   ? ""
@@ -684,6 +690,8 @@ export function Shell({ pageId }: { pageId: PageId }) {
                     ? role === "GUEST"
                       ? "当前身份："
                       : "当前工作区："
+                    : pageId === "C01"
+                      ? "工作区："
                     : ["P01", "P04"].includes(pageId)
                       ? "当前工作区："
                       : role === "GUEST" &&

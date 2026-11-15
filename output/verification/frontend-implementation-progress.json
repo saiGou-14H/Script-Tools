@@ -1,6 +1,6 @@
 {
   "project_name": "Script Tools",
-  "updated_at": "2026-11-15T15:22:04.117Z",
+  "updated_at": "2026-11-15T15:52:47.738Z",
   "goal_status": "active",
   "target": {
     "page_definitions": 66,
@@ -192,7 +192,7 @@
     {
       "report": "output/verification/consumer-overview/report.json",
       "result": "PASS",
-      "checks": 13
+      "checks": 20
     },
     {
       "report": "output/verification/publisher-profile/report.json",
@@ -364,7 +364,7 @@
     "The public home and authentication page have been realigned with their reference regions. The user confirmed email/password authentication from the detailed design on 2026-11-14.",
     "Registration, email verification and password reset are integrated with PostgreSQL in development preview mode. Verification delivery currently uses explicit development tokens.",
     "The market, general service detail and travel service detail now use separate guest and consumer layouts. Catalog facts and parameter examples come from the published service contract. The consumer eight-card layout uses a browser-only fixture because the development database currently contains four services.",
-    "The consumer home and checkout are aligned with their reference regions. The live personal overview reads owner-scoped metadata in one database snapshot. Current-state counters retain old continuous runs, and committed outputs can be visible before process completion. Preview records are explicitly labeled and shared across their related pages.",
+    "The consumer home calibrates nine principal reference regions within three pixels. Normal and long content each pass 56 window widths, including internal table scrolling to mobile actions. Signed-64-bit values retain their exact text, truncated descriptions expose their complete title, and recommendation availability, retry and empty states preserve the independently loaded personal summary. Existing preview records retain their data-derived counts and timestamps. The checkout retains its reference regions. The live personal overview reads owner-scoped metadata in one database snapshot. Current-state counters retain old continuous runs, and committed outputs can be visible before process completion. Preview records are explicitly labeled and shared across their related pages.",
     "Publisher onboarding and profile settings use owner-scoped APIs, explicit first/new-version terms consent, encrypted receipts, revisions, audit and outbox writes. In-flight edits remain available for an explicit revision-checked save, conflict reloads retain typed fields, and failed background reads keep the loaded editor and dirty fields mounted with a read-only retry. Committed creation and failed identity refresh have separate feedback, with follow-up retries issuing no repeated profile command. Cancelled entry retains the consumer destination after delayed responses arrive. Existing consent has a title-bar reading link, terms and payout dialogs restore through URLs and history, and unsubmitted payout tokens clear on reopening or reload. Public-profile and payout previews merge independent fields. S01 and S15 layouts retain their reference regions and narrow-screen controls. Live publisher overviews, contact-channel persistence, payout configuration and verification remain pending.",
     "The output and pending pages have been realigned with the reference regions. Output links and toolbar actions use the selected record, and JSON/text/file previews preserve their own MIME types. Live output metadata uses owner-scoped committed-batch queries with signed pagination. Content storage, downloads, notification delivery and pending-action execution remain in progress.",
     "Account settings now have distinct consumer, publisher and administrator desktop and 390px layouts. Owner-scoped APIs, encrypted receipts and revision checks back identity, nickname edits and session management. Section and read-only dialog URLs restore through reload and history, while the keyboard-accessible header link retains the workspace. In-flight nickname edits remain available for explicit resubmission with the saved revision. Completed session revocations tolerate a failed metadata refresh. Logout clears local identity and private queries immediately and discards delayed pre-logout bootstrap responses. The default consumer publisher entry reaches explicit onboarding. Security revisions use decimal strings. Account closure, email changes and subscription disconnection remain pending.",
